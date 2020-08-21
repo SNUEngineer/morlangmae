@@ -1,16 +1,13 @@
-import React from 'react';
-import SignUp from './SignUp';
+import React from "react";
+import SignUp from "./SignUp";
+import { signUp } from "../signin/service";
 
-export default { title: 'SignUp' };
+export default { title: "SignUp" };
 
 export function basic() {
-  return (
-    <SignUp />
-  );
-};
+  return <SignUp handleSubmit={signUp} />;
+}
 
 export function companyCodeFilled() {
-  return (
-    <SignUp companyCode="APPL" />
-  );
-};
+  return <SignUp handleSubmit={signUp} />;
+}
