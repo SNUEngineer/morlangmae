@@ -1,0 +1,43 @@
+.board {
+  height: 2000px;
+  width: 2000px;
+  position: absolute;
+  background-color: #ffffff;
+}
+
+.testviewport {
+  position: relative;
+  overflow: hidden;
+  width: 1000;
+  height: 1000;
+}
+
+.container {
+  height: 200px;
+  width: 200px;
+}
+
+
+.viewport {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 1000px;
+  background-color: #ffff44;
+}
+
+.list_item {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.split_list_view {
+  height: 100%;
+  overflow: scroll;
+}
+
+.split_pane {
+  max-height: 1000px;
+  width: 100%;
+  background-color: red;
+}
