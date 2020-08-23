@@ -1,0 +1,35 @@
+.container {
+  position: relative;
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  background-color: #ff0000;
+  z-index: 999;
+}
+
+.memo_item {}
+
+.memo_draggable {
+  position: absolute;
+}
+
+.panzoom_box {
+  height: 0px;
+}
+
+.anchor_zone {
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  height: 50px;
+  width: 50px;
+  background-color: blue;
+}
+
+.anchor {
+  position: absolute;
+  z-index: 500;
+  height: 50px;
+  width: 50px;
+  background-color: green;
+}

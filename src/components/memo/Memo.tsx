@@ -18,6 +18,7 @@ import SplitPane from "react-split-pane/lib/SplitPane";
 // @ts-ignore
 import Pane from "react-split-pane/lib/Pane";
 import ReactPDF from "@intelllex/react-pdf";
+import MemoItem from "./MemoItem";
 
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
@@ -38,24 +39,48 @@ export default function Memo(props: any) {
     w: 500,
     h: 500,
   });
+  const [panBoardSize, setPanBoardSize] = useState({
+    w: 2000,
+    h: 2000,
+  });
   const [viewportSize, setViewportSize] = useState({
     w: 500,
     h: 500,
   });
-  const [keyDown, setKeyDown] = useState({
+  const [keyOn, setKeyOn] = useState({
     control: false,
     space: false,
   });
   const [zoomRatio, setZoomRatio] = useState({
     zoom: 1,
   });
+  const [documentPosition, setDocumentPosition] = useState({
+    x: 0,
+    y: 0,
+    scale: 1,
+  });
 
+  const initMemoItems = [
+    {
+      pageNum: 1,
+      content: "테스트",
+      x: 0,
+      y: 0,
+    },
+  ];
+
+  const [panzoomBoxSize, setPanzoomBoxSize] = useState({
+    w: 500,
+    h: 500,
+  });
+  const [memoItems, setMemoItems] = useState(initMemoItems);
   const [firstAlign, setFirstAlign] = useState(true);
-
   const viewPortEl = useRef(null);
   const boardEl = useRef(null);
   const draggableContainerEl = useRef(null);
   const documentEl = useRef(null);
+  const panzoomBoxEl = useRef(null);
+  const pageEl = useRef(null);
 
   useLayoutEffect(() => {
     function updateSize() {
@@ -65,6 +90,15 @@ export default function Memo(props: any) {
 
         setViewportSize({ w: width, h: height });
       }
+      if (panzoomBoxEl.current) {
+        const height = window.innerHeight; //height는 100vh로 설정됨
+        const width = viewPortEl.current.offsetWidth;
+
+        console.log("panzoom box  " + width + "   " + window.innerHeight);
+
+        setPanzoomBoxSize({ w: width, h: height });
+      }
+
       if (boardEl.current) {
         const height = boardEl.current.offsetHeight;
         const width = boardEl.current.offsetWidth;
@@ -81,7 +115,7 @@ export default function Memo(props: any) {
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
-  }, [boardEl, documentEl, draggableContainerEl]);
+  }, [boardEl, documentEl, draggableContainerEl, panzoomBoxEl]);
 
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
@@ -105,6 +139,24 @@ export default function Memo(props: any) {
     [boardSize, pageSize, zoomRatio]
   );
 
+  const setPanzoomBoundary = useCallback(() => {
+    const scaledBoard = {
+      w: (panBoardSize.w + 200) * documentPosition.scale, // 약간씩의 여백 (board 바깥부분).
+      h: (panBoardSize.h + 200) * documentPosition.scale, // 약간씩 여백 (board 바깥부분).
+    };
+
+    const hRatio =
+      panBoardSize.w * documentPosition.scale - panzoomBoxSize.w > 0
+        ? (scaledBoard.w - panzoomBoxSize.w) / scaledBoard.w
+        : 0;
+    const vRatio =
+      panBoardSize.h * documentPosition.scale - panzoomBoxSize.h > 0
+        ? (scaledBoard.h - panzoomBoxSize.h) / scaledBoard.h
+        : 0;
+
+    return { hRatio: hRatio, vRatio: vRatio };
+  }, [panzoomBoxSize, panBoardSize, documentPosition]);
+
   const setBoardStyle = useCallback(() => {
     const placedDiv = {
       left: Math.abs(boardSize.w - viewportSize.w) / -2,
@@ -114,9 +166,20 @@ export default function Memo(props: any) {
     return placedDiv;
   }, [boardSize, viewportSize, zoomRatio]);
 
+  const setDocumentStyle = useCallback(() => {
+    console.log(
+      "panBoardSize.h - pageSize.h  " + panBoardSize.h + "   " + pageSize.h
+    );
+    const placedDiv = {
+      marginLeft: Math.abs(panBoardSize.w - pageSize.w) / 2,
+      marginTop: Math.abs(panBoardSize.h - pageSize.h) / 2,
+    };
+    return placedDiv;
+  }, [panBoardSize, pageSize]);
+
   const onDragHandler = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
-      if (!keyDown.space) return;
+      if (!keyOn.space) return;
 
       const endX = pagePosition.x + event.pageX - dragLastPosition.x;
       const endY = pagePosition.y + event.pageY - dragLastPosition.y;
@@ -129,8 +192,49 @@ export default function Memo(props: any) {
         y: event.pageY,
       });
     },
-    [pagePosition, dragLastPosition, properPosition, keyDown]
+    [pagePosition, dragLastPosition, properPosition, keyOn]
   );
+
+  function onStateChange(state) {
+    console.log(
+      "state " +
+        state.x +
+        "   " +
+        state.y +
+        "   " +
+        state.scale +
+        "   " +
+        state.angle
+    );
+
+    setDocumentPosition({
+      x: state.x,
+      y: state.y,
+      scale: state.scale,
+    });
+  }
+  const onMouseDown = (event) => {
+    console.log("click");
+    console.log(
+      "event.clientX    " +
+        event.nativeEvent.offsetX +
+        "event.clientY   " +
+        event.nativeEvent.offsetY
+    );
+    if (event.nativeEvent.which === 3) {
+      event.preventDefault();
+      const newMemoItem = {
+        pageNum: 1,
+        content: "테스트",
+        x: event.nativeEvent.offsetX,
+        y: event.nativeEvent.offsetY,
+      };
+
+      const addedArray = memoItems.concat(newMemoItem);
+      setMemoItems(addedArray);
+      console.log("우클릭 " + memoItems.length);
+    }
+  };
 
   function onStartDragHandler(event: React.DragEvent<HTMLDivElement>) {
     const startX = event.pageX;
@@ -141,45 +245,16 @@ export default function Memo(props: any) {
     });
   }
 
-  // function onStartTouchHandler(event: React.TouchEvent<HTMLDivElement>) {
-  //   console.log("asdfasdf");
-  //   const touch = event.touches[0];
-
-  //   const startX = touch.screenX;
-  //   const startY = touch.screenY;
-  //   setDragLastPosition({
-  //     x: startX,
-  //     y: startY,
-  //   });
-  // }
-  // const onTouchMoveHandler = useCallback(
-  //   (event: React.TouchEvent<HTMLDivElement>) => {
-  //     console.log("asdfasdf");
-  //     if (!keyDown.space) return;
-  //     const touch = event.touches[0];
-
-  //     const endX = pagePosition.x + touch.screenX - dragLastPosition.x;
-  //     const endY = pagePosition.y + touch.screenY - dragLastPosition.y;
-
-  //     const position = properPosition({ x: endX, y: endY });
-
-  //     setPagePosition(position);
-  //     setDragLastPosition({
-  //       x: touch.screenX,
-  //       y: touch.screenY,
-  //     });
-  //   },
-  //   [pagePosition, dragLastPosition, properPosition, keyDown]
-  // );
   const onKeyDownHandler = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
+      console.log("gmagaga");
       if (event.keyCode === 32) {
         //spcae bar
         event.preventDefault();
-        setKeyDown((prevState) => ({ ...prevState, space: true }));
+        setKeyOn((prevState) => ({ ...prevState, space: true }));
       } else if (event.keyCode === 17) {
         //control
-        setKeyDown((prevState) => ({ ...prevState, control: true }));
+        setKeyOn((prevState) => ({ ...prevState, control: true }));
       }
     },
     []
@@ -189,10 +264,10 @@ export default function Memo(props: any) {
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.keyCode === 32) {
         //spcae bar
-        setKeyDown((prevState) => ({ ...prevState, space: false }));
+        setKeyOn((prevState) => ({ ...prevState, space: false }));
       } else if (event.keyCode === 17) {
         //control
-        setKeyDown((prevState) => ({ ...prevState, control: false }));
+        setKeyOn((prevState) => ({ ...prevState, control: false }));
       }
     },
     []
@@ -201,18 +276,6 @@ export default function Memo(props: any) {
     console.log("list item clicked ");
     setPageNumber(index);
   };
-
-  // const Block = (props: { inViewport: boolean }) => {
-  //   const { inViewport } = props;
-  //   const color = inViewport ? "#217ac0" : "#ff9800";
-  //   const text = inViewport ? "In viewport" : "Not in viewport";
-  //   return (
-  //     <div className="viewport-block">
-  //       <h3>{text}</h3>
-  //       <div style={{ width: "1000px", height: "1000px", background: color }} />
-  //     </div>
-  //   );
-  // };
 
   return (
     <div>
@@ -244,8 +307,6 @@ export default function Memo(props: any) {
                 onDragOver={(event) => {
                   event.preventDefault();
                 }}
-                onKeyDown={onKeyDownHandler}
-                onKeyUp={onKeyUpHandler}
                 ref={boardEl}
               >
                 <Draggable
@@ -255,32 +316,13 @@ export default function Memo(props: any) {
                   bounds="parent"
                   ref={draggableContainerEl}
                 >
-                  <div ref={documentEl}>
+                  <div>
                     <Document
                       file={props.fileUrl}
                       onLoadSuccess={onDocumentLoadSuccess}
                       className={memoStyle.document}
                     >
-                      <Page
-                        pageNumber={pageNumber}
-                        width={pageSize.w}
-                        onRenderSuccess={() => {
-                          if (documentEl.current) {
-                            const height = documentEl.current.offsetHeight;
-                            setPageSize((prevState) => ({
-                              ...prevState,
-                              h: height,
-                            }));
-                            if (firstAlign) {
-                              const x = (boardSize.w - pageSize.w) / 2;
-                              const y = (boardSize.h - height) / 2;
-
-                              setPagePosition({ x: x, y: y });
-                              setFirstAlign(false);
-                            }
-                          }
-                        }}
-                      />
+                      <Page pageNumber={pageNumber} width={pageSize.w} />
                     </Document>
                   </div>
                 </Draggable>
@@ -334,18 +376,66 @@ export default function Memo(props: any) {
         >
           축소
         </button>
-        <PanZoom>
-          <div className={memoStyle.testviewport}>
-            <Document
-              file={props.fileUrl}
-              onLoadSuccess={onDocumentLoadSuccess}
-              className={memoStyle.document}
+
+        <PanZoom
+          className={memoStyle.panzoom_box}
+          zoomSpeed={5}
+          onStateChange={onStateChange}
+          boundaryRatioVertical={setPanzoomBoundary().vRatio} //
+          boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
+          enableBoundingBox
+          autoCenter={true}
+          disableDoubleClickZoom={true}
+          maxZoom={3}
+          minZoom={0.3}
+          ref={panzoomBoxEl}
+        >
+          <div
+            className={memoStyle.pan_board}
+            onKeyDown={onKeyDownHandler}
+            onKeyUp={onKeyUpHandler}
+          >
+            <div
+              className={memoStyle.memo_board}
+              onMouseDown={onMouseDown}
+              onDrop={(event) => {}}
+              onDragOver={(event) => {}}
             >
-              <div>
-                <Outline className={memoStyle.outline} />
-                <Page pageNumber={pageNumber} />
-              </div>
-            </Document>
+              {memoItems.map((i, index) => (
+                <MemoItem
+                  memoState={memoItems[index]}
+                  className={memoStyle.memo_item}
+                  keyState={keyOn}
+                  scale={documentPosition.scale}
+                ></MemoItem>
+              ))}
+            </div>
+            <div
+              ref={documentEl}
+              style={setDocumentStyle()}
+              className={memoStyle.testt}
+            >
+              <Document
+                file={props.fileUrl}
+                onLoadSuccess={onDocumentLoadSuccess}
+                className={memoStyle.document}
+              >
+                <Page
+                  pageNumber={pageNumber}
+                  width={pageSize.w}
+                  className={memoStyle.page}
+                  onLoadSuccess={(page) => {
+                    console.log(
+                      "page pagepage  " + page.height + "   " + page.width
+                    );
+                    setPageSize((prevState) => ({
+                      w: page.width,
+                      h: page.height,
+                    }));
+                  }}
+                />
+              </Document>
+            </div>
           </div>
         </PanZoom>
         <Document file={props.fileUrl}>
