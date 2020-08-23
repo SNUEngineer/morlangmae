@@ -189,3 +189,4 @@ modules.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,react,visualstudiocode,webstorm+all,yarn
 
+.vscode
