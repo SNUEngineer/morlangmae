@@ -10,7 +10,12 @@ export async function validateToken() {
   }
 }
 
-export async function signIn({ username, password }: { username: string, password: string }) {
+export interface SignInRequest {
+  username: string;
+  password: string;
+}
+
+export async function signIn({ username, password }: SignInRequest) {
   const res = await axios.post(
     "/account/v1/sign-in",
     {
@@ -18,19 +23,38 @@ export async function signIn({ username, password }: { username: string, passwor
       password,
     }
   );
-  resetToken(`Bearer ${res?.data?.token}`);
+  resetToken(`${res?.data?.token}`);
 }
 
-export async function signUp() {
+export interface SignUpRequest {
+  username: string;
+  password: string;
+  companyCode: string;
+  displayName: string;
+}
+
+export async function signUp(signUpRequest: SignUpRequest) {
   const res = await axios.post(
     "/account/v1/sign-up",
-    {
-
-    }
+    signUpRequest
   );
-  resetToken(`Bearer ${res?.data?.token}`);
+  resetToken(`${res?.data?.token}`);
 }
 
 export function logOut() {
   expireToken()
+}
+
+export interface UserView {
+  id: number;
+  displayName: string;
+  imageUrl?: string;
+  companyId: string;
+}
+
+export async function searchUsers(query?: string): Promise<UserView[]> {
+  const res = await axios.get(
+    "/users/v1"
+  )
+  return res.data.users
 }
