@@ -1,19 +1,21 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Link, useHistory } from 'react-router-dom';
+import { SignUpRequest } from '../../services/user.service';
 
 export interface SignUpProps {
   companyCode?: string;
-  handleSubmit(): Promise<void>;
+  handleSubmit(request: SignUpRequest): Promise<void>;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props: SignUpProps) {
   const classes = useStyles();
+  const { register, handleSubmit } = useForm();
+  const history = useHistory();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -49,7 +53,7 @@ export default function SignUp(props: SignUpProps) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit(props.handleSubmit)} className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -61,18 +65,19 @@ export default function SignUp(props: SignUpProps) {
                 id="username"
                 label="Username"
                 autoFocus
+                inputRef={register}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
                 required
-                disabled
                 defaultValue={props.companyCode}
                 fullWidth
                 id="companyCode"
                 label="Company Code"
                 name="companyCode"
+                inputRef={register}
               />
             </Grid>
             <Grid item xs={12}>
@@ -84,6 +89,7 @@ export default function SignUp(props: SignUpProps) {
                 label="Display Name"
                 name="displayName"
                 autoComplete="displayName"
+                inputRef={register}
               />
             </Grid>
             <Grid item xs={12}>
@@ -96,12 +102,7 @@ export default function SignUp(props: SignUpProps) {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                inputRef={register}
               />
             </Grid>
           </Grid>
@@ -116,7 +117,7 @@ export default function SignUp(props: SignUpProps) {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link to="/sign-in">
                 Already have an account? Sign in
               </Link>
             </Grid>
