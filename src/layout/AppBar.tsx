@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
     },
     appBar: {
-      zIndex: theme.zIndex.drawer + 1,
+      zIndex: theme.zIndex.drawer + 10000,
     },
     drawer: {
       width: drawerWidth,
@@ -45,7 +45,7 @@ export default function AppBar(props: any) {
         <Typography>
           Bailey
         </Typography>
-        <Search />
+        {/* <Search /> */}
       </Toolbar>
     </MuiAppBar>
   );
