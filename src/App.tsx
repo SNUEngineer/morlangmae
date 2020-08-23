@@ -1,8 +1,9 @@
 import React, { useState, Fragment } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect,
+  useLocation
 } from 'react-router-dom';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import AppBar from './layout/AppBar';
@@ -11,9 +12,13 @@ import { Toolbar, Typography } from '@material-ui/core';
 import AuthRoute from './common/auth/AuthRoute';
 import UnauthRoute from './common/auth/UnauthRoute';
 import SignIn from './components/signin/SignIn';
-import { signIn, signUp } from './components/signin/service';
+import { signIn, signUp, SignInRequest, SignUpRequest } from './services/user.service';
 import SignUp from './components/signup/SignUp';
 import Error from './common/error'
+import CollectionPageContainer from './page/listCollection/CollectionPageContainer'
+import CreateCollectionPageContainer from './page/createCollection/CreateCollectionPageContainer';
+import EditCollectionPageContainer from './page/editCollection/EditCollectionPageContainer';
+import queryString from 'query-string';
 
 const drawerWidth = 240;
 
@@ -43,10 +48,25 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function App() {
+  const { pathname } = useLocation();
   const classes = useStyles();
   const [user] = useState(null);
   const token = localStorage.getItem('Authorization');
-  const authenticated = token != null;
+  const [authenticated, setAuthenticated] = useState(token != null);
+  function validateToken() {
+    const token = localStorage.getItem('Authorization')
+    setAuthenticated(token != null)
+  }
+
+  async function handleSignIn(request: SignInRequest) {
+    await signIn(request)
+    validateToken()
+  }
+
+  async function handleSignUp(request: SignUpRequest) {
+    await signUp(request)
+    validateToken()
+  }
 
   return (
     <div className={classes.root}>
@@ -57,47 +77,105 @@ function App() {
             </Typography>
         </Toolbar>
       </AppBar>
-      <Router>
-        <Switch>
-          <UnauthRoute
-            authenticated={authenticated}
-            path="/sign-in"
-            render={() => <SignIn handleSubmit={signIn} />}
-          />
-          <UnauthRoute
-            authenticated={authenticated}
-            path="/sign-up"
-            render={() => <SignUp handleSubmit={signUp} />}
-          />
-          <AuthRoute
-            authenticated={authenticated}
-            path="/persona"
-            render={(props: any) => <ProjectView user={user} {...props} />}
-          />
-          <AuthRoute
-            authenticated={authenticated}
-            path="/projects"
-            render={(props: any) => <ProjectView user={user} {...props} />}
-          />
-          <AuthRoute
-            authenticated={authenticated}
-            path="/notes"
-            render={(props: any) => <ProjectView user={user} {...props} />}
-          />
-          <AuthRoute
-            authenticated={authenticated}
-            path="/"
-            exact
-            render={(props: any) => <ProjectView user={user} {...props} />}
-          />
-          <Route>
-            <Error />
-          </Route>
-        </Switch>
-      </Router>
+      <Switch>
+        <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+        <UnauthRoute
+          exact
+          authenticated={authenticated}
+          path="/sign-in"
+          render={() => <SignIn handleSubmit={handleSignIn} />}
+        />
+        <UnauthRoute
+          exact
+          authenticated={authenticated}
+          path="/sign-up"
+          render={() => <SignUp handleSubmit={handleSignUp} />}
+        />
+        <AuthRoute
+          exact
+          authenticated={authenticated}
+          path="/persona"
+          render={(props: any) => <ProjectView user={user} {...props} />}
+        />
+        <AuthRoute
+          exact
+          authenticated={authenticated}
+          path="/collections/create"
+          render={(props: any) => <CreateCollectionView />}
+        />
+        <AuthRoute
+          exact
+          authenticated={authenticated}
+          path="/collections/edit/:id"
+          render={(props: any) => <EditCollectionView {...props} />}
+        />
+        <AuthRoute
+          exact
+          authenticated={authenticated}
+          path="/collections"
+          render={(props: any) => <CollectionView {...props} />}
+        />
+        <AuthRoute
+          exact
+          authenticated={authenticated}
+          path="/memos"
+          render={(props: any) => <ProjectView user={user} {...props} />}
+        />
+        <AuthRoute
+          exact
+          authenticated={authenticated}
+          path="/"
+          render={(props: any) => <ProjectView user={user} {...props} />}
+        />
+        <Route>
+          <Error />
+        </Route>
+      </Switch>
 
     </div>
   );
+}
+
+function CollectionView(props: any) {
+  const query = queryString.parse(props.location.search);
+  let id = undefined;
+  if (query && query.id) {
+    id = +query.id;
+  }
+  let platterId = undefined;
+  if (query && query.platterId) {
+    platterId = +query.platterId;
+  }
+  const classes = useStyles();
+  return (
+    <Fragment>
+      <Drawer />
+      <main className={classes.content}>
+        <Toolbar />
+        <CollectionPageContainer collectionId={id} platterId={platterId} />
+      </main>
+    </Fragment>
+  );
+}
+
+function CreateCollectionView() {
+  const classes = useStyles();
+  return (
+    <main className={classes.content}>
+      <Toolbar />
+      <CreateCollectionPageContainer />
+    </main>
+  )
+}
+
+function EditCollectionView(props: any) {
+  const classes = useStyles();
+  return (
+    <main className={classes.content}>
+      <Toolbar />
+      <EditCollectionPageContainer collectionId={props.match.params.id} />
+    </main>
+  )
 }
 
 function ProjectView({ user, ...props }: any) {
