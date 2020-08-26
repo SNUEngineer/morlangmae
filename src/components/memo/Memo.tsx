@@ -19,6 +19,8 @@ import SplitPane from "react-split-pane/lib/SplitPane";
 import Pane from "react-split-pane/lib/Pane";
 import ReactPDF from "@intelllex/react-pdf";
 import MemoItem from "./MemoItem";
+import PDFPages from "./PDFList/PDFPages";
+import PDFThumbBar from "./PDFList/PDFThumbBar";
 
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
@@ -73,6 +75,10 @@ export default function Memo(props: any) {
     w: 500,
     h: 500,
   });
+
+  const [pdfList, setPdfList] = useState({});
+  const [listProgress, setListProgress] = useState(0);
+
   const [memoItems, setMemoItems] = useState(initMemoItems);
   const [firstAlign, setFirstAlign] = useState(true);
   const viewPortEl = useRef(null);
@@ -141,18 +147,18 @@ export default function Memo(props: any) {
 
   const setPanzoomBoundary = useCallback(() => {
     const scaledBoard = {
-      w: (panBoardSize.w + 200) * documentPosition.scale, // 약간씩의 여백 (board 바깥부분).
-      h: (panBoardSize.h + 200) * documentPosition.scale, // 약간씩 여백 (board 바깥부분).
+      w: (panBoardSize.w + 500) * documentPosition.scale, // 약간씩의 여백 (board 바깥부분).
+      h: (panBoardSize.h + 500) * documentPosition.scale, // 약간씩 여백 (board 바깥부분).
     };
 
     const hRatio =
       panBoardSize.w * documentPosition.scale - panzoomBoxSize.w > 0
         ? (scaledBoard.w - panzoomBoxSize.w) / scaledBoard.w
-        : 0;
+        : (scaledBoard.w - panzoomBoxSize.w) / (scaledBoard.w * 8);
     const vRatio =
       panBoardSize.h * documentPosition.scale - panzoomBoxSize.h > 0
         ? (scaledBoard.h - panzoomBoxSize.h) / scaledBoard.h
-        : 0;
+        : (scaledBoard.h - panzoomBoxSize.h) / (scaledBoard.h * 8);
 
     return { hRatio: hRatio, vRatio: vRatio };
   }, [panzoomBoxSize, panBoardSize, documentPosition]);
@@ -224,7 +230,7 @@ export default function Memo(props: any) {
     if (event.nativeEvent.which === 3) {
       event.preventDefault();
       const newMemoItem = {
-        pageNum: 1,
+        pageNum: pageNumber,
         content: "테스트",
         x: event.nativeEvent.offsetX,
         y: event.nativeEvent.offsetY,
@@ -279,62 +285,106 @@ export default function Memo(props: any) {
 
   return (
     <div>
-      <div>
+      <PDFPages
+        url={props.fileUrl}
+        setPdf={(loadPDF) => {
+          console.log("되냐?12121 " + loadPDF.numPages);
+          setPdfList(loadPDF);
+        }}
+        updateProgressBar={(progress: number) => {
+          setListProgress(progress);
+          // const { onProgress } = this.props;
+          // onProgress && onProgress();
+          //로딩  진행 정도.
+        }}
+      />
+
+      <div className={memoStyle.workspace_container}>
+        <div className={memoStyle.menu_bar}></div>
         <SplitPane split="vertical" className={memoStyle.split_pane}>
           <Pane initialSize="200px" minSize="150px" maxSize="500px">
             <div className={memoStyle.split_list_view}>
-              {/* <PageListView
-                fileUrl="https://raw.githubusercontent.com/degoes-consulting/lambdaconf-2015/master/speakers/jdegoes/intro-purescript/presentation.pdf"
-                listItemClicked={listItemClicked}
-              /> */}
+              <PDFThumbBar
+                pdf={pdfList}
+                currentPage={pageNumber}
+                setCurrentPage={(pageNum: number) => {
+                  setPageNumber(pageNum);
+                }}
+                showThumbSidebar={true}
+              />
             </div>
           </Pane>
           <Pane>
-            <div className={memoStyle.viewport} ref={viewPortEl}>
+            <PanZoom
+              className={memoStyle.panzoom_box}
+              zoomSpeed={5}
+              onStateChange={onStateChange}
+              boundaryRatioVertical={setPanzoomBoundary().vRatio} //
+              boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
+              enableBoundingBox
+              autoCenter={true}
+              maxZoom={3}
+              minZoom={0.3}
+              ref={panzoomBoxEl}
+            >
               <div
-                style={setBoardStyle()}
-                tabIndex={0} // key event fire 하기 위한 속성
-                className={memoStyle.board}
-                draggable={true}
-                onDrag={(event) => {
-                  onDragHandler(event);
-                  event.stopPropagation();
-                }}
-                onDragStart={(event) => {
-                  onStartDragHandler(event);
-                  event.dataTransfer.setDragImage(new Image(), 0, 0);
-                }}
-                onDragOver={(event) => {
-                  event.preventDefault();
-                }}
-                ref={boardEl}
+                className={memoStyle.pan_board}
+                onKeyDown={onKeyDownHandler}
+                onKeyUp={onKeyUpHandler}
               >
-                <Draggable
-                  disabled={true}
-                  defaultPosition={pagePosition}
-                  position={pagePosition}
-                  bounds="parent"
-                  ref={draggableContainerEl}
+                <div
+                  className={memoStyle.memo_board}
+                  onMouseDown={onMouseDown}
+                  onDrop={(event) => {}}
+                  onDragOver={(event) => {}}
                 >
-                  <div>
-                    <Document
-                      file={props.fileUrl}
-                      onLoadSuccess={onDocumentLoadSuccess}
-                      className={memoStyle.document}
-                    >
-                      <Page pageNumber={pageNumber} width={pageSize.w} />
-                    </Document>
-                  </div>
-                </Draggable>
+                  {memoItems.map(
+                    (i, index) =>
+                      memoItems[index].pageNum === pageNumber && (
+                        <MemoItem
+                          memoState={memoItems[index]}
+                          className={memoStyle.memo_item}
+                          keyState={keyOn}
+                          scale={documentPosition.scale}
+                          writerID={"송병근"}
+                        ></MemoItem>
+                      )
+                  )}
+                </div>
+                <div
+                  ref={documentEl}
+                  style={setDocumentStyle()}
+                  className={memoStyle.testt}
+                >
+                  <Document
+                    file={props.fileUrl}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                    className={memoStyle.document}
+                  >
+                    <Page
+                      pageNumber={pageNumber}
+                      width={pageSize.w}
+                      className={memoStyle.page}
+                      onLoadSuccess={(page) => {
+                        console.log(
+                          "page pagepage  " + page.height + "   " + page.width
+                        );
+                        setPageSize((prevState) => ({
+                          w: page.width,
+                          h: page.height,
+                        }));
+                      }}
+                    />
+                  </Document>
+                </div>
               </div>
-            </div>
+            </PanZoom>
           </Pane>
         </SplitPane>
       </div>
       <p>
         Page {pageNumber} of {numPages}
       </p>
-
       <div>
         <button
           onClick={() => {
@@ -377,77 +427,51 @@ export default function Memo(props: any) {
           축소
         </button>
 
-        <PanZoom
-          className={memoStyle.panzoom_box}
-          zoomSpeed={5}
-          onStateChange={onStateChange}
-          boundaryRatioVertical={setPanzoomBoundary().vRatio} //
-          boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
-          enableBoundingBox
-          autoCenter={true}
-          disableDoubleClickZoom={true}
-          maxZoom={3}
-          minZoom={0.3}
-          ref={panzoomBoxEl}
-        >
+        <div className={memoStyle.viewport} ref={viewPortEl}>
           <div
-            className={memoStyle.pan_board}
-            onKeyDown={onKeyDownHandler}
-            onKeyUp={onKeyUpHandler}
+            style={setBoardStyle()}
+            tabIndex={0} // key event fire 하기 위한 속성
+            className={memoStyle.board}
+            draggable={true}
+            onDrag={(event) => {
+              onDragHandler(event);
+              event.stopPropagation();
+            }}
+            onDragStart={(event) => {
+              onStartDragHandler(event);
+              event.dataTransfer.setDragImage(new Image(), 0, 0);
+            }}
+            onDragOver={(event) => {
+              event.preventDefault();
+            }}
+            ref={boardEl}
           >
-            <div
-              className={memoStyle.memo_board}
-              onMouseDown={onMouseDown}
-              onDrop={(event) => {}}
-              onDragOver={(event) => {}}
+            <Draggable
+              disabled={true}
+              defaultPosition={pagePosition}
+              position={pagePosition}
+              bounds="parent"
+              ref={draggableContainerEl}
             >
-              {memoItems.map((i, index) => (
-                <MemoItem
-                  memoState={memoItems[index]}
-                  className={memoStyle.memo_item}
-                  keyState={keyOn}
-                  scale={documentPosition.scale}
-                ></MemoItem>
-              ))}
-            </div>
-            <div
-              ref={documentEl}
-              style={setDocumentStyle()}
-              className={memoStyle.testt}
-            >
-              <Document
-                file={props.fileUrl}
-                onLoadSuccess={onDocumentLoadSuccess}
-                className={memoStyle.document}
-              >
-                <Page
-                  pageNumber={pageNumber}
-                  width={pageSize.w}
-                  className={memoStyle.page}
-                  onLoadSuccess={(page) => {
-                    console.log(
-                      "page pagepage  " + page.height + "   " + page.width
-                    );
-                    setPageSize((prevState) => ({
-                      w: page.width,
-                      h: page.height,
-                    }));
-                  }}
-                />
-              </Document>
-            </div>
+              <div>
+                <Document
+                  file={props.fileUrl}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                  className={memoStyle.document}
+                >
+                  <Page pageNumber={pageNumber} width={pageSize.w} />
+                </Document>
+              </div>
+            </Draggable>
           </div>
-        </PanZoom>
-        <Document file={props.fileUrl}>
-          <Page pageNumber={1} />
-        </Document>
+        </div>
       </div>
-      <ReactPDF
+      {/* <ReactPDF
         showThumbSidebar
         url={props.fileUrl}
         showProgressBar
         showToolbox
-      />
+      /> */}
     </div>
   );
 }
