@@ -9,18 +9,16 @@ import React, {
 import { Document, Outline, Page } from "react-pdf";
 import Draggable from "react-draggable";
 import memoStyle from "./memo.module.scss";
-import { isAbsolute } from "path";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { PanZoom } from "react-easy-panzoom";
-import PageListView from "./PageListView";
 // @ts-ignore
 import SplitPane from "react-split-pane/lib/SplitPane";
 // @ts-ignore
 import Pane from "react-split-pane/lib/Pane";
-import ReactPDF from "@intelllex/react-pdf";
 import MemoItem from "./MemoItem";
 import PDFPages from "./PDFList/PDFPages";
 import PDFThumbBar from "./PDFList/PDFThumbBar";
+import { TextArea } from "./TextArea";
+import MemoSideMenu from "./SideMenu/MemoSideMenu";
 
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
@@ -62,31 +60,32 @@ export default function Memo(props: any) {
     scale: 1,
   });
 
+  const [panzoomBoxSize, setPanzoomBoxSize] = useState({
+    w: 500,
+    h: 500,
+  });
+  const [currentFocusItem, setCurrentFocusItem] = useState({
+    itemID: 0,
+  });
+
+  const [pdfList, setPdfList] = useState({});
+  const [listProgress, setListProgress] = useState(0);
+
   const initMemoItems = [
     {
+      itemID: 0,
       pageNum: 1,
       content: "테스트",
       x: 0,
       y: 0,
     },
   ];
-
-  const [panzoomBoxSize, setPanzoomBoxSize] = useState({
-    w: 500,
-    h: 500,
-  });
-
-  const [pdfList, setPdfList] = useState({});
-  const [listProgress, setListProgress] = useState(0);
-
   const [memoItems, setMemoItems] = useState(initMemoItems);
-  const [firstAlign, setFirstAlign] = useState(true);
   const viewPortEl = useRef(null);
   const boardEl = useRef(null);
   const draggableContainerEl = useRef(null);
   const documentEl = useRef(null);
   const panzoomBoxEl = useRef(null);
-  const pageEl = useRef(null);
 
   useLayoutEffect(() => {
     function updateSize() {
@@ -99,8 +98,6 @@ export default function Memo(props: any) {
       if (panzoomBoxEl.current) {
         const height = window.innerHeight; //height는 100vh로 설정됨
         const width = viewPortEl.current.offsetWidth;
-
-        console.log("panzoom box  " + width + "   " + window.innerHeight);
 
         setPanzoomBoxSize({ w: width, h: height });
       }
@@ -147,9 +144,18 @@ export default function Memo(props: any) {
 
   const setPanzoomBoundary = useCallback(() => {
     const scaledBoard = {
-      w: (panBoardSize.w + 500) * documentPosition.scale, // 약간씩의 여백 (board 바깥부분).
-      h: (panBoardSize.h + 500) * documentPosition.scale, // 약간씩 여백 (board 바깥부분).
+      w: (panBoardSize.w + 1000) * documentPosition.scale, // 약간씩의 여백 (board 바깥부분).
+      h: (panBoardSize.h + 1000) * documentPosition.scale, // 약간씩 여백 (board 바깥부분).
     };
+
+    // const hRatio =
+    //   panBoardSize.w * documentPosition.scale - panzoomBoxSize.w > 0
+    //     ? (scaledBoard.w - panzoomBoxSize.w) / scaledBoard.w
+    //     : (scaledBoard.w - panzoomBoxSize.w) / (scaledBoard.w * 8);
+    // const vRatio =
+    //   panBoardSize.h * documentPosition.scale - panzoomBoxSize.h > 0
+    //     ? (scaledBoard.h - panzoomBoxSize.h) / scaledBoard.h
+    //     : (scaledBoard.h - panzoomBoxSize.h) / (scaledBoard.h * 8);
 
     const hRatio =
       panBoardSize.w * documentPosition.scale - panzoomBoxSize.w > 0
@@ -173,9 +179,6 @@ export default function Memo(props: any) {
   }, [boardSize, viewportSize, zoomRatio]);
 
   const setDocumentStyle = useCallback(() => {
-    console.log(
-      "panBoardSize.h - pageSize.h  " + panBoardSize.h + "   " + pageSize.h
-    );
     const placedDiv = {
       marginLeft: Math.abs(panBoardSize.w - pageSize.w) / 2,
       marginTop: Math.abs(panBoardSize.h - pageSize.h) / 2,
@@ -202,17 +205,6 @@ export default function Memo(props: any) {
   );
 
   function onStateChange(state) {
-    console.log(
-      "state " +
-        state.x +
-        "   " +
-        state.y +
-        "   " +
-        state.scale +
-        "   " +
-        state.angle
-    );
-
     setDocumentPosition({
       x: state.x,
       y: state.y,
@@ -220,16 +212,10 @@ export default function Memo(props: any) {
     });
   }
   const onMouseDown = (event) => {
-    console.log("click");
-    console.log(
-      "event.clientX    " +
-        event.nativeEvent.offsetX +
-        "event.clientY   " +
-        event.nativeEvent.offsetY
-    );
     if (event.nativeEvent.which === 3) {
       event.preventDefault();
       const newMemoItem = {
+        itemID: Date.now(),
         pageNum: pageNumber,
         content: "테스트",
         x: event.nativeEvent.offsetX,
@@ -238,7 +224,6 @@ export default function Memo(props: any) {
 
       const addedArray = memoItems.concat(newMemoItem);
       setMemoItems(addedArray);
-      console.log("우클릭 " + memoItems.length);
     }
   };
 
@@ -253,7 +238,6 @@ export default function Memo(props: any) {
 
   const onKeyDownHandler = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
-      console.log("gmagaga");
       if (event.keyCode === 32) {
         //spcae bar
         event.preventDefault();
@@ -278,17 +262,45 @@ export default function Memo(props: any) {
     },
     []
   );
-  const listItemClicked = (index: number) => {
-    console.log("list item clicked ");
-    setPageNumber(index);
-  };
+
+  const deleteMemo = useCallback(
+    (targetID: number) => {
+      const newList = memoItems.filter((item) => {
+        console.log(" 타게게셋    " + targetID);
+        console.log(" 대상    " + item.itemID);
+        if (item.itemID === targetID) {
+          console.log(" 흠ㅇ.....    ");
+        }
+
+        return item.itemID !== targetID;
+      });
+
+      setMemoItems(newList);
+    },
+    [memoItems]
+  );
+
+  const onDragOver = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }, []);
+  const onDrop = useCallback((e) => {
+    e.preventDefault();
+    return false;
+  }, []);
 
   return (
-    <div>
+    <div
+      onContextMenu={(e) => {
+        e.preventDefault();
+        return false;
+      }}
+    >
+      <MemoSideMenu></MemoSideMenu>
       <PDFPages
         url={props.fileUrl}
         setPdf={(loadPDF) => {
-          console.log("되냐?12121 " + loadPDF.numPages);
           setPdfList(loadPDF);
         }}
         updateProgressBar={(progress: number) => {
@@ -329,27 +341,35 @@ export default function Memo(props: any) {
             >
               <div
                 className={memoStyle.pan_board}
-                onKeyDown={onKeyDownHandler}
-                onKeyUp={onKeyUpHandler}
+                // onKeyDown={onKeyDownHandler}
+                // onKeyUp={onKeyUpHandler}
               >
                 <div
                   className={memoStyle.memo_board}
                   onMouseDown={onMouseDown}
-                  onDrop={(event) => {}}
-                  onDragOver={(event) => {}}
+                  onDrop={onDrop}
+                  onDragOver={onDragOver}
                 >
-                  {memoItems.map(
-                    (i, index) =>
-                      memoItems[index].pageNum === pageNumber && (
-                        <MemoItem
-                          memoState={memoItems[index]}
-                          className={memoStyle.memo_item}
-                          keyState={keyOn}
-                          scale={documentPosition.scale}
-                          writerID={"송병근"}
-                        ></MemoItem>
-                      )
-                  )}
+                  {memoItems.map((item, index) => {
+                    return (
+                      <MemoItem
+                        key={item.itemID}
+                        memoState={item}
+                        className={memoStyle.memo_item}
+                        keyState={keyOn}
+                        scale={documentPosition.scale}
+                        writerID={"송병근"}
+                        currentPageNum={pageNumber}
+                        deleteMemo={deleteMemo}
+                        isFocus={
+                          currentFocusItem.itemID === item.itemID ? true : false
+                        }
+                        focusHandler={(itemID) => {
+                          setCurrentFocusItem({ itemID: itemID });
+                        }}
+                      ></MemoItem>
+                    );
+                  })}
                 </div>
                 <div
                   ref={documentEl}
@@ -366,9 +386,6 @@ export default function Memo(props: any) {
                       width={pageSize.w}
                       className={memoStyle.page}
                       onLoadSuccess={(page) => {
-                        console.log(
-                          "page pagepage  " + page.height + "   " + page.width
-                        );
                         setPageSize((prevState) => ({
                           w: page.width,
                           h: page.height,
@@ -426,7 +443,6 @@ export default function Memo(props: any) {
         >
           축소
         </button>
-
         <div className={memoStyle.viewport} ref={viewPortEl}>
           <div
             style={setBoardStyle()}
@@ -466,12 +482,6 @@ export default function Memo(props: any) {
           </div>
         </div>
       </div>
-      {/* <ReactPDF
-        showThumbSidebar
-        url={props.fileUrl}
-        showProgressBar
-        showToolbox
-      /> */}
     </div>
   );
 }

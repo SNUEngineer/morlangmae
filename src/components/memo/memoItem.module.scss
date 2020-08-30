@@ -1,3 +1,10 @@
+@mixin anchor_size($width, $height) {
+  width: 1px * $width;
+  height: 1px * $height;
+  margin-left: -1px * $width/2;
+  margin-top: -1px * $height/2;
+}
+
 .container {
   position: relative;
   height: 400px;
@@ -7,11 +14,15 @@
   z-index: 999;
 }
 
+.container :focus {}
+
+
 .memo_item {}
 
 .memo_draggable {
   position: absolute;
   z-index: 500;
+  background-color: #ffffff;
 }
 
 .panzoom_box {
@@ -21,8 +32,8 @@
 .anchor {
   position: absolute;
   z-index: 500;
-  height: 50px;
-  width: 50px;
+  @include anchor_size(20, 20);
+  border-radius: 30px;
   background-color: green;
 }
 
@@ -34,7 +45,6 @@
   position: relative;
   width: 100%;
   height: 50px;
-  background-color: blueviolet;
 
   .purpose_button_selected {
     color: white;
@@ -95,26 +105,89 @@
   .anchor_zone {
     position: absolute;
     right: 0px;
-    height: 50px;
-    width: 50px;
+    height: 30px;
+    width: 30px;
+    margin: 10px;
+    border-radius: 30px;
     background-color: blue;
   }
 }
 
 .middle_bar {
   width: 100%;
-  height: 10px;
+  height: 1px;
   background-color: gray;
 }
 
 .text_area_container {
   width: 100%;
-  height: 100px;
-  background-color: blue;
+  background-color: green;
 
   .text_area {
     width: 100%;
     height: 100%;
     background-color: red;
   }
+}
+
+.memo_comment_container {
+  width: 100%;
+  background-color: blue;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+
+  .memo_comment {
+    width: 100%;
+    background-color: green;
+    flex-grow: 1;
+  }
+}
+
+.delete_container {
+  position: relative;
+  height: 20px;
+
+  .delete_button {
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    right: 0px;
+    background-color: gray;
+    border-radius: 15px;
+  }
+}
+
+.open_comment_container {
+  position: relative;
+  width: 100%;
+  background-color: blueviolet;
+  height: 30px;
+
+  .open_comment {
+    position: absolute;
+    right: 0px;
+    height: 30px;
+    width: 100px;
+    background-color: yellow;
+  }
+}
+
+.anchor_box {
+
+  background-color: #55555555;
+
+  border-style: dashed;
+  border-width: 1px;
+  border-color: blue;
+  position: absolute;
+  z-index: 400;
+}
+
+.box_anchor_container {
+  z-index: 1;
+}
+
+.box_container {
+  z-index: 1;
 }
