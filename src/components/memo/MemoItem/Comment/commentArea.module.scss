@@ -1,0 +1,13 @@
+.memo_comment_container {
+  width: 100%;
+  background-color: blue;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+
+  .memo_comment {
+    width: 100%;
+    background-color: green;
+    flex-grow: 1;
+  }
+}

@@ -9,9 +9,10 @@ import Line from "./AnchorLine/Line";
 import itemStyle from "./memoItem.module.scss";
 import { TextArea } from "./TextArea";
 import Draggable from "react-draggable";
-//import { Line } from "@vx/shape";
-
-import classNames from "classnames";
+import PurposeArea from "./Purpose/PurposeArea";
+import CommentArea from "./Comment/CommetArea";
+import Anchor from "./Anchor/Anchor";
+import WriterArea from "./Writer/WriterArea";
 
 export default function MemoItem(props: any) {
   const memoSize = {
@@ -69,7 +70,6 @@ export default function MemoItem(props: any) {
   const anchorZoneEl = useRef<HTMLDivElement>(null);
   const writerAreaEl = useRef<HTMLDivElement>(null);
   const contentTextAreaEl = useRef(null);
-  const commentTextAreaEl = useRef(null);
 
   const onAnchorZoneDragEnd = useCallback(
     (event) => {
@@ -120,32 +120,6 @@ export default function MemoItem(props: any) {
     []
   );
 
-  const anchorDoubleClick = (event) => {
-    console.log("double click!!");
-
-    setBoxAnchor((prevState) => ({
-      exist: true,
-      x: anchor.x + 50,
-      y: anchor.y + 50,
-    }));
-  };
-
-  const setBoxStyle = useCallback(() => {
-    const placedDiv = {
-      width: Math.abs(boxAnchor.x - anchor.x),
-      height: Math.abs(boxAnchor.y - anchor.y),
-    };
-    return placedDiv;
-  }, [boxAnchor, anchor]);
-
-  const setBoxPosition = useCallback(() => {
-    const box = {
-      x: boxAnchor.x > anchor.x ? anchor.x : boxAnchor.x,
-      y: boxAnchor.y > anchor.y ? anchor.y : boxAnchor.y,
-    };
-    return box;
-  }, [boxAnchor, anchor]);
-
   useEffect(() => {
     setIsVisible(props.currentPageNum === props.memoState.pageNum);
   }, [props.currentPageNum, props.memoState.pageNum]);
@@ -194,109 +168,16 @@ export default function MemoItem(props: any) {
             e.stopPropagation();
           }}
         >
-          {anchor.exist && (
-            <Draggable
-              disabled={false}
-              position={anchor}
-              onDrag={(e, coreData) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setAnchor((prevState) => ({
-                  ...prevState,
-                  x: coreData.x,
-                  y: coreData.y,
-                }));
-              }}
-              bounds={anchorBound}
-              //pan board 너비 높이 - 메모 아이템 너비 높이
-              scale={props.scale}
-            >
-              <div
-                className={itemStyle.anchor}
-                onDoubleClick={anchorDoubleClick}
-              ></div>
-            </Draggable>
-          )}
-          {anchor.exist && boxAnchor.exist && isFocus && (
-            <div className={itemStyle.box_anchor_container}>
-              <Draggable
-                disabled={false}
-                position={boxAnchor}
-                onDrag={(e, coreData) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setBoxAnchor((prevState) => ({
-                    ...prevState,
-                    x: coreData.x,
-                    y: coreData.y,
-                  }));
-                }}
-                bounds={anchorBound}
-                //pan board 너비 높이 - 메모 아이템 너비 높이
-                scale={props.scale}
-              >
-                <div className={itemStyle.anchor}></div>
-              </Draggable>
-            </div>
-          )}
-          {anchor.exist && boxAnchor.exist && isFocus && (
-            <div className={itemStyle.box_container}>
-              <Draggable
-                disabled={false}
-                position={setBoxPosition()}
-                scale={props.scale}
-                onDrag={(e, coreData) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (anchor.x <= boxAnchor.x) {
-                    setAnchor((prevState) => ({
-                      ...prevState,
-                      x: coreData.x,
-                    }));
-                    setBoxAnchor((prevState) => ({
-                      ...prevState,
-                      x: coreData.x + setBoxStyle().width,
-                    }));
-                  } else {
-                    setBoxAnchor((prevState) => ({
-                      ...prevState,
-                      x: coreData.x,
-                    }));
-                    setAnchor((prevState) => ({
-                      ...prevState,
-                      x: coreData.x + setBoxStyle().width,
-                    }));
-                  }
-                  if (anchor.y <= boxAnchor.y) {
-                    setAnchor((prevState) => ({
-                      ...prevState,
-                      y: coreData.y,
-                    }));
-                    setBoxAnchor((prevState) => ({
-                      ...prevState,
-                      y: coreData.y + setBoxStyle().height,
-                    }));
-                  } else {
-                    setBoxAnchor((prevState) => ({
-                      ...prevState,
-                      y: coreData.y,
-                    }));
-                    setAnchor((prevState) => ({
-                      ...prevState,
-                      y: coreData.y + setBoxStyle().height,
-                    }));
-                  }
-                }}
-              >
-                <div
-                  className={itemStyle.anchor_box}
-                  style={setBoxStyle()}
-                ></div>
-              </Draggable>
-            </div>
-          )}
-
-          {anchor.exist && <Line from={anchorLineStart} to={anchor} />}
+          <Anchor
+            anchorBound={anchorBound}
+            anchor={anchor}
+            scale={props.scale}
+            isFocus={isFocus}
+            boxAnchor={boxAnchor}
+            anchorLineStart={anchorLineStart}
+            setBoxAnchor={setBoxAnchor}
+            setAnchor={setAnchor}
+          ></Anchor>
 
           <Draggable
             disabled={false}
@@ -335,55 +216,13 @@ export default function MemoItem(props: any) {
                 ></div>
               </div>
               <div className={itemStyle.purpose_area}>
-                <div
-                  className={classNames({
-                    [itemStyle.purpose_left]: true,
-                    [itemStyle.purpose_button_basic]: true,
-                    [itemStyle.purpose_button_selected]:
-                      memoPurpose === "suggestion",
-                    [itemStyle.purpose_button_unselected]:
-                      memoPurpose !== "suggestion",
-                  })}
-                  onClick={() => {
-                    onPurposeClick("suggestion");
-                  }}
-                >
-                  제안
-                </div>
-                <div
-                  className={classNames({
-                    [itemStyle.purpose_center]: true,
-                    [itemStyle.purpose_button_basic]: true,
-                    [itemStyle.purpose_button_selected]:
-                      memoPurpose === "request",
-                    [itemStyle.purpose_button_unselected]:
-                      memoPurpose !== "request",
-                  })}
-                  onClick={() => {
-                    onPurposeClick("request");
-                  }}
-                >
-                  요청
-                </div>
-                <div
-                  className={classNames({
-                    [itemStyle.purpose_right]: true,
-                    [itemStyle.purpose_button_basic]: true,
-                    [itemStyle.purpose_button_selected]:
-                      memoPurpose === "question",
-                    [itemStyle.purpose_button_unselected]:
-                      memoPurpose !== "question",
-                  })}
-                  onClick={() => {
-                    onPurposeClick("question");
-                  }}
-                >
-                  질문
-                </div>
+                <PurposeArea
+                  onPurposeClick={onPurposeClick}
+                  memoPurpose={memoPurpose}
+                ></PurposeArea>
               </div>
               <div className={itemStyle.writer_area} ref={writerAreaEl}>
-                <div className={itemStyle.writer_text}>작성자</div>
-                <div className={itemStyle.writer_name}>송병근</div>
+                <WriterArea></WriterArea>
                 <div
                   className={itemStyle.anchor_zone}
                   ref={anchorZoneEl}
@@ -397,7 +236,7 @@ export default function MemoItem(props: any) {
                   onDragEnd={onAnchorZoneDragEnd}
                 ></div>
               </div>
-              <div className={itemStyle.middle_bar}></div>
+              <div className={itemStyle.middle_bar} />
               <div
                 className={itemStyle.text_area_container}
                 onKeyDown={(event) => {
@@ -424,27 +263,7 @@ export default function MemoItem(props: any) {
                   }}
                 ></div>
               </div>
-              {isFocus && (
-                <div
-                  className={itemStyle.memo_comment_container}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    commentTextAreaEl.current.focus();
-                  }}
-                >
-                  <div className={itemStyle.memo_comment}></div>
-                  <div className={itemStyle.memo_comment_text_area}>
-                    <TextArea
-                      inline
-                      width="100%"
-                      height="50px"
-                      maxHeight="50px"
-                      ref={commentTextAreaEl}
-                    />
-                  </div>
-                </div>
-              )}
+              {isFocus && <CommentArea></CommentArea>}
             </div>
           </Draggable>
         </div>

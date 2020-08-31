@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import sideStyle from "./sidebar.module.scss";
-import MemoItem from "../MemoItem";
 import classNames from "classnames";
-import { TextArea } from "../TextArea";
+import { TextArea } from "../MemoItem/TextArea";
+import PurposeArea from "../MemoItem/Purpose/PurposeArea";
 
 export default function SideMenuBar(props: any) {
   const [memoState, setMemoState] = useState();
@@ -40,46 +40,10 @@ export default function SideMenuBar(props: any) {
           ></div>
         </div>
         <div className={sideStyle.purpose_area}>
-          <div
-            className={classNames({
-              [sideStyle.purpose_left]: true,
-              [sideStyle.purpose_button_basic]: true,
-              [sideStyle.purpose_button_selected]: memoPurpose === "suggestion",
-              [sideStyle.purpose_button_unselected]:
-                memoPurpose !== "suggestion",
-            })}
-            onClick={() => {
-              onPurposeClick("suggestion");
-            }}
-          >
-            제안
-          </div>
-          <div
-            className={classNames({
-              [sideStyle.purpose_center]: true,
-              [sideStyle.purpose_button_basic]: true,
-              [sideStyle.purpose_button_selected]: memoPurpose === "request",
-              [sideStyle.purpose_button_unselected]: memoPurpose !== "request",
-            })}
-            onClick={() => {
-              onPurposeClick("request");
-            }}
-          >
-            요청
-          </div>
-          <div
-            className={classNames({
-              [sideStyle.purpose_right]: true,
-              [sideStyle.purpose_button_basic]: true,
-              [sideStyle.purpose_button_selected]: memoPurpose === "question",
-              [sideStyle.purpose_button_unselected]: memoPurpose !== "question",
-            })}
-            onClick={() => {
-              onPurposeClick("question");
-            }}
-          >
-            질문
-          </div>
+          <PurposeArea
+            onPurposeClick={onPurposeClick}
+            memoPurpose={memoPurpose}
+          ></PurposeArea>
         </div>
         <div className={sideStyle.writer_area}>
           <div className={sideStyle.writer_text}>작성자</div>

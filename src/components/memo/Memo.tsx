@@ -143,16 +143,7 @@ export default function Memo(props: any) {
 
   const deleteMemo = useCallback(
     (targetID: number) => {
-      const newList = memoItems.filter((item) => {
-        console.log(" 타게게셋    " + targetID);
-        console.log(" 대상    " + item.itemID);
-        if (item.itemID === targetID) {
-          console.log(" 흠ㅇ.....    ");
-        }
-
-        return item.itemID !== targetID;
-      });
-
+      const newList = memoItems.filter((item) => item.itemID !== targetID);
       setMemoItems(newList);
     },
     [memoItems]

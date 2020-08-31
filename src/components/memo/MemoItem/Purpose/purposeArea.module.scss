@@ -1,0 +1,36 @@
+.purpose_button_selected {
+  color: white;
+  border-color: transparent;
+  background-color: green;
+}
+
+.purpose_button_unselected {
+  opacity: 0.8;
+  color: gray;
+  border-color: gray;
+  border-width: 1px;
+  background-color: transparent;
+}
+
+.purpose_button_basic {
+  width: 30%;
+  height: 30px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.purpose_left {
+  position: absolute;
+  left: 0;
+}
+
+.purpose_center {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.purpose_right {
+  position: absolute;
+  right: 0;
+}

@@ -90,6 +90,18 @@
   height: 50px;
   background-color: peru;
 
+  .writer_text {
+    position: absolute;
+    color: green;
+    left: 0;
+  }
+
+  .writer_name {
+    position: absolute;
+    color: black;
+    left: 50px;
+  }
+
   .anchor_zone {
     position: absolute;
     right: 0px;
