@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import Line from "./AnchorLine/Line";
 import itemStyle from "./memoItem.module.scss";
 import { TextArea } from "./TextArea";
@@ -45,6 +51,11 @@ export default function MemoItem(props: any) {
     right: 2000,
     bottom: 2000,
   });
+  const [anchorLineStart, setAnchorLineStart] = useState({
+    //pan board 너비 높이 - 메모 아이템 너비 높이
+    x: 0,
+    y: 0,
+  });
 
   const [memoPurpose, setMemoPurpose] = useState("suggestion");
   //제안 요청 질문 suggestion, request, question
@@ -54,9 +65,9 @@ export default function MemoItem(props: any) {
     setMemoPurpose(purpose);
   };
   const [isVisible, setIsVisible] = useState(false);
-  const contentContainerEl = useRef(null);
-  const anchorZoneEl = useRef(null);
-  const writerAreaEl = useRef(null);
+  const contentContainerEl = useRef<HTMLDivElement>(null);
+  const anchorZoneEl = useRef<HTMLDivElement>(null);
+  const writerAreaEl = useRef<HTMLDivElement>(null);
   const contentTextAreaEl = useRef(null);
   const commentTextAreaEl = useRef(null);
 
@@ -108,22 +119,6 @@ export default function MemoItem(props: any) {
     (event: React.DragEvent<HTMLDivElement>) => {},
     []
   );
-  const anchorLineStart = useCallback(() => {
-    const startAnchorX =
-      memoPosition.x +
-      anchorZoneEl.current.offsetLeft +
-      writerAreaEl.current.offsetLeft +
-      15; //anchor zone 중앙 위치
-    const startAnchorY =
-      memoPosition.y +
-      anchorZoneEl.current.offsetTop +
-      writerAreaEl.current.offsetTop +
-      15; //anchor zone 중앙 위치
-    return {
-      x: startAnchorX,
-      y: startAnchorY,
-    };
-  }, [memoPosition]);
 
   const anchorDoubleClick = (event) => {
     console.log("double click!!");
@@ -164,6 +159,31 @@ export default function MemoItem(props: any) {
     setIsFocus(props.isFocus);
   }, [props.isFocus]);
 
+  useLayoutEffect(() => {
+    function updateSize() {
+      if (anchorZoneEl.current) {
+        if (writerAreaEl.current) {
+          setAnchorLineStart({
+            x:
+              memoPosition.x +
+              anchorZoneEl.current.offsetLeft +
+              writerAreaEl.current.offsetLeft +
+              15,
+            y:
+              memoPosition.y +
+              anchorZoneEl.current.offsetTop +
+              writerAreaEl.current.offsetTop +
+              15,
+          });
+        }
+      }
+    }
+
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, [writerAreaEl, anchorZoneEl, memoPosition]);
+
   return (
     <div>
       {isVisible && (
@@ -191,19 +211,6 @@ export default function MemoItem(props: any) {
               //pan board 너비 높이 - 메모 아이템 너비 높이
               scale={props.scale}
             >
-              {/* {boxAnchor.exist && (
-                  <div
-                    className={itemStyle.anchor}
-                    onMouseDown={props.focusHandler(itemID)}
-                  ></div>
-                )} */}
-              {/* {boxAnchor.exist || (
-                  <div
-                    className={itemStyle.anchor}
-                    onDoubleClick={anchorDoubleClick}
-                  ></div>
-                )} */}
-
               <div
                 className={itemStyle.anchor}
                 onDoubleClick={anchorDoubleClick}
@@ -289,7 +296,7 @@ export default function MemoItem(props: any) {
             </div>
           )}
 
-          {anchor.exist && <Line from={anchorLineStart()} to={anchor} />}
+          {anchor.exist && <Line from={anchorLineStart} to={anchor} />}
 
           <Draggable
             disabled={false}

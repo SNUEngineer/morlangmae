@@ -7,7 +7,7 @@ import { PanZoom } from "react-easy-panzoom";
 import SplitPane from "react-split-pane/lib/SplitPane";
 // @ts-ignore
 import Pane from "react-split-pane/lib/Pane";
-import MemoItem from "./MemoItem";
+import MemoItem from "./MemoItem/MemoItem";
 import PDFPages from "./PDFList/PDFPages";
 import PDFThumbBar from "./PDFList/PDFThumbBar";
 import SideMenuBar from "./SideMenu/SideMenuBar";
@@ -15,14 +15,6 @@ import SideMenuBar from "./SideMenu/SideMenuBar";
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pagePosition, setPagePosition] = useState({
-    x: 0,
-    y: 0,
-  });
-  const [dragLastPosition, setDragLastPosition] = useState({
-    x: 0,
-    y: 0,
-  });
   const [pageSize, setPageSize] = useState({
     w: 1000,
     h: 500,
@@ -35,16 +27,9 @@ export default function Memo(props: any) {
     w: 2000,
     h: 2000,
   });
-  const [viewportSize, setViewportSize] = useState({
-    w: 500,
-    h: 500,
-  });
   const [keyOn, setKeyOn] = useState({
     control: false,
     space: false,
-  });
-  const [zoomRatio, setZoomRatio] = useState({
-    zoom: 1,
   });
   const [documentPosition, setDocumentPosition] = useState({
     x: 0,
@@ -74,27 +59,12 @@ export default function Memo(props: any) {
     },
   ];
   const [memoItems, setMemoItems] = useState(initMemoItems);
-  const viewPortEl = useRef(null);
-  const boardEl = useRef(null);
-  const draggableContainerEl = useRef(null);
-  const documentEl = useRef(null);
-  const panzoomBoxEl = useRef(null);
-  const panzoomBoxContainerEl = useRef(null);
+  const boardEl = useRef<HTMLDivElement>(null);
+  const documentEl = useRef<HTMLDivElement>(null);
+  const panzoomBoxContainerEl = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     function updateSize() {
-      if (viewPortEl.current) {
-        const height = viewPortEl.current.offsetHeight;
-        const width = viewPortEl.current.offsetWidth;
-
-        setViewportSize({ w: width, h: height });
-      }
-      if (panzoomBoxEl.current) {
-        const height = window.innerHeight - 50; //height는 100vh로 설정됨 - menu bar 높이 50
-        const width = panzoomBoxEl.current.offsetWidth;
-        console.log("panzoombox width " + width);
-        setPanzoomBoxSize({ w: width, h: height });
-      }
       if (panzoomBoxContainerEl.current) {
         const height = window.innerHeight - 50;
         const width = panzoomBoxContainerEl.current.offsetWidth;
@@ -107,8 +77,6 @@ export default function Memo(props: any) {
         const width = boardEl.current.offsetWidth;
         setBoardSize({ w: width, h: height });
       }
-      if (draggableContainerEl.current) {
-      }
       if (documentEl.current) {
         const height = documentEl.current.offsetHeight;
         setPageSize((prevState) => ({ ...prevState, h: height }));
@@ -118,29 +86,11 @@ export default function Memo(props: any) {
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
-  }, [boardEl, documentEl, draggableContainerEl, panzoomBoxEl, sideMenuOpen]);
+  }, [boardEl, documentEl, sideMenuOpen]);
 
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
   }
-
-  const properPosition = useCallback(
-    (position) => {
-      let properX = position.x >= 0 ? position.x : 0;
-      properX =
-        properX <= boardSize.w - pageSize.w
-          ? properX
-          : boardSize.w - pageSize.w;
-
-      let properY = position.y >= 0 ? position.y : 0;
-      properY =
-        properY <= boardSize.h - pageSize.h
-          ? properY
-          : boardSize.h - pageSize.h;
-      return { x: properX / zoomRatio.zoom, y: properY / zoomRatio.zoom };
-    },
-    [boardSize, pageSize, zoomRatio]
-  );
 
   const setPanzoomBoundary = useCallback(() => {
     const scaledBoard = {
@@ -160,15 +110,6 @@ export default function Memo(props: any) {
     return { hRatio: hRatio, vRatio: vRatio };
   }, [panzoomBoxSize, panBoardSize, documentPosition]);
 
-  const setBoardStyle = useCallback(() => {
-    const placedDiv = {
-      left: Math.abs(boardSize.w - viewportSize.w) / -2,
-      top: Math.abs(boardSize.h - viewportSize.h) / -2,
-      zoom: zoomRatio.zoom,
-    };
-    return placedDiv;
-  }, [boardSize, viewportSize, zoomRatio]);
-
   const setDocumentStyle = useCallback(() => {
     const placedDiv = {
       marginLeft: Math.abs(panBoardSize.w - pageSize.w) / 2,
@@ -176,24 +117,6 @@ export default function Memo(props: any) {
     };
     return placedDiv;
   }, [panBoardSize, pageSize]);
-
-  const onDragHandler = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
-      if (!keyOn.space) return;
-
-      const endX = pagePosition.x + event.pageX - dragLastPosition.x;
-      const endY = pagePosition.y + event.pageY - dragLastPosition.y;
-
-      const position = properPosition({ x: endX, y: endY });
-
-      setPagePosition(position);
-      setDragLastPosition({
-        x: event.pageX,
-        y: event.pageY,
-      });
-    },
-    [pagePosition, dragLastPosition, properPosition, keyOn]
-  );
 
   function onStateChange(state) {
     setDocumentPosition({
@@ -217,15 +140,6 @@ export default function Memo(props: any) {
       setMemoItems(addedArray);
     }
   };
-
-  function onStartDragHandler(event: React.DragEvent<HTMLDivElement>) {
-    const startX = event.pageX;
-    const startY = event.pageY;
-    setDragLastPosition({
-      x: startX,
-      y: startY,
-    });
-  }
 
   const deleteMemo = useCallback(
     (targetID: number) => {
@@ -309,7 +223,6 @@ export default function Memo(props: any) {
                 autoCenter={true}
                 maxZoom={3}
                 minZoom={0.3}
-                ref={panzoomBoxEl}
               >
                 <div className={memoStyle.pan_board}>
                   <div
@@ -395,89 +308,6 @@ export default function Memo(props: any) {
             </Pane>
           )}
         </SplitPane>
-      </div>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
-      <div>
-        <button
-          onClick={() => {
-            if (pageNumber <= 1) {
-              setPageNumber(1);
-            } else {
-              setPageNumber(pageNumber - 1);
-            }
-          }}
-        >
-          이전
-        </button>
-        <button
-          onClick={() => {
-            if (pageNumber >= numPages) {
-              setPageNumber(numPages);
-            } else {
-              setPageNumber(pageNumber + 1);
-            }
-          }}
-        >
-          이후
-        </button>
-        <button
-          onClick={() => {
-            setZoomRatio({
-              zoom: zoomRatio.zoom + 0.1,
-            });
-          }}
-        >
-          확대
-        </button>
-        <button
-          onClick={() => {
-            setZoomRatio({
-              zoom: zoomRatio.zoom - 0.1,
-            });
-          }}
-        >
-          축소
-        </button>
-        <div className={memoStyle.viewport} ref={viewPortEl}>
-          <div
-            style={setBoardStyle()}
-            tabIndex={0} // key event fire 하기 위한 속성
-            className={memoStyle.board}
-            draggable={true}
-            onDrag={(event) => {
-              onDragHandler(event);
-              event.stopPropagation();
-            }}
-            onDragStart={(event) => {
-              onStartDragHandler(event);
-              event.dataTransfer.setDragImage(new Image(), 0, 0);
-            }}
-            onDragOver={(event) => {
-              event.preventDefault();
-            }}
-            ref={boardEl}
-          >
-            <Draggable
-              disabled={true}
-              defaultPosition={pagePosition}
-              position={pagePosition}
-              bounds="parent"
-              ref={draggableContainerEl}
-            >
-              <div>
-                <Document
-                  file={props.fileUrl}
-                  onLoadSuccess={onDocumentLoadSuccess}
-                  className={memoStyle.document}
-                >
-                  <Page pageNumber={pageNumber} width={pageSize.w} />
-                </Document>
-              </div>
-            </Draggable>
-          </div>
-        </div>
       </div>
     </div>
   );
