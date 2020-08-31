@@ -1,12 +1,5 @@
-import React, {
-  useCallback,
-  useState,
-  useRef,
-  useEffect,
-  useLayoutEffect,
-  memo,
-} from "react";
-import { Document, Outline, Page } from "react-pdf";
+import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
+import { Document, Page } from "react-pdf";
 import Draggable from "react-draggable";
 import memoStyle from "./memo.module.scss";
 import { PanZoom } from "react-easy-panzoom";
@@ -17,8 +10,7 @@ import Pane from "react-split-pane/lib/Pane";
 import MemoItem from "./MemoItem";
 import PDFPages from "./PDFList/PDFPages";
 import PDFThumbBar from "./PDFList/PDFThumbBar";
-import { TextArea } from "./TextArea";
-import MemoSideMenu from "./SideMenu/MemoSideMenu";
+import SideMenuBar from "./SideMenu/SideMenuBar";
 
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
@@ -39,7 +31,7 @@ export default function Memo(props: any) {
     w: 500,
     h: 500,
   });
-  const [panBoardSize, setPanBoardSize] = useState({
+  const [panBoardSize] = useState({
     w: 2000,
     h: 2000,
   });
@@ -67,9 +59,10 @@ export default function Memo(props: any) {
   const [currentFocusItem, setCurrentFocusItem] = useState({
     itemID: 0,
   });
+  const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
   const [pdfList, setPdfList] = useState({});
-  const [listProgress, setListProgress] = useState(0);
+  const [, setListProgress] = useState(0);
 
   const initMemoItems = [
     {
@@ -86,6 +79,7 @@ export default function Memo(props: any) {
   const draggableContainerEl = useRef(null);
   const documentEl = useRef(null);
   const panzoomBoxEl = useRef(null);
+  const panzoomBoxContainerEl = useRef(null);
 
   useLayoutEffect(() => {
     function updateSize() {
@@ -96,9 +90,15 @@ export default function Memo(props: any) {
         setViewportSize({ w: width, h: height });
       }
       if (panzoomBoxEl.current) {
-        const height = window.innerHeight; //height는 100vh로 설정됨
-        const width = viewPortEl.current.offsetWidth;
-
+        const height = window.innerHeight - 50; //height는 100vh로 설정됨 - menu bar 높이 50
+        const width = panzoomBoxEl.current.offsetWidth;
+        console.log("panzoombox width " + width);
+        setPanzoomBoxSize({ w: width, h: height });
+      }
+      if (panzoomBoxContainerEl.current) {
+        const height = window.innerHeight - 50;
+        const width = panzoomBoxContainerEl.current.offsetWidth;
+        console.log("panzoombox container width " + width);
         setPanzoomBoxSize({ w: width, h: height });
       }
 
@@ -118,7 +118,7 @@ export default function Memo(props: any) {
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
-  }, [boardEl, documentEl, draggableContainerEl, panzoomBoxEl]);
+  }, [boardEl, documentEl, draggableContainerEl, panzoomBoxEl, sideMenuOpen]);
 
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
@@ -147,15 +147,6 @@ export default function Memo(props: any) {
       w: (panBoardSize.w + 1000) * documentPosition.scale, // 약간씩의 여백 (board 바깥부분).
       h: (panBoardSize.h + 1000) * documentPosition.scale, // 약간씩 여백 (board 바깥부분).
     };
-
-    // const hRatio =
-    //   panBoardSize.w * documentPosition.scale - panzoomBoxSize.w > 0
-    //     ? (scaledBoard.w - panzoomBoxSize.w) / scaledBoard.w
-    //     : (scaledBoard.w - panzoomBoxSize.w) / (scaledBoard.w * 8);
-    // const vRatio =
-    //   panBoardSize.h * documentPosition.scale - panzoomBoxSize.h > 0
-    //     ? (scaledBoard.h - panzoomBoxSize.h) / scaledBoard.h
-    //     : (scaledBoard.h - panzoomBoxSize.h) / (scaledBoard.h * 8);
 
     const hRatio =
       panBoardSize.w * documentPosition.scale - panzoomBoxSize.w > 0
@@ -236,33 +227,6 @@ export default function Memo(props: any) {
     });
   }
 
-  const onKeyDownHandler = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.keyCode === 32) {
-        //spcae bar
-        event.preventDefault();
-        setKeyOn((prevState) => ({ ...prevState, space: true }));
-      } else if (event.keyCode === 17) {
-        //control
-        setKeyOn((prevState) => ({ ...prevState, control: true }));
-      }
-    },
-    []
-  );
-
-  const onKeyUpHandler = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.keyCode === 32) {
-        //spcae bar
-        setKeyOn((prevState) => ({ ...prevState, space: false }));
-      } else if (event.keyCode === 17) {
-        //control
-        setKeyOn((prevState) => ({ ...prevState, control: false }));
-      }
-    },
-    []
-  );
-
   const deleteMemo = useCallback(
     (targetID: number) => {
       const newList = memoItems.filter((item) => {
@@ -297,7 +261,6 @@ export default function Memo(props: any) {
         return false;
       }}
     >
-      <MemoSideMenu></MemoSideMenu>
       <PDFPages
         url={props.fileUrl}
         setPdf={(loadPDF) => {
@@ -312,7 +275,12 @@ export default function Memo(props: any) {
       />
 
       <div className={memoStyle.workspace_container}>
-        <div className={memoStyle.menu_bar}></div>
+        <div className={memoStyle.menu_bar}>
+          {" "}
+          <button onClick={() => setSideMenuOpen(!sideMenuOpen)}>
+            메뉴 열기{" "}
+          </button>
+        </div>
         <SplitPane split="vertical" className={memoStyle.split_pane}>
           <Pane initialSize="200px" minSize="150px" maxSize="500px">
             <div className={memoStyle.split_list_view}>
@@ -327,76 +295,105 @@ export default function Memo(props: any) {
             </div>
           </Pane>
           <Pane>
-            <PanZoom
-              className={memoStyle.panzoom_box}
-              zoomSpeed={5}
-              onStateChange={onStateChange}
-              boundaryRatioVertical={setPanzoomBoundary().vRatio} //
-              boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
-              enableBoundingBox
-              autoCenter={true}
-              maxZoom={3}
-              minZoom={0.3}
-              ref={panzoomBoxEl}
+            <div
+              ref={panzoomBoxContainerEl}
+              className={memoStyle.panzoom_box_container}
             >
-              <div
-                className={memoStyle.pan_board}
-                // onKeyDown={onKeyDownHandler}
-                // onKeyUp={onKeyUpHandler}
+              <PanZoom
+                className={memoStyle.panzoom_box}
+                zoomSpeed={5}
+                onStateChange={onStateChange}
+                boundaryRatioVertical={setPanzoomBoundary().vRatio} //
+                boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
+                enableBoundingBox
+                autoCenter={true}
+                maxZoom={3}
+                minZoom={0.3}
+                ref={panzoomBoxEl}
               >
-                <div
-                  className={memoStyle.memo_board}
-                  onMouseDown={onMouseDown}
-                  onDrop={onDrop}
-                  onDragOver={onDragOver}
-                >
-                  {memoItems.map((item, index) => {
-                    return (
-                      <MemoItem
-                        key={item.itemID}
-                        memoState={item}
-                        className={memoStyle.memo_item}
-                        keyState={keyOn}
-                        scale={documentPosition.scale}
-                        writerID={"송병근"}
-                        currentPageNum={pageNumber}
-                        deleteMemo={deleteMemo}
-                        isFocus={
-                          currentFocusItem.itemID === item.itemID ? true : false
-                        }
-                        focusHandler={(itemID) => {
-                          setCurrentFocusItem({ itemID: itemID });
-                        }}
-                      ></MemoItem>
-                    );
-                  })}
-                </div>
-                <div
-                  ref={documentEl}
-                  style={setDocumentStyle()}
-                  className={memoStyle.testt}
-                >
-                  <Document
-                    file={props.fileUrl}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                    className={memoStyle.document}
+                <div className={memoStyle.pan_board}>
+                  <div
+                    className={memoStyle.memo_board}
+                    onMouseDown={onMouseDown}
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
                   >
-                    <Page
-                      pageNumber={pageNumber}
-                      width={pageSize.w}
-                      className={memoStyle.page}
-                      onLoadSuccess={(page) => {
-                        setPageSize((prevState) => ({
-                          w: page.width,
-                          h: page.height,
-                        }));
-                      }}
-                    />
-                  </Document>
+                    {memoItems.map((item) => {
+                      return (
+                        <MemoItem
+                          key={item.itemID}
+                          memoState={item}
+                          className={memoStyle.memo_item}
+                          keyState={keyOn}
+                          scale={documentPosition.scale}
+                          writerID={"송병근"}
+                          currentPageNum={pageNumber}
+                          deleteMemo={deleteMemo}
+                          isFocus={
+                            currentFocusItem.itemID === item.itemID
+                              ? true
+                              : false
+                          }
+                          focusHandler={(itemID) => {
+                            setCurrentFocusItem({ itemID: itemID });
+                          }}
+                        ></MemoItem>
+                      );
+                    })}
+                  </div>
+                  <div
+                    ref={documentEl}
+                    style={setDocumentStyle()}
+                    className={memoStyle.testt}
+                  >
+                    <Document
+                      file={props.fileUrl}
+                      onLoadSuccess={onDocumentLoadSuccess}
+                      className={memoStyle.document}
+                    >
+                      <Page
+                        pageNumber={pageNumber}
+                        width={pageSize.w}
+                        className={memoStyle.page}
+                        onLoadSuccess={(page) => {
+                          setPageSize(() => ({
+                            w: page.width,
+                            h: page.height,
+                          }));
+                        }}
+                      />
+                    </Document>
+                  </div>
                 </div>
-              </div>
-            </PanZoom>
+              </PanZoom>
+            </div>
           </Pane>
+          {sideMenuOpen && (
+            <Pane initialSize="300px" minSize="300px" maxSize="300px">
+              {memoItems.map((item) => {
+                if (item.itemID !== currentFocusItem.itemID) {
+                  return <div></div>;
+                }
+                return (
+                  <SideMenuBar
+                    memoState={item}
+                    className={memoStyle.memo_item}
+                    keyState={keyOn}
+                    scale={documentPosition.scale}
+                    writerID={"송병근"}
+                    currentPageNum={pageNumber}
+                    deleteMemo={deleteMemo}
+                    isFocus={
+                      currentFocusItem.itemID === item.itemID ? true : false
+                    }
+                    focusHandler={(itemID) => {
+                      setCurrentFocusItem({ itemID: itemID });
+                    }}
+                  />
+                );
+              })}
+            </Pane>
+          )}
         </SplitPane>
       </div>
       <p>

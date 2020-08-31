@@ -42,8 +42,7 @@
   height: 0px;
 }
 
-.testt {
-}
+.testt {}
 
 .pan_board {
   position: relative;
@@ -56,13 +55,19 @@
   z-index: 1;
 }
 
-.panzoom_box {
-  overflow: hidden;
-  background-color: white;
+.panzoom_box_container {
   width: 100%;
   height: 100%;
-  outline: 0;
+
+  .panzoom_box {
+    overflow: hidden;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    outline: 0;
+  }
 }
+
 
 .container {
   height: 200px;
@@ -84,10 +89,11 @@
 
 .split_list_view {
   width: 100%;
+  height: 100%;
 }
 
 .split_pane {
   flex-grow: 1;
   width: 100%;
-  background-color: red;
+  background-color: white;
 }

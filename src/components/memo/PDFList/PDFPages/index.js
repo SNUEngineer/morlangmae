@@ -1,30 +1,15 @@
 import React from "react";
 import { PDFJS } from "pdfjs-dist";
 import pdfjsLib from "pdfjs-dist";
-// import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import "./index.scss";
-// import { PDFJS } from "pdfjs-dist";
-
-// PDFJS.workerSrc =
-//   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.338/pdf.worker.js";
-// PDFJS.workerSrc =
-//   "@intelllex/react-pdf/node_modules/pdfjs-dist/build/pdf.worker.js";
-// PDFJS.workerSrc = "file://public/pdf.worker.js";
 const SCROLL_TOP_PADDING = 200;
 
-// pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.4.456/pdf.worker.js`;
 
 export class PdfPages extends React.Component {
   componentDidMount() {
     this.stream(this.props);
   }
-
-  // componentWillUnmount() {
-  //   const { pdf } = this.state;
-  //   pdf && pdf.destroy();
-  //   this.documentPromise && this.documentPromise.cancel();
-  // }
 
   stream = (props) => {
     const url = props.url;

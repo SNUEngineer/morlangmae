@@ -96,6 +96,10 @@ export default function MemoItem(props: any) {
         x: newAnchorX,
         y: newAnchorY,
       }));
+      setBoxAnchor((prevState) => ({
+        ...prevState,
+        exist: false,
+      }));
     },
     [bounds, memoPosition]
   );
@@ -187,25 +191,23 @@ export default function MemoItem(props: any) {
               //pan board 너비 높이 - 메모 아이템 너비 높이
               scale={props.scale}
             >
-              <div>
-                {/* {boxAnchor.exist && (
+              {/* {boxAnchor.exist && (
                   <div
                     className={itemStyle.anchor}
                     onMouseDown={props.focusHandler(itemID)}
                   ></div>
                 )} */}
-                {/* {boxAnchor.exist || (
+              {/* {boxAnchor.exist || (
                   <div
                     className={itemStyle.anchor}
                     onDoubleClick={anchorDoubleClick}
                   ></div>
                 )} */}
 
-                <div
-                  className={itemStyle.anchor}
-                  onDoubleClick={anchorDoubleClick}
-                ></div>
-              </div>
+              <div
+                className={itemStyle.anchor}
+                onDoubleClick={anchorDoubleClick}
+              ></div>
             </Draggable>
           )}
           {anchor.exist && boxAnchor.exist && isFocus && (
