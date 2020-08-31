@@ -15,6 +15,15 @@ import Anchor from "./Anchor/Anchor";
 import WriterArea from "./Writer/WriterArea";
 
 export default function MemoItem(props: any) {
+  const {
+    currentPageNum,
+    memoState,
+    isFocus,
+    scale,
+    focusHandler,
+    deleteMemo,
+  } = props;
+
   const memoSize = {
     w: 350,
     h: 400,
@@ -61,7 +70,6 @@ export default function MemoItem(props: any) {
   const [memoPurpose, setMemoPurpose] = useState("suggestion");
   //제안 요청 질문 suggestion, request, question
   const [textContent, setTextContent] = useState("");
-  const [isFocus, setIsFocus] = useState(false);
   const onPurposeClick = (purpose: string) => {
     setMemoPurpose(purpose);
   };
@@ -121,17 +129,13 @@ export default function MemoItem(props: any) {
   );
 
   useEffect(() => {
-    setIsVisible(props.currentPageNum === props.memoState.pageNum);
-  }, [props.currentPageNum, props.memoState.pageNum]);
+    setIsVisible(currentPageNum === memoState.pageNum);
+  }, [currentPageNum, memoState.pageNum]);
 
   useEffect(() => {
-    setMemoPosition(props.memoState);
-    setItemID(props.memoState.itemID);
+    setMemoPosition(memoState);
+    setItemID(memoState.itemID);
   }, []);
-
-  useEffect(() => {
-    setIsFocus(props.isFocus);
-  }, [props.isFocus]);
 
   useLayoutEffect(() => {
     function updateSize() {
@@ -171,7 +175,7 @@ export default function MemoItem(props: any) {
           <Anchor
             anchorBound={anchorBound}
             anchor={anchor}
-            scale={props.scale}
+            scale={scale}
             isFocus={isFocus}
             boxAnchor={boxAnchor}
             anchorLineStart={anchorLineStart}
@@ -189,14 +193,14 @@ export default function MemoItem(props: any) {
               e.stopPropagation();
               setMemoPosition(coreData);
             }}
-            scale={props.scale}
+            scale={scale}
           >
             <div
               className={itemStyle.container}
               ref={contentContainerEl}
               onClick={() => {
                 contentTextAreaEl.current.focus();
-                props.focusHandler(itemID);
+                focusHandler(itemID);
               }}
               onDragStartCapture={(event) => {
                 event.stopPropagation();
@@ -207,7 +211,7 @@ export default function MemoItem(props: any) {
                 <div
                   className={itemStyle.delete_button}
                   onClick={() => {
-                    props.deleteMemo(itemID);
+                    deleteMemo(itemID);
                   }}
                   onMouseDown={(event) => {
                     event.preventDefault();
