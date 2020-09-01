@@ -51,7 +51,7 @@ export default function Memo(props: any) {
   const [pdfList, setPdfList] = useState({});
   const [listProgress, setListProgress] = useState(0);
 
-  const initMemoItems = [
+  const initMemo = [
     {
       itemID: 0,
       pageNum: 1,
@@ -62,15 +62,22 @@ export default function Memo(props: any) {
     },
   ];
 
-  const initMemoItmesOfWriter = {
+  const initMemoItems = {
     writer: { writerID: 0, writerName: "송병근" },
-    memoState: initMemoItems,
+    memoState: {
+      itemID: 0,
+      pageNum: 1,
+      content: "테스트",
+      x: 0,
+      y: 0,
+      purpose: "request",
+    },
   };
   const initWriter = {
     writerID: 0,
   };
 
-  const [memoItems, setMemoItems] = useState(initMemoItems);
+  const [memoItems, setMemoItems] = useState([initMemoItems]);
   const [currentCheckWriters, setCurrentCheckWriters] = useState([0]);
   const boardEl = useRef<HTMLDivElement>(null);
   const documentEl = useRef<HTMLDivElement>(null);
@@ -140,13 +147,17 @@ export default function Memo(props: any) {
   const onMouseDown = (event) => {
     if (event.nativeEvent.which === 3) {
       event.preventDefault();
+
       const newMemoItem = {
-        itemID: Date.now(),
-        pageNum: pageNumber,
-        content: "테스트",
-        x: event.nativeEvent.offsetX,
-        y: event.nativeEvent.offsetY,
-        purpose: "request",
+        writer: { writerID: 0, writerName: "송병근" },
+        memoState: {
+          itemID: 0,
+          pageNum: 1,
+          content: "테스트",
+          x: 0,
+          y: 0,
+          purpose: "request",
+        },
       };
 
       const addedArray = memoItems.concat(newMemoItem);
@@ -156,7 +167,9 @@ export default function Memo(props: any) {
 
   const deleteMemo = useCallback(
     (targetID: number) => {
-      const newList = memoItems.filter((item) => item.itemID !== targetID);
+      const newList = memoItems.filter(
+        (item) => item.memoState.itemID !== targetID
+      );
       setMemoItems(newList);
     },
     [memoItems]
@@ -165,8 +178,8 @@ export default function Memo(props: any) {
   const updateTextContent = useCallback(
     (targetID: number, content) => {
       const newList = memoItems.filter((item) => {
-        if (item.itemID === targetID) {
-          item.content = content;
+        if (item.memoState.itemID === targetID) {
+          item.memoState.content = content;
         }
         return true;
       });
@@ -179,8 +192,8 @@ export default function Memo(props: any) {
   const onPurposeClick = useCallback(
     (targetID: number, purpose) => {
       const newList = memoItems.filter((item) => {
-        if (item.itemID === targetID) {
-          item.purpose = purpose;
+        if (item.memoState.itemID === targetID) {
+          item.memoState.purpose = purpose;
         }
         return true;
       });
@@ -195,19 +208,19 @@ export default function Memo(props: any) {
       console.log("focus other item ");
 
       const newList = memoItems
-        .sort((a, b) => a.itemID - b.itemID) //생성된 시간(item 아이디로 오름차순)
+        .sort((a, b) => a.memoState.itemID - b.memoState.itemID) //생성된 시간(item 아이디로 오름차순)
         .filter((item) => {
           console.log("focus other item afsdfasd");
-          if (item.pageNum === memoState.pageNum) {
+          if (item.memoState.pageNum === memoState.pageNum) {
             console.log("focus other item 2222");
             //페이지 같고
             if (next) {
-              if (memoState.itemID < item.itemID) {
+              if (memoState.itemID < item.memoState.itemID) {
                 console.log("focus other item 3333");
                 return true;
               }
             } else {
-              if (memoState.itemID > item.itemID) {
+              if (memoState.itemID > item.memoState.itemID) {
                 console.log("focus other item 4444");
                 return true;
               }
@@ -219,7 +232,9 @@ export default function Memo(props: any) {
         return;
       }
       setCurrentFocusItem({
-        itemID: next ? newList[0].itemID : newList[newList.length - 1].itemID,
+        itemID: next
+          ? newList[0].memoState.itemID
+          : newList[newList.length - 1].memoState.itemID,
       });
     },
     [memoItems]
@@ -233,7 +248,7 @@ export default function Memo(props: any) {
   const currentMenuMemo = useCallback(() => {
     console.log("currentFocusItem.itemID    " + currentFocusItem.itemID);
     const newList = memoItems.filter(
-      (item) => item.itemID === currentFocusItem.itemID
+      (item) => item.memoState.itemID === currentFocusItem.itemID
     );
     return newList[0];
   }, [memoItems, currentFocusItem]);
@@ -314,8 +329,8 @@ export default function Memo(props: any) {
                     {memoItems.map((item) => {
                       return (
                         <MemoItem
-                          key={item.itemID}
-                          memoState={item}
+                          key={item.memoState.itemID}
+                          memoState={item.memoState}
                           className={memoStyle.memo_item}
                           keyState={keyOn}
                           scale={documentPosition.scale}
@@ -323,7 +338,7 @@ export default function Memo(props: any) {
                           currentPageNum={pageNumber}
                           deleteMemo={deleteMemo}
                           isFocus={
-                            currentFocusItem.itemID === item.itemID
+                            currentFocusItem.itemID === item.memoState.itemID
                               ? true
                               : false
                           }
