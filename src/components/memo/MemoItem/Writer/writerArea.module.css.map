@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,YAAY,CAAC;EACT,QAAQ,EAAE,QAAQ;EAClB,KAAK,EAAE,KAAK;EACZ,IAAI,EAAE,CAAC;CACV;;AAED,AAAA,YAAY,CAAC;EACT,QAAQ,EAAE,QAAQ;EAClB,KAAK,EAAE,KAAK;EACZ,IAAI,EAAE,IAAI;CACb",
+    "sources": [
+        "writerArea.module.scss"
+    ],
+    "names": [],
+    "file": "writerArea.module.css"
+}

@@ -1,11 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import sideStyle from "./sidebar.module.scss";
-import classNames from "classnames";
-import { TextArea } from "../MemoItem/TextArea";
-import PurposeArea from "../MemoItem/Purpose/PurposeArea";
 import MemoItem from "../MemoItem/MemoItem";
-import { FocusOn, InFocusGuard } from "react-focus-on";
-import Dropdown from "rc-dropdown";
 
 export default function SideMenuBar(props: any) {
   const {
@@ -15,17 +10,29 @@ export default function SideMenuBar(props: any) {
     updateTextContent,
     setCurrentFocusItem,
     focusOtherItem,
-    writers,
     checkWriters,
+    onPurposeClick,
+    memoItems,
   } = props;
+
+  const [openDropDownMenu, setOpenDropDownMenu] = useState(0);
+  const [writers, setWriters] = useState([null]);
+
+  const openWriterEl = useRef(null);
+  const openPurposeEl = useRef(null);
+
+  useEffect(() => {
+    let writerArray = new Array();
+
+    memoItems.forEach((element) => {
+      writerArray.push(element.writer);
+    });
+    setWriters(Array.from(new Set(writerArray))); //set으로 중복 제거
+  }, [memoItems]);
 
   useEffect(() => {
     console.log("memoState " + JSON.stringify(memoState));
   }, [props]);
-
-  const [openDropDownMenu, setOpenDropDownMenu] = useState(0);
-  const openWriterEl = useRef(null);
-  const openPurposeEl = useRef(null);
 
   const close = () => setOpenDropDownMenu(0);
 
@@ -49,7 +56,7 @@ export default function SideMenuBar(props: any) {
                 <div
                   key={item.writerID}
                   className={sideStyle.writer_item}
-                  onClick={checkWriters}
+                  onClick={checkWriters(item.writerID)}
                 >
                   <div className={sideStyle.writer_checkbox}></div>
                   <div className={sideStyle.writer_name}>{item.writerName}</div>
@@ -123,6 +130,7 @@ export default function SideMenuBar(props: any) {
         }}
         focusOtherItem={focusOtherItem}
         isMenuItem={true}
+        onPurposeClick={onPurposeClick}
       ></MemoItem>
     </div>
   );

@@ -45,6 +45,7 @@ export default function Memo(props: any) {
   const [currentFocusItem, setCurrentFocusItem] = useState({
     itemID: 0,
   });
+
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
   const [pdfList, setPdfList] = useState({});
@@ -57,15 +58,20 @@ export default function Memo(props: any) {
       content: "테스트",
       x: 0,
       y: 0,
+      purpose: "request",
     },
   ];
 
   const initMemoItmesOfWriter = {
-    writerID: { writerID: 0, writerName: "송병근" },
+    writer: { writerID: 0, writerName: "송병근" },
     memoState: initMemoItems,
+  };
+  const initWriter = {
+    writerID: 0,
   };
 
   const [memoItems, setMemoItems] = useState(initMemoItems);
+  const [currentCheckWriters, setCurrentCheckWriters] = useState([0]);
   const boardEl = useRef<HTMLDivElement>(null);
   const documentEl = useRef<HTMLDivElement>(null);
   const panzoomBoxContainerEl = useRef<HTMLDivElement>(null);
@@ -75,7 +81,6 @@ export default function Memo(props: any) {
       if (panzoomBoxContainerEl.current) {
         const height = window.innerHeight - 50;
         const width = panzoomBoxContainerEl.current.offsetWidth;
-        console.log("panzoombox container width " + width);
         setPanzoomBoxSize({ w: width, h: height });
       }
 
@@ -141,6 +146,7 @@ export default function Memo(props: any) {
         content: "테스트",
         x: event.nativeEvent.offsetX,
         y: event.nativeEvent.offsetY,
+        purpose: "request",
       };
 
       const addedArray = memoItems.concat(newMemoItem);
@@ -169,6 +175,21 @@ export default function Memo(props: any) {
     },
     [memoItems]
   );
+
+  const onPurposeClick = useCallback(
+    (targetID: number, purpose) => {
+      const newList = memoItems.filter((item) => {
+        if (item.itemID === targetID) {
+          item.purpose = purpose;
+        }
+        return true;
+      });
+
+      setMemoItems(newList);
+    },
+    [memoItems]
+  );
+
   const focusOtherItem = useCallback(
     (next, memoState) => {
       console.log("focus other item ");
@@ -203,6 +224,11 @@ export default function Memo(props: any) {
     },
     [memoItems]
   );
+
+  const checkWriters = useCallback((writerID) => {
+    const addedArray = currentCheckWriters.concat(writerID);
+    setCurrentCheckWriters(addedArray);
+  }, []);
 
   const currentMenuMemo = useCallback(() => {
     console.log("currentFocusItem.itemID    " + currentFocusItem.itemID);
@@ -306,6 +332,7 @@ export default function Memo(props: any) {
                             setCurrentFocusItem({ itemID: itemID });
                           }}
                           isMenuItem={false}
+                          onPurposeClick={onPurposeClick}
                         ></MemoItem>
                       );
                     })}
@@ -352,6 +379,9 @@ export default function Memo(props: any) {
                 pageNumber={pageNumber}
                 isMenuItem={true}
                 focusOtherItem={focusOtherItem}
+                onPurposeClick={onPurposeClick}
+                memoItems={memoItems}
+                checkWriters={checkWriters}
               />
               );
             </Pane>

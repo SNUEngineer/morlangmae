@@ -26,6 +26,7 @@ export default function MemoItem(props: any) {
     updateTextContent,
     isMenuItem,
     focusOtherItem,
+    onPurposeClick,
   } = props;
 
   const memoSize = {
@@ -71,12 +72,6 @@ export default function MemoItem(props: any) {
     y: 0,
   });
 
-  const [memoPurpose, setMemoPurpose] = useState("suggestion");
-  //제안 요청 질문 suggestion, request, question
-
-  const onPurposeClick = (purpose: string) => {
-    setMemoPurpose(purpose);
-  };
   const [isVisible, setIsVisible] = useState(false);
   const contentContainerEl = useRef<HTMLDivElement>(null);
   const anchorZoneEl = useRef<HTMLDivElement>(null);
@@ -235,7 +230,8 @@ export default function MemoItem(props: any) {
               <div className={itemStyle.purpose_area}>
                 <PurposeArea
                   onPurposeClick={onPurposeClick}
-                  memoPurpose={memoPurpose}
+                  memoPurpose={memoState.purpose}
+                  itemID={memoState.itemID}
                 ></PurposeArea>
               </div>
               <div className={itemStyle.writer_area} ref={writerAreaEl}>

@@ -20,7 +20,7 @@ export default function PurposeArea(props: any) {
             memoPurpose !== "suggestion",
         })}
         onClick={() => {
-          props.onPurposeClick("suggestion");
+          props.onPurposeClick(props.itemID, "suggestion");
         }}
       >
         제안
@@ -33,7 +33,7 @@ export default function PurposeArea(props: any) {
           [purposeStyle.purpose_button_unselected]: memoPurpose !== "request",
         })}
         onClick={() => {
-          props.onPurposeClick("request");
+          props.onPurposeClick(props.itemID, "request");
         }}
       >
         요청
@@ -46,7 +46,7 @@ export default function PurposeArea(props: any) {
           [purposeStyle.purpose_button_unselected]: memoPurpose !== "question",
         })}
         onClick={() => {
-          props.onPurposeClick("question");
+          props.onPurposeClick(props.itemID, "question");
         }}
       >
         질문

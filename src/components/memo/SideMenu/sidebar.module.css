@@ -1,0 +1,56 @@
+.item_container {
+  width: 100%;
+  height: 100%;
+  background-color: red;
+}
+
+.dropdown {
+  position: relative;
+  height: 50px;
+}
+
+.dropdown_button {
+  position: absolute;
+  width: 100px;
+  height: 20px;
+  left: 0;
+  top: 0;
+  background-color: darkcyan;
+}
+
+.dropdown_menu {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 30px;
+  left: 0;
+  background-color: hotpink;
+  z-index: 999;
+}
+
+.writer_item {
+  position: relative;
+  height: 30px;
+  padding: 4px;
+}
+
+.writer_item .writer_checkbox {
+  position: absolute;
+  left: 0px;
+  width: 10px;
+  height: 10px;
+  background-color: indianred;
+}
+
+.writer_item .writer_name {
+  position: absolute;
+  left: 25px;
+  height: 15px;
+}
+
+.writer_item .writer_count {
+  position: absolute;
+  right: 0px;
+  height: 15px;
+}
+/*# sourceMappingURL=sidebar.module.css.map */
