@@ -11,6 +11,7 @@ import MemoItem from "./MemoItem/MemoItem";
 import PDFPages from "./PDFList/PDFPages";
 import PDFThumbBar from "./PDFList/PDFThumbBar";
 import SideMenuBar from "./SideMenu/SideMenuBar";
+// import Menu, { Item as MenuItem, Divider } from "rc-menu";
 
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
@@ -47,7 +48,7 @@ export default function Memo(props: any) {
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
   const [pdfList, setPdfList] = useState({});
-  const [, setListProgress] = useState(0);
+  const [listProgress, setListProgress] = useState(0);
 
   const initMemoItems = [
     {
@@ -58,6 +59,12 @@ export default function Memo(props: any) {
       y: 0,
     },
   ];
+
+  const initMemoItmesOfWriter = {
+    writerID: { writerID: 0, writerName: "송병근" },
+    memoState: initMemoItems,
+  };
+
   const [memoItems, setMemoItems] = useState(initMemoItems);
   const boardEl = useRef<HTMLDivElement>(null);
   const documentEl = useRef<HTMLDivElement>(null);
@@ -149,6 +156,62 @@ export default function Memo(props: any) {
     [memoItems]
   );
 
+  const updateTextContent = useCallback(
+    (targetID: number, content) => {
+      const newList = memoItems.filter((item) => {
+        if (item.itemID === targetID) {
+          item.content = content;
+        }
+        return true;
+      });
+
+      setMemoItems(newList);
+    },
+    [memoItems]
+  );
+  const focusOtherItem = useCallback(
+    (next, memoState) => {
+      console.log("focus other item ");
+
+      const newList = memoItems
+        .sort((a, b) => a.itemID - b.itemID) //생성된 시간(item 아이디로 오름차순)
+        .filter((item) => {
+          console.log("focus other item afsdfasd");
+          if (item.pageNum === memoState.pageNum) {
+            console.log("focus other item 2222");
+            //페이지 같고
+            if (next) {
+              if (memoState.itemID < item.itemID) {
+                console.log("focus other item 3333");
+                return true;
+              }
+            } else {
+              if (memoState.itemID > item.itemID) {
+                console.log("focus other item 4444");
+                return true;
+              }
+            }
+          }
+          return false;
+        });
+      if (newList.length === 0) {
+        return;
+      }
+      setCurrentFocusItem({
+        itemID: next ? newList[0].itemID : newList[newList.length - 1].itemID,
+      });
+    },
+    [memoItems]
+  );
+
+  const currentMenuMemo = useCallback(() => {
+    console.log("currentFocusItem.itemID    " + currentFocusItem.itemID);
+    const newList = memoItems.filter(
+      (item) => item.itemID === currentFocusItem.itemID
+    );
+    return newList[0];
+  }, [memoItems, currentFocusItem]);
+
   const onDragOver = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -238,9 +301,11 @@ export default function Memo(props: any) {
                               ? true
                               : false
                           }
+                          updateTextContent={updateTextContent}
                           focusHandler={(itemID) => {
                             setCurrentFocusItem({ itemID: itemID });
                           }}
+                          isMenuItem={false}
                         ></MemoItem>
                       );
                     })}
@@ -274,28 +339,21 @@ export default function Memo(props: any) {
           </Pane>
           {sideMenuOpen && (
             <Pane initialSize="300px" minSize="300px" maxSize="300px">
-              {memoItems.map((item) => {
-                if (item.itemID !== currentFocusItem.itemID) {
-                  return <div></div>;
-                }
-                return (
-                  <SideMenuBar
-                    memoState={item}
-                    className={memoStyle.memo_item}
-                    keyState={keyOn}
-                    scale={documentPosition.scale}
-                    writerID={"송병근"}
-                    currentPageNum={pageNumber}
-                    deleteMemo={deleteMemo}
-                    isFocus={
-                      currentFocusItem.itemID === item.itemID ? true : false
-                    }
-                    focusHandler={(itemID) => {
-                      setCurrentFocusItem({ itemID: itemID });
-                    }}
-                  />
-                );
-              })}
+              <SideMenuBar
+                memoState={currentMenuMemo()}
+                className={memoStyle.memo_item}
+                writerID={"송병근"}
+                currentPageNum={pageNumber}
+                deleteMemo={deleteMemo}
+                updateTextContent={updateTextContent}
+                focusHandler={(itemID) => {
+                  setCurrentFocusItem({ itemID: itemID });
+                }}
+                pageNumber={pageNumber}
+                isMenuItem={true}
+                focusOtherItem={focusOtherItem}
+              />
+              );
             </Pane>
           )}
         </SplitPane>

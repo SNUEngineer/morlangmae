@@ -4,8 +4,8 @@ import React, {
   useEffect,
   useRef,
   useLayoutEffect,
+  memo,
 } from "react";
-import Line from "./AnchorLine/Line";
 import itemStyle from "./memoItem.module.scss";
 import { TextArea } from "./TextArea";
 import Draggable from "react-draggable";
@@ -13,6 +13,7 @@ import PurposeArea from "./Purpose/PurposeArea";
 import CommentArea from "./Comment/CommetArea";
 import Anchor from "./Anchor/Anchor";
 import WriterArea from "./Writer/WriterArea";
+import classNames from "classnames";
 
 export default function MemoItem(props: any) {
   const {
@@ -22,6 +23,9 @@ export default function MemoItem(props: any) {
     scale,
     focusHandler,
     deleteMemo,
+    updateTextContent,
+    isMenuItem,
+    focusOtherItem,
   } = props;
 
   const memoSize = {
@@ -69,7 +73,7 @@ export default function MemoItem(props: any) {
 
   const [memoPurpose, setMemoPurpose] = useState("suggestion");
   //제안 요청 질문 suggestion, request, question
-  const [textContent, setTextContent] = useState("");
+
   const onPurposeClick = (purpose: string) => {
     setMemoPurpose(purpose);
   };
@@ -135,9 +139,11 @@ export default function MemoItem(props: any) {
   useEffect(() => {
     setMemoPosition(memoState);
     setItemID(memoState.itemID);
+    //다시 로드 될때만 memo state의 컨텐츠를 받아오고, 그 후에는 간섭없이 memoState에 저장만 하기.
   }, []);
 
   useLayoutEffect(() => {
+    if (isMenuItem) return;
     function updateSize() {
       if (anchorZoneEl.current) {
         if (writerAreaEl.current) {
@@ -160,7 +166,7 @@ export default function MemoItem(props: any) {
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
-  }, [writerAreaEl, anchorZoneEl, memoPosition]);
+  }, [writerAreaEl, anchorZoneEl, memoPosition, isMenuItem]);
 
   return (
     <div>
@@ -170,22 +176,25 @@ export default function MemoItem(props: any) {
           onMouseDown={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            console.log("item id    " + memoState.itemID);
           }}
         >
-          <Anchor
-            anchorBound={anchorBound}
-            anchor={anchor}
-            scale={scale}
-            isFocus={isFocus}
-            boxAnchor={boxAnchor}
-            anchorLineStart={anchorLineStart}
-            setBoxAnchor={setBoxAnchor}
-            setAnchor={setAnchor}
-          ></Anchor>
+          {!isMenuItem && (
+            <Anchor
+              anchorBound={anchorBound}
+              anchor={anchor}
+              scale={scale}
+              isFocus={isFocus}
+              boxAnchor={boxAnchor}
+              anchorLineStart={anchorLineStart}
+              setBoxAnchor={setBoxAnchor}
+              setAnchor={setAnchor}
+            ></Anchor>
+          )}
 
           <Draggable
-            disabled={false}
-            position={memoPosition}
+            disabled={isMenuItem}
+            position={!isMenuItem ? memoPosition : { x: 0, y: 0 }}
             bounds={bounds}
             defaultClassName={itemStyle.memo_draggable}
             onDrag={(e, coreData) => {
@@ -193,13 +202,17 @@ export default function MemoItem(props: any) {
               e.stopPropagation();
               setMemoPosition(coreData);
             }}
-            scale={scale}
+            scale={!isMenuItem ? scale : 1}
           >
             <div
-              className={itemStyle.container}
+              className={classNames({
+                [itemStyle.container]: true,
+                [itemStyle.focused_container]: isFocus,
+              })}
               ref={contentContainerEl}
               onClick={() => {
                 contentTextAreaEl.current.focus();
+                if (isMenuItem) return;
                 focusHandler(itemID);
               }}
               onDragStartCapture={(event) => {
@@ -227,18 +240,20 @@ export default function MemoItem(props: any) {
               </div>
               <div className={itemStyle.writer_area} ref={writerAreaEl}>
                 <WriterArea></WriterArea>
-                <div
-                  className={itemStyle.anchor_zone}
-                  ref={anchorZoneEl}
-                  onMouseDown={(event) => {
-                    event.stopPropagation();
-                  }}
-                  draggable={true}
-                  onDrag={(event) => {
-                    onDragHandler(event);
-                  }}
-                  onDragEnd={onAnchorZoneDragEnd}
-                ></div>
+                {!isMenuItem && (
+                  <div
+                    className={itemStyle.anchor_zone}
+                    ref={anchorZoneEl}
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                    draggable={true}
+                    onDrag={(event) => {
+                      onDragHandler(event);
+                    }}
+                    onDragEnd={onAnchorZoneDragEnd}
+                  ></div>
+                )}
               </div>
               <div className={itemStyle.middle_bar} />
               <div
@@ -252,14 +267,38 @@ export default function MemoItem(props: any) {
                   width="100%"
                   height="250px"
                   maxHeight="250px"
-                  defaultValue={textContent}
+                  value={memoState.content}
                   ref={contentTextAreaEl}
                   onChange={(event) => {
-                    setTextContent(event.target.value);
+                    updateTextContent(memoState.itemID, event.target.value);
                   }}
                 />
               </div>
               <div className={itemStyle.open_comment_container}>
+                {isMenuItem && (
+                  <div className={itemStyle.focus_other_container}>
+                    <div className={itemStyle.focus_other}>
+                      <div
+                        className={itemStyle.focus_before}
+                        onClick={() => {
+                          focusOtherItem(false, memoState);
+                        }}
+                      >
+                        이전
+                      </div>
+                      <div className={itemStyle.focus_index}></div>
+                      <div
+                        className={itemStyle.focus_after}
+                        onClick={() => {
+                          focusOtherItem(true, memoState);
+                        }}
+                      >
+                        다음
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div
                   className={itemStyle.open_comment}
                   onClick={() => {
@@ -267,7 +306,7 @@ export default function MemoItem(props: any) {
                   }}
                 ></div>
               </div>
-              {isFocus && <CommentArea></CommentArea>}
+              {(isMenuItem || isFocus) && <CommentArea></CommentArea>}
             </div>
           </Draggable>
         </div>
