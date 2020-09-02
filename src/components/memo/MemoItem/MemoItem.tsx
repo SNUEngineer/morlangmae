@@ -27,6 +27,7 @@ export default function MemoItem(props: any) {
     isMenuItem,
     focusOtherItem,
     onPurposeClick,
+    panBoardSize,
   } = props;
 
   const memoSize = {
@@ -38,6 +39,7 @@ export default function MemoItem(props: any) {
     y: 0,
   });
   const [itemID, setItemID] = useState(0);
+  const [isDragging, setIsDragging] = useState(0);
 
   const [anchor, setAnchor] = useState({
     exist: false,
@@ -56,15 +58,15 @@ export default function MemoItem(props: any) {
     //pan board 너비 높이 - 메모 아이템 너비 높이
     left: 0,
     top: 0,
-    right: 2000 - memoSize.w,
-    bottom: 2000 - memoSize.h,
+    right: panBoardSize.w - memoSize.w,
+    bottom: panBoardSize.h - memoSize.h,
   });
   const [anchorBound, setAnchorBound] = useState({
     //pan board 너비 높이 - 메모 아이템 너비 높이
     left: 0,
     top: 0,
-    right: 2000,
-    bottom: 2000,
+    right: panBoardSize.w,
+    bottom: panBoardSize.h,
   });
   const [anchorLineStart, setAnchorLineStart] = useState({
     //pan board 너비 높이 - 메모 아이템 너비 높이
@@ -184,6 +186,7 @@ export default function MemoItem(props: any) {
               anchorLineStart={anchorLineStart}
               setBoxAnchor={setBoxAnchor}
               setAnchor={setAnchor}
+              panBoardSize={panBoardSize}
             ></Anchor>
           )}
 
@@ -205,14 +208,10 @@ export default function MemoItem(props: any) {
                 [itemStyle.focused_container]: isFocus,
               })}
               ref={contentContainerEl}
-              onClick={() => {
+              onClick={(event) => {
                 contentTextAreaEl.current.focus();
                 if (isMenuItem) return;
                 focusHandler(itemID);
-              }}
-              onDragStartCapture={(event) => {
-                event.stopPropagation();
-                event.dataTransfer.setDragImage(new Image(), 0, 0);
               }}
             >
               <div className={itemStyle.delete_container}>
@@ -248,6 +247,11 @@ export default function MemoItem(props: any) {
                       onDragHandler(event);
                     }}
                     onDragEnd={onAnchorZoneDragEnd}
+                    onDragStart={(event) => {
+                      const dragImg = new Image(0, 0);
+                      event.dataTransfer.setDragImage(dragImg, 0, 0);
+                      event.stopPropagation();
+                    }}
                   ></div>
                 )}
               </div>
@@ -255,7 +259,9 @@ export default function MemoItem(props: any) {
               <div
                 className={itemStyle.text_area_container}
                 onKeyDown={(event) => {
-                  event.stopPropagation();
+                  if (event.keyCode !== 17) {
+                    event.stopPropagation();
+                  }
                 }}
               >
                 <TextArea

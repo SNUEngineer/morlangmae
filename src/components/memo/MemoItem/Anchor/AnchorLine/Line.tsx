@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import lineStyle from "./line.module.scss";
 
 export default function Line(props: any) {
+  const { panBoardSize } = props;
   const lineEl = useRef(null);
   let ctx = null;
 
@@ -9,8 +10,8 @@ export default function Line(props: any) {
     const lineCurrentEl = lineEl.current;
     // lineCurrentEl.width = Math.log(props.to.x - props.from.x);
     // lineCurrentEl.height = Math.log(props.to.y - props.from.y);
-    lineCurrentEl.width = 2000;
-    lineCurrentEl.height = 2000;
+    lineCurrentEl.width = panBoardSize.w;
+    lineCurrentEl.height = panBoardSize.h;
 
     // get context of the canvas
     ctx = lineCurrentEl.getContext("2d");

@@ -12,17 +12,19 @@
   position: absolute;
   background-color: #ffffff;
   z-index: 999;
+  border-color: green;
+  border-radius: 10px;
+  border-width: 5px;
 }
 
 .focused_container {
-  border-width: 3px;
-  border-color: brown;
 }
 
-.container :focus {}
+.container :focus {
+}
 
-
-.memo_item {}
+.memo_item {
+}
 
 .memo_draggable {
   position: absolute;
@@ -204,13 +206,11 @@
         background: darkcyan;
         width: 20px;
       }
-
     }
   }
 }
 
 .anchor_box {
-
   background-color: #55555555;
 
   border-style: dashed;

@@ -4,7 +4,7 @@ import MemoItem from "../MemoItem/MemoItem";
 
 export default function SideMenuBar(props: any) {
   const {
-    memoState,
+    memoItem,
     pageNumber,
     deleteMemo,
     updateTextContent,
@@ -13,6 +13,7 @@ export default function SideMenuBar(props: any) {
     checkWriters,
     onPurposeClick,
     memoItems,
+    panBoardSize,
   } = props;
 
   const [openDropDownMenu, setOpenDropDownMenu] = useState(0);
@@ -30,9 +31,7 @@ export default function SideMenuBar(props: any) {
     setWriters(Array.from(new Set(writerArray))); //set으로 중복 제거
   }, [memoItems]);
 
-  useEffect(() => {
-    console.log("memoState " + JSON.stringify(memoState));
-  }, [props]);
+  useEffect(() => {}, [props]);
 
   const close = () => setOpenDropDownMenu(0);
 
@@ -119,7 +118,7 @@ export default function SideMenuBar(props: any) {
       </div>
 
       <MemoItem
-        memoState={memoState}
+        memoState={memoItem.memoState}
         writerID={"송병근"}
         currentPageNum={pageNumber}
         deleteMemo={deleteMemo}
@@ -131,6 +130,7 @@ export default function SideMenuBar(props: any) {
         focusOtherItem={focusOtherItem}
         isMenuItem={true}
         onPurposeClick={onPurposeClick}
+        panBoardSize={panBoardSize}
       ></MemoItem>
     </div>
   );

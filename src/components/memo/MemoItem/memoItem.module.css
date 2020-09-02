@@ -7,11 +7,6 @@
   z-index: 999;
 }
 
-.focused_container {
-  border-width: 3px;
-  border-color: brown;
-}
-
 .memo_draggable {
   position: absolute;
   z-index: 500;
@@ -73,7 +68,7 @@
   position: absolute;
   left: 50%;
   -webkit-transform: translate(-50%, 0);
-          transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
 }
 
 .purpose_area .purpose_right {
@@ -124,16 +119,16 @@
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .memo_comment_container .memo_comment {
   width: 100%;
   background-color: green;
   -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
 }
 
 .delete_container {
@@ -172,7 +167,7 @@
   left: 50%;
   height: 100%;
   -webkit-transform: translate(-50%, 0);
-          transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   background-color: darkblue;
 }
 
@@ -197,7 +192,7 @@
   left: 50%;
   height: 100%;
   -webkit-transform: translate(-50%, 0);
-          transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   background: darkcyan;
 }
 

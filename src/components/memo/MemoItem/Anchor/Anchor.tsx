@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import anchorStyle from "./anchor.module.scss";
 import { TextArea } from "../TextArea";
 import Draggable from "react-draggable";
-import Line from "../AnchorLine/Line";
+import Line from "./AnchorLine/Line";
 
 export default function Anchor(props: any) {
   const {
@@ -14,6 +14,7 @@ export default function Anchor(props: any) {
     boxAnchor,
     setBoxAnchor,
     setAnchor,
+    panBoardSize,
   } = props;
 
   const setBoxPosition = useCallback(() => {
@@ -142,7 +143,9 @@ export default function Anchor(props: any) {
         </div>
       )}
 
-      {anchor.exist && <Line from={anchorLineStart} to={anchor} />}
+      {anchor.exist && (
+        <Line from={anchorLineStart} to={anchor} panBoardSize={panBoardSize} />
+      )}
     </div>
   );
 }

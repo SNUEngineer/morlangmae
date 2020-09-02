@@ -1,8 +1,7 @@
 import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
 import { Document, Page } from "react-pdf";
-import Draggable from "react-draggable";
 import memoStyle from "./memo.module.scss";
-import { PanZoom } from "react-easy-panzoom";
+import { PanZoom } from "./PanZoom";
 // @ts-ignore
 import SplitPane from "react-split-pane/lib/SplitPane";
 // @ts-ignore
@@ -17,7 +16,7 @@ export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState({
-    w: 1000,
+    w: 2000,
     h: 500,
   });
   const [boardSize, setBoardSize] = useState({
@@ -25,8 +24,8 @@ export default function Memo(props: any) {
     h: 500,
   });
   const [panBoardSize] = useState({
-    w: 2000,
-    h: 2000,
+    w: 6500,
+    h: 4500,
   });
   const [keyOn, setKeyOn] = useState({
     control: false,
@@ -45,10 +44,10 @@ export default function Memo(props: any) {
   const [currentFocusItem, setCurrentFocusItem] = useState({
     itemID: 0,
   });
-
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
   const [pdfList, setPdfList] = useState({});
+  const [fisrtAlign, setFisrtAlign] = useState(-1);
   const [listProgress, setListProgress] = useState(0);
 
   const initMemo = [
@@ -58,10 +57,8 @@ export default function Memo(props: any) {
       content: "테스트",
       x: 0,
       y: 0,
-      purpose: "request",
     },
   ];
-
   const initMemoItems = {
     writer: { writerID: 0, writerName: "송병근" },
     memoState: {
@@ -73,22 +70,28 @@ export default function Memo(props: any) {
       purpose: "request",
     },
   };
-  const initWriter = {
-    writerID: 0,
-  };
 
   const [memoItems, setMemoItems] = useState([initMemoItems]);
   const [currentCheckWriters, setCurrentCheckWriters] = useState([0]);
+
   const boardEl = useRef<HTMLDivElement>(null);
   const documentEl = useRef<HTMLDivElement>(null);
   const panzoomBoxContainerEl = useRef<HTMLDivElement>(null);
+  const panzoomEl = useRef(null);
 
   useLayoutEffect(() => {
     function updateSize() {
       if (panzoomBoxContainerEl.current) {
         const height = window.innerHeight - 50;
         const width = panzoomBoxContainerEl.current.offsetWidth;
-        setPanzoomBoxSize({ w: width, h: height });
+        if (!!panzoomEl.current) {
+          panzoomEl.current.moveBy((width - panzoomBoxSize.w) / 2, 0);
+          //setFisrtAlign(fristAlign)
+        }
+        if (panzoomBoxSize.w !== width) {
+          console.log("first move ");
+          setPanzoomBoxSize({ w: width, h: height });
+        }
       }
 
       if (boardEl.current) {
@@ -105,7 +108,7 @@ export default function Memo(props: any) {
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
-  }, [boardEl, documentEl, sideMenuOpen]);
+  }, [boardEl, documentEl, sideMenuOpen, panzoomBoxSize]);
 
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
@@ -151,11 +154,11 @@ export default function Memo(props: any) {
       const newMemoItem = {
         writer: { writerID: 0, writerName: "송병근" },
         memoState: {
-          itemID: 0,
-          pageNum: 1,
+          itemID: Date.now(),
+          pageNum: pageNumber,
           content: "테스트",
-          x: 0,
-          y: 0,
+          x: event.nativeEvent.offsetX,
+          y: event.nativeEvent.offsetY,
           purpose: "request",
         },
       };
@@ -174,6 +177,11 @@ export default function Memo(props: any) {
     },
     [memoItems]
   );
+
+  const checkWriters = (writerID: number) => {
+    const addedArray = currentCheckWriters.concat(writerID);
+    setCurrentCheckWriters(addedArray);
+  };
 
   const updateTextContent = useCallback(
     (targetID: number, content) => {
@@ -240,13 +248,7 @@ export default function Memo(props: any) {
     [memoItems]
   );
 
-  const checkWriters = useCallback((writerID) => {
-    const addedArray = currentCheckWriters.concat(writerID);
-    setCurrentCheckWriters(addedArray);
-  }, []);
-
   const currentMenuMemo = useCallback(() => {
-    console.log("currentFocusItem.itemID    " + currentFocusItem.itemID);
     const newList = memoItems.filter(
       (item) => item.memoState.itemID === currentFocusItem.itemID
     );
@@ -309,6 +311,7 @@ export default function Memo(props: any) {
               className={memoStyle.panzoom_box_container}
             >
               <PanZoom
+                ref={panzoomEl}
                 className={memoStyle.panzoom_box}
                 zoomSpeed={5}
                 onStateChange={onStateChange}
@@ -316,8 +319,9 @@ export default function Memo(props: any) {
                 boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
                 enableBoundingBox
                 autoCenter={true}
+                disableDoubleClickZoom={true}
                 maxZoom={3}
-                minZoom={0.3}
+                minZoom={0.1}
               >
                 <div className={memoStyle.pan_board}>
                   <div
@@ -348,6 +352,7 @@ export default function Memo(props: any) {
                           }}
                           isMenuItem={false}
                           onPurposeClick={onPurposeClick}
+                          panBoardSize={panBoardSize}
                         ></MemoItem>
                       );
                     })}
@@ -382,7 +387,7 @@ export default function Memo(props: any) {
           {sideMenuOpen && (
             <Pane initialSize="300px" minSize="300px" maxSize="300px">
               <SideMenuBar
-                memoState={currentMenuMemo()}
+                memoItem={currentMenuMemo()}
                 className={memoStyle.memo_item}
                 writerID={"송병근"}
                 currentPageNum={pageNumber}
@@ -397,6 +402,7 @@ export default function Memo(props: any) {
                 onPurposeClick={onPurposeClick}
                 memoItems={memoItems}
                 checkWriters={checkWriters}
+                panBoardSize={panBoardSize}
               />
               );
             </Pane>
