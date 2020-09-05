@@ -23,7 +23,10 @@
   height: 200px;
   top: 30px;
   left: 0;
-  background-color: hotpink;
+  background-color: white;
+  border-width: 1px;
+  border-color: green;
+  border-radius: 10px;
   z-index: 999;
 }
 
@@ -51,4 +54,32 @@
     right: 0px;
     height: 15px;
   }
+}
+
+.writer_item_checked {
+  position: relative;
+  height: 30px;
+  padding: 4px;
+  background-color: blue;
+
+  .writer_checkbox {
+    position: absolute;
+    left: 0px;
+    width: 10px;
+    height: 10px;
+    background-color: indianred;
+  }
+
+  .writer_name {
+    position: absolute;
+    left: 25px;
+    height: 15px;
+  }
+
+  .writer_count {
+    position: absolute;
+    right: 0px;
+    height: 15px;
+  }
+
 }

@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import sideStyle from "./sidebar.module.scss";
 import MemoItem from "../MemoItem/MemoItem";
+import classNames from "classnames";
 
 export default function SideMenuBar(props: any) {
   const {
@@ -11,6 +12,7 @@ export default function SideMenuBar(props: any) {
     setCurrentFocusItem,
     focusOtherItem,
     checkWriters,
+    currentCheckedWriters,
     onPurposeClick,
     memoItems,
     panBoardSize,
@@ -25,11 +27,32 @@ export default function SideMenuBar(props: any) {
   useEffect(() => {
     let writerArray = new Array();
 
-    memoItems.forEach((element) => {
-      writerArray.push(element.writer);
+    memoItems.forEach((item) => {
+      let isAlready = false;
+      writerArray.forEach((element) => {
+        if (element.writerID === item.writer.writerID) {
+          isAlready = true;
+        }
+      });
+      if (!isAlready) {
+        writerArray.push(item.writer);
+      }
     });
     setWriters(Array.from(new Set(writerArray))); //set으로 중복 제거
   }, [memoItems]);
+
+  const getWriterCount = useCallback(
+    (targetID: number) => {
+      let count = 0;
+      memoItems.forEach((item) => {
+        if (item.writer.writerID === targetID) {
+          count++;
+        }
+      });
+      return count;
+    },
+    [memoItems]
+  );
 
   useEffect(() => {}, [props]);
 
@@ -48,19 +71,28 @@ export default function SideMenuBar(props: any) {
           <div>
             <div className={sideStyle.writer_item}>
               <div className={sideStyle.writer_name}>전체</div>
-              <div className={sideStyle.writer_count}>15 개</div>
+              <div className={sideStyle.writer_count}>{writers.length} 명</div>
             </div>
-            {writers.map((item) => {
+            {writers.map((item, index) => {
+              const isCheckedWriter = currentCheckedWriters.includes(
+                item.writerID
+              );
               return (
                 <div
-                  key={item.writerID}
-                  className={sideStyle.writer_item}
-                  onClick={checkWriters(item.writerID)}
+                  className={classNames({
+                    [sideStyle.writer_item]: !isCheckedWriter,
+                    [sideStyle.writer_item_checked]: isCheckedWriter,
+                  })}
+                  key={index}
+                  onClick={() => {
+                    console.log("item click! ");
+                    checkWriters(item.writerID);
+                  }}
                 >
                   <div className={sideStyle.writer_checkbox}></div>
                   <div className={sideStyle.writer_name}>{item.writerName}</div>
                   <div className={sideStyle.writer_count}>
-                    {item.writerCount}
+                    {getWriterCount(item.writerID)}
                   </div>
                 </div>
               );
@@ -119,7 +151,7 @@ export default function SideMenuBar(props: any) {
 
       <MemoItem
         memoState={memoItem.memoState}
-        writerID={"송병근"}
+        writer={memoItem.writer}
         currentPageNum={pageNumber}
         deleteMemo={deleteMemo}
         isFocus={true}
@@ -131,6 +163,7 @@ export default function SideMenuBar(props: any) {
         isMenuItem={true}
         onPurposeClick={onPurposeClick}
         panBoardSize={panBoardSize}
+        currentCheckedWriters={currentCheckedWriters}
       ></MemoItem>
     </div>
   );

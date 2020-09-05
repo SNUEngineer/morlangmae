@@ -7,24 +7,22 @@
 
 .container {
   position: relative;
-  height: 400px;
-  width: 350px;
+  height: 650px;
+  width: 570px;
   position: absolute;
-  background-color: #ffffff;
+  background-color: white;
   z-index: 999;
   border-color: green;
   border-radius: 10px;
   border-width: 5px;
+  font-size: 25px;
 }
 
-.focused_container {
+.container_menu_version {
+  margin-left: 20px;
+  zoom: 0.4;
 }
 
-.container :focus {
-}
-
-.memo_item {
-}
 
 .memo_draggable {
   position: absolute;
@@ -124,6 +122,8 @@
     background-color: red;
   }
 }
+
+
 
 .memo_comment_container {
   width: 100%;

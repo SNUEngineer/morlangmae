@@ -3,11 +3,7 @@ import purposeStyle from "./purposeArea.module.scss";
 import classNames from "classnames";
 
 export default function PurposeArea(props: any) {
-  const [memoPurpose, setMemoPurpose] = useState("suggestion");
-
-  useEffect(() => {
-    setMemoPurpose(props.memoPurpose);
-  }, [props.memoPurpose]);
+  const { isDragging, onPurposeClick, itemID, memoPurpose } = props;
 
   return (
     <div>
@@ -20,7 +16,8 @@ export default function PurposeArea(props: any) {
             memoPurpose !== "suggestion",
         })}
         onClick={() => {
-          props.onPurposeClick(props.itemID, "suggestion");
+          if (isDragging) return;
+          onPurposeClick(itemID, "suggestion");
         }}
       >
         제안
@@ -33,7 +30,8 @@ export default function PurposeArea(props: any) {
           [purposeStyle.purpose_button_unselected]: memoPurpose !== "request",
         })}
         onClick={() => {
-          props.onPurposeClick(props.itemID, "request");
+          if (isDragging) return;
+          onPurposeClick(itemID, "request");
         }}
       >
         요청
@@ -46,7 +44,8 @@ export default function PurposeArea(props: any) {
           [purposeStyle.purpose_button_unselected]: memoPurpose !== "question",
         })}
         onClick={() => {
-          props.onPurposeClick(props.itemID, "question");
+          if (isDragging) return;
+          onPurposeClick(itemID, "question");
         }}
       >
         질문

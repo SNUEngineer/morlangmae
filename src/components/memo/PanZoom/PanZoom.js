@@ -14,6 +14,8 @@ import {
   boundCoordinates,
 } from "./maths";
 import { captureTextSelection, releaseTextSelection } from "./events";
+import classNames from "classnames";
+import panStyle from "./panZoom.module.scss";
 
 type OnStateChangeData = {
   x: number,
@@ -35,6 +37,7 @@ type Props = {
   keyMapping?: { [string]: { x: number, y: number, z: number } },
   minZoom: number,
   maxZoom: number,
+  keyState: { control: boolean, spacebar: boolean },
   preventPan: (
     event: SyntheticTouchEvent<HTMLDivElement> | MouseEvent,
     x: number,
@@ -76,6 +79,7 @@ class PanZoom extends React.Component<Props, State> {
     boundaryRatioHorizontal: 0.8,
     disableDoubleClickZoom: false,
     disableScrollZoom: false,
+    keyState: { control: false, spacebar: false },
     preventPan: () => false,
   };
 
@@ -110,6 +114,8 @@ class PanZoom extends React.Component<Props, State> {
     angle: 0,
     control: false,
     spacebar: false,
+    isPanning: false,
+    isZoomOut: false,
   };
 
   componentDidMount(): void {
@@ -196,7 +202,7 @@ class PanZoom extends React.Component<Props, State> {
     // Touch events fire mousedown on modern browsers, but it should not
     // be considered as we will handle touch event separately
     if (this.touchInProgress) {
-      e.stopPropagation();
+      // e.stopPropagation();
       return false;
     }
 
@@ -225,6 +231,7 @@ class PanZoom extends React.Component<Props, State> {
     };
 
     this.panning = true;
+    this.setState({ isPanning: true });
 
     this.setMouseListeners();
 
@@ -240,7 +247,7 @@ class PanZoom extends React.Component<Props, State> {
 
       console.log("hhhh " + this.state.spacebar);
 
-      if (!this.state.spacebar) {
+      if (!this.props.keyState.spacebar) {
         return;
       }
 
@@ -271,6 +278,7 @@ class PanZoom extends React.Component<Props, State> {
     this.triggerOnPanEnd(e);
     this.cleanMouseListeners();
     this.panning = false;
+    this.setState({ isPanning: false });
     releaseTextSelection();
   };
 
@@ -280,7 +288,9 @@ class PanZoom extends React.Component<Props, State> {
       return;
     }
 
-    if (this.state.control) {
+    if (this.props.keyState.control) {
+      this.setState({ isZoomIn: e.deltaY < 0 ? true : false });
+
       const scale = getScaleMultiplier(e.deltaY, zoomSpeed);
       const offset = this.getOffset(e);
       this.zoomTo(offset.x, offset.y, scale);
@@ -423,7 +433,7 @@ class PanZoom extends React.Component<Props, State> {
   onToucheMove = (e: TouchEvent) => {
     const { realPinch, noStateUpdate, zoomSpeed } = this.props;
     if (e.touches.length === 1) {
-      e.stopPropagation();
+      // e.stopPropagation();
       const touch = e.touches[0];
       const offset = this.getOffset(touch);
 
@@ -466,7 +476,7 @@ class PanZoom extends React.Component<Props, State> {
       };
       this.zoomTo(this.mousePos.x, this.mousePos.y, scaleMultiplier);
       this.pinchZoomLength = currentPinZoomLength;
-      e.stopPropagation();
+      // e.stopPropagation();
     }
   };
 
@@ -895,6 +905,21 @@ class PanZoom extends React.Component<Props, State> {
     );
   };
 
+  cursorStyle = () => {
+    //변경 감지.
+    const { control, spacebar } = this.props.keyState;
+
+    if (!(this.state.isPanning || control || spacebar)) {
+      return "default";
+    }
+    if (spacebar) {
+      return this.state.isPanning ? "grabbing" : "grab";
+    }
+    if (control) {
+      return this.state.isZoomIn ? "zoom-in" : "zoom-out";
+    }
+  };
+
   render() {
     const {
       children,
@@ -905,6 +930,7 @@ class PanZoom extends React.Component<Props, State> {
       disabled,
       disableDoubleClickZoom,
       disableScrollZoom,
+      keyState,
       disableKeyInteraction,
       realPinch,
       keyMapping,
@@ -980,7 +1006,9 @@ class PanZoom extends React.Component<Props, State> {
         onKeyDown={this.onKeyDown}
         onKeyUp={this.onKeyUp}
         onTouchStart={this.onTouchStart}
-        style={{ cursor: disabled ? "initial" : "pointer", ...style }}
+        className={this.cursorStyle()}
+        style={{ cursor: this.cursorStyle(), ...style }}
+        // style={{ cursor: disabled ? "initial" : "pointer", ...style }}
         {...restPassThroughProps}
       >
         <div

@@ -1,14 +1,9 @@
 import React, { PureComponent } from "react";
 
-// @ts-ignore
 import PDFPages from "@intelllex/react-pdf/lib/PdfViewer/PDFPages";
-// @ts-ignore
 import PDFToolbox from "@intelllex/react-pdf/lib/PdfViewer/PDFToolbox";
-// @ts-ignore
 import PDFThumbBar from "@intelllex/react-pdf/lib/PdfViewer/PDFThumbBar";
-// @ts-ignore
 import PDFSearchBar from "@intelllex/react-pdf/lib/PdfViewer/PDFSearchBar";
-// @ts-ignore
 import PDFProgressBar from "@intelllex/react-pdf/lib/PdfViewer/PDFProgressBar";
 
 import "./index.scss";

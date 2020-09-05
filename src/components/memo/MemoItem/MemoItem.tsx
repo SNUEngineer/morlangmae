@@ -19,6 +19,7 @@ export default function MemoItem(props: any) {
   const {
     currentPageNum,
     memoState,
+    writer,
     isFocus,
     scale,
     focusHandler,
@@ -28,6 +29,7 @@ export default function MemoItem(props: any) {
     focusOtherItem,
     onPurposeClick,
     panBoardSize,
+    currentCheckedWriters,
   } = props;
 
   const memoSize = {
@@ -40,6 +42,7 @@ export default function MemoItem(props: any) {
   });
   const [itemID, setItemID] = useState(0);
   const [isDragging, setIsDragging] = useState(0);
+  const [onHover, setOnHover] = useState(false);
 
   const [anchor, setAnchor] = useState({
     exist: false,
@@ -130,8 +133,18 @@ export default function MemoItem(props: any) {
   );
 
   useEffect(() => {
-    setIsVisible(currentPageNum === memoState.pageNum);
-  }, [currentPageNum, memoState.pageNum]);
+    const pageNumCorrect = currentPageNum === memoState.pageNum;
+    const checkWriterCorrect = !!currentCheckedWriters
+      ? currentCheckedWriters.includes(writer.writerID)
+      : false;
+    setIsVisible(pageNumCorrect && checkWriterCorrect);
+  }, [
+    currentPageNum,
+    memoState.pageNum,
+    currentCheckedWriters,
+    writer,
+    isMenuItem,
+  ]);
 
   useEffect(() => {
     setMemoPosition(memoState);
@@ -187,6 +200,7 @@ export default function MemoItem(props: any) {
               setBoxAnchor={setBoxAnchor}
               setAnchor={setAnchor}
               panBoardSize={panBoardSize}
+              onHover={onHover}
             ></Anchor>
           )}
 
@@ -195,6 +209,12 @@ export default function MemoItem(props: any) {
             position={!isMenuItem ? memoPosition : { x: 0, y: 0 }}
             bounds={bounds}
             defaultClassName={itemStyle.memo_draggable}
+            onStart={(e, coreData) => {
+              setIsDragging(true);
+            }}
+            onStop={(e, coreData) => {
+              setIsDragging(false);
+            }}
             onDrag={(e, coreData) => {
               e.preventDefault();
               e.stopPropagation();
@@ -205,8 +225,15 @@ export default function MemoItem(props: any) {
             <div
               className={classNames({
                 [itemStyle.container]: true,
+                [itemStyle.container_menu_version]: isMenuItem,
                 [itemStyle.focused_container]: isFocus,
               })}
+              onMouseEnter={() => {
+                setOnHover(true);
+              }}
+              onMouseLeave={() => {
+                setOnHover(false);
+              }}
               ref={contentContainerEl}
               onClick={(event) => {
                 contentTextAreaEl.current.focus();
@@ -231,6 +258,7 @@ export default function MemoItem(props: any) {
                   onPurposeClick={onPurposeClick}
                   memoPurpose={memoState.purpose}
                   itemID={memoState.itemID}
+                  isDragging={isDragging}
                 ></PurposeArea>
               </div>
               <div className={itemStyle.writer_area} ref={writerAreaEl}>
@@ -267,10 +295,11 @@ export default function MemoItem(props: any) {
                 <TextArea
                   inline
                   width="100%"
-                  height="250px"
-                  maxHeight="250px"
+                  height="500px"
+                  maxHeight="500px"
                   value={memoState.content}
                   ref={contentTextAreaEl}
+                  textSize={40}
                   onChange={(event) => {
                     updateTextContent(memoState.itemID, event.target.value);
                   }}
@@ -283,7 +312,7 @@ export default function MemoItem(props: any) {
                       <div
                         className={itemStyle.focus_before}
                         onClick={() => {
-                          focusOtherItem(false, memoState);
+                          focusOtherItem(false, memoState, writer.writerID);
                         }}
                       >
                         이전
@@ -292,7 +321,7 @@ export default function MemoItem(props: any) {
                       <div
                         className={itemStyle.focus_after}
                         onClick={() => {
-                          focusOtherItem(true, memoState);
+                          focusOtherItem(true, memoState, writer.writerID);
                         }}
                       >
                         다음

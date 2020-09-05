@@ -2,9 +2,7 @@ import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
 import { Document, Page } from "react-pdf";
 import memoStyle from "./memo.module.scss";
 import { PanZoom } from "./PanZoom";
-// @ts-ignore
 import SplitPane from "react-split-pane/lib/SplitPane";
-// @ts-ignore
 import Pane from "react-split-pane/lib/Pane";
 import MemoItem from "./MemoItem/MemoItem";
 import PDFPages from "./PDFList/PDFPages";
@@ -27,7 +25,7 @@ export default function Memo(props: any) {
     w: 6500,
     h: 4500,
   });
-  const [keyOn, setKeyOn] = useState({
+  const [keyState, setKeyState] = useState({
     control: false,
     space: false,
   });
@@ -47,7 +45,7 @@ export default function Memo(props: any) {
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
   const [pdfList, setPdfList] = useState({});
-  const [fisrtAlign, setFisrtAlign] = useState(-1);
+  const [fisrtAlign, setFisrtAlign] = useState(true);
   const [listProgress, setListProgress] = useState(0);
 
   const initMemo = [
@@ -60,7 +58,7 @@ export default function Memo(props: any) {
     },
   ];
   const initMemoItems = {
-    writer: { writerID: 0, writerName: "송병근" },
+    writer: { writerID: 1, writerName: "김기연" },
     memoState: {
       itemID: 0,
       pageNum: 1,
@@ -70,10 +68,8 @@ export default function Memo(props: any) {
       purpose: "request",
     },
   };
-
   const [memoItems, setMemoItems] = useState([initMemoItems]);
-  const [currentCheckWriters, setCurrentCheckWriters] = useState([0]);
-
+  const [currentCheckedWriters, setCurrentCheckedWriters] = useState([0]);
   const boardEl = useRef<HTMLDivElement>(null);
   const documentEl = useRef<HTMLDivElement>(null);
   const panzoomBoxContainerEl = useRef<HTMLDivElement>(null);
@@ -82,14 +78,16 @@ export default function Memo(props: any) {
   useLayoutEffect(() => {
     function updateSize() {
       if (panzoomBoxContainerEl.current) {
+        panzoomBoxContainerEl.current.focus();
         const height = window.innerHeight - 50;
         const width = panzoomBoxContainerEl.current.offsetWidth;
+        console.log("asdfasdf heightheight " + height);
         if (!!panzoomEl.current) {
-          panzoomEl.current.moveBy((width - panzoomBoxSize.w) / 2, 0);
-          //setFisrtAlign(fristAlign)
+          if (!fisrtAlign) {
+            panzoomEl.current.moveBy((width - panzoomBoxSize.w) / 2, 0);
+          }
         }
         if (panzoomBoxSize.w !== width) {
-          console.log("first move ");
           setPanzoomBoxSize({ w: width, h: height });
         }
       }
@@ -104,15 +102,50 @@ export default function Memo(props: any) {
         setPageSize((prevState) => ({ ...prevState, h: height }));
       }
     }
+    const onKeyDown = (event) => {
+      if (event.keyCode === 32) {
+        //spcae bar
+        setKeyState((prevState) => ({ ...prevState, spacebar: true }));
+        event.preventDefault();
+      } else if (event.keyCode === 17) {
+        //control
+        setKeyState((prevState) => ({ ...prevState, control: true }));
+        event.preventDefault();
+      }
+    };
+
+    const onKeyUp = (event) => {
+      if (event.keyCode === 32) {
+        //spcae bar
+        setKeyState((prevState) => ({ ...prevState, spacebar: false }));
+        event.preventDefault();
+      } else if (event.keyCode === 17) {
+        //control
+        setKeyState((prevState) => ({ ...prevState, control: false }));
+        event.preventDefault();
+      }
+    };
 
     window.addEventListener("resize", updateSize);
+    window.addEventListener("keydown", onKeyDown, true);
+    window.addEventListener("keyup", onKeyUp, true);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
   }, [boardEl, documentEl, sideMenuOpen, panzoomBoxSize]);
 
-  function onDocumentLoadSuccess({ numPages }: any) {
-    setNumPages(numPages);
-  }
+  const onDocumentLoadSuccess = useCallback(
+    ({ numPages }: any) => {
+      setNumPages(numPages);
+      if (fisrtAlign) {
+        if (!!panzoomEl.current) {
+          console.log("auto center!!!");
+          panzoomEl.current.autoCenter(1, false);
+        }
+        setFisrtAlign(false);
+      }
+    },
+    [fisrtAlign]
+  );
 
   const setPanzoomBoundary = useCallback(() => {
     const scaledBoard = {
@@ -123,11 +156,11 @@ export default function Memo(props: any) {
     const hRatio =
       panBoardSize.w * documentPosition.scale - panzoomBoxSize.w > 0
         ? (scaledBoard.w - panzoomBoxSize.w) / scaledBoard.w
-        : (scaledBoard.w - panzoomBoxSize.w) / (scaledBoard.w * 8);
+        : (scaledBoard.w - panzoomBoxSize.w) / (scaledBoard.w * 2);
     const vRatio =
       panBoardSize.h * documentPosition.scale - panzoomBoxSize.h > 0
         ? (scaledBoard.h - panzoomBoxSize.h) / scaledBoard.h
-        : (scaledBoard.h - panzoomBoxSize.h) / (scaledBoard.h * 8);
+        : (scaledBoard.h - panzoomBoxSize.h) / (scaledBoard.h * 2);
 
     return { hRatio: hRatio, vRatio: vRatio };
   }, [panzoomBoxSize, panBoardSize, documentPosition]);
@@ -178,10 +211,20 @@ export default function Memo(props: any) {
     [memoItems]
   );
 
-  const checkWriters = (writerID: number) => {
-    const addedArray = currentCheckWriters.concat(writerID);
-    setCurrentCheckWriters(addedArray);
-  };
+  const checkWriters = useCallback(
+    (writerID: number) => {
+      if (currentCheckedWriters.includes(writerID)) {
+        const filteredArray = currentCheckedWriters.filter(
+          (item) => item !== writerID
+        );
+        setCurrentCheckedWriters(filteredArray);
+      } else {
+        const addedArray = currentCheckedWriters.concat(writerID);
+        setCurrentCheckedWriters(addedArray);
+      }
+    },
+    [currentCheckedWriters]
+  );
 
   const updateTextContent = useCallback(
     (targetID: number, content) => {
@@ -211,27 +254,28 @@ export default function Memo(props: any) {
     [memoItems]
   );
 
-  const focusOtherItem = useCallback(
-    (next, memoState) => {
-      console.log("focus other item ");
+  const currentPageMemos = useCallback(() => {
+    const newList = memoItems.filter(
+      (item) => item.memoState.pageNum === pageNumber
+    );
+    return newList;
+  }, [memoItems, pageNumber]);
 
-      const newList = memoItems
+  const focusOtherItem = useCallback(
+    (next, memoState, writerID) => {
+      const newList = currentPageMemos()
         .sort((a, b) => a.memoState.itemID - b.memoState.itemID) //생성된 시간(item 아이디로 오름차순)
         .filter((item) => {
-          console.log("focus other item afsdfasd");
-          if (item.memoState.pageNum === memoState.pageNum) {
-            console.log("focus other item 2222");
-            //페이지 같고
-            if (next) {
-              if (memoState.itemID < item.memoState.itemID) {
-                console.log("focus other item 3333");
-                return true;
-              }
-            } else {
-              if (memoState.itemID > item.memoState.itemID) {
-                console.log("focus other item 4444");
-                return true;
-              }
+          if (!currentCheckedWriters.includes(item.writer.writerID)) {
+            return false;
+          }
+          if (next) {
+            if (memoState.itemID < item.memoState.itemID) {
+              return true;
+            }
+          } else {
+            if (memoState.itemID > item.memoState.itemID) {
+              return true;
             }
           }
           return false;
@@ -245,7 +289,7 @@ export default function Memo(props: any) {
           : newList[newList.length - 1].memoState.itemID,
       });
     },
-    [memoItems]
+    [currentPageMemos, currentCheckedWriters]
   );
 
   const currentMenuMemo = useCallback(() => {
@@ -293,7 +337,7 @@ export default function Memo(props: any) {
           </button>
         </div>
         <SplitPane split="vertical" className={memoStyle.split_pane}>
-          <Pane initialSize="200px" minSize="150px" maxSize="500px">
+          <Pane initialSize="150px" minSize="150px" maxSize="150px">
             <div className={memoStyle.split_list_view}>
               <PDFThumbBar
                 pdf={pdfList}
@@ -322,6 +366,7 @@ export default function Memo(props: any) {
                 disableDoubleClickZoom={true}
                 maxZoom={3}
                 minZoom={0.1}
+                keyState={keyState}
               >
                 <div className={memoStyle.pan_board}>
                   <div
@@ -335,11 +380,13 @@ export default function Memo(props: any) {
                         <MemoItem
                           key={item.memoState.itemID}
                           memoState={item.memoState}
+                          writer={item.writer}
                           className={memoStyle.memo_item}
-                          keyState={keyOn}
+                          keyState={keyState}
                           scale={documentPosition.scale}
                           writerID={"송병근"}
                           currentPageNum={pageNumber}
+                          currentCheckedWriters={currentCheckedWriters}
                           deleteMemo={deleteMemo}
                           isFocus={
                             currentFocusItem.itemID === item.memoState.itemID
@@ -385,11 +432,10 @@ export default function Memo(props: any) {
             </div>
           </Pane>
           {sideMenuOpen && (
-            <Pane initialSize="300px" minSize="300px" maxSize="300px">
+            <Pane initialSize="250px" minSize="250px" maxSize="250px">
               <SideMenuBar
                 memoItem={currentMenuMemo()}
                 className={memoStyle.memo_item}
-                writerID={"송병근"}
                 currentPageNum={pageNumber}
                 deleteMemo={deleteMemo}
                 updateTextContent={updateTextContent}
@@ -400,8 +446,9 @@ export default function Memo(props: any) {
                 isMenuItem={true}
                 focusOtherItem={focusOtherItem}
                 onPurposeClick={onPurposeClick}
-                memoItems={memoItems}
+                memoItems={currentPageMemos()}
                 checkWriters={checkWriters}
+                currentCheckedWriters={currentCheckedWriters}
                 panBoardSize={panBoardSize}
               />
               );
@@ -409,6 +456,17 @@ export default function Memo(props: any) {
           )}
         </SplitPane>
       </div>
+      <Document
+        file={props.fileUrl}
+        onLoadSuccess={onDocumentLoadSuccess}
+        className={memoStyle.document}
+      >
+        <Page
+          pageNumber={pageNumber}
+          width={pageSize.w}
+          className={memoStyle.page}
+        />
+      </Document>
     </div>
   );
 }

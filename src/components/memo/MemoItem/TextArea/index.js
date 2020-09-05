@@ -57,6 +57,7 @@ class TextArea extends Component {
      * sets the font-size for the textarea
      */
     size: PropTypes.oneOf(["small", "medium", "large"]),
+    textSize: PropTypes.number,
     layout: PropTypes.oneOf(["stacked", "inline"]),
     /**
      * the textarea will expand vertically to fit the height of the content,
@@ -138,6 +139,7 @@ class TextArea extends Component {
     width: undefined,
     height: undefined,
     maxHeight: undefined,
+    textSize: 15,
   };
 
   constructor() {
@@ -317,6 +319,7 @@ class TextArea extends Component {
       textareaRef,
       resize,
       size,
+      textSize,
     } = this.props;
 
     const props = omitProps(this.props, TextArea.propTypes);
@@ -330,12 +333,13 @@ class TextArea extends Component {
     const style = {
       width: width,
       resize: resize,
-      height: 300, //!autoGrow ? height : null,
-      maxHeight: 300,
+      height: 550, //!autoGrow ? height : null,
+      maxHeight: 550,
       outline: 0,
       borderWidth: 0,
       padding: 5,
       boxSizing: "border-box",
+      fontSize: textSize,
     };
 
     const textarea = (
