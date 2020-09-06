@@ -1,5 +1,4 @@
 import React from 'react';
-import CollectionListItem, { CollectionListItemProps } from './CollectionListItem';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -14,7 +13,7 @@ export interface CollectionCardListProps {
 function rowCollections(collections: CollectionCardProps[]) {
   return collections.map((props: CollectionCardProps) => {
     return (
-      <CollectionCard key={props.id} {...props} />
+      <CollectionCard key={props.data.id} {...props} />
     )
   });
 }

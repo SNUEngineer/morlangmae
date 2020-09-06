@@ -8,6 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MailIcon from '@material-ui/icons/Mail';
 import SearchIcon from '@material-ui/icons/Search';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import Button from '@material-ui/core/Button';
+import Popover from '@material-ui/core/Popover';
 
 const drawerWidth = 240;
 
@@ -45,6 +47,7 @@ export default function AppBar(props: any) {
         <Typography>
           Bailey
         </Typography>
+        <Notification/>
         {/* <Search /> */}
       </Toolbar>
     </MuiAppBar>
@@ -92,6 +95,57 @@ const useStyles2 = makeStyles((theme: Theme) =>
     },
   })
 );
+
+const useStyles3 = makeStyles((theme: Theme) =>
+  createStyles({
+    popover: {
+      zIndex: `${theme.zIndex.drawer + 10001} !important` as any,
+    },
+  }),
+);
+
+
+export function Notification(props: any) {
+  const classes = useStyles3()
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  return (
+    <div>
+      <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+        Notifications
+      </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        classes={{
+          root: classes.popover
+        }}
+      >
+        <Typography>Hello?</Typography>
+      </Popover>
+    </div>
+  )
+}
 
 export function Search(props: any) {
   const classes = useStyles2();

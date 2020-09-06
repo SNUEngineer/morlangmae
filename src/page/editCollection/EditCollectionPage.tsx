@@ -60,18 +60,10 @@ function getStepContent(stepIndex: number, collection: any, setCollection: any, 
     })
   }
 
-  const handleDateChange = (v: any) => {
-    setCollection({
-      ...collection,
-      startDate: v[0],
-      endDate: v[1],
-    })
-  }
-
   const handleDrop = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    if (e.dataTransfer.files.length != 1) {
+    if (e.dataTransfer.files.length !== 1) {
       console.error("Unexpected file number", e.dataTransfer.files)
     } else {
       const res = await props.uploadImage(e.dataTransfer.files[0])
@@ -141,7 +133,7 @@ function getStepContent(stepIndex: number, collection: any, setCollection: any, 
                   <Button onClick={() => {
                     setCollection({
                       ...collection,
-                      members: collection.members.filter((it: UserView) => it.id != user.id)
+                      members: collection.members.filter((it: UserView) => it.id !== user.id)
                     })
                   }}>
                     X
@@ -217,10 +209,6 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
   const handleStepClick = (index: number) => {
     setActiveStep(index);
   }
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
   return (
     <div className={classes.root}>

@@ -26,7 +26,7 @@ export default function CollectionViewPageContainer(props: CollectionViewPageCon
     }
     fetchCollection();
     fetchPlatters();
-  }, [])
+  }, [props.collectionId])
 
   if (collection) {
     return (

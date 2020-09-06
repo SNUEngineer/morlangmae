@@ -50,9 +50,9 @@ export default function Drawer() {
     >
       <Toolbar />
       <List>
-        <ListItemLink to="/persona" primary="Persona" icon={<PersonIcon />} />
-        <ListItemLink to="/collections" primary="Collections" icon={<CollectionsIcon />} />
-        <ListItemLink to="/memos" primary="Memos" icon={<NoteIcon />} />
+        <ListItemLink to="/collections" primary="컬렉션" icon={<CollectionsIcon />} />
+        <ListItemLink to="/memos" primary="메모" icon={<NoteIcon />} />
+        <ListItemLink to="/persona" primary="프로필" icon={<PersonIcon />} />
       </List>
       <Divider />
     </MuiDrawer>

@@ -1,19 +1,6 @@
-// import Embed from '@editorjs/embed'
-// import Table from '@editorjs/table'
-// import Paragraph from '@editorjs/paragraph'
-// import List from '@editorjs/list'
-// import Warning from '@editorjs/warning'
-// import Code from '@editorjs/code'
-// import LinkTool from '@editorjs/link'
-import Image from '@editorjs/image';
-// import Raw from '@editorjs/raw'
 import Header from '@editorjs/header';
-// import Quote from '@editorjs/quote'
-// import Marker from '@editorjs/marker'
-// import CheckList from '@editorjs/checklist'
+import Image from '@editorjs/image';
 // import Delimiter from '@editorjs/delimiter'
-// import InlineCode from '@editorjs/inline-code'
-// import SimpleImage from '@editorjs/simple-image'
 import Attaches from './attaches';
 
 // export const EDITOR_JS_TOOLS = {
@@ -30,35 +17,36 @@ import Attaches from './attaches';
 //   quote: Quote,
 //   marker: Marker,
 //   checklist: CheckList,
-//   delimiter: Delimiter,
 //   inlineCode: InlineCode,
 //   simpleImage: SimpleImage
 // }
 
-import axios from 'axios';
+// import Images from './images';
+import { uploadFile } from '../../services/file.service'
 
+// const images: any = Images
 export const EDITOR_JS_TOOLS = {
-  // image: {
-  //   class: Image,
-  //   config: {
-  //     uploader: {
-  //       uploadByFile(file: File) {
-  //         let formData = new FormData()
-  //         formData.append("file", file)
-  //         return axios.post(
-  //           "http://localhost:8080/api/files/v1", formData
-  //         ).then(res => {
-  //           return {
-  //             success: 1,
-  //             file: {
-  //               url: res.data.uri
-  //             }
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
-  // },
+  image: {
+    class: Image,
+    config: {
+      uploader: {
+        uploadByFile(file: File) {
+          return uploadFile(file).then(res => {
+            return {
+              success: 1,
+              file: {
+                url: res.uri
+              }
+            }
+          });
+        }
+      }
+    }
+  },
   header: Header,
+  // images: images,
+  // image: Image,
+
+  // delimiter: Delimiter,
   // attaches: Attaches,
 }

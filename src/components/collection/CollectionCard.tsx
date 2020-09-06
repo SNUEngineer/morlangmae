@@ -1,45 +1,55 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import { useHistory } from 'react-router-dom';
 
-export interface CollectionCardProps {
+export interface CollectionData {
   id: number;
-  fullWidth?: boolean;
-  title: string;
   serviceType: string;
+  title: string;
   imageUrl: string;
-  notificationCount?: number;
-  onClick?(): Promise<void>;
+  startDate: Date;
+  endDate: Date;
+  notificationCount: number;
+  pinned: boolean;
+  status: string;
 }
 
-const useStyles = makeStyles({
+export interface CollectionCardProps {
+  data: CollectionData;
+  viewType: 'NORMAL' | 'WIDE';
+  onClick(data: CollectionData): Promise<void>;
+}
+
+const useStyles = makeStyles((viewType: 'NORMAL' | 'WIDE') => createStyles({
   root: {
-    width: 300,
+    width: viewType == 'NORMAL' ? 300 : 500,
   },
   media: {
     height: 0,
-    paddingTop: '62.25%',
+    paddingTop: viewType == 'NORMAL' ? '100%' : '62.25%',
   },
-});
+}))
 
 export default function CollectionCard(props: CollectionCardProps) {
-  const classes = useStyles(props);
-  const history = useHistory();
-  const handleClick = () => {
-    history.push(`collections?id=${props.id}`)
-  }
+  const viewType = props.viewType;
+  const classes = useStyles(viewType)
+  const data = props.data;
+  const notificationCount = data.notificationCount;
+  const onClick = () => props.onClick(props.data);
 
   return (
-    <Card className={classes.root} onClick={handleClick}>
-      <Typography>{props.serviceType}</Typography>
-      <CardHeader title={props.title} />
-      {props.imageUrl && (
+    <Card className={classes.root} onClick={onClick}>
+      <Typography>{data.serviceType}</Typography>
+      <CardHeader title={data.title} />
+      {notificationCount > 0 && (
+        <Typography>{notificationCount}</Typography>
+      )}
+      {data.imageUrl && (
         <CardMedia
-          image={props.imageUrl}
+          image={data.imageUrl}
           className={classes.media}
         />
       )}

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -16,26 +15,6 @@ interface TabPanelProps {
   value: any;
 }
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
-
 export interface CollectionPageProps {
   collectionId?: number;
   platterId?: number;
@@ -50,26 +29,12 @@ export default function CollectionPage(props: CollectionPageProps) {
 
   return (
     <Paper>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        indicatorColor="primary"
-        textColor="primary"
-        centered
-      >
         <Tab label="My Collection" />
         <Tab label="Search" />
         <Tab label="Create" />
-      </Tabs>
-      <TabPanel value={value} index={0}>
         <MyCollectionTab {...props.myCollectionTabPrpos} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
         <SearchCollectionTab {...props.searchCollectionTabProps} />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
         <CreateCollectionTab {...props.createCollectionTabProps} />
-      </TabPanel>
       { props.collectionId && (
         <CollectionViewPageContainer hiddenToolbar={!!props.platterId} collectionId={props.collectionId} />
       )}

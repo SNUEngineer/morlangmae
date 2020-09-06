@@ -1,6 +1,7 @@
 import React from 'react';
 import CollectionCardList from '../../components/collection/CollectionCardList'
 import { CollectionCardProps } from '../../components/collection/CollectionCard';
+import CollectionTab from './CollectionTab';
 
 export interface SearchCollectionTabProps {
   // attendedCollections: CollectionListProps;
@@ -12,7 +13,9 @@ export interface SearchCollectionTabProps {
 export default function SearchCollectionTab(props: SearchCollectionTabProps) {
   return (
     <div>
-      <CollectionCardList title="Company Collections" collections={props.companyCollections} />
+      <CollectionTab />
+      <CollectionCardList title="내가 참여중인 컬렉션" collections={props.companyCollections} />
+      <CollectionCardList title="현재 사내 진행 컬렉션" collections={props.companyCollections} />
     </div>
   )
 }

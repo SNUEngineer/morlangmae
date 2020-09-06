@@ -6,9 +6,11 @@ import { EDITOR_JS_TOOLS } from '../editor/tools';
 import { UserView } from '../../services/user.service';
 import Typography from '@material-ui/core/Typography';
 import { BlockView } from '../../services/platter.service';
+import TextField from '@material-ui/core/TextField';
 
 export interface PlatterProps {
   id: number;
+  title?: string;
   blocks: BlockView[];
   editable?: boolean;
   createdBy: UserView;
@@ -45,6 +47,13 @@ export default function Platter(props: PlatterProps) {
       <Avatar alt={props.createdBy.displayName} src={props.createdBy.imageUrl} />
       <Typography>{props.createdBy.displayName}</Typography>
       <Typography>{props.createdBy.companyId}</Typography>
+      <TextField
+        required
+        defaultValue={props.title}
+        fullWidth
+        id="title"
+        name="title"
+      />
       <EditorJs
         holder={holderId}
         data={blocks}

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import EditCollectionPage from './EditCollectionPage';
 import { uploadFile } from '../../services/file.service';
 import { searchUsers, UserView } from '../../services/user.service';
-import { editCollection, progress, CollectionView, getCollection, CollectionDetail } from '../../services/collection.service';
+import { editCollection, progress, getCollection, CollectionDetail } from '../../services/collection.service';
 
 export interface EditCollectionPageContainerProps {
   collectionId: number;
@@ -29,7 +29,7 @@ export default function EditCollectionPageContainer(props: EditCollectionPageCon
     }
     fetchCollection();
     fetchUsers();
-  }, [])
+  }, [props.collectionId])
 
   async function handleEditCollection(collection: any) {
     await editCollection(collection.id, {

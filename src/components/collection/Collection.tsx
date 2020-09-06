@@ -3,9 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Platter, { PlatterProps } from './Platter';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
-import Grid from '@material-ui/core/Grid';
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
-import Avatar from '@material-ui/core/Avatar';
 import { UserView } from '../../services/user.service';
 
 export interface CollectionProps {
@@ -32,7 +29,7 @@ export default function Collection(props: CollectionProps) {
   const classes = useStyles()
   const platters = props.platters.map((platterProps: PlatterProps) => {
     return (
-      <Platter {...platterProps} />
+      <Platter key={platterProps.id} {...platterProps} />
     )
   })
 
@@ -42,11 +39,11 @@ export default function Collection(props: CollectionProps) {
         image={props.imageUrl}
         className={classes.media}
       />
-      <AvatarGroup>
-        {props.members.map((member: UserView) => (
-          <Avatar key={member.id} alt={member.displayName} src={member.imageUrl} />
-        ))}
-      </AvatarGroup>
+      {/* <AvatarGroup> */}
+        {/* {props.members.map((member: UserView) => ( */}
+          {/* <Avatar key={member.id} alt={member.displayName} src={member.imageUrl} /> */}
+        {/* ))} */}
+      {/* </AvatarGroup> */}
       {platters}
     </Card>
   )

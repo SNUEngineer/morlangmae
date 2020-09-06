@@ -29,7 +29,7 @@ export default function EditPlatterPageContainer(props: EditPlatterPageContainer
     }
     fetchPlatter()
     fetchThread()
-  }, [])
+  }, [props.id])
 
   if (platter && thread) {
     return (
