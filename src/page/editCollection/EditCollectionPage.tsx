@@ -104,26 +104,27 @@ function getStepContent(
               " 명 (참여자 리스트)"}
         </div>
         <div className={editStyle.list_container}>
-          {collection.members.map((user: UserView) => (
-            <div key={user.id} className={editStyle.writer_info_container}>
-              {user.displayName}
+          {!!collection.members[0] &&
+            collection.members.map((user: UserView) => (
+              <div key={user.id} className={editStyle.writer_info_container}>
+                {user.displayName}
 
-              {!checking && (
-                <Button
-                  onClick={() => {
-                    setCollection({
-                      ...collection,
-                      members: collection.members.filter(
-                        (it: UserView) => it.id !== user.id
-                      ),
-                    });
-                  }}
-                >
-                  X
-                </Button>
-              )}
-            </div>
-          ))}
+                {!checking && (
+                  <Button
+                    onClick={() => {
+                      setCollection({
+                        ...collection,
+                        members: collection.members.filter(
+                          (it: UserView) => it.id !== user.id
+                        ),
+                      });
+                    }}
+                  >
+                    X
+                  </Button>
+                )}
+              </div>
+            ))}
         </div>
       </div>
     );
@@ -187,6 +188,9 @@ function getStepContent(
         </Paper>
       );
     case 1:
+      console.log("collection.members " + JSON.stringify(collection.members));
+      console.log("props.users " + JSON.stringify(collection.members));
+
       return (
         <Paper>
           <div>참여인원</div>

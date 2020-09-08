@@ -1,0 +1,24 @@
+.container {
+  overflow: auto;
+  width: 100%;
+
+  .page_title_container {
+    .page_title {
+      font-size: 30px;
+    }
+    .divider {
+      height: 1px;
+      background-color: black;
+      margin-top: 10px;
+      margin-bottom: 50px;
+    }
+  }
+
+  .list_container {
+    $padding-horizontal: 60px;
+
+    box-sizing: border-box;
+    padding-left: $padding-horizontal;
+    padding-right: $padding-horizontal;
+  }
+}

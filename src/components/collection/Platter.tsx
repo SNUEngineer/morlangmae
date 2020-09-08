@@ -13,9 +13,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import PersonIcon from "@material-ui/icons/Person";
-import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 
@@ -105,40 +104,26 @@ export default function Platter(props: PlatterProps) {
         aria-labelledby="simple-dialog-title"
         open={open}
         classes={{
-          paperScrollPaper: {
-            display: "flex",
-            maxHeight: "calc(100% - 64px)",
-            flexDirection: "column",
-          },
+          paperScroll: {},
         }}
       >
         <List>
-          {options.map((email) => (
-            <ListItem
-              button
-              onClick={() => handleListItemClick(email)}
-              key={email}
-            >
-              <ListItemAvatar>
-                <Avatar className={classes.avatar}>
-                  <PersonIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={email} />
-            </ListItem>
-          ))}
-
-          <ListItem
-            autoFocus
-            button
-            onClick={() => handleListItemClick("addAccount")}
-          >
+          <ListItem button onClick={() => handleListItemClick(options[0])}>
             <ListItemAvatar>
-              <Avatar>
-                <AddIcon />
+              <Avatar className={classes.avatar}>
+                <PersonIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Add account" />
+            <ListItemText primary={options[0]} />
+          </ListItem>
+
+          <ListItem button onClick={() => handleListItemClick(options[1])}>
+            <ListItemAvatar>
+              <Avatar className={classes.avatar}>
+                <EditIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={options[1]} />
           </ListItem>
         </List>
       </Dialog>
@@ -160,7 +145,7 @@ export default function Platter(props: PlatterProps) {
               color="primary"
               onClick={(event) => {
                 handleClickOpen();
-                setMenuCoordinates();
+                setMenuCoordinates(event.target.getBoundingClientRect());
               }}
             >
               ...
