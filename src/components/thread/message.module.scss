@@ -1,0 +1,33 @@
+.message {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  .avatar {
+    width: 60px;
+  }
+  .content_container {
+    flex-grow: 1;
+
+    .name_container {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 10px;
+      .name_text {
+      }
+
+      .time_text {
+        margin-left: 10px;
+        flex-grow: 1;
+      }
+    }
+
+    .content {
+      padding: 15px;
+      box-sizing: border-box;
+      background-color: white;
+      border-radius: 10px;
+    }
+  }
+}

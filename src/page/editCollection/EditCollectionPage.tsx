@@ -17,6 +17,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { CollectionDetail } from "../../services/collection.service";
 import { UserView } from "../../services/user.service";
 import editStyle from "./editCollectionPage.module.scss";
+import { TextArea } from "../../components/customizedComponent/TextArea";
 
 //const [passwordActive, setPasswordActive] = useState(false);
 
@@ -58,8 +59,9 @@ function getStepContent(
   passwordActive: boolean,
   setPasswordActive,
   requestMember,
-  setRequestMember: UserView,
-  props: EditCollectionPageProps
+  setRequestMember: UserView[],
+  props: EditCollectionPageProps,
+  handleNext
 ) {
   const classes = contentStyles(collection);
 
@@ -142,7 +144,7 @@ function getStepContent(
           </Card>
           <div className={editStyle.setting_container}>
             <div className={editStyle.set_title_container}>
-              <div className={editStyle.title_text_field}>제목 설정</div>
+              <div className={editStyle.text}>제목 설정</div>
               <TextField
                 variant="outlined"
                 name="title"
@@ -151,22 +153,36 @@ function getStepContent(
               />
             </div>
             <div className={editStyle.set_date_container}>
-              <div>기한 설정</div>
-              <TextField
-                variant="outlined"
-                type="datetime-local"
-                name="startDate"
-                onChange={handleChange}
-                value={collection.startDate}
-              />
-              <TextField
-                variant="outlined"
-                type="datetime-local"
-                name="endDate"
-                onChange={handleChange}
-                value={collection.endDate}
-              />
+              <div className={editStyle.set_date}>
+                <div className={editStyle.text}>기한 설정</div>
+                <TextField
+                  variant="outlined"
+                  type="datetime-local"
+                  name="startDate"
+                  onChange={handleChange}
+                  value={collection.startDate}
+                />
+                <p />
+                <TextField
+                  variant="outlined"
+                  type="datetime-local"
+                  name="endDate"
+                  onChange={handleChange}
+                  value={collection.endDate}
+                />
+                <div></div>
+              </div>
             </div>
+          </div>
+          <div className={editStyle.first_next_button_container}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNext}
+              className={editStyle.next_button}
+            >
+              Next
+            </Button>
           </div>
         </Paper>
       );
@@ -257,6 +273,16 @@ function getStepContent(
                   style={{ color: "white" }}
                 />
               </Card>
+              <div className={editStyle.first_next_button_container}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  className={editStyle.next_button}
+                >
+                  Next
+                </Button>
+              </div>
             </Grid>
           </Grid>
         </Paper>
@@ -281,11 +307,9 @@ function getStepContent(
                   id="users-search"
                   style={{ width: 300 }}
                   multiple
-                  value={collection.members}
+                  value={requestMember}
                   onChange={(event, newValue) => {
-                    setRequestMember({
-                      newValue,
-                    });
+                    setRequestMember(requestMember.concat(newValue));
                   }}
                   options={props.users}
                   renderInput={(params) => {
@@ -322,6 +346,15 @@ function getStepContent(
                     {!!requestMember && requestMember.displayName}
                   </div>
                 </div>
+                <div className={editStyle.request_comment_container}>
+                  <TextArea
+                    inline
+                    width="100%"
+                    height="100px"
+                    maxHeight="100px"
+                    textSize={14}
+                  />
+                </div>
               </div>
             </Grid>
             <Grid item xs>
@@ -334,6 +367,16 @@ function getStepContent(
                     title={collection.title}
                   />
                 </Card>
+              </div>
+              <div className={editStyle.first_next_button_container}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => props.editCollection(collection)}
+                  className={editStyle.next_button}
+                >
+                  Finish
+                </Button>
               </div>
             </Grid>
           </Grid>
@@ -357,7 +400,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
   const [passwordActive, setPasswordActive] = useState(false);
   const steps = getSteps();
   const collectionDetail = props.collectionDetail;
-  const [requestMember, setRequestMember] = useState<UserView>();
+  const [requestMember, setRequestMember] = useState<UserView[]>();
   const [collection, setCollection] = useState({
     id: collectionDetail.id,
     collectionType: collectionDetail.collectionType,
@@ -398,30 +441,10 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
             setPasswordActive,
             requestMember,
             setRequestMember,
+            handleNext,
             props
           )}
-          <div>
-            {activeStep === steps.length - 1 ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => props.editCollection(collection)}
-              >
-                Finish
-              </Button>
-            ) : (
-              <div className={editStyle.next_button_container}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                  className={editStyle.next_button}
-                >
-                  Next
-                </Button>
-              </div>
-            )}
-          </div>
+          <div></div>
         </div>
       </div>
     </div>
