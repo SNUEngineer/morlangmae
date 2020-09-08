@@ -1,0 +1,126 @@
+.setting_container {
+  display: flex;
+  flex-direction: row;
+  .set_title_container {
+    width: 0;
+    flex-grow: 1;
+    padding: 5px;
+    box-sizing: border-box;
+
+    .title_text_field {
+    }
+  }
+  .set_date_container {
+    width: 0;
+    flex-grow: 1;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+}
+
+.input_option_container {
+  width: 400px;
+}
+
+.next_button_container {
+  position: relative;
+  width: 100%;
+  .next_button {
+    position: absolute;
+    right: 0px;
+  }
+}
+
+.writer_container {
+  $avatar_width: 30px;
+  position: relative;
+  width: 300px;
+  height: 50px;
+  .avatar {
+    height: $avatar_width;
+    width: $avatar_width;
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translate(0%, -50%);
+  }
+
+  .writer_info_container {
+    position: absolute;
+    left: $avatar_width + 30px;
+    top: 50%;
+    transform: translate(0%, -50%);
+    .name_text {
+    }
+    .company_info {
+    }
+  }
+}
+
+.attended_user_check_container {
+  margin-top: 20px;
+  height: 230px;
+  .text {
+    font-size: 30px;
+  }
+}
+.attended_user_container {
+  margin-top: 20px;
+  height: 150px;
+
+  .count_text {
+    height: 30px;
+  }
+  .list_container {
+    max-height: 100px;
+    margin: 5px;
+    background-color: #aaaaaaaa;
+    overflow: auto;
+  }
+}
+
+.password_container {
+  .is_password_container {
+    position: relative;
+    height: 20px;
+    background-color: greenyellow;
+    margin-top: 10px;
+    .check_box {
+      position: absolute;
+      box-sizing: border-box;
+      left: 0px;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+    }
+    .text {
+      position: absolute;
+      left: 40px;
+      text-align: center;
+    }
+  }
+}
+
+.request_container {
+  height: 200px;
+  .text {
+    font-size: 30px;
+  }
+  .request_member_container {
+    height: 30px;
+    margin: 5px;
+    background-color: #aaaaaaaa;
+    overflow: auto;
+  }
+}
+
+.title_image_check {
+  width: 100%;
+  height: 100%;
+  background-color: greenyellow;
+
+  .text {
+    font-size: 30px;
+    margin-bottom: 40px;
+  }
+}
