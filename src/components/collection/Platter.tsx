@@ -105,6 +105,12 @@ export default function Platter(props: PlatterProps) {
         open={open}
         classes={{
           paperScroll: {},
+          paper: {
+            margin: "100px",
+            position: "relative",
+            overflowY: "auto",
+            backgroundColor: "red",
+          },
         }}
       >
         <List>
@@ -116,7 +122,6 @@ export default function Platter(props: PlatterProps) {
             </ListItemAvatar>
             <ListItemText primary={options[0]} />
           </ListItem>
-
           <ListItem button onClick={() => handleListItemClick(options[1])}>
             <ListItemAvatar>
               <Avatar className={classes.avatar}>

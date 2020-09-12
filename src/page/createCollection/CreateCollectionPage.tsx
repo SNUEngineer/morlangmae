@@ -41,6 +41,7 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
   const createStyle = useStyles();
   const { register, handleSubmit } = useForm();
   console.log("createStyle " + createStyle.paper);
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

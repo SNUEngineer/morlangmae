@@ -32,6 +32,15 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
       open
       PaperComponent={PaperComponent}
       className={editStyle.dialog}
+      classes={{
+        paper: {
+          margin: 100,
+          position: "relative",
+          overflowY: "auto",
+          backgroundColor: "red",
+        },
+      }}
+
       //onClose={handleClose}
     >
       <div className={editStyle.container}>

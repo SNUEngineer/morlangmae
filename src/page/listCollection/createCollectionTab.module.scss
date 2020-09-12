@@ -1,0 +1,35 @@
+.list_item_container {
+  width: 100%;
+  background-color: pink;
+}
+
+.header_container {
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  .text {
+    flex-grow: 1;
+    font-size: 35px;
+  }
+  .sort_menu {
+  }
+}
+.create_button_container {
+  position: relative;
+  height: 50px;
+
+  .create_button {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    right: 30px;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 100px;
+    .create_icon {
+    }
+    .create_text {
+      text-align: right;
+    }
+  }
+}

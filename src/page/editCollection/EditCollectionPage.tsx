@@ -197,7 +197,7 @@ function getStepContent(
           <div className={editStyle.input_option_container}>asdf</div>
           <Grid container spacing={1}>
             <Grid item xs>
-              <Autocomplete
+              {/* <Autocomplete
                 id="users-search"
                 style={{ width: 300 }}
                 multiple
@@ -236,7 +236,7 @@ function getStepContent(
                     </div>
                   </Fragment>
                 )}
-              />
+              /> */}
               <div className={editStyle.attended_user_container}>
                 {attendedUser(false)}
               </div>
@@ -307,7 +307,7 @@ function getStepContent(
 
               <div className={editStyle.request_container}>
                 <Typography className={editStyle.text}>생성 요청</Typography>
-                <Autocomplete
+                {/* <Autocomplete
                   id="users-search"
                   style={{ width: 300 }}
                   multiple
@@ -343,7 +343,7 @@ function getStepContent(
                       </div>
                     </Fragment>
                   )}
-                />
+                /> */}
 
                 <div className={editStyle.request_member_container}>
                   <div className={editStyle.writer_info_container}>

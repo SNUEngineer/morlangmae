@@ -1,0 +1,38 @@
+.my_collection_list_container {
+  width: 100%;
+}
+
+.header_container {
+  margin-top: 100px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  .text {
+    flex-grow: 1;
+    font-size: 35px;
+  }
+  .sort_menu {
+  }
+}
+
+.member_header_container {
+  margin-bottom: 100px;
+  .text {
+    font-size: 40px;
+  }
+  .sort_menu {
+  }
+}
+
+.view_pager_container {
+  width: 500px;
+  height: 500px;
+  background-color: pink;
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: gray;
+  margin-bottom: 20px;
+}
