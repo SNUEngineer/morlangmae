@@ -15,8 +15,8 @@ import { getMyCollections } from "../../services/collection.service";
 import { COLLECTION_LIST_MY_COLLECTION } from "../../common/paths";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import collectionStyle from "./myCollectionTab.module.scss";
-import { Carousel } from "../../components/customizedComponent/Carousel";
-
+// import Slider from "../../components/customizedComponent/Carousel";
+import Slider from "react-slick";
 export interface MyCollectionTabProps {
   // pinned: CollectionData[];
   // myCollections: CollectionData[];
@@ -90,7 +90,6 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     startDate: 0,
     endDate: 0,
   };
-  const myCollections = [collection1, collection2];
   const testCollections = [
     collection1,
     collection2,
@@ -99,32 +98,18 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     collection1,
     collection2,
   ];
-  const helpfulCollections = [collection1, collection2];
   const history = useHistory();
   const onCollectionClick = (data: CollectionData) => {
     const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`;
     history.push(path);
   };
-
-  // const DemoCarousel = () => (
-  //   <Carousel
-  //     showArrows
-  //     infiniteLoop
-  //     autoPlay
-  //     emulateTouch
-  //     onClickItem={(...args) => console.log("onClickItem", ...args)}
-  //     onChange={(...args) => console.log("onChange", ...args)}
-  //     onClickThumb={(...args) => console.log("onClickThumb", ...args)}
-  //   >
-  //     <div className={collectionStyle.view_pager_container}></div>
-  //     <div className={collectionStyle.view_pager_container}></div>
-  //     <div className={collectionStyle.view_pager_container}></div>
-  //     <div className={collectionStyle.view_pager_container}></div>
-  //     <div className={collectionStyle.view_pager_container}></div>
-  //     <div className={collectionStyle.view_pager_container}></div>
-  //   </Carousel>
-  // );
-
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   return (
     <div>
       {/* <CollectionTab /> */}
@@ -142,11 +127,33 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
         myCollections={testCollections}
         onCollectionClick={onCollectionClick}
       />
-      {/* {DemoCarousel()} */}
-      {/* <HelpfulCollectionCardList
-        helpfulCollections={helpfulCollections}
-        onCollectionClick={onCollectionClick}
-      /> */}
+
+      <Slider {...settings}>
+        <div>
+          asdfasdfa
+          <h3>1</h3>
+        </div>
+        <div>
+          asdfasdfa
+          <h3>2</h3>
+        </div>
+        <div>
+          asdfasdfa
+          <h3>3</h3>
+        </div>
+        <div>
+          asdfasdfa
+          <h3>4</h3>
+        </div>
+        <div>
+          asdfasdfa
+          <h3>5</h3>
+        </div>
+        <div>
+          asdfasdfa
+          <h3>6</h3>
+        </div>
+      </Slider>
     </div>
   );
 }

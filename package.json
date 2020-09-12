@@ -37,6 +37,8 @@
     "bootstrap": "^4.5.2",
     "clsx": "^1.1.1",
     "electron-is-dev": "^1.2.0",
+    "enquire.js": "2.1.6",
+    "json2mq": "0.2.0",
     "node-sass": "4.14.1",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
@@ -48,6 +50,8 @@
     "react-pdf": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-slick": "0.27.11",
+    "slick-carousel": "1.8.1",
     "styled-components": "^5.1.1",
     "typescript": "^3.9.7",
     "uuid": "^8.3.0"

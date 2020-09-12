@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { BlockView } from "../../services/platter.service";
 import TextField from "@material-ui/core/TextField";
 import platterStyle from "./platter.module.scss";
-import Dialog from "@material-ui/core/Dialog";
+
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -17,6 +17,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
+import Dialog from "../customizedComponent/Dialog";
 
 export interface PlatterProps {
   id: number;
@@ -104,7 +105,9 @@ export default function Platter(props: PlatterProps) {
         aria-labelledby="simple-dialog-title"
         open={open}
         classes={{
-          paperScroll: {},
+          paperScroll: {
+            alignItems: "baseline",
+          },
           paper: {
             margin: "100px",
             position: "relative",
