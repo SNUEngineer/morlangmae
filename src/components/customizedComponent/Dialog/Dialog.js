@@ -4,7 +4,7 @@ import clsx from "clsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import capitalize from "@material-ui/core/utils/capitalize";
 import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
+import Backdrop from "../Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { duration } from "@material-ui/core/styles/transitions";
 import Paper from "@material-ui/core/Paper";
@@ -56,6 +56,10 @@ export const styles = (theme) => ({
       overflowY: "visible",
       boxShadow: "none",
     },
+    borderRadius: "15px",
+    borderWidth: "1px",
+    borderColor: "green",
+    borderStyle: "solid",
   },
   /* Styles applied to the `Paper` component if `scroll="paper"`. */
   paperScrollPaper: {
@@ -156,7 +160,6 @@ const Dialog = React.forwardRef(function Dialog(props, ref) {
     disableEscapeKeyDown = false,
     fullScreen = false,
     fullWidth = false,
-
     maxWidth = "sm",
     onBackdropClick,
     onClose,
@@ -170,8 +173,7 @@ const Dialog = React.forwardRef(function Dialog(props, ref) {
     TransitionProps,
     "aria-describedby": ariaDescribedby,
     "aria-labelledby": ariaLabelledby,
-    // position,
-    // isCustomized,
+    position,
     ...other
   } = props;
   const test = "hello";
@@ -200,6 +202,7 @@ const Dialog = React.forwardRef(function Dialog(props, ref) {
 
   return (
     <Modal
+      style={{ backgroundColor: "rgba(255,255,255,0)" }}
       className={clsx(classes.root, className)}
       BackdropComponent={Backdrop}
       BackdropProps={{
@@ -235,11 +238,13 @@ const Dialog = React.forwardRef(function Dialog(props, ref) {
           data-mui-test="FakeBackdrop"
         >
           <PaperComponent
-            elevation={24}
+            elevation={0}
             role="dialog"
             aria-describedby={ariaDescribedby}
             aria-labelledby={ariaLabelledby}
             {...PaperProps}
+            style={!!position ? { left: position.x, top: position.y } : {}}
+            // style로 위치 조정
             className={clsx(
               classes.paper,
               classes[`paperScroll${capitalize(scroll)}`],
@@ -376,12 +381,10 @@ Dialog.propTypes = {
    * By default, the element is based on this [`Transition`](http://reactcommunity.org/react-transition-group/transition) component.
    */
   TransitionProps: PropTypes.object,
-  // position: PropTypes.object,
-  // isCustomized: PropTypes.boolean,
+  position: PropTypes.object,
 };
 
 const customizedDialog = () => {
-  console.log("Dialog.testtesttest" + JSON.stringify(Dialog.test));
   return withStyles(styles, { name: "BKDialog" })(Dialog);
 };
 

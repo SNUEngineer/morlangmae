@@ -1,4 +1,7 @@
-.container {
+.board_container {
   position: relative;
-  margin-top: 50px;
+  padding: 100px;
+  .container {
+    border-radius: 15px;
+  }
 }

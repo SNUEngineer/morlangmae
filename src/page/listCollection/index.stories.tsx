@@ -3,7 +3,15 @@ import CollectionPage from "./CollectionPage";
 import CollectionTab from "./CollectionTab";
 import MyCollectionTab from "./MyCollectionTab";
 import CreateCollectionTab from "./CreateCollectionTab";
+import SearchCollectionTab from "./SearchCollectionTab";
+
 import PinnedCollectionCardList from "./PinnedCollectionCardList";
+import createStyle from "./createCollectionTab.module.scss";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 
 export default { title: "collection page" };
 
@@ -124,4 +132,18 @@ export function createCollectionTab() {
   ];
 
   return <CreateCollectionTab collections={testCollections} />;
+}
+export function searchCollectionTab() {
+  return <SearchCollectionTab />;
+}
+
+export function carsousle2222() {
+  return (
+    <CarouselList showItems={3.1}>
+      <div className={createStyle.slider_item}>Item 1</div>
+      <div className={createStyle.slider_item}>Item 2</div>
+      <div className={createStyle.slider_item}>Item 3</div>
+      <div className={createStyle.slider_item}>Item 4</div>
+    </CarouselList>
+  );
 }

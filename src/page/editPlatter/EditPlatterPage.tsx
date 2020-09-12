@@ -43,9 +43,11 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
 
       //onClose={handleClose}
     >
-      <div className={editStyle.container}>
-        <Platter editable {...props} />
-        <Thread {...props} />
+      <div className={editStyle.board_container}>
+        <div className={editStyle.container}>
+          <Platter editable {...props} />
+          <Thread {...props} />
+        </div>
       </div>
     </Dialog>
   );

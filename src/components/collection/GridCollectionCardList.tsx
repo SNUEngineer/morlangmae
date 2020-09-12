@@ -12,11 +12,11 @@ import listStyle from "./collectionList.module.scss";
 export interface GridCollectionCardListProps {
   collections: CollectionData[];
   columnCount: number;
+  viewType: string;
   onCollectionClick(data: CollectionData): Promise<void>;
 }
-
 export function GridCollectionCardList(props: GridCollectionCardListProps) {
-  const { collections, onCollectionClick, columnCount } = props;
+  const { collections, onCollectionClick, columnCount, viewType } = props;
   const [gridCollections, setGridCollections] = useState<CollectionData[]>();
   useEffect(() => {
     if (collections.length < columnCount) {
@@ -45,7 +45,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 <CollectionCard
                   key={item.key}
                   data={item}
-                  viewType={"WIDE"}
+                  viewType={!!viewType ? viewType : "WIDE"}
                   onClick={onCollectionClick}
                 />
               )}
@@ -54,7 +54,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
         })}
       </div>
     );
-  }, [onCollectionClick, gridCollections]);
+  }, [onCollectionClick, gridCollections, viewType]);
 
   return (
     <Card>

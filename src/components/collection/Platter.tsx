@@ -18,6 +18,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import Dialog from "../customizedComponent/Dialog";
+import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
 
 export interface PlatterProps {
   id: number;
@@ -63,80 +64,7 @@ export default function Platter(props: PlatterProps) {
     subtitle: "현지인 들이 추천하는",
     title: "1차 기획 회의",
   };
-  const options = ["참여중인 인원 관리", "수정하기"];
-  const useStyles = makeStyles({
-    avatar: {
-      backgroundColor: blue[100],
-      color: blue[600],
-    },
-  });
-
-  const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(options[1]);
-  const [menuCoordinates, setMenuCoordinates] = useState({
-    x: 0,
-    y: 0,
-  });
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (value) => {
-    setOpen(false);
-    setSelectedValue(value);
-  };
-
-  function DotMenuDialog(props) {
-    const classes = useStyles();
-    const { onClose, selectedValue, open } = props;
-
-    const handleClose = () => {
-      onClose(selectedValue);
-    };
-
-    const handleListItemClick = (value) => {
-      onClose(value);
-    };
-
-    return (
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="simple-dialog-title"
-        open={open}
-        classes={{
-          paperScroll: {
-            alignItems: "baseline",
-          },
-          paper: {
-            margin: "100px",
-            position: "relative",
-            overflowY: "auto",
-            backgroundColor: "red",
-          },
-        }}
-      >
-        <List>
-          <ListItem button onClick={() => handleListItemClick(options[0])}>
-            <ListItemAvatar>
-              <Avatar className={classes.avatar}>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={options[0]} />
-          </ListItem>
-          <ListItem button onClick={() => handleListItemClick(options[1])}>
-            <ListItemAvatar>
-              <Avatar className={classes.avatar}>
-                <EditIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={options[1]} />
-          </ListItem>
-        </List>
-      </Dialog>
-    );
-  }
+  const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
 
   return (
     <div className={platterStyle.platter_container}>
@@ -148,22 +76,7 @@ export default function Platter(props: PlatterProps) {
       <Typography>{props.createdBy.companyId}</Typography> */}
         <div className={platterStyle.dot_menu_container}>
           <div className={platterStyle.dot_menu}>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={(event) => {
-                handleClickOpen();
-                setMenuCoordinates(event.target.getBoundingClientRect());
-              }}
-            >
-              ...
-            </Button>
-            <DotMenuDialog
-              selectedValue={selectedValue}
-              menuCoordinates={menuCoordinates}
-              open={open}
-              onClose={handleClose}
-            />
+            <FloatingMenu options={options} />
           </div>
         </div>
 

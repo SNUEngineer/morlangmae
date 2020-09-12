@@ -15,8 +15,9 @@ import { getMyCollections } from "../../services/collection.service";
 import { COLLECTION_LIST_MY_COLLECTION } from "../../common/paths";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import collectionStyle from "./myCollectionTab.module.scss";
+import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 // import Slider from "../../components/customizedComponent/Carousel";
-import Slider from "react-slick";
+
 export interface MyCollectionTabProps {
   // pinned: CollectionData[];
   // myCollections: CollectionData[];
@@ -103,13 +104,6 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`;
     history.push(path);
   };
-  var settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   return (
     <div>
       {/* <CollectionTab /> */}
@@ -127,33 +121,10 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
         myCollections={testCollections}
         onCollectionClick={onCollectionClick}
       />
-
-      <Slider {...settings}>
-        <div>
-          asdfasdfa
-          <h3>1</h3>
-        </div>
-        <div>
-          asdfasdfa
-          <h3>2</h3>
-        </div>
-        <div>
-          asdfasdfa
-          <h3>3</h3>
-        </div>
-        <div>
-          asdfasdfa
-          <h3>4</h3>
-        </div>
-        <div>
-          asdfasdfa
-          <h3>5</h3>
-        </div>
-        <div>
-          asdfasdfa
-          <h3>6</h3>
-        </div>
-      </Slider>
+      <HelpfulCollectionCardList
+        helpfulCollections={testCollections}
+        onCollectionClick={onCollectionClick}
+      />
     </div>
   );
 }
@@ -203,9 +174,16 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
 
   let columnList = [];
   let myCollectionsGrid = [];
+  let index = 0;
   const columnCount = 3; // 반응에 따라 4개 이상으로 늘어날 경우 자동으로 배열.
   filteredCollections.forEach((element) => {
     columnList.push(element);
+    index++;
+    if (index === filteredCollections.length) {
+      while (columnList.length < columnCount) {
+        columnList.push(null);
+      }
+    }
     if (columnList.length >= columnCount) {
       myCollectionsGrid.push(columnList);
       columnList = [];
@@ -253,22 +231,29 @@ export function HelpfulCollectionCardList(
   props: HelpfulCollectionCardListProps
 ) {
   const helpfulCollections = props.helpfulCollections;
-  const cards = helpfulCollections.map((data: CollectionData) => {
-    return (
-      <CollectionCard
-        key={data.id}
-        data={data}
-        viewType="NORMAL"
-        onClick={props.onCollectionClick}
-      />
-    );
-  });
 
   return (
-    <Card>
-      <CardHeader title="도움이 될만한 컬렉션" />
+    <div>
+      <div className={collectionStyle.header_container}>
+        <div className={collectionStyle.text}>도움이 될만한 컬렉션</div>
+      </div>
       <Divider />
-      <Grid container>{cards}</Grid>
-    </Card>
+      <Grid container>
+        <CarouselList showItems={3.1}>
+          {helpfulCollections.map((item) => {
+            return (
+              <div className={collectionStyle.helpful_list_item_container}>
+                <CollectionCard
+                  key={item.key}
+                  data={item}
+                  viewType={"WIDE"}
+                  onClick={() => {}}
+                />
+              </div>
+            );
+          })}
+        </CarouselList>
+      </Grid>
+    </div>
   );
 }
