@@ -1,5 +1,5 @@
 import React from "react";
-import Dialog from "@material-ui/core/Dialog";
+import Dialog from "../../components/customizedComponent/PlatterDialog/Dialog";
 import Platter, { PlatterProps } from "../../components/collection/Platter";
 import { useLocation, useHistory } from "react-router-dom";
 import Thread, { ThreadProps } from "../../components/thread/Thread";
@@ -25,31 +25,42 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
-    <Dialog
-      fullWidth
-      maxWidth="xl"
-      fullScreen={fullScreen}
-      open
-      PaperComponent={PaperComponent}
-      className={editStyle.dialog}
-      classes={{
-        paper: {
-          margin: 100,
-          position: "relative",
-          overflowY: "auto",
-          backgroundColor: "red",
-        },
-      }}
+    <div>
+      <Dialog
+        fullWidth
+        maxWidth="xl"
+        fullScreen={fullScreen}
+        open
+        PaperComponent={PaperComponent}
+        className={editStyle.dialog}
+        classes={{
+          paper: {
+            position: "relative",
+            overflowY: "auto",
+            backgroundColor: "red",
+          },
+        }}
 
-      //onClose={handleClose}
-    >
-      <div className={editStyle.board_container}>
-        <div className={editStyle.container}>
-          <Platter editable {...props} />
-          <Thread {...props} />
+        //onClose={handleClose}
+      >
+        window.pageYOffset
+        <div className={editStyle.board_container}>
+          <div className={editStyle.container}>
+            <div className={editStyle.platter_container}>
+              <Platter editable {...props} />
+            </div>
+            <div className={editStyle.thread_container}>
+              <Thread {...props} />
+            </div>
+            <div className={editStyle.fixed_menu_button}>
+              <div className={editStyle.editor_button}>에디터</div>
+              <div className={editStyle.platter_button}>플레터</div>
+              <div className={editStyle.thread_button}>스레드</div>
+            </div>
+          </div>
         </div>
-      </div>
-    </Dialog>
+      </Dialog>
+    </div>
   );
 }
 

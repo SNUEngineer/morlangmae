@@ -2,6 +2,8 @@
   position: relative;
   width: 100%;
   margin: auto 0;
+  padding-top: 150px;
+  padding-bottom: 150px;
   padding-left: 300px;
   padding-right: 300px;
   box-sizing: border-box;
@@ -15,8 +17,7 @@
     position: absolute;
     top: 0;
     left: 0;
-
-    .subtitle {
+    “ .subtitle {
       input {
         font-size: 14px;
       }

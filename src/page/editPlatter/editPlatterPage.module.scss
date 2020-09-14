@@ -1,7 +1,49 @@
 .board_container {
+  $board_bottom_margin: 300px;
   position: relative;
-  padding: 100px;
+  padding-top: 300px;
+  padding-bottom: $board_bottom_margin;
+  padding-left: 100px;
+  padding-right: 100px;
+  background-color: rgba(0, 0, 0, 0.3);
   .container {
     border-radius: 15px;
+    border-style: solid;
+    background-color: white;
+    flex-direction: column;
+
+    .platter_container {
+      flex-grow: 1;
+    }
+    .thread_container {
+      height: calc(100vh - 300px);
+    }
+  }
+}
+
+.fixed_menu_button {
+  position: fixed;
+  right: 0;
+  top: 100px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  .editor_button {
+    height: 80px;
+    width: 80px;
+    margin: 20px;
+    background-color: greenyellow;
+  }
+  .platter_button {
+    height: 80px;
+    width: 80px;
+    margin: 20px;
+    background-color: greenyellow;
+  }
+  .thread_button {
+    height: 80px;
+    width: 80px;
+    margin: 20px;
+    background-color: greenyellow;
   }
 }
