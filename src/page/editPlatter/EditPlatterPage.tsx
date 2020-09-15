@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect, useState, useRef, useCallback } from "react";
 import Dialog from "../../components/customizedComponent/PlatterDialog/Dialog";
 import Platter, { PlatterProps } from "../../components/collection/Platter";
 import { useLocation, useHistory } from "react-router-dom";
@@ -22,8 +22,71 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   // const handleClose = () => {
   //   history.replace(pathname)
   // }
+  const [scrollTop, setScrollTop] = useState(0);
+  const [threadScrollTop, setThreadScrollTop] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  const boardContainerEl = useRef<any>(null);
+  const threadContainerEl = useRef<any>(null);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  useLayoutEffect(() => {
+    function updateScrollPosition() {
+      if (!!boardContainerEl.current) {
+        // console.log(
+        //   "winSCroll afa " +
+        //     JSON.stringify(boardContainerEl.current.getBoundingClientRect())
+        // );
+        setScrollTop(-boardContainerEl.current.getBoundingClientRect().y);
+        console.log("----------------");
+        console.log(window.pageYOffset);
+        console.log(boardContainerEl.current.scrollTop);
+        console.log("----------------");
+        if (
+          threadContainerEl.current.getBoundingClientRect().y - 30 <
+          window.innerHeight
+        ) {
+          console.log("우와우와!! 침범");
+          window.scrollTo(0, 0);
+        }
+      }
+      if (!!threadContainerEl.current) {
+        setThreadScrollTop(threadContainerEl.current.getBoundingClientRect().y);
+      }
+    }
+
+    function updateSize() {
+      setWindowHeight(window.innerHeight);
+      if (!!boardContainerEl.current) {
+      }
+      if (threadScrollTop < windowHeight) {
+        // thread 영역 침범
+        console.log("에러에러!!! 스레드 영역 침범!");
+      }
+    }
+    //window.addEventListener("scroll", updateScrollPosition, false);
+    window.addEventListener("scroll", (_) => updateScrollPosition(), true);
+    window.addEventListener("resize", (_) => updateSize(), true);
+    updateSize();
+    updateScrollPosition();
+    return () => {
+      window.removeEventListener("scroll", updateScrollPosition);
+      window.removeEventListener("resize", updateSize);
+    };
+  }, [boardContainerEl, threadContainerEl, window]);
+
+  const cards = useCallback(() => {
+    console.log("에러에러!!! 스레드 영역 침범!asdf");
+    if (threadScrollTop < windowHeight) {
+      // thread 영역 침범
+      console.log("에러에러!!! 스레드 영역 침범!");
+    }
+  }, [threadScrollTop, windowHeight]);
+
+  const onScrollHandler = (event) => {
+    console.log("sadfasd " + event.pageY);
+  };
+
   return (
     <div>
       <Dialog
@@ -32,24 +95,21 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
         fullScreen={fullScreen}
         open
         PaperComponent={PaperComponent}
-        className={editStyle.dialog}
-        classes={{
-          paper: {
-            position: "relative",
-            overflowY: "auto",
-            backgroundColor: "red",
-          },
-        }}
 
         //onClose={handleClose}
       >
-        window.pageYOffset
-        <div className={editStyle.board_container}>
+        <div
+          className={editStyle.board_container}
+          ref={boardContainerEl}
+          onScroll={(event) => {
+            onScrollHandler(event);
+          }}
+        >
           <div className={editStyle.container}>
             <div className={editStyle.platter_container}>
               <Platter editable {...props} />
             </div>
-            <div className={editStyle.thread_container}>
+            <div className={editStyle.thread_container} ref={threadContainerEl}>
               <Thread {...props} />
             </div>
             <div className={editStyle.fixed_menu_button}>
