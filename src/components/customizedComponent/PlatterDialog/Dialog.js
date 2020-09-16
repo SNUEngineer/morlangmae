@@ -51,8 +51,8 @@ export const styles = (theme) => ({
   paper: {
     backgroundColor: "transparent",
     margin: 0,
-    height: "100%",
     width: "100%",
+    height: "100vh",
     position: "relative",
     overflowY: "auto", // Fix IE 11 issue, to remove at some point.
     "@media print": {

@@ -25,6 +25,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   const [scrollTop, setScrollTop] = useState(0);
   const [threadScrollTop, setThreadScrollTop] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
+  const [openThread, setOpenThread] = useState(false);
 
   const boardContainerEl = useRef<any>(null);
   const threadContainerEl = useRef<any>(null);
@@ -33,21 +34,17 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   useLayoutEffect(() => {
     function updateScrollPosition() {
       if (!!boardContainerEl.current) {
-        // console.log(
-        //   "winSCroll afa " +
-        //     JSON.stringify(boardContainerEl.current.getBoundingClientRect())
-        // );
+        console.log("win Scroll afa   " + boardContainerEl.current.pageYOffset);
         setScrollTop(-boardContainerEl.current.getBoundingClientRect().y);
-        console.log("----------------");
-        console.log(window.pageYOffset);
-        console.log(boardContainerEl.current.scrollTop);
-        console.log("----------------");
         if (
-          threadContainerEl.current.getBoundingClientRect().y - 30 <
+          threadContainerEl.current.getBoundingClientRect().y <
           window.innerHeight
         ) {
           console.log("우와우와!! 침범");
-          window.scrollTo(0, 0);
+          boardContainerEl.current.scrollTo(
+            0,
+            threadContainerEl.current.getBoundingClientRect().y
+          );
         }
       }
       if (!!threadContainerEl.current) {
@@ -87,6 +84,10 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
     console.log("sadfasd " + event.pageY);
   };
 
+  const clickThreadButton = useCallback(() => {
+    setOpenThread(!openThread);
+  }, [openThread]);
+
   return (
     <div>
       <Dialog
@@ -102,6 +103,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
           className={editStyle.board_container}
           ref={boardContainerEl}
           onScroll={(event) => {
+            console.log("asdf ");
             onScrollHandler(event);
           }}
         >
@@ -115,7 +117,12 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
             <div className={editStyle.fixed_menu_button}>
               <div className={editStyle.editor_button}>에디터</div>
               <div className={editStyle.platter_button}>플레터</div>
-              <div className={editStyle.thread_button}>스레드</div>
+              <div
+                className={editStyle.thread_button}
+                onClick={clickThreadButton()}
+              >
+                스레드
+              </div>
             </div>
           </div>
         </div>

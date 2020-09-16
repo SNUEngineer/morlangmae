@@ -48,9 +48,9 @@ export const styles = (theme) => ({
   },
   /* Styles applied to the `Paper` component. */
   paper: {
-    margin: 32,
     position: "absolute",
-    left: "0",
+    transform: "translate(-100%, -20px)",
+    minWidth: "210px",
     overflowY: "auto", // Fix IE 11 issue, to remove at some point.
     "@media print": {
       overflowY: "visible",

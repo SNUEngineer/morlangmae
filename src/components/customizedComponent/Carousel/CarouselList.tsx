@@ -1,5 +1,7 @@
 import React from "react";
 import Carousel from "react-multi-carousel";
+import { CustomButtonGroup } from "./CarouselArrow";
+import carouselStyle from "./carouselArrow.module.scss";
 
 export interface CarouselListProps {
   showItems: number;
@@ -12,7 +14,7 @@ export default function CarouselList(props: CarouselListProps) {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: props.showItems,
-      slidesToSlide: 1, // optional, default to 1.
+      slidesToSlide: 3, // optional, default to 1.
     },
   };
 
@@ -34,6 +36,9 @@ export default function CarouselList(props: CarouselListProps) {
       deviceType={"desktop"}
       dotListClass="custom-dot-list-style"
       itemClass="carousel-item-padding-40-px"
+      customDot={<div />}
+      renderButtonGroupOutside={true}
+      // customButtonGroup={<CustomButtonGroup />}
     >
       {props.children}
     </Carousel>

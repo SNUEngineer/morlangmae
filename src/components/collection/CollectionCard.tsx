@@ -5,6 +5,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import collectionStyle from "./collectionCard.module.scss";
+import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
 
 export interface CollectionData {
   id: number;
@@ -56,15 +57,19 @@ export default function CollectionCard(props: CollectionCardProps) {
   //   endDate: 0,
   const dateText = data.startDate + " - " + data.endDate;
 
+  const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
+
   switch (viewType) {
     case "WIDE":
       return (
-        <Card className={collectionStyle.card_root} onClick={onClick}>
+        <div className={collectionStyle.card_root} onClick={onClick}>
           <div className={collectionStyle.service_type_and_menu}>
             <div className={collectionStyle.service_type}>
               {data.serviceType}
             </div>
-            <div className={collectionStyle.dot_menu}>...</div>
+            <div className={collectionStyle.dot_menu}>
+              <FloatingMenu options={options} />
+            </div>
           </div>
           <div className={collectionStyle.title}>{data.title}</div>
           {notificationCount > 0 && (
@@ -88,7 +93,7 @@ export default function CollectionCard(props: CollectionCardProps) {
               </div>
             </div>
           )}
-        </Card>
+        </div>
         // <Card className={classes.root} onClick={onClick}>
 
         //   <Typography>{data.serviceType}</Typography>

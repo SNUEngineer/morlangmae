@@ -21,11 +21,11 @@ export function basic() {
     title: "첫번째 컬렉션",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
     serviceType: "개발 테스트",
-    createdDate: new Date(),
-    startDate: new Date(),
+    createdDate: "8월 10일",
+    startDate: "9월 6일",
     endDate: new Date(),
   };
   const collection2 = {
@@ -33,7 +33,7 @@ export function basic() {
     title: "두번째 컬렉션",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
     serviceType: "개발 테스트222",
     createdDate: 0,
@@ -68,7 +68,7 @@ export function createCollectionTab() {
     title: "첫번째 컬렉션",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
     serviceType: "개발 테스트",
     createdDate: 0,
@@ -80,7 +80,7 @@ export function createCollectionTab() {
     title: "두번째 컬렉션",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
     serviceType: "개발 테스트222",
     createdDate: 0,
@@ -92,7 +92,7 @@ export function createCollectionTab() {
     title: "두번째 컬렉션",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
     serviceType: "개발 테스트222",
     createdDate: 0,
@@ -104,7 +104,7 @@ export function createCollectionTab() {
     title: "두번째 컬렉션",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
     serviceType: "개발 테스트222",
     createdDate: 0,
@@ -116,7 +116,7 @@ export function createCollectionTab() {
     title: "두번째 컬렉션",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
     serviceType: "개발 테스트222",
     createdDate: 0,

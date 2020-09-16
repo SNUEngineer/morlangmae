@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 
@@ -11,6 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import Dialog from "../Dialog";
+import menuStyle from "./menu.module.scss";
 
 export default function FloatingMenu(props) {
   const { options } = props;
@@ -21,6 +22,8 @@ export default function FloatingMenu(props) {
       color: blue[600],
     },
   });
+
+  const conatinerEl = useRef<any>(null);
 
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(options[1]);
@@ -50,50 +53,59 @@ export default function FloatingMenu(props) {
       onClose(value);
     };
 
+    const setDialogSize = () => {
+      console.log("conatinerEl ");
+      if (!!conatinerEl.current) {
+        console.log("conatinerEl " + conatinerEl.current.offsetWidth);
+      }
+    };
+    useLayoutEffect(() => {
+      window.addEventListener("resize", (_) => setDialogSize(), true);
+      setDialogSize();
+      return () => {
+        window.removeEventListener("resize", setDialogSize);
+      };
+    }, [conatinerEl.current]);
     return (
       <Dialog
         onClose={handleClose}
         aria-labelledby="simple-dialog-title"
         open={open}
         position={menuCoordinates}
-        classes={{
-          paperScroll: {
-            alignItems: "baseline",
-          },
-          paper: {
-            margin: "100px",
-            left: "300px",
-            position: "relative",
-            overflowY: "auto",
-            backgroundColor: "red",
-          },
-        }}
       >
-        <List>
-          {options.map((item) => {
-            return (
-              <ListItem button onClick={() => handleListItemClick(item)}>
-                <ListItemAvatar>
-                  <Avatar className={classes.avatar}>
-                    <PersonIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={item} />
-              </ListItem>
-            );
-          })}
-        </List>
+        <div
+          ref={conatinerEl}
+          onload={() => {
+            console.log("setDialogSize ");
+            setDialogSize();
+          }}
+        >
+          <List>
+            {options.map((item) => {
+              return (
+                <ListItem button onClick={() => handleListItemClick(item)}>
+                  <ListItemAvatar>
+                    <Avatar className={classes.avatar}>
+                      <PersonIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={item} />
+                </ListItem>
+              );
+            })}
+          </List>
+        </div>
       </Dialog>
     );
   }
 
   return (
     <div>
-      <Button
-        variant="outlined"
-        color="primary"
+      <div
+        className={menuStyle.button_container}
         onClick={(event) => {
           //좌표 설정 제대로...
+
           setMenuCoordinates({
             x: event.target.getBoundingClientRect().x,
             y: event.target.getBoundingClientRect().y,
@@ -101,8 +113,9 @@ export default function FloatingMenu(props) {
           handleClickOpen();
         }}
       >
-        ...
-      </Button>
+        {" "}
+        ...{" "}
+      </div>
       <DotMenuDialog
         selectedValue={selectedValue}
         menuCoordinates={menuCoordinates}

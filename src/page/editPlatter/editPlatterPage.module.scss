@@ -1,11 +1,14 @@
 .board_container {
   $board_bottom_margin: 300px;
+
   position: relative;
   padding-top: 300px;
   padding-bottom: $board_bottom_margin;
   padding-left: 100px;
   padding-right: 100px;
   background-color: rgba(0, 0, 0, 0.3);
+  overflow-y: scroll;
+  height: 100vh;
   .container {
     border-radius: 15px;
     border-style: solid;
