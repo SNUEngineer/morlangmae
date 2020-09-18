@@ -35,7 +35,6 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
     if (!gridCollections) {
       return;
     }
-    console.log("column 부족한 카운트   " + JSON.stringify(gridCollections));
     return (
       <div className={listStyle.grid_collection_container}>
         {gridCollections.map((item) => {
@@ -57,9 +56,8 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
   }, [onCollectionClick, gridCollections, viewType]);
 
   return (
-    <Card>
-      <Divider />
+    <div>
       <Grid container>{cards()}</Grid>
-    </Card>
+    </div>
   );
 }

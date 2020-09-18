@@ -18,19 +18,14 @@
   }
 }
 
-.view_pager_container {
-  width: 500px;
-  height: 500px;
-  background-color: pink;
-}
-
 .header_container {
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
   .text {
     flex-grow: 1;
-    font-size: 35px;
+    font-size: 27px;
+    color: #707070;
   }
   .go_to_all_list {
     background-color: pink;
@@ -41,36 +36,21 @@
     }
   }
 }
+
 .divider {
   height: 1px;
   width: 100%;
-  background-color: gray;
-  margin-bottom: 20px;
+  background-color: #e0e0e0;
+  margin-bottom: 54.5px;
 }
 
 .list_item_container {
   width: 100%;
   background-color: pink;
 }
-
-.requesting_memo_container {
-  margin-top: 100px;
-}
-
-.create_memo_container {
-  position: relative;
-  height: 350px;
-  width: 100%;
-  background-color: honeydew;
-  margin-bottom: 100px;
-  margin-top: 100px;
-  .drag_drop_container {
-    position: absolute;
-    width: 450px;
-    height: 350px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: gray;
-  }
+.tab_container {
+  max-width: 717px;
+  padding-top: 157px;
+  margin: 0 auto;
+  padding-bottom: 300px;
 }

@@ -1,88 +1,81 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import CollectionCard, {
-  CollectionCardProps,
-  CollectionData,
-} from "../../components/collection/CollectionCard";
+import { CollectionData } from "../../components/collection/CollectionCard";
 import MemoCard from "../../components/memo/list/memoCard";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
-import memoStyle from "./MemoListTab.module.scss";
+import memoStyle from "./MemoHomeTab.module.scss";
 
 export interface MemoListTabProps {}
 
 export default function MemoListTab(props: MemoListTabProps) {
   const collection1 = {
     id: 0,
-    title: "첫번째 컬렉션",
+    title: "3분기 마케팅 전략",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트",
-    createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    serviceType: "마케팅",
+    createdDate: "8월 10일",
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection2 = {
     id: 2,
-    title: "두번째 컬렉션",
+    title: "플랜비 직원 컨설팅",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "컨설팅",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection3 = {
     id: 3,
-    title: "두번째 컬렉션",
+    title: "SW-13 제품 디자인",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "제품",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection4 = {
     id: 4,
-    title: "두번째 컬렉션",
+    title: "KW-13 제품 디자인",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "제품",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection5 = {
     id: 5,
-    title: "두번째 컬렉션",
+    title: "프로케어 직원 컨설팅",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "컨설팅",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const testCollections = [
     collection1,
     collection2,
-    collection1,
-    collection2,
-    collection1,
+    collection3,
+    collection4,
+    collection5,
     collection2,
   ];
 
@@ -97,7 +90,7 @@ export default function MemoListTab(props: MemoListTabProps) {
   };
 
   return (
-    <div>
+    <div className={memoStyle.list_tab_container}>
       {/* <CollectionTab /> */}
       <MyMemoList memos={testCollections} onMemoClick={onMemoClick} />
     </div>

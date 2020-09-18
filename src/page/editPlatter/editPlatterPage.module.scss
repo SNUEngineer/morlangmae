@@ -1,29 +1,62 @@
+$board_bottom_margin: 150px;
+$board_border_width: 1px;
+$border-color: gray;
 .board_container {
-  $board_bottom_margin: 300px;
-
   position: relative;
   padding-top: 300px;
-  padding-bottom: $board_bottom_margin;
   padding-left: 100px;
   padding-right: 100px;
   background-color: rgba(0, 0, 0, 0.3);
   overflow-y: scroll;
   height: 100vh;
   .container {
-    border-radius: 15px;
-    border-style: solid;
     background-color: white;
     flex-direction: column;
 
     .platter_container {
-      flex-grow: 1;
-      min-height: calc(100vh + 300px);
-      background-color: yellow;
     }
+    .platter_container_opened {
+      min-height: calc(100vh + 300px);
+    }
+
+    .platter_container_closed {
+      height: 0;
+      overflow: hidden;
+    }
+
     .thread_container {
-      height: calc(100vh - 300px);
+    }
+    .thread_container_opened {
+      height: calc(100vh - 150px);
+      overflow: hidden;
+    }
+
+    .thread_container_closed {
+      height: 0;
+      overflow: hidden;
     }
   }
+  .container_thread_closed {
+    border-radius: 15px 15px 0 0;
+    border-style: solid;
+    border-width: $board_border_width;
+    border-color: $border-color;
+    border-bottom-color: transparent;
+  }
+  .container_thread_opened {
+    border-radius: 15px;
+    border-style: solid;
+    border-width: $board_border_width;
+    border-color: $border-color;
+  }
+}
+
+.board_container_thread_opened {
+  overflow-y: hidden;
+  padding-bottom: $board_bottom_margin;
+}
+.board_container_thread_closed {
+  overflow-y: scroll;
 }
 
 .fixed_menu_button {
@@ -51,4 +84,8 @@
     margin: 20px;
     background-color: greenyellow;
   }
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }

@@ -112,10 +112,7 @@ export default function FloatingMenu(props) {
           });
           handleClickOpen();
         }}
-      >
-        {" "}
-        ...{" "}
-      </div>
+      ></div>
       <DotMenuDialog
         selectedValue={selectedValue}
         menuCoordinates={menuCoordinates}

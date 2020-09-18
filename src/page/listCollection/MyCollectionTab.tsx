@@ -105,7 +105,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     history.push(path);
   };
   return (
-    <div>
+    <div className={collectionStyle.tab_container}>
       {/* <CollectionTab /> */}
 
       <div className={collectionStyle.member_header_container}>
@@ -138,7 +138,7 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
   const pinned = props.pinned.slice(0, 5);
 
   return (
-    <div>
+    <div className={collectionStyle.pinned_container}>
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>고정한 컬렉션</div>
       </div>
@@ -205,7 +205,7 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
   );
 
   return (
-    <Card>
+    <div className={collectionStyle.my_collection_container}>
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>나의 컬렉션 리스트</div>
         <div className={collectionStyle.sort_menu}>
@@ -216,9 +216,9 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
           </Select>
         </div>
       </div>
-      <Divider />
+      <div className={collectionStyle.divider} />
       <Grid container>{myCollectionCards}</Grid>
-    </Card>
+    </div>
   );
 }
 
@@ -233,20 +233,20 @@ export function HelpfulCollectionCardList(
   const helpfulCollections = props.helpfulCollections;
 
   return (
-    <div>
+    <div className={collectionStyle.helpful_container}>
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>도움이 될만한 컬렉션</div>
       </div>
-      <Divider />
+      <div className={collectionStyle.divider} />
       <Grid container>
-        <CarouselList showItems={3.1}>
+        <CarouselList showItems={3.15}>
           {helpfulCollections.map((item) => {
             return (
               <div className={collectionStyle.helpful_list_item_container}>
                 <CollectionCard
                   key={item.key}
                   data={item}
-                  viewType={"WIDE"}
+                  viewType={"CAROUSEL"}
                   onClick={() => {}}
                 />
               </div>

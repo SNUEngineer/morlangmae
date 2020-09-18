@@ -9,7 +9,7 @@ import { BlockView } from "../../services/platter.service";
 import TextField from "@material-ui/core/TextField";
 import platterStyle from "./platter.module.scss";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
-
+import { makeStyles } from "@material-ui/core/styles";
 export interface PlatterProps {
   id: number;
   title?: string;
@@ -55,7 +55,17 @@ export default function Platter(props: PlatterProps) {
     title: "1차 기획 회의",
   };
   const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
-
+  const useStyles = makeStyles({
+    underline: {
+      "&&&:before": {
+        borderBottom: "none",
+      },
+      "&&:after": {
+        borderBottom: "none",
+      },
+    },
+  });
+  const classes = useStyles();
   return (
     <div className={platterStyle.platter_container}>
       <div className={platterStyle.align_container}>
@@ -79,6 +89,7 @@ export default function Platter(props: PlatterProps) {
               fullWidth
               id="title"
               name="title"
+              InputProps={{ classes }}
             />
             <TextField
               className={platterStyle.title}
@@ -87,6 +98,7 @@ export default function Platter(props: PlatterProps) {
               fullWidth
               id="title"
               name="title"
+              InputProps={{ classes }}
             />
           </div>
 

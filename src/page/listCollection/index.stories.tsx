@@ -12,7 +12,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
-
+import BasicMenuBar from "../../components/basicMenuBar/BasicMenuBar";
 export default { title: "collection page" };
 
 export function basic() {
@@ -59,69 +59,74 @@ export function collectionTab() {
 }
 
 export function myCollectionTab() {
-  return <MyCollectionTab />;
+  return (
+    <BasicMenuBar>
+      <CollectionTab />
+      <MyCollectionTab />
+    </BasicMenuBar>
+  );
 }
 
 export function createCollectionTab() {
   const collection1 = {
     id: 0,
-    title: "첫번째 컬렉션",
+    title: "3분기 마케팅 전략",
     status: "good",
     imageUrl:
       "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트",
-    createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    serviceType: "마케팅",
+    createdDate: "8월 10일",
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection2 = {
     id: 2,
-    title: "두번째 컬렉션",
+    title: "플랜비 직원 컨설팅",
     status: "good",
     imageUrl:
       "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "컨설팅",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection3 = {
     id: 3,
-    title: "두번째 컬렉션",
+    title: "SW-13 제품 디자인",
     status: "good",
     imageUrl:
       "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "제품",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection4 = {
     id: 4,
-    title: "두번째 컬렉션",
+    title: "KW-13 제품 디자인",
     status: "good",
     imageUrl:
       "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "제품",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection5 = {
     id: 5,
-    title: "두번째 컬렉션",
+    title: "프로케어 직원 컨설팅",
     status: "good",
     imageUrl:
       "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "컨설팅",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const testCollections = [
     collection1,
@@ -129,21 +134,36 @@ export function createCollectionTab() {
     collection3,
     collection4,
     collection5,
+    collection2,
   ];
 
-  return <CreateCollectionTab collections={testCollections} />;
+  return (
+    <BasicMenuBar>
+      <CollectionTab />
+      <CreateCollectionTab collections={testCollections} />
+    </BasicMenuBar>
+  );
 }
 export function searchCollectionTab() {
-  return <SearchCollectionTab />;
+  return (
+    <BasicMenuBar>
+      <CollectionTab />
+      <SearchCollectionTab />
+    </BasicMenuBar>
+  );
 }
 
 export function carsousle2222() {
   return (
-    <CarouselList showItems={3.1}>
+    <CarouselList showItems={3.15}>
       <div className={createStyle.slider_item}>Item 1</div>
       <div className={createStyle.slider_item}>Item 2</div>
       <div className={createStyle.slider_item}>Item 3</div>
       <div className={createStyle.slider_item}>Item 4</div>
     </CarouselList>
   );
+}
+
+export function basicMenuBar() {
+  return <BasicMenuBar />;
 }

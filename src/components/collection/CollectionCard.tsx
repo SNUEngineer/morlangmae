@@ -6,6 +6,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import collectionStyle from "./collectionCard.module.scss";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
+import classNames from "classnames";
 
 export interface CollectionData {
   id: number;
@@ -61,8 +62,16 @@ export default function CollectionCard(props: CollectionCardProps) {
 
   switch (viewType) {
     case "WIDE":
+    case "CAROUSEL":
       return (
-        <div className={collectionStyle.card_root} onClick={onClick}>
+        <div
+          className={classNames({
+            [collectionStyle.card_root]: true,
+            [collectionStyle.card_basic]: viewType !== "CAROUSEL",
+            [collectionStyle.carousel_limit]: viewType === "CAROUSEL",
+          })}
+          onClick={onClick}
+        >
           <div className={collectionStyle.service_type_and_menu}>
             <div className={collectionStyle.service_type}>
               {data.serviceType}
@@ -111,29 +120,35 @@ export default function CollectionCard(props: CollectionCardProps) {
           <div className={collectionStyle.title_image} onClick={onClick}>
             <div className={collectionStyle.image} style={imageStyle}></div>
           </div>
-          <div className={collectionStyle.title} onClick={onClick}>
-            <p>{data.title}</p>
-          </div>
-          <div className={collectionStyle.state} onClick={onClick}>
-            <p>{"대기중"}</p>
-          </div>
-          <div className={collectionStyle.authority} onClick={onClick}>
-            <p>{"송병근"}</p>
-            {/* 명령권자 프로필로 대체 */}
-          </div>
-          <div
-            className={collectionStyle.collection_type_container}
-            onClick={onClick}
-          >
-            <div className={collectionStyle.align_container}>
-              <div className={collectionStyle.collection_attending_type}>
-                팀
+          <div className={collectionStyle.list_info_container}>
+            <div className={collectionStyle.vertical_align}>
+              <div className={collectionStyle.title} onClick={onClick}>
+                <p>{data.title}</p>
               </div>
-              <div className={collectionStyle.collection_type}>아카이브</div>
+              <div className={collectionStyle.state} onClick={onClick}>
+                <p>{"대기중"}</p>
+              </div>
+              <div className={collectionStyle.authority} onClick={onClick}>
+                <p>{"송병근"}</p>
+                {/* 명령권자 프로필로 대체 */}
+              </div>
+              <div
+                className={collectionStyle.collection_type_container}
+                onClick={onClick}
+              >
+                <div className={collectionStyle.align_container}>
+                  <div className={collectionStyle.collection_attending_type}>
+                    팀
+                  </div>
+                  <div className={collectionStyle.collection_type}>
+                    아카이브
+                  </div>
+                </div>
+              </div>
+              <div className={collectionStyle.date} onClick={onClick}>
+                <p>{data.startDate}</p>
+              </div>
             </div>
-          </div>
-          <div className={collectionStyle.date} onClick={onClick}>
-            <p>{dateText}</p>
           </div>
         </div>
       );
@@ -144,13 +159,19 @@ export default function CollectionCard(props: CollectionCardProps) {
           <div className={collectionStyle.title_image} onClick={onClick}>
             <div className={collectionStyle.image} style={imageStyle}></div>
           </div>
-          <div className={collectionStyle.service_type} onClick={onClick}>
-            <p>{data.serviceType}</p>
+          <div className={collectionStyle.list_info_container}>
+            <div className={collectionStyle.vertical_align}>
+              <div className={collectionStyle.service_type} onClick={onClick}>
+                <p>{data.serviceType}</p>
+              </div>
+              <div className={collectionStyle.title} onClick={onClick}>
+                <p>{data.title}</p>
+              </div>
+              <div className={collectionStyle.notfication}>
+                <p>15개</p>
+              </div>
+            </div>
           </div>
-          <div className={collectionStyle.title} onClick={onClick}>
-            <p>{data.title}</p>
-          </div>
-          <div className={collectionStyle.notfication}>15개</div>
         </div>
       );
 

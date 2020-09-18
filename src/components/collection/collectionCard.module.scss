@@ -1,6 +1,13 @@
+.carousel_limit {
+  max-width: 212px;
+  padding: 0px;
+}
+.card_basic {
+  padding: 15px;
+}
 .card_root {
   width: 100%;
-  padding: 15px;
+
   box-sizing: border-box;
   .service_type_and_menu {
     display: flex;
@@ -8,6 +15,8 @@
     height: 20px;
     .service_type {
       flex-grow: 1;
+      font-size: 14px;
+      color: #707070;
     }
 
     .dot_menu {
@@ -15,15 +24,16 @@
   }
 
   .title {
-    font-size: 25px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    font-size: 20px;
+    color: #707070;
+    margin-top: 4px;
+    margin-bottom: 16px;
   }
 
   .image_container {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 220px;
     background-color: green;
     .image {
       position: absolute;
@@ -50,7 +60,7 @@
         position: absolute;
         width: 100%;
         bottom: 0px;
-        height: 200px;
+        height: 96px;
         box-sizing: border-box;
         background: transparent
           linear-gradient(180deg, #00000000 0%, #00000063 40%, #00000099 100%)
@@ -60,7 +70,7 @@
           position: absolute;
           left: 50%;
 
-          top: 100px;
+          top: 39px;
           color: #ffffff;
           transform: translate(-50%, -100%);
           word-break: normal;
@@ -68,18 +78,18 @@
           text-align: end;
         }
         .service_type_text {
-          font-size: 15px;
-          margin-right: 20px;
+          font-size: 11px;
+          margin-right: 18px;
         }
         .title_text {
-          font-size: 25px;
-          margin-right: 20px;
+          font-size: 16px;
+          margin-right: 18px;
           margin-top: 5px;
         }
         .date_text {
           position: absolute;
-          font-size: 12px;
-          left: 10px;
+          font-size: 13px;
+          left: 14px;
           bottom: 20px;
           color: white;
           font-family: "AppleSDGothicNeoM00";
@@ -100,24 +110,31 @@
   $font_size_list: 20px;
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  padding: 5px;
   background-color: white;
+  height: 77px;
+  width: 100%;
 
-  border-bottom-color: gray;
+  border-bottom-color: #e0e0e0;
   border-bottom-style: solid;
   border-width: 1px;
   &:hover {
     background-color: gray;
   }
-  .p {
+  p {
     line-height: 1.5;
     display: inline-block;
     vertical-align: middle;
+    color: #707070;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .title_image {
     .image {
-      width: 130px;
-      height: 70px;
+      width: 97px;
+      height: 100%;
     }
   }
   .title {
@@ -150,12 +167,15 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+      color: #707070;
       .collection_attending_type {
-        text-align: center;
+        text-align: left;
+        font-size: 14px;
+        margin-bottom: 8px;
       }
       .collection_type {
-        text-align: center;
-        font-size: 12px;
+        text-align: left;
+        font-size: 10px;
       }
     }
   }
@@ -171,37 +191,47 @@
   $font_size_list: 20px;
   display: flex;
   flex-direction: row;
-  padding: 5px;
+  padding: 4px;
   width: 100%;
+  height: 77px;
   background-color: white;
-  border-bottom-color: gray;
+  border-bottom-color: #e0e0e0;
   border-bottom-style: solid;
   border-width: 1px;
   &:hover {
     background-color: gray;
   }
-  .p {
+  p {
     line-height: 1.5;
     display: inline-block;
     vertical-align: middle;
+    color: #707070;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .title_image {
-    margin-left: 20px;
+    margin-left: 5px;
     width: 100px;
 
     .image {
       width: 70px;
-      height: 70px;
+      height: 100%;
     }
   }
+
   .service_type {
+    height: 100%;
     margin-left: 20px;
-    width: 100px;
+    width: 80px;
+
     text-align: left;
     font-size: $font_size_list;
   }
   .title {
-    margin-left: 20px;
+    height: 100%;
+    margin-left: 0px;
     width: 150px;
     text-align: left;
     font-size: $font_size_list;
@@ -209,9 +239,26 @@
   }
 
   .notfication {
-    margin-right: 20px;
+    height: 100%;
+    text-align: left;
+    width: 100px;
+    margin-left: -20px;
   }
 
   .date {
+  }
+}
+
+.list_info_container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  .vertical_align {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    display: flex;
+    flex-direction: row;
   }
 }

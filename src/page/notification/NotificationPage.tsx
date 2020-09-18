@@ -47,7 +47,7 @@ export default function NotificationPage(props: NotificationPageProps) {
   const notification1 = {
     id: 0,
     type: "COLLECTION",
-    cause: "hello",
+    cause: "새로운 컬렉션 생성 요청",
     target: 0,
     read: false,
     createdDate: "오전 9:17",
@@ -56,7 +56,7 @@ export default function NotificationPage(props: NotificationPageProps) {
   const notification2 = {
     id: 2,
     type: "PLATTER",
-    cause: "hello hi hi",
+    cause: "컬렉션 생성 요청이 승인됨",
     target: 0,
     read: false,
     createdDate: "오전 9:17",
@@ -65,7 +65,7 @@ export default function NotificationPage(props: NotificationPageProps) {
   const notification3 = {
     id: 3,
     type: "MEMO",
-    cause: "hello hi hi 33333",
+    cause: "메모가 생성됨",
     target: 0,
     read: true,
     createdDate: "오전 9:17",
@@ -77,15 +77,19 @@ export default function NotificationPage(props: NotificationPageProps) {
   }, []);
 
   return (
-    <div className={notiStyle.container}>
-      <div className={notiStyle.page_title_container}>
-        <div className={notiStyle.page_title}>알림</div>
-        <div className={notiStyle.divider}></div>
+    <div>
+      <div className={notiStyle.navigation}>
+        <div className={notiStyle.back_text}>{"< 이전으로"}</div>
       </div>
+      <div className={notiStyle.container}>
+        <div className={notiStyle.header_container}>
+          <div className={notiStyle.text}>알림</div>
+        </div>
+        <div className={notiStyle.divider} />
 
-      <div className={notiStyle.list_container}>
-        <List>
-          {/* {notifications.map((notification) => {
+        <div className={notiStyle.list_container}>
+          <List>
+            {/* {notifications.map((notification) => {
             return (
               <Notification
                 key={notification.id}
@@ -95,12 +99,13 @@ export default function NotificationPage(props: NotificationPageProps) {
               
             );
           })} */}
-          <NotificationList
-            notifications={notifications}
-            onClick={props.onNotificationClick}
-          />
-          {/* <ListItem onClick={onGetMoreNotifications}>...</ListItem> */}
-        </List>
+            <NotificationList
+              notifications={notifications}
+              onClick={props.onNotificationClick}
+            />
+            {/* <ListItem onClick={onGetMoreNotifications}>...</ListItem> */}
+          </List>
+        </div>
       </div>
     </div>
   );

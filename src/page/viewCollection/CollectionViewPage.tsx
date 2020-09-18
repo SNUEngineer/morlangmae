@@ -15,6 +15,7 @@ import pageStyle from "./collectionViewPage.module.scss";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import classNames from "classnames";
 
 export interface CollectionViewPageProps extends CollectionProps {
   hiddenToolbar?: boolean;
@@ -57,6 +58,8 @@ const useStyles = makeStyles((theme: Theme) =>
     appBar: {
       zIndex: theme.zIndex.drawer + 1000,
       top: 0,
+      height: "60px",
+      backgroundColor: "white",
     },
   })
 );
@@ -129,7 +132,12 @@ export function ToolBar(props: any) {
   }
 
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar
+      position="fixed"
+      className={classNames({
+        [classes.appBar]: true,
+      })}
+    >
       <Toolbar>
         <div className={pageStyle.bar_container}>
           <div className={pageStyle.mode_container}>

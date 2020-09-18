@@ -5,7 +5,7 @@
   margin-bottom: 20px;
 
   .avatar {
-    width: 60px;
+    width: 55px;
   }
   .content_container {
     flex-grow: 1;
@@ -15,16 +15,18 @@
       flex-direction: row;
       margin-bottom: 10px;
       .name_text {
+        font-size: 12px;
       }
 
       .time_text {
         margin-left: 10px;
         flex-grow: 1;
+        font-size: 12px;
       }
     }
 
     .content {
-      padding: 15px;
+      padding: 20px;
       box-sizing: border-box;
       background-color: white;
       border-radius: 10px;

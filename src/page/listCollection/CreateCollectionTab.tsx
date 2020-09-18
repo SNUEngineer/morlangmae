@@ -15,6 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import createStyle from "./createCollectionTab.module.scss";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 
+import collectionStyle from "./myCollectionTab.module.scss";
 export interface CreateCollectionTabProps {
   collections: CollectionListItemProps[];
 }
@@ -27,7 +28,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
     setFilter(event.target.value);
   };
   return (
-    <div>
+    <div className={createStyle.tab_container}>
       {/* <CollectionTab /> */}
       {/* <CollectionList
         title="Create Collections"
@@ -42,7 +43,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
       </div>
 
       <div className={createStyle.header_container}>
-        <div className={createStyle.text}>나의 컬렉션 리스트</div>
+        <div className={createStyle.text}>나의 생성 컬렉션 리스트</div>
         <div className={createStyle.sort_menu}>
           <Select value={filter} onChange={handleChange}>
             <MenuItem value="ALL">전체</MenuItem>
@@ -52,6 +53,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
           </Select>
         </div>
       </div>
+      <div className={createStyle.divider} />
       <Grid container>
         {props.collections.map((item) => {
           return (

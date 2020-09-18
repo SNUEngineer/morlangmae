@@ -1,0 +1,118 @@
+@font-face {
+  font-family: "Noto Sans CJK KR Thin";
+  src: url("/fonts/NotoSansCJKkr-Thin.otf");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Light";
+  src: url("/fonts/NotoSansCJKkr-Light.otf");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR DemiLight";
+  src: url("/fonts/NotoSansCJKkr-DemiLight.otf");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Regular";
+  src: url("/fonts/NotoSansCJKkr-Regular.otf");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Medium";
+  src: url("/fonts/NotoSansCJKkr-Medium.otf");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Bold";
+  src: url("/fonts/NotoSansCJKkr-Bold.otf");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Black";
+  src: url("/fonts/NotoSansCJKkr-Black.otf");
+}
+
+.colleciont_title_text {
+  font-size: 30px;
+  color: #707070;
+  margin-top: 138px;
+  margin-bottom: 187px;
+  width: 100%;
+  text-align: center;
+}
+
+.tab_text {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.tab_block {
+  display: flex;
+  position: relative;
+  align-content: center;
+  justify-content: center;
+  align-items: enter;
+  width: 750px;
+  margin: 0 auto;
+  @media screen and (max-width: 750px) {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .underbar {
+    position: absolute;
+    width: 750px;
+    top: 41px;
+    height: 2px;
+    margin-top: -3px;
+    min-height: 2px;
+    max-height: 2px;
+    background-color: #e0e0e0;
+    z-index: 900;
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      overflow-x: auto;
+    }
+  }
+
+  .tab_element {
+    font-size: 17px;
+    font-family: "Noto Sans CJK KR Regular";
+
+    width: 100px;
+    cursor: pointer;
+    white-space: pre;
+    text-decoration: none;
+
+    color: inherit;
+    margin-left: 11.65px;
+    margin-right: 11.65px;
+    padding-bottom: 17px;
+    border-bottom: 2px solid #e0e0e0;
+    border-bottom-color: rgba(200, 200, 200, 0);
+    a {
+      text-algin: center;
+    }
+    &:hover {
+      color: #495057;
+    }
+
+    &.active {
+      font-family: "AppleSDGothicNeoB00";
+      border-bottom: 2px solid #105710;
+      font-size: 17px;
+      color: #105710;
+      &:hover {
+        color: #105710;
+      }
+    }
+
+    & + & {
+    }
+  }
+  .tab_element_activated {
+    font-family: "AppleSDGothicNeoB00";
+    border-bottom: 2px solid #105710;
+    font-size: 17px;
+    color: #105710;
+    z-index: 1000;
+    &:hover {
+      color: #105710;
+    }
+  }
+}

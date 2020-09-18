@@ -5,5 +5,6 @@
   .item {
     flex-grow: 1;
     width: 0;
+    box-sizing: border-box;
   }
 }

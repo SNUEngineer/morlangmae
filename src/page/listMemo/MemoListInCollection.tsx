@@ -1,22 +1,15 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import CollectionCard, {
-  CollectionCardProps,
-  CollectionData,
-} from "../../components/collection/CollectionCard";
+import { CollectionData } from "../../components/collection/CollectionCard";
 import MemoCard from "../../components/memo/list/memoCard";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
-import memoStyle from "./bingeMemoTab.module.scss";
+import memoStyle from "./MemoHomeTab.module.scss";
 
-export interface MemoHomeTabProps {}
+export interface MemoListTabProps {}
 
-export default function MemoHomeTab(props: MemoHomeTabProps) {
+export default function MemoListTab(props: MemoListTabProps) {
   const collection1 = {
     id: 0,
     title: "3분기 마케팅 전략",
@@ -97,79 +90,67 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
   };
 
   return (
-    <div className={memoStyle.tab_container}>
+    <div className={memoStyle.list_tab_container}>
       {/* <CollectionTab /> */}
-      <BingeMemoInCollectionCardList
-        collections={testCollections}
-        onCollectionClick={onCollectionClick}
-      />
+      <MyMemoList memos={testCollections} onMemoClick={onMemoClick} />
     </div>
   );
 }
 
-export interface BingeMemoInCollectionCardListProps {
-  myCollections: CollectionData[];
-  onCollectionClick(data: CollectionData): Promise<void>;
+export interface MyMemoListProps {
+  memos: CollectionData[];
+  onMemoClick(data: CollectionData): Promise<void>;
 }
 
-export function BingeMemoInCollectionCardList(
-  props: BingeMemoInCollectionCardListProps
-) {
-  const collections = props.collections;
+export function MyMemoList(props: MyMemoListProps) {
+  const { memos, onMemoClick } = props;
   const [filter, setFilter] = useState<string>("ALL");
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
-  const filteredCollections = collections.filter((data: CollectionData) => {
-    return filter === "ALL" || data.status === filter;
-  });
-
-  let columnList = [];
-  let collectionsGrid = [];
-  const columnCount = 3; // 반응에 따라 4개 이상으로 늘어날 경우 자동으로 배열.
-  let index = 0;
-  filteredCollections.forEach((element) => {
-    columnList.push(element);
-    index++;
-    if (index === filteredCollections.length) {
-      while (columnList.length < columnCount) {
-        columnList.push(null);
-      }
-    }
-    if (columnList.length >= columnCount) {
-      collectionsGrid.push(columnList);
-      columnList = [];
-    }
-  });
-  const collectionCards = collectionsGrid.map(
-    (collections: CollectionData[], index) => {
-      return (
-        <div className={memoStyle.my_collection_list_container}>
-          <GridCollectionCardList
-            key={index}
-            collections={collections}
-            onClick={props.onCollectionClick}
-            columnCount={columnCount}
-          />
-        </div>
-      );
-    }
-  );
-
   return (
-    <div>
+    <div className={memoStyle.memo_in_collection_container}>
       <div className={memoStyle.header_container}>
-        <div className={memoStyle.text}>모아보기</div>
-        <div className={memoStyle.sort_menu}>
-          <Select value={filter} onChange={handleChange}>
-            <MenuItem value="ALL">전체</MenuItem>
-            <MenuItem value="IN_PROGRESS">진행</MenuItem>
-            <MenuItem value="DONE">완료</MenuItem>
-          </Select>
+        <div className={memoStyle.text}>{"나의 메모 리스트"}</div>
+      </div>
+      <div className={memoStyle.divider} />
+      <div className={memoStyle.split}>
+        <div className={memoStyle.collection_title_image}>
+          <div className={memoStyle.image}></div>
+        </div>
+        <div className={memoStyle.list_container}>
+          <div className={memoStyle.in_collection_header_container}>
+            <div className={memoStyle.collection_info}>
+              <div className={memoStyle.service_type}>{"컨설팅"}</div>
+              <div className={memoStyle.title}>{"플랜비 직원 컨설팅"}</div>
+            </div>
+            <div className={memoStyle.sort_menu}>
+              <div className={memoStyle.select}>
+                <Select value={filter} onChange={handleChange}>
+                  <MenuItem value="ALL">전체</MenuItem>
+                  <MenuItem value="IN_PROGRESS">진행</MenuItem>
+                  <MenuItem value="DONE">완료</MenuItem>
+                </Select>
+              </div>
+            </div>
+          </div>
+          <div className={memoStyle.list_container_divider} />
+          <Grid container>
+            {memos.map((item) => {
+              return (
+                <div className={memoStyle.list_item_container}>
+                  <MemoCard
+                    key={item.key}
+                    data={item}
+                    viewType={"IN_COLLECTION"}
+                    onClick={onMemoClick}
+                  />
+                </div>
+              );
+            })}
+          </Grid>
         </div>
       </div>
-      <div className={memoStyle.divider}></div>
-      <Grid container>{collectionCards}</Grid>
     </div>
   );
 }

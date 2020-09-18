@@ -2,15 +2,41 @@ import React from "react";
 import MemoHomeTab from "./MemoHomeTab";
 import MemoListTab from "./MemoListTab";
 import BingeMemoTab from "./BingeMemoTab";
+import MemoListInCollection from "./MemoListInCollection";
+import BasicMenuBar from "../../components/basicMenuBar/BasicMenuBar";
+import CollectionTab from "../listCollection/CollectionTab";
 
 export default { title: "memo page" };
 
 export function memoHomeTab() {
-  return <MemoHomeTab />;
+  return (
+    <BasicMenuBar>
+      <CollectionTab />
+      <MemoHomeTab />
+    </BasicMenuBar>
+  );
 }
 export function memoListTab() {
-  return <MemoListTab />;
+  return (
+    <BasicMenuBar>
+      <CollectionTab />
+      <MemoListTab />
+    </BasicMenuBar>
+  );
 }
 export function bingeMemoTab() {
-  return <BingeMemoTab />;
+  return (
+    <BasicMenuBar>
+      <CollectionTab />
+      <BingeMemoTab />
+    </BasicMenuBar>
+  );
+}
+
+export function memoListInCollection() {
+  return (
+    <BasicMenuBar>
+      <MemoListInCollection />
+    </BasicMenuBar>
+  );
 }

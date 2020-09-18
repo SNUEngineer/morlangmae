@@ -1,7 +1,7 @@
 import React from "react";
 import CollectionCardList from "../../components/collection/CollectionCardList";
 import CollectionTab from "./CollectionTab";
-import collectionStyle from "./myCollectionTab.module.scss";
+
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +11,8 @@ import CollectionCard, {
   CollectionData,
 } from "../../components/collection/CollectionCard";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
+import collectionStyle from "./myCollectionTab.module.scss";
+
 export interface SearchCollectionTabProps {
   // attendedCollections: CollectionListProps;
   // recentSearchedCollections: CollectionListProps;
@@ -94,7 +96,7 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
   const onCollectionClick = (data: CollectionData) => {};
 
   return (
-    <div>
+    <div className={collectionStyle.tab_container}>
       {/* <CollectionTab /> */}
       <ForUserCollectionCardList
         helpfulCollections={testCollections}
@@ -135,16 +137,16 @@ export function ForUserCollectionCardList(
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>김기연님을 위한 컬렉션</div>
       </div>
-      <Divider />
+      <div className={collectionStyle.divider} />
       <Grid container>
-        <CarouselList showItems={3.1}>
+        <CarouselList showItems={3.15}>
           {helpfulCollections.map((item) => {
             return (
               <div className={collectionStyle.helpful_list_item_container}>
                 <CollectionCard
                   key={item.key}
                   data={item}
-                  viewType={"WIDE"}
+                  viewType={"CAROUSEL"}
                   onClick={() => {}}
                 />
               </div>
@@ -171,16 +173,16 @@ export function OftenFoundCollectionCardList(
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>즐겨 찾는 컬렉션</div>
       </div>
-      <Divider />
+      <div className={collectionStyle.divider} />
       <Grid container>
-        <CarouselList showItems={3.1}>
+        <CarouselList showItems={3.15}>
           {oftenCollections.map((item) => {
             return (
               <div className={collectionStyle.often_found_list_item_container}>
                 <CollectionCard
                   key={item.key}
                   data={item}
-                  viewType={"WIDE"}
+                  viewType={"CAROUSEL"}
                   onClick={() => {}}
                 />
               </div>
@@ -207,16 +209,16 @@ export function PopularCollectionCardList(
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>이번 달 인기있는 컬렉션</div>
       </div>
-      <Divider />
+      <div className={collectionStyle.divider} />
       <Grid container>
-        <CarouselList showItems={3.1}>
+        <CarouselList showItems={3.15}>
           {popularCollections.map((item) => {
             return (
               <div className={collectionStyle.often_found_list_item_container}>
                 <CollectionCard
                   key={item.key}
                   data={item}
-                  viewType={"WIDE"}
+                  viewType={"CAROUSEL"}
                   onClick={() => {}}
                 />
               </div>
@@ -268,7 +270,7 @@ export function RecentCollectionCardList(props: RecentCollectionCardListProps) {
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>최근 조회한 컬렉션</div>
       </div>
-      <Divider />
+      <div className={collectionStyle.divider} />
       <Grid container>{recentCollectionCards}</Grid>
     </div>
   );
@@ -288,8 +290,8 @@ export function CompanyCollectionCardList(
     <div>
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>회사 아카이브</div>
-        <div className={collectionStyle.sort_menu}>
-          <p>전체보기</p>
+        <div className={collectionStyle.go_to_all_menu}>
+          <div>전체보기</div>
         </div>
       </div>
       <div className={collectionStyle.divider} />

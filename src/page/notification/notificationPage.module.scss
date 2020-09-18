@@ -1,6 +1,16 @@
+.navigation {
+  margin-left: 224px;
+  margin-top: 122px;
+  .back_text {
+    font-size: 18px;
+  }
+}
 .container {
   overflow: auto;
   width: 100%;
+  max-width: 656px;
+  margin: 0 auto;
+  padding-bottom: 500px;
 
   .page_title_container {
     .page_title {
@@ -16,9 +26,31 @@
 
   .list_container {
     $padding-horizontal: 60px;
-
     box-sizing: border-box;
-    padding-left: $padding-horizontal;
-    padding-right: $padding-horizontal;
   }
+}
+.header_container {
+  margin-top: 100px;
+  margin-bottom: 11.5px;
+  display: flex;
+  flex-direction: row;
+  .text {
+    flex-grow: 1;
+    font-size: 27px;
+    color: #707070;
+  }
+  .go_to_all_list {
+    background-color: pink;
+    .p {
+      line-height: 1.5;
+      display: inline-block;
+      vertical-align: bottom;
+    }
+  }
+}
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: #e0e0e0;
+  margin-bottom: 63px;
 }

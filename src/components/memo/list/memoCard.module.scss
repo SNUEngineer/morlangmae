@@ -93,12 +93,13 @@
   $font_size_list: 20px;
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  padding: 4.5px;
   background-color: white;
-  height: 100px;
-  border-bottom-color: gray;
+  height: 77px;
+  border-bottom-color: #e0e0e0;
   border-bottom-style: solid;
   border-width: 1px;
+  box-sizing: border-box;
   &:hover {
     background-color: gray;
   }
@@ -108,18 +109,14 @@
     vertical-align: middle;
   }
   .title_image {
-    margin-left: 20px;
-    margin-right: 20px;
-    width: 100px;
+    margin-left: 5px;
+    height: 100%;
+    width: 66px;
     position: relative;
 
     .image {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translate(0, -50%);
-      width: 100px;
-      height: 100px;
+      width: 100%;
+      height: 100%;
     }
   }
   .document_info {
@@ -127,7 +124,8 @@
     display: flex;
     flex-direction: column;
     position: relative;
-
+    color: #707070;
+    margin-left: 11px;
     .vertical_align {
       position: absolute;
       top: 50%;
@@ -137,14 +135,29 @@
     .collection_title {
       width: 300px;
       text-align: left;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .platter_title {
-      font-size: 20px;
+      font-size: 14px;
+      margin-top: 4px;
+      margin-bottom: 8px;
     }
+
+    .collection_title_in_collection {
+      width: 250px;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    .platter_title_in_collection {
+      font-size: 14px;
+      margin-top: 22px;
+      margin-bottom: 8px;
+    }
+
     .document_title {
-      font-size: 25px;
+      font-size: 18px;
     }
   }
 
@@ -162,11 +175,18 @@
     }
 
     .date {
+      font-size: 10px;
+      color: #868686;
     }
     .writer_name {
-      font-size: $font_size_list;
+      font-size: 14px;
+      color: #707070;
+      margin-top: 9px;
+      margin-bottom: 17px;
     }
     .writer_count {
+      font-size: 9px;
+      color: #797979;
     }
   }
 }
@@ -211,5 +231,82 @@
   }
 
   .date {
+  }
+}
+
+.temp_root {
+  $font_size_list: 20px;
+  $image_width: 80px;
+  display: flex;
+  flex-direction: row;
+  padding: 4.5px;
+  background-color: white;
+  border-bottom-color: #e0e0e0;
+  border-bottom-style: solid;
+  border-width: 1px;
+  box-sizing: border-box;
+  &:hover {
+    background-color: gray;
+  }
+  .p {
+    line-height: 1.5;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .title_image {
+    margin-left: 5px;
+    width: $image_width;
+    height: $image_width;
+    position: relative;
+    z-index: 1000;
+
+    .image {
+      width: $image_width;
+      height: $image_width;
+      border-radius: 100px;
+    }
+  }
+  .document_info {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    color: #707070;
+    z-index: 900;
+    .vertical_align {
+      position: absolute;
+      top: 50%;
+      width: 180px;
+      transform: translate(0, -50%);
+      height: 65px;
+      margin-left: -$image_width/2;
+      border-style: solid;
+      border-color: #a2a2a2;
+      border-width: 0.5px;
+      border-radius: 3px;
+
+      .inner_align {
+        position: absolute;
+        transform: translate(0, -50%);
+        top: 50%;
+        left: $image_width/2 + 5px;
+      }
+    }
+
+    .collection_title {
+      text-align: left;
+      font-size: 10px;
+    }
+
+    .document_title {
+      font-size: 14px;
+      margin-top: 3px;
+    }
+    .date {
+      position: absolute;
+      font-size: 9px;
+      color: #c9c9c9;
+      right: 2px;
+      bottom: 2px;
+    }
   }
 }

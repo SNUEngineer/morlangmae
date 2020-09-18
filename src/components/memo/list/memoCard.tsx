@@ -5,6 +5,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import memoStyle from "./memoCard.module.scss";
+import classNames from "classnames";
 
 export interface CollectionData {
   id: number;
@@ -88,6 +89,7 @@ export default function CollectionCard(props: CollectionCardProps) {
       );
 
     case "LIST":
+    case "IN_COLLECTION":
       return (
         <div className={memoStyle.list_root} onClick={onClick}>
           <div className={memoStyle.title_image} onClick={onClick}>
@@ -95,9 +97,23 @@ export default function CollectionCard(props: CollectionCardProps) {
           </div>
           <div className={memoStyle.document_info} onClick={onClick}>
             <div className={memoStyle.vertical_align}>
-              <div className={memoStyle.collection_title} onClick={onClick}>
-                {data.title}
-                <div className={memoStyle.platter_title} onClick={onClick}>
+              <div
+                className={classNames({
+                  [memoStyle.collection_title]: viewType === "LIST",
+                  [memoStyle.collection_title_in_collection]:
+                    viewType === "IN_COLLECTION",
+                })}
+                onClick={onClick}
+              >
+                {viewType !== "IN_COLLECTION" && <div>{data.title}</div>}
+                <div
+                  className={classNames({
+                    [memoStyle.platter_title]: viewType === "LIST",
+                    [memoStyle.platter_title_in_collection]:
+                      viewType === "IN_COLLECTION",
+                  })}
+                  onClick={onClick}
+                >
                   {"플레터 이름"}
                 </div>
                 <div className={memoStyle.document_title} onClick={onClick}>
@@ -141,6 +157,34 @@ export default function CollectionCard(props: CollectionCardProps) {
             <p>{data.title}</p>
           </div>
           <div className={memoStyle.notfication}>15개</div>
+        </div>
+      );
+
+    case "TEMP":
+      return (
+        <div className={memoStyle.temp_root} onClick={onClick}>
+          <div className={memoStyle.title_image} onClick={onClick}>
+            <div className={memoStyle.image} style={imageStyle}></div>
+          </div>
+          <div className={memoStyle.document_info} onClick={onClick}>
+            <div className={memoStyle.vertical_align}>
+              <div className={memoStyle.inner_align}>
+                <div className={memoStyle.collection_title} onClick={onClick}>
+                  {data.title}
+                  <div className={memoStyle.document_title} onClick={onClick}>
+                    {"1차 기획안.docx"}
+                  </div>
+                </div>
+              </div>
+              <div className={memoStyle.date} onClick={onClick}>
+                {dateText}
+              </div>
+            </div>
+          </div>
+          <div
+            className={memoStyle.collection_type_container}
+            onClick={onClick}
+          ></div>
         </div>
       );
 

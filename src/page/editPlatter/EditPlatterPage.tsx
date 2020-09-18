@@ -13,6 +13,8 @@ import Paper, { PaperProps } from "@material-ui/core/Paper";
 import clsx from "clsx";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import editStyle from "./editPlatterPage.module.scss";
+import classNames from "classnames";
+import { Link, Element } from "react-scroll";
 
 export interface EditPlatterPageProps extends PlatterProps, ThreadProps {}
 
@@ -22,71 +24,31 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   // const handleClose = () => {
   //   history.replace(pathname)
   // }
-  const [scrollTop, setScrollTop] = useState(0);
-  const [threadScrollTop, setThreadScrollTop] = useState(0);
-  const [windowHeight, setWindowHeight] = useState(0);
   const [openThread, setOpenThread] = useState(false);
+  const [openPlatter, setOpenPlatter] = useState(true);
 
   const boardContainerEl = useRef<any>(null);
   const threadContainerEl = useRef<any>(null);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  useLayoutEffect(() => {
-    function updateScrollPosition() {
-      if (!!boardContainerEl.current) {
-        console.log("win Scroll afa   " + boardContainerEl.current.pageYOffset);
-        setScrollTop(-boardContainerEl.current.getBoundingClientRect().y);
-        if (
-          threadContainerEl.current.getBoundingClientRect().y <
-          window.innerHeight
-        ) {
-          console.log("우와우와!! 침범");
-          boardContainerEl.current.scrollTo(
-            0,
-            threadContainerEl.current.getBoundingClientRect().y
-          );
-        }
-      }
-      if (!!threadContainerEl.current) {
-        setThreadScrollTop(threadContainerEl.current.getBoundingClientRect().y);
-      }
-    }
-
-    function updateSize() {
-      setWindowHeight(window.innerHeight);
-      if (!!boardContainerEl.current) {
-      }
-      if (threadScrollTop < windowHeight) {
-        // thread 영역 침범
-        console.log("에러에러!!! 스레드 영역 침범!");
-      }
-    }
-    //window.addEventListener("scroll", updateScrollPosition, false);
-    window.addEventListener("scroll", (_) => updateScrollPosition(), true);
-    window.addEventListener("resize", (_) => updateSize(), true);
-    updateSize();
-    updateScrollPosition();
-    return () => {
-      window.removeEventListener("scroll", updateScrollPosition);
-      window.removeEventListener("resize", updateSize);
-    };
-  }, [boardContainerEl, threadContainerEl, window]);
-
-  const cards = useCallback(() => {
-    console.log("에러에러!!! 스레드 영역 침범!asdf");
-    if (threadScrollTop < windowHeight) {
-      // thread 영역 침범
-      console.log("에러에러!!! 스레드 영역 침범!");
-    }
-  }, [threadScrollTop, windowHeight]);
 
   const onScrollHandler = (event) => {
-    console.log("sadfasd " + event.pageY);
+    console.log("Asdfasdfffsf");
+    event.preventDefault();
+    event.stopPropagation();
   };
-
   const clickThreadButton = useCallback(() => {
-    setOpenThread(!openThread);
+    if (!openThread) {
+      if (!!boardContainerEl.current) {
+        setOpenThread(true);
+        setTimeout(() => setOpenPlatter(false), 400);
+      }
+    }
   }, [openThread]);
+  const clickPlatterButton = useCallback(() => {
+    setOpenPlatter(true);
+    setTimeout(() => setOpenThread(false), 400);
+  }, []);
 
   return (
     <div>
@@ -99,33 +61,87 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
 
         //onClose={handleClose}
       >
-        <div
-          className={editStyle.board_container}
+        <Element
+          name="test7"
+          id="containerElement"
+          className={classNames({
+            [editStyle.board_container]: true,
+            [editStyle.board_container_thread_closed]: !openThread,
+            [editStyle.board_container_thread_opened]: openThread,
+          })}
           ref={boardContainerEl}
-          onScroll={(event) => {
-            console.log("asdf ");
-            onScrollHandler(event);
-          }}
+          onScroll={onScrollHandler}
         >
-          <div className={editStyle.container}>
-            <div className={editStyle.platter_container}>
-              <Platter editable {...props} />
-            </div>
-            <div className={editStyle.thread_container} ref={threadContainerEl}>
-              <Thread {...props} />
-            </div>
-            <div className={editStyle.fixed_menu_button}>
-              <div className={editStyle.editor_button}>에디터</div>
-              <div className={editStyle.platter_button}>플레터</div>
+          <div
+            className={classNames({
+              [editStyle.container]: true,
+              [editStyle.container_thread_closed]: !openThread,
+              [editStyle.container_thread_opened]: openThread,
+            })}
+          >
+            <Element
+              name="firstInsideContainer"
+              style={{
+                marginBottom: "200px",
+              }}
+            >
               <div
-                className={editStyle.thread_button}
-                onClick={clickThreadButton()}
+                className={classNames({
+                  [editStyle.platter_container]: true,
+                  [editStyle.platter_container_closed]: !openPlatter,
+                  [editStyle.platter_container_opened]: openPlatter,
+                })}
+              >
+                <Platter editable {...props} />
+              </div>
+            </Element>
+
+            <Element name="threadContainer" style={{}}>
+              <div
+                className={classNames({
+                  [editStyle.thread_container]: true,
+                  [editStyle.thread_container_closed]: !openThread,
+                  [editStyle.thread_container_opened]: openThread,
+                })}
+                ref={threadContainerEl}
+              >
+                <Thread {...props} />
+              </div>
+            </Element>
+
+            <div className={editStyle.fixed_menu_button}>
+              <Link
+                activeClass="active"
+                to="firstInsideContainer"
+                spy={true}
+                smooth={true}
+                duration={250}
+                containerId="containerElement"
+                style={{ display: "inline-block", margin: "20px" }}
+                onClick={() => {
+                  clickPlatterButton();
+                }}
+              >
+                플레터
+              </Link>
+
+              <Link
+                activeClass="active"
+                to="threadContainer"
+                spy={true}
+                smooth={true}
+                duration={250}
+                containerId="containerElement"
+                style={{ display: "inline-block", margin: "20px" }}
+                onClick={() => {
+                  clickThreadButton();
+                }}
               >
                 스레드
-              </div>
+              </Link>
             </div>
           </div>
-        </div>
+        </Element>
       </Dialog>
     </div>
   );

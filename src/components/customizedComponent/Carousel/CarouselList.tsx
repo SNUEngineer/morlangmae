@@ -15,6 +15,7 @@ export default function CarouselList(props: CarouselListProps) {
       breakpoint: { max: 3000, min: 1024 },
       items: props.showItems,
       slidesToSlide: 3, // optional, default to 1.
+      partialVisibilityGutter: 40,
     },
   };
 
@@ -29,7 +30,6 @@ export default function CarouselList(props: CarouselListProps) {
       autoPlay={false}
       autoPlaySpeed={1000}
       keyBoardControl={true}
-      customTransition="all .25"
       transitionDuration={500}
       containerClass="carousel-container"
       removeArrowOnDeviceType={["tablet", "mobile"]}

@@ -13,76 +13,77 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import memoStyle from "./MemoHomeTab.module.scss";
+import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 
 export interface MemoHomeTabProps {}
 
 export default function MemoHomeTab(props: MemoHomeTabProps) {
   const collection1 = {
     id: 0,
-    title: "첫번째 컬렉션",
+    title: "3분기 마케팅 전략",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트",
-    createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    serviceType: "마케팅",
+    createdDate: "8월 10일",
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection2 = {
     id: 2,
-    title: "두번째 컬렉션",
+    title: "플랜비 직원 컨설팅",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "컨설팅",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection3 = {
     id: 3,
-    title: "두번째 컬렉션",
+    title: "SW-13 제품 디자인",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "제품",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection4 = {
     id: 4,
-    title: "두번째 컬렉션",
+    title: "KW-13 제품 디자인",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "제품",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const collection5 = {
     id: 5,
-    title: "두번째 컬렉션",
+    title: "프로케어 직원 컨설팅",
     status: "good",
     imageUrl:
-      "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
     collectionType: "team",
-    serviceType: "개발 테스트222",
+    serviceType: "컨설팅",
     createdDate: 0,
-    startDate: 0,
-    endDate: 0,
+    startDate: "8월 10일",
+    endDate: "9월 6일",
   };
   const testCollections = [
     collection1,
     collection2,
-    collection1,
-    collection2,
-    collection1,
+    collection3,
+    collection4,
+    collection5,
     collection2,
   ];
 
@@ -97,11 +98,18 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
   };
 
   return (
-    <div>
+    <div className={memoStyle.tab_container}>
       {/* <CollectionTab /> */}
       <div className={memoStyle.create_memo_container}>
         <div className={memoStyle.drag_drop_container}></div>
       </div>
+
+      <TempMemoList memos={testCollections} onMemoClick={onMemoClick} />
+      <RequestMemoList
+        memos={testCollections}
+        onMemoClick={onMemoClick}
+        isRequesting={true}
+      />
       <MemoInCollectionCardList
         collections={testCollections}
         onCollectionClick={onCollectionClick}
@@ -128,12 +136,10 @@ export interface MemoInCollectionCardListProps {
 export function MemoInCollectionCardList(props: MemoInCollectionCardListProps) {
   const { collections, onCollectionClick } = props;
   return (
-    <Card>
+    <div>
       <div className={memoStyle.header_container}>
         <div className={memoStyle.text}>컬렉션에 포함된 메모 모아보기</div>
-        <div className={memoStyle.sort_menu}>
-          <p>전체보기</p>
-        </div>
+        <div className={memoStyle.sort_menu}>전체보기</div>
       </div>
       <div className={memoStyle.divider} />
       <GridCollectionCardList
@@ -146,7 +152,7 @@ export function MemoInCollectionCardList(props: MemoInCollectionCardListProps) {
         onClick={onCollectionClick}
         columnCount={3}
       />
-    </Card>
+    </div>
   );
 }
 
@@ -165,9 +171,7 @@ export function RequestMemoList(props: RequestMemoListProps) {
         <div className={memoStyle.text}>
           {isRequesting ? "내가 요청한 메모" : "요청 받은 메모"}
         </div>
-        <div className={memoStyle.sort_menu}>
-          <p>전체보기</p>
-        </div>
+        <div className={memoStyle.sort_menu}>전체보기</div>
       </div>
       <div className={memoStyle.divider} />
       <Grid container>
@@ -183,6 +187,40 @@ export function RequestMemoList(props: RequestMemoListProps) {
             </div>
           );
         })}
+      </Grid>
+    </div>
+  );
+}
+
+export interface TempMemoListProps {
+  memos: CollectionData[];
+  onMemoClick(data: CollectionData): Promise<void>;
+}
+
+export function TempMemoList(props: TempMemoListProps) {
+  const { memos, onMemoClick } = props;
+  return (
+    <div className={memoStyle.requesting_memo_container}>
+      <div className={memoStyle.header_container}>
+        <div className={memoStyle.text}>{"임시 저장중인 메모"}</div>
+        <div className={memoStyle.sort_menu}>전체보기</div>
+      </div>
+      <div className={memoStyle.divider} />
+      <Grid container>
+        <CarouselList showItems={3}>
+          {memos.map((item) => {
+            return (
+              <div className={memoStyle.list_item_container}>
+                <MemoCard
+                  key={item.key}
+                  data={item}
+                  viewType={"TEMP"}
+                  onClick={onMemoClick}
+                />
+              </div>
+            );
+          })}
+        </CarouselList>
       </Grid>
     </div>
   );

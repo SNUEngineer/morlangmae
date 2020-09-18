@@ -2,6 +2,7 @@
   position: relative;
   height: 100%;
   width: 100%;
+  color: #707070;
   .mode_container {
     position: absolute;
     left: 30px;
@@ -38,12 +39,12 @@
   }
   .create_platter_container {
     position: absolute;
+    top: 50%;
     right: 30px;
     transform: translate(0%, -50%);
   }
 }
 
 .dot_menu {
-  background-color: red;
   cursor: pointer;
 }

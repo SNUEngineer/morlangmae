@@ -1,3 +1,10 @@
+.tab_container {
+  max-width: 989px;
+  padding-top: 104px;
+  margin: 0 auto;
+  margin-bottom: 300px;
+}
+
 .list_item_container {
   width: 100%;
   background-color: pink;
@@ -44,4 +51,25 @@
   height: 100px;
   width: 100px;
   background-color: blue;
+}
+
+.header_container {
+  margin-top: 22px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  .text {
+    flex-grow: 1;
+    font-size: 27px;
+    color: #707070;
+  }
+  .sort_menu {
+  }
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: #e0e0e0;
+  margin-bottom: 45.5px;
 }

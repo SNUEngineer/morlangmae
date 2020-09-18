@@ -1,36 +1,12 @@
-.my_collection_list_container {
-  width: 100%;
-}
-
-.my_collection_title_container {
-  flex: display;
-  flex-direction: column;
-  margin-top: 100px;
-
-  .text {
-    font-size: 30px;
-    background-color: yellow;
-    width: 300px;
-  }
-  .sort_menu {
-    background-color: pink;
-    width: 300px;
-  }
-}
-
-.view_pager_container {
-  width: 500px;
-  height: 500px;
-  background-color: pink;
-}
-
 .header_container {
+  margin-top: 100px;
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
   .text {
     flex-grow: 1;
-    font-size: 35px;
+    font-size: 27px;
+    color: #707070;
   }
   .go_to_all_list {
     background-color: pink;
@@ -44,8 +20,8 @@
 .divider {
   height: 1px;
   width: 100%;
-  background-color: gray;
-  margin-bottom: 20px;
+  background-color: #e0e0e0;
+  margin-bottom: 45.5px;
 }
 
 .list_item_container {
@@ -59,18 +35,98 @@
 
 .create_memo_container {
   position: relative;
-  height: 350px;
+  height: 206px;
   width: 100%;
-  background-color: honeydew;
   margin-bottom: 100px;
-  margin-top: 100px;
   .drag_drop_container {
     position: absolute;
-    width: 450px;
-    height: 350px;
+    width: 292px;
+    height: 100%;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: gray;
+  }
+}
+
+.tab_container {
+  max-width: 717px;
+  padding-top: 66px;
+  margin: 0 auto;
+  margin-bottom: 300px;
+}
+.list_tab_container {
+  max-width: 870px;
+  padding-top: 50px;
+  margin: 0 auto;
+  margin-bottom: 300px;
+}
+.memo_in_collection_container {
+  max-width: 717px;
+  padding-top: 66px;
+  margin: 0 auto;
+  margin-bottom: 300px;
+
+  .divider {
+    height: 1px;
+    width: 100%;
+    background-color: #e0e0e0;
+    margin-bottom: 84.5px;
+  }
+
+  .split {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    .collection_title_image {
+      margin-right: 23.5px;
+      .image {
+        width: 297px;
+        height: 303px;
+        background-color: gray;
+      }
+    }
+  }
+  .list_container {
+    flex-grow: 1;
+
+    .in_collection_header_container {
+      margin-bottom: 5px;
+      margin-left: 5px;
+      display: flex;
+      flex-direction: row;
+      height: 80px;
+      .collection_info {
+        flex-grow: 1;
+        .service_type {
+          font-size: 14px;
+          color: #707070;
+        }
+        .title {
+          margin-top: 5px;
+          font-size: 20px;
+          color: #707070;
+        }
+      }
+
+      .sort_menu {
+        background-color: pink;
+        position: relative;
+
+        .select {
+          position: absolute;
+          right: 0px;
+          bottom: 20px;
+        }
+      }
+    }
+
+    .list_container_divider {
+      height: 1px;
+      width: 100%;
+      background-color: #e0e0e0;
+      margin-bottom: 3px;
+    }
   }
 }

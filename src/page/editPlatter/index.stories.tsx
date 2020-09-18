@@ -1,5 +1,8 @@
 import React from "react";
 import EditPlatterPage from "./EditPlatterPage";
+import Scroll from "./Scroll";
+import BasicMenuBar from "../../components/basicMenuBar/BasicMenuBar";
+
 export default { title: "edit platter" };
 
 export function basic() {
@@ -26,7 +29,7 @@ export function basic() {
 
   const message = {
     content: "message message message",
-    sentAt: 0,
+    sentAt: "오후 3:12",
     sender: messageSender,
   };
 
@@ -43,4 +46,12 @@ export function basic() {
       loadMessages={() => {}}
     />
   );
+}
+
+export function scroller() {
+  return <Scroll />;
+}
+
+export function basicMenuBar() {
+  return <BasicMenuBar />;
 }

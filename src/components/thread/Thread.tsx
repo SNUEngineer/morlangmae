@@ -83,10 +83,8 @@ export default function Thread(props: ThreadProps) {
           <div className={threadStyle.title}>{test.title}</div>
         </div>
         <div className={threadStyle.divider} />
-        <List>
-          <div className={threadStyle.messages_container}>{messageList}</div>
-          <div ref={messagesRef} />
-        </List>
+        <div className={threadStyle.messages_container}>{messageList}</div>
+        <div ref={messagesRef} />
         <List>
           <ListItem>
             <form

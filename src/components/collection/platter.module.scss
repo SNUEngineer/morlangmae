@@ -1,31 +1,39 @@
 .platter_container {
   position: relative;
   width: 100%;
+
   margin: auto 0;
-  padding-top: 150px;
-  padding-bottom: 150px;
-  padding-left: 300px;
-  padding-right: 300px;
+  padding-top: 112px;
+  padding-bottom: 90px;
+  padding-left: 276px;
+  padding-right: 276px;
   box-sizing: border-box;
+  .align_container {
+    margin: auto 0;
+    width: 100%;
+  }
 }
 
 .platter_info_container {
   position: relative;
   margin-top: 20px;
-  height: 220px;
+  height: 80px;
+  margin-bottom: 140px;
   .title_container {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     “ .subtitle {
       input {
-        font-size: 14px;
+        font-size: 15px;
+        color: #707070;
       }
     }
 
     .title {
       input {
-        font-size: 24px;
+        font-size: 37px;
+        color: #707070;
       }
     }
   }
@@ -33,12 +41,12 @@
   .writer_container {
     position: absolute;
     width: 200px;
-    top: 0;
+    bottom: 0;
     right: 0;
 
     .date_text {
       text-align: right;
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .profile_container {
@@ -49,6 +57,8 @@
         right: 130px;
         top: 50%;
         transform: translate(0%, -50%);
+        height: 35px;
+        width: 35px;
       }
 
       .name_text_container {
@@ -59,11 +69,11 @@
 
         .name_text {
           text-align: right;
-          font-size: 12px;
+          font-size: 11px;
         }
         .company_text {
           text-align: right;
-          font-size: 12px;
+          font-size: 11px;
         }
       }
     }
