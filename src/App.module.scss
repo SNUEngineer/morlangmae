@@ -1,14 +1,4 @@
 @font-face {
-  font-family: "AppleSDGothicNeoH00";
-  src: url("/resources/fonts/AppleSDGothicNeoH00.ttf") format("truetype"); /* IE9 Compat Modes */
-}
-
-@font-face {
-  font-family: "Noto Sans KR";
-  src: url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); /* IE9 Compat Modes */
-}
-
-@font-face {
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 100;
@@ -79,89 +69,12 @@
     url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf)
       format("opentype");
 }
-
-.my_collection_list_container {
-  width: 100%;
-}
-
-.tab_container {
-  max-width: 717px;
-  padding-top: 157px;
-  margin: 0 auto;
-}
-
-.header_container {
-  margin-top: 100px;
-  margin-bottom: 5px;
+.root {
   display: flex;
-  flex-direction: row;
-  .text {
-    flex-grow: 1;
-    font-size: 27px;
-    color: #707070;
-    font-family: "Noto Sans KR";
-    font-weight: 900;
-  }
-  .sort_menu {
-  }
 }
 
-.search_container {
-  width: 100%;
-  margin-bottom: 90.5px;
-  .search_bar {
-    margin: 0 auto;
-    width: 518px;
-    height: 53px;
-    background-color: gray;
-  }
-}
-
-.member_header_container {
-  margin-bottom: 100px;
-  .text {
-    font-size: 27px;
-    color: #707070;
-    margin-bottom: 11.5px;
-  }
-  .sort_menu {
-  }
-}
-
-.view_pager_container {
-  width: 500px;
-  height: 500px;
-  background-color: pink;
-}
-
-.divider {
-  height: 1px;
-  width: 100%;
-  background-color: #e0e0e0;
-  margin-bottom: 45.5px;
-}
-
-.helpful_list_item_container {
-  width: 300px;
-}
-.for_user_list_item_container {
-  width: 300px;
-}
-.often_found_list_item_container {
-  width: 400px;
-}
-
-.go_to_all_company {
-  margin-top: 200px;
-  margin-bottom: 200px;
-  text-align: center;
-
-  font-size: 20px;
-}
-
-.my_collection_container {
-}
-
-.helpful_container {
-  margin-bottom: 141px;
+.test {
+  font-size: 27px;
+  color: #707070;
+  font-family: "AppleSDGothicNeoH00";
 }

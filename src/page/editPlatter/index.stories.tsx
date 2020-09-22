@@ -6,7 +6,6 @@ import BasicMenuBar from "../../components/basicMenuBar/BasicMenuBar";
 export default { title: "edit platter" };
 
 export function basic() {
-  console.log("basic ");
   const block = {
     type: "a",
     content: "block block block",

@@ -1,36 +1,42 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment } from "react";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import AppBar from "./layout/AppBar";
+import Drawer from "./layout/Drawer";
+import { Toolbar, Typography } from "@material-ui/core";
+import AuthRoute from "./common/auth/AuthRoute";
+import UnauthRoute from "./common/auth/UnauthRoute";
+import SignInPage from "./page/signin/SignInPage";
 import {
-  Switch,
-  Route,
-  Redirect,
-  useLocation
-} from 'react-router-dom';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import AppBar from './layout/AppBar';
-import Drawer from './layout/Drawer';
-import { Toolbar, Typography } from '@material-ui/core';
-import AuthRoute from './common/auth/AuthRoute';
-import UnauthRoute from './common/auth/UnauthRoute';
-import SignInPage from './page/signin/SignInPage';
-import { signIn, signUp, SignInRequest, SignUpRequest } from './services/user.service';
-import SignUpPage from './page/signup/SignUpPage';
-import Error from './common/error'
-import CollectionPageContainer from './page/listCollection/CollectionPageContainer'
-import CreateCollectionPageContainer from './page/createCollection/CreateCollectionPageContainer';
-import EditCollectionPageContainer from './page/editCollection/EditCollectionPageContainer';
-import queryString from 'query-string';
-import PersonaPageContainer from './page/persona/PersonaPageContainer';
-import { COLLECTION_LIST, COLLECTION_LIST_MY_COLLECTION, COLLECTION_LIST_CREATED, COLLECTION_CREATE } from './common/paths';
-import MyCollectionTab from './page/listCollection/MyCollectionTab';
-import SearchCollectionTab from './page/listCollection/SearchCollectionTab';
-import CreateCollectionTab from './page/listCollection/CreateCollectionTab';
+  signIn,
+  signUp,
+  SignInRequest,
+  SignUpRequest,
+} from "./services/user.service";
+import SignUpPage from "./page/signup/SignUpPage";
+import Error from "./common/error";
+import CollectionPageContainer from "./page/listCollection/CollectionPageContainer";
+import CreateCollectionPageContainer from "./page/createCollection/CreateCollectionPageContainer";
+import EditCollectionPageContainer from "./page/editCollection/EditCollectionPageContainer";
+import queryString from "query-string";
+import PersonaPageContainer from "./page/persona/PersonaPageContainer";
+import {
+  COLLECTION_LIST,
+  COLLECTION_LIST_MY_COLLECTION,
+  COLLECTION_LIST_CREATED,
+  COLLECTION_CREATE,
+} from "./common/paths";
+import MyCollectionTab from "./page/listCollection/MyCollectionTab";
+import SearchCollectionTab from "./page/listCollection/SearchCollectionTab";
+import CreateCollectionTab from "./page/listCollection/CreateCollectionTab";
+import appStyle from "./App.module.scss";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: 'flex',
+      display: "flex",
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
@@ -43,43 +49,41 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
     },
     drawerContainer: {
-      overflow: 'auto',
+      overflow: "auto",
     },
     content: {
       flexGrow: 1,
       padding: theme.spacing(3),
     },
-  }),
+  })
 );
 
 function App() {
   const { pathname } = useLocation();
   const classes = useStyles();
   const [user] = useState(null);
-  const token = localStorage.getItem('Authorization');
+  const token = localStorage.getItem("Authorization");
   const [authenticated, setAuthenticated] = useState(token != null);
   function validateToken() {
-    const token = localStorage.getItem('Authorization')
-    setAuthenticated(token != null)
+    const token = localStorage.getItem("Authorization");
+    setAuthenticated(token != null);
   }
 
   async function handleSignIn(request: SignInRequest) {
-    await signIn(request)
-    validateToken()
+    await signIn(request);
+    validateToken();
   }
 
   async function handleSignUp(request: SignUpRequest) {
-    await signUp(request)
-    validateToken()
+    await signUp(request);
+    validateToken();
   }
 
   return (
-    <div className={classes.root}>
+    <div className={appStyle.root}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography>
-            Bailey
-            </Typography>
+          <Typography>Bailey</Typography>
         </Toolbar>
       </AppBar>
       <Switch>
@@ -162,7 +166,7 @@ function PersonaView(props: any) {
         <PersonaPageContainer />
       </main>
     </Fragment>
-  )
+  );
 }
 
 function getCollectionId(props: any): number | undefined {
@@ -171,7 +175,7 @@ function getCollectionId(props: any): number | undefined {
   if (query && query.collectionId) {
     collectionId = Number(query.collectionId);
   }
-  return collectionId
+  return collectionId;
 }
 
 function getPlatterId(props: any): number | undefined {
@@ -195,7 +199,7 @@ function CreateCollectionTabView(props: any) {
         <CreateCollectionTab />
       </main>
     </Fragment>
-  )
+  );
 }
 
 function CollectionView(props: any) {
@@ -227,7 +231,7 @@ function CreateCollectionView() {
       <Toolbar />
       <CreateCollectionPageContainer />
     </main>
-  )
+  );
 }
 
 function EditCollectionView(props: any) {
@@ -237,7 +241,7 @@ function EditCollectionView(props: any) {
       <Toolbar />
       <EditCollectionPageContainer collectionId={props.match.params.id} />
     </main>
-  )
+  );
 }
 
 function ProjectView({ user, ...props }: any) {
