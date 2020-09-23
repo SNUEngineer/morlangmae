@@ -81,7 +81,6 @@ export default function Memo(props: any) {
         panzoomBoxContainerEl.current.focus();
         const height = window.innerHeight - 50;
         const width = panzoomBoxContainerEl.current.offsetWidth;
-        console.log("asdfasdf heightheight " + height);
         if (!!panzoomEl.current) {
           if (!fisrtAlign) {
             panzoomEl.current.moveBy((width - panzoomBoxSize.w) / 2, 0);

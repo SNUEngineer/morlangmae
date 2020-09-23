@@ -43,7 +43,6 @@ export default function MemoItem(props: any) {
   const [itemID, setItemID] = useState(0);
   const [isDragging, setIsDragging] = useState(0);
   const [onHover, setOnHover] = useState(false);
-
   const [anchor, setAnchor] = useState({
     exist: false,
     zoneDown: false,
@@ -55,7 +54,6 @@ export default function MemoItem(props: any) {
     x: 0,
     y: 0,
   });
-
   const [openComment, setOpenComment] = useState(false);
   const [bounds, setBounds] = useState({
     //pan board 너비 높이 - 메모 아이템 너비 높이
