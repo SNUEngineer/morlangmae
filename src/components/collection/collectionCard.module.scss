@@ -12,7 +12,7 @@
 }
 .card_root {
   width: 100%;
-
+  cursor: pointer;
   box-sizing: border-box;
   .service_type_and_menu {
     display: flex;
@@ -123,6 +123,7 @@
   background-color: white;
   height: 77px;
   width: 100%;
+  cursor: pointer;
 
   border-bottom-color: #e0e0e0;
   border-bottom-style: solid;
@@ -216,6 +217,7 @@
   border-bottom-color: #e0e0e0;
   border-bottom-style: solid;
   border-width: 1px;
+  cursor: pointer;
   &:hover {
     background-color: gray;
   }
@@ -273,6 +275,7 @@
   height: 100%;
   width: 100%;
   position: relative;
+
   .vertical_align {
     position: absolute;
     left: 0;
