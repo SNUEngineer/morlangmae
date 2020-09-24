@@ -2,6 +2,11 @@
   max-width: 212px;
   padding: 0px;
 }
+.carousel_limit_two {
+  max-width: 312px;
+  padding: 0px;
+}
+
 .card_basic {
   padding: 15px;
 }
@@ -16,6 +21,8 @@
     .service_type {
       flex-grow: 1;
       font-size: 14px;
+      letter-spacing: -0.98px;
+      font-family: "Noto Sans CJK KR Regular";
       color: #707070;
     }
 
@@ -28,6 +35,8 @@
     color: #707070;
     margin-top: 4px;
     margin-bottom: 16px;
+    letter-spacing: -1px;
+    font-family: "Noto Sans CJK KR Regular";
   }
 
   .image_container {
@@ -127,9 +136,14 @@
     vertical-align: middle;
     color: #707070;
     font-size: 14px;
+    letter-spacing: -0.98px;
+    font-family: "Noto Sans CJK KR Regular";
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .date_text {
+    letter-spacing: 0px;
   }
   .title_image {
     .image {
@@ -171,11 +185,15 @@
       .collection_attending_type {
         text-align: left;
         font-size: 14px;
-        margin-bottom: 8px;
+        letter-spacing: -0.98px;
+        font-family: "Noto Sans CJK KR Regular";
+        margin-bottom: 5px;
       }
       .collection_type {
         text-align: left;
         font-size: 10px;
+        letter-spacing: -0.5px;
+        font-family: "Noto Sans CJK KR Regular";
       }
     }
   }
@@ -207,6 +225,8 @@
     vertical-align: middle;
     color: #707070;
     font-size: 14px;
+    letter-spacing: -0.98px;
+    font-family: "Noto Sans CJK KR Regular";
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -1,34 +1,6 @@
-@font-face {
-  font-family: "Noto Sans CJK KR Thin";
-  src: url("/fonts/NotoSansCJKkr-Thin.otf");
-}
-@font-face {
-  font-family: "Noto Sans CJK KR Light";
-  src: url("/fonts/NotoSansCJKkr-Light.otf");
-}
-@font-face {
-  font-family: "Noto Sans CJK KR DemiLight";
-  src: url("/fonts/NotoSansCJKkr-DemiLight.otf");
-}
-@font-face {
-  font-family: "Noto Sans CJK KR Regular";
-  src: url("/fonts/NotoSansCJKkr-Regular.otf");
-}
-@font-face {
-  font-family: "Noto Sans CJK KR Medium";
-  src: url("/fonts/NotoSansCJKkr-Medium.otf");
-}
-@font-face {
-  font-family: "Noto Sans CJK KR Bold";
-  src: url("/fonts/NotoSansCJKkr-Bold.otf");
-}
-@font-face {
-  font-family: "Noto Sans CJK KR Black";
-  src: url("/fonts/NotoSansCJKkr-Black.otf");
-}
-
 .colleciont_title_text {
   font-size: 30px;
+  font-family: "Noto Sans CJK KR Bold";
   color: #707070;
   margin-top: 138px;
   margin-bottom: 187px;
@@ -93,7 +65,7 @@
     }
 
     &.active {
-      font-family: "AppleSDGothicNeoB00";
+      font-family: "Noto Sans CJK KR Regular";
       border-bottom: 2px solid #105710;
       font-size: 17px;
       color: #105710;

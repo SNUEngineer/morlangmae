@@ -116,8 +116,8 @@ export default function CollectionCard(props: CollectionCardProps) {
                 >
                   {"플레터 이름"}
                 </div>
-                <div className={memoStyle.document_title} onClick={onClick}>
-                  {"1차 기획안.docx"}
+                <div className={memoStyle.writer_name} onClick={onClick}>
+                  {"송병근"}
                 </div>
               </div>
             </div>
@@ -127,8 +127,8 @@ export default function CollectionCard(props: CollectionCardProps) {
               <div className={memoStyle.date} onClick={onClick}>
                 {dateText}
               </div>
-              <div className={memoStyle.writer_name} onClick={onClick}>
-                {"송병근"}
+              <div className={memoStyle.document_title} onClick={onClick}>
+                {"1차 기획안.docx"}
                 {/* 작성자 프로필로 대체 */}
               </div>
               <div className={memoStyle.writer_count} onClick={onClick}>

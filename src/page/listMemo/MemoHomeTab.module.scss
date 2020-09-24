@@ -1,3 +1,32 @@
+@font-face {
+  font-family: "Noto Sans CJK KR Thin";
+  src: url("../../fonts/NotoSansCJKkr-Thin.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Light";
+  src: url("../../fonts/NotoSansCJKkr-Light.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR DemiLight";
+  src: url("../../fonts/NotoSansCJKkr-DemiLight.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Regular";
+  src: url("../../fonts/NotoSansCJKkr-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Medium";
+  src: url("../../fonts/NotoSansCJKkr-Medium.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Bold";
+  src: url("../../fonts/NotoSansCJKkr-Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Black";
+  src: url("../../fonts/NotoSansCJKkr-Black.otf") format("opentype");
+}
+
 .header_container {
   margin-top: 100px;
   margin-bottom: 5px;
@@ -6,14 +35,45 @@
   .text {
     flex-grow: 1;
     font-size: 27px;
+    letter-spacing: -1.35px;
+    font-family: "Noto Sans CJK KR Bold";
     color: #707070;
   }
-  .go_to_all_list {
+  .memo_list_text {
+    flex-grow: 1;
+    font-size: 20px;
+    letter-spacing: -1px;
+    font-family: "Noto Sans CJK KR Bold";
+    color: #707070;
+  }
+  .sort_menu {
+    position: relative;
+    width: 100px;
+    font-size: 14px;
+    letter-spacing: -0.98px;
+    font-family: "Noto Sans CJK KR Regular";
+    vertical-align: top;
     background-color: pink;
-    .p {
-      line-height: 1.5;
-      display: inline-block;
-      vertical-align: bottom;
+    .text {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: black;
+    }
+  }
+  .go_to_all_list {
+    position: relative;
+    cursor: pointer;
+    width: 80px;
+    font-size: 14px;
+    letter-spacing: -0.98px;
+    font-family: "Noto Sans CJK KR Regular";
+    vertical-align: top;
+    .go_to_text {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      color: #707070;
     }
   }
 }

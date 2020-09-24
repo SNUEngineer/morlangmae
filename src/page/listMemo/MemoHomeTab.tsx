@@ -105,11 +105,6 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
       </div>
 
       <TempMemoList memos={testCollections} onMemoClick={onMemoClick} />
-      <RequestMemoList
-        memos={testCollections}
-        onMemoClick={onMemoClick}
-        isRequesting={true}
-      />
       <MemoInCollectionCardList
         collections={testCollections}
         onCollectionClick={onCollectionClick}
@@ -139,7 +134,9 @@ export function MemoInCollectionCardList(props: MemoInCollectionCardListProps) {
     <div>
       <div className={memoStyle.header_container}>
         <div className={memoStyle.text}>컬렉션에 포함된 메모 모아보기</div>
-        <div className={memoStyle.sort_menu}>전체보기</div>
+        <div className={memoStyle.go_to_all_list}>
+          <div className={memoStyle.go_to_text}>전체보기</div>
+        </div>
       </div>
       <div className={memoStyle.divider} />
       <GridCollectionCardList
@@ -168,10 +165,12 @@ export function RequestMemoList(props: RequestMemoListProps) {
   return (
     <div className={memoStyle.requesting_memo_container}>
       <div className={memoStyle.header_container}>
-        <div className={memoStyle.text}>
+        <div className={memoStyle.memo_list_text}>
           {isRequesting ? "내가 요청한 메모" : "요청 받은 메모"}
         </div>
-        <div className={memoStyle.sort_menu}>전체보기</div>
+        <div className={memoStyle.go_to_all_list}>
+          <div className={memoStyle.go_to_text}>전체보기</div>
+        </div>
       </div>
       <div className={memoStyle.divider} />
       <Grid container>
@@ -203,7 +202,9 @@ export function TempMemoList(props: TempMemoListProps) {
     <div className={memoStyle.requesting_memo_container}>
       <div className={memoStyle.header_container}>
         <div className={memoStyle.text}>{"임시 저장중인 메모"}</div>
-        <div className={memoStyle.sort_menu}>전체보기</div>
+        <div className={memoStyle.go_to_all_list}>
+          <div className={memoStyle.go_to_text}>전체보기</div>
+        </div>
       </div>
       <div className={memoStyle.divider} />
       <Grid container>

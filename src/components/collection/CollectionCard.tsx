@@ -63,12 +63,14 @@ export default function CollectionCard(props: CollectionCardProps) {
   switch (viewType) {
     case "WIDE":
     case "CAROUSEL":
+    case "CAROUSEL_TWO":
       return (
         <div
           className={classNames({
             [collectionStyle.card_root]: true,
-            [collectionStyle.card_basic]: viewType !== "CAROUSEL",
+            [collectionStyle.card_basic]: viewType === "WIDE",
             [collectionStyle.carousel_limit]: viewType === "CAROUSEL",
+            [collectionStyle.carousel_limit_two]: viewType === "CAROUSEL_TWO",
           })}
           onClick={onClick}
         >
@@ -146,7 +148,7 @@ export default function CollectionCard(props: CollectionCardProps) {
                 </div>
               </div>
               <div className={collectionStyle.date} onClick={onClick}>
-                <p>{data.startDate}</p>
+                <p className={collectionStyle.date_text}>{data.startDate}</p>
               </div>
             </div>
           </div>

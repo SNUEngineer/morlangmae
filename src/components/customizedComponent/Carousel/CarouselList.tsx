@@ -5,6 +5,7 @@ import carouselStyle from "./carouselArrow.module.scss";
 
 export interface CarouselListProps {
   showItems: number;
+  slideItems: number;
   children;
 }
 
@@ -14,7 +15,7 @@ export default function CarouselList(props: CarouselListProps) {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: props.showItems,
-      slidesToSlide: 3, // optional, default to 1.
+      slidesToSlide: !!props.slideItems ? props.slideItems : 3, // optional, default to 1.
       partialVisibilityGutter: 40,
     },
   };

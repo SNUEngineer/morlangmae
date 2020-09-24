@@ -175,14 +175,14 @@ export function OftenFoundCollectionCardList(
       </div>
       <div className={collectionStyle.divider} />
       <Grid container>
-        <CarouselList showItems={3.15}>
+        <CarouselList showItems={2.15} slideItems={2}>
           {oftenCollections.map((item) => {
             return (
               <div className={collectionStyle.often_found_list_item_container}>
                 <CollectionCard
                   key={item.key}
                   data={item}
-                  viewType={"CAROUSEL"}
+                  viewType={"CAROUSEL_TWO"}
                   onClick={() => {}}
                 />
               </div>
