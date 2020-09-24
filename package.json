@@ -52,7 +52,7 @@
     "react-pdf": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "react-scroll": "1.8.1",
+    "react-scroll": "^1.8.1",
     "react-scroll-to-component": "1.0.2",
     "react-slick": "0.27.11",
     "slick-carousel": "1.8.1",

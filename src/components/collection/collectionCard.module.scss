@@ -14,6 +14,12 @@
   width: 100%;
   cursor: pointer;
   box-sizing: border-box;
+  .dot_menu {
+  opacity: 0;}
+  &:hover {
+    .dot_menu {
+      opacity: 1;}
+  }
   .service_type_and_menu {
     display: flex;
     flex-direction: row;
@@ -26,14 +32,12 @@
       color: #707070;
     }
 
-    .dot_menu {
-    }
+    
   }
 
   .title {
-    font-size: 20px;
+    font-size: 19px;
     color: #707070;
-    margin-top: 4px;
     margin-bottom: 16px;
     letter-spacing: -1px;
     font-family: "Noto Sans CJK KR Regular";
@@ -89,19 +93,21 @@
         .service_type_text {
           font-size: 11px;
           margin-right: 18px;
+          opacity: 0;
         }
         .title_text {
           font-size: 16px;
+          font-family: "Noto Sans CJK KR Bold";
           margin-right: 18px;
           margin-top: 5px;
         }
         .date_text {
           position: absolute;
+          font-family: "Noto Sans CJK KR Regular";
           font-size: 13px;
           left: 14px;
           bottom: 20px;
           color: white;
-          font-family: "AppleSDGothicNeoM00";
         }
       }
     }

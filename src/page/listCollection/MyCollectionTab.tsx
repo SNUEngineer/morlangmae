@@ -7,7 +7,6 @@ import CollectionCard, {
 import CollectionTab from "./CollectionTab";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -16,6 +15,7 @@ import { COLLECTION_LIST_MY_COLLECTION } from "../../common/paths";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import collectionStyle from "./myCollectionTab.module.scss";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 // import Slider from "../../components/customizedComponent/Carousel";
 
 export interface MyCollectionTabProps {
@@ -110,9 +110,12 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
 
       <div className={collectionStyle.member_header_container}>
         <div className={collectionStyle.text}>김기연님의 컬렉션</div>
-        <div className={collectionStyle.divider} />
+       
       </div>
-
+      
+      <div className={collectionStyle.member_header_margin} >
+      <div className={collectionStyle.divider} />
+      </div>
       <PinnedCollectionCardList
         pinned={testCollections}
         onCollectionClick={onCollectionClick}
@@ -142,7 +145,6 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>고정한 컬렉션</div>
       </div>
-      <div className={collectionStyle.divider} />
       <GridCollectionCardList
         collections={pinned.slice(0, 2)}
         onClick={props.onCollectionClick}
@@ -204,20 +206,39 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
     }
   );
 
+  const useStyles = makeStyles(() =>
+  createStyles({
+    select: {
+      fontSize: "13px",
+      letterSpacing: "-0.98px",
+      fontFamily:"Noto Sans CJK KR Regular",
+      underline:{
+        borderBottomColor: "red"
+      }
+    },
+  })
+);
+  const classes = useStyles();
+
   return (
     <div className={collectionStyle.my_collection_container}>
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>나의 컬렉션 리스트</div>
         <div className={collectionStyle.sort_menu}>
-          <Select value={filter} onChange={handleChange}>
+        <div className={collectionStyle.sort_select}>
+          <Select value={filter} onChange={handleChange} className={classes.select}>
             <MenuItem value="ALL">전체</MenuItem>
             <MenuItem value="IN_PROGRESS">진행</MenuItem>
             <MenuItem value="DONE">완료</MenuItem>
           </Select>
+          </div>
         </div>
       </div>
       <div className={collectionStyle.divider} />
+      <div className={collectionStyle.collection_list_container}> 
       <Grid container>{myCollectionCards}</Grid>
+      </div>
+      
     </div>
   );
 }
@@ -238,6 +259,7 @@ export function HelpfulCollectionCardList(
         <div className={collectionStyle.text}>도움이 될만한 컬렉션</div>
       </div>
       <div className={collectionStyle.divider} />
+      <div className={collectionStyle.collection_list_container}> 
       <Grid container>
         <CarouselList showItems={3.15}>
           {helpfulCollections.map((item) => {
@@ -254,6 +276,7 @@ export function HelpfulCollectionCardList(
           })}
         </CarouselList>
       </Grid>
+      </div>
     </div>
   );
 }

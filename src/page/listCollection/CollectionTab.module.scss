@@ -19,7 +19,7 @@
   align-content: center;
   justify-content: center;
   align-items: enter;
-  width: 750px;
+  width: 584px;
   margin: 0 auto;
   @media screen and (max-width: 750px) {
     width: 100%;
@@ -28,12 +28,10 @@
 
   .underbar {
     position: absolute;
-    width: 750px;
+    width: 100%;
     top: 41px;
-    height: 2px;
-    margin-top: -3px;
-    min-height: 2px;
-    max-height: 2px;
+    margin-top: -0.5px;
+    height: 1px;
     background-color: #e0e0e0;
     z-index: 900;
     @media screen and (max-width: 750px) {
@@ -43,7 +41,8 @@
   }
 
   .tab_element {
-    font-size: 17px;
+    font-size: 16px;
+    letter-spacing: -0.7px;
     font-family: "Noto Sans CJK KR Regular";
 
     width: 100px;
@@ -51,11 +50,12 @@
     white-space: pre;
     text-decoration: none;
 
-    color: inherit;
+    color: #707070;
     margin-left: 11.65px;
     margin-right: 11.65px;
-    padding-bottom: 17px;
-    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 16px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     border-bottom-color: rgba(200, 200, 200, 0);
     a {
       text-algin: center;
@@ -66,9 +66,11 @@
 
     &.active {
       font-family: "Noto Sans CJK KR Regular";
-      border-bottom: 2px solid #105710;
+      
+      border-bottom-color: #e0e0e0;
+      border-bottom-style: solid;
+      border-bottom-width: 3px;
       font-size: 17px;
-      color: #105710;
       &:hover {
         color: #105710;
       }
@@ -78,10 +80,9 @@
     }
   }
   .tab_element_activated {
-    font-family: "AppleSDGothicNeoB00";
     border-bottom: 2px solid #105710;
-    font-size: 17px;
     color: #105710;
+    font-family: "Noto Sans CJK KR Bold";
     z-index: 1000;
     &:hover {
       color: #105710;
