@@ -16,6 +16,11 @@ import { GridCollectionCardList } from "../../components/collection/GridCollecti
 import collectionStyle from "./myCollectionTab.module.scss";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
+import EditIcon from "@material-ui/icons/Edit";
+import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
+import ExpandLessRoundedIcon from "@material-ui/icons/ExpandLessRounded";
+
 // import Slider from "../../components/customizedComponent/Carousel";
 
 export interface MyCollectionTabProps {
@@ -110,11 +115,10 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
 
       <div className={collectionStyle.member_header_container}>
         <div className={collectionStyle.text}>김기연님의 컬렉션</div>
-       
       </div>
-      
-      <div className={collectionStyle.member_header_margin} >
-      <div className={collectionStyle.divider} />
+
+      <div className={collectionStyle.member_header_margin}>
+        <div className={collectionStyle.divider} />
       </div>
       <PinnedCollectionCardList
         pinned={testCollections}
@@ -149,11 +153,13 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
         collections={pinned.slice(0, 2)}
         onClick={props.onCollectionClick}
         columnCount={2}
+        isPinned={true}
       />
       <GridCollectionCardList
         collections={pinned.slice(2, 5)}
         onClick={props.onCollectionClick}
         columnCount={3}
+        isPinned={true}
       />
     </div>
   );
@@ -207,17 +213,37 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
   );
 
   const useStyles = makeStyles(() =>
-  createStyles({
-    select: {
-      fontSize: "13px",
-      letterSpacing: "-0.98px",
-      fontFamily:"Noto Sans CJK KR Regular",
-      underline:{
-        borderBottomColor: "red"
-      }
-    },
-  })
-);
+    createStyles({
+      select: {
+        fontSize: "13px",
+        letterSpacing: "-0.98px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        ul: {
+          backgroundColor: "red",
+          minHeight: "1000px",
+        },
+      },
+      root: {
+        fontSize: "11.5px",
+        letterSpacing: "-0.98px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        minWidth: "86px",
+        textAlign: "center",
+        color: "#707070",
+        "&:hover": {
+          background: "#f0f0f0",
+        },
+        borderBottomStyle: "solid",
+        borderBottomColor: "#E0E0E0",
+        borderBottomWidth: "0.5px",
+      },
+      selected: {
+        "&:hover": {
+          color: "#4BA34B",
+        },
+      },
+    })
+  );
   const classes = useStyles();
 
   return (
@@ -225,20 +251,52 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
       <div className={collectionStyle.header_container}>
         <div className={collectionStyle.text}>나의 컬렉션 리스트</div>
         <div className={collectionStyle.sort_menu}>
-        <div className={collectionStyle.sort_select}>
-          <Select value={filter} onChange={handleChange} className={classes.select}>
-            <MenuItem value="ALL">전체</MenuItem>
-            <MenuItem value="IN_PROGRESS">진행</MenuItem>
-            <MenuItem value="DONE">완료</MenuItem>
-          </Select>
+          <div className={collectionStyle.sort_select}>
+            <Select
+              value={filter}
+              onChange={handleChange}
+              className={classNames({
+                [classes.select]: true,
+                [classes.icon]: true,
+              })}
+              IconComponent={ExpandMoreRoundedIcon}
+              disableUnderline
+            >
+              <MenuItem
+                className={classNames({
+                  [classes.root]: true,
+                  [classes.selected]: true,
+                })}
+                value="ALL"
+              >
+                <div className={collectionStyle.menu_item_container}> 전체</div>
+              </MenuItem>
+              <MenuItem
+                className={classNames({
+                  [classes.root]: true,
+                  [classes.selected]: true,
+                })}
+                value="IN_PROGRESS"
+              >
+                <div className={collectionStyle.menu_item_container}> 진행</div>
+              </MenuItem>
+              <MenuItem
+                className={classNames({
+                  [classes.root]: true,
+                  [classes.selected]: true,
+                })}
+                value="DONE"
+              >
+                <div className={collectionStyle.menu_item_container}> 완료</div>
+              </MenuItem>
+            </Select>
           </div>
         </div>
       </div>
       <div className={collectionStyle.divider} />
-      <div className={collectionStyle.collection_list_container}> 
-      <Grid container>{myCollectionCards}</Grid>
+      <div className={collectionStyle.collection_list_container}>
+        <Grid container>{myCollectionCards}</Grid>
       </div>
-      
     </div>
   );
 }
@@ -259,23 +317,23 @@ export function HelpfulCollectionCardList(
         <div className={collectionStyle.text}>도움이 될만한 컬렉션</div>
       </div>
       <div className={collectionStyle.divider} />
-      <div className={collectionStyle.collection_list_container}> 
-      <Grid container>
-        <CarouselList showItems={3.15}>
-          {helpfulCollections.map((item) => {
-            return (
-              <div className={collectionStyle.helpful_list_item_container}>
-                <CollectionCard
-                  key={item.key}
-                  data={item}
-                  viewType={"CAROUSEL"}
-                  onClick={() => {}}
-                />
-              </div>
-            );
-          })}
-        </CarouselList>
-      </Grid>
+      <div className={collectionStyle.collection_list_container}>
+        <Grid container>
+          <CarouselList showItems={3.15}>
+            {helpfulCollections.map((item) => {
+              return (
+                <div className={collectionStyle.helpful_list_item_container}>
+                  <CollectionCard
+                    key={item.key}
+                    data={item}
+                    viewType={"CAROUSEL"}
+                    onClick={() => {}}
+                  />
+                </div>
+              );
+            })}
+          </CarouselList>
+        </Grid>
       </div>
     </div>
   );

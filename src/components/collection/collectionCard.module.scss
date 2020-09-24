@@ -6,19 +6,31 @@
   max-width: 312px;
   padding: 0px;
 }
+.pinned_container {
+  height: 13px;
+  width: 100%;
+  background-color: red;
+  margin-bottom: 4px;
+  .pinned_icon {
+    height: 100%;
+    width: 8px;
+    background-color: blue;
+  }
+}
 
 .card_basic {
-  padding: 15px;
 }
 .card_root {
   width: 100%;
   cursor: pointer;
   box-sizing: border-box;
   .dot_menu {
-  opacity: 0;}
+    opacity: 0;
+  }
   &:hover {
     .dot_menu {
-      opacity: 1;}
+      opacity: 1;
+    }
   }
   .service_type_and_menu {
     display: flex;
@@ -31,8 +43,6 @@
       font-family: "Noto Sans CJK KR Regular";
       color: #707070;
     }
-
-    
   }
 
   .title {

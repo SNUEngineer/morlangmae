@@ -38,7 +38,7 @@
 
 .header_container {
   margin-top: 70px;
-  
+
   letter-spacing: -1.2px;
   display: flex;
   flex-direction: row;
@@ -56,12 +56,12 @@
     letter-spacing: -1.2px;
     color: #707070;
     font-family: "Noto Sans CJK KR Bold";
-    
-    .sort_select{
-position: absolute;
-right: 0px;
-bottom: 12px;
-height: 20px;
+
+    .sort_select {
+      position: absolute;
+      right: 0px;
+      bottom: 12px;
+      height: 20px;
     }
   }
 }
@@ -78,7 +78,7 @@ height: 20px;
 }
 
 .member_header_container {
-  overflow : visible;
+  overflow: visible;
   .text {
     font-family: "Noto Sans CJK KR Bold";
     font-size: 26px;
@@ -87,10 +87,9 @@ height: 20px;
     margin-bottom: 11.5px;
   }
   .sort_menu {
-    
   }
 }
-.member_header_margin{
+.member_header_margin {
   height: 5px;
   margin-bottom: 0px;
 }
@@ -126,16 +125,19 @@ height: 20px;
 }
 
 .my_collection_container {
-  
 }
-.collection_list_container{
+.collection_list_container {
   margin-top: 28px;
 }
 .helpful_container {
   margin-bottom: 141px;
 }
 
-.select{
-  background-color: red;
+.select {
   font-size: 50px;
+}
+
+.menu_item_container {
+  height: 100%;
+  width: 100%;
 }

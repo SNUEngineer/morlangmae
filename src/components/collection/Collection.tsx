@@ -1,9 +1,9 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Platter, { PlatterProps } from './Platter';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import { UserView } from '../../services/user.service';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Platter, { PlatterProps } from "./Platter";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
+import { UserView } from "../../services/user.service";
 
 export interface CollectionProps {
   id: number;
@@ -16,35 +16,29 @@ export interface CollectionProps {
 
 const useStyles = makeStyles({
   media: {
-    height: 0,
-    paddingTop: '62.25%',
-    width: '100%'
+    height: "781px",
+    width: "100%",
   },
   root: {
-    overflowY: 'scroll',
+    overflowY: "scroll",
   },
-})
+});
 
 export default function Collection(props: CollectionProps) {
-  const classes = useStyles()
+  const classes = useStyles();
   const platters = props.platters.map((platterProps: PlatterProps) => {
-    return (
-      <Platter key={platterProps.id} {...platterProps} />
-    )
-  })
+    return <Platter key={platterProps.id} {...platterProps} />;
+  });
 
   return (
     <Card className={classes.root}>
-      <CardMedia
-        image={props.imageUrl}
-        className={classes.media}
-      />
+      <CardMedia image={props.imageUrl} className={classes.media} />
       {/* <AvatarGroup> */}
-        {/* {props.members.map((member: UserView) => ( */}
-          {/* <Avatar key={member.id} alt={member.displayName} src={member.imageUrl} /> */}
-        {/* ))} */}
+      {/* {props.members.map((member: UserView) => ( */}
+      {/* <Avatar key={member.id} alt={member.displayName} src={member.imageUrl} /> */}
+      {/* ))} */}
       {/* </AvatarGroup> */}
       {platters}
     </Card>
-  )
+  );
 }

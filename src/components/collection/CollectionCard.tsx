@@ -16,8 +16,8 @@ export interface CollectionData {
   startDate: Date;
   endDate: Date;
   notificationCount: number;
-  pinned: boolean;
   status: string;
+  isPinned: boolean;
 }
 
 export interface CollectionCardProps {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((viewType: "NORMAL" | "WIDE") =>
 );
 
 export default function CollectionCard(props: CollectionCardProps) {
-  const viewType = props.viewType;
+  const { viewType, isPinned } = props;
   const classes = useStyles(viewType);
   const data = props.data;
   const notificationCount = !!data.notificationCount
@@ -74,6 +74,12 @@ export default function CollectionCard(props: CollectionCardProps) {
           })}
           onClick={onClick}
         >
+          {(!!isPinned ? isPinned : false) && (
+            <div className={collectionStyle.pinned_container}>
+              <div className={collectionStyle.pinned_icon}></div>
+            </div>
+          )}
+
           <div className={collectionStyle.service_type_and_menu}>
             <div className={collectionStyle.service_type}>
               {data.serviceType}

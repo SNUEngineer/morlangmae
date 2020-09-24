@@ -13,10 +13,17 @@ export interface GridCollectionCardListProps {
   collections: CollectionData[];
   columnCount: number;
   viewType: string;
+  isPinned: boolean;
   onCollectionClick(data: CollectionData): Promise<void>;
 }
 export function GridCollectionCardList(props: GridCollectionCardListProps) {
-  const { collections, onCollectionClick, columnCount, viewType } = props;
+  const {
+    collections,
+    onCollectionClick,
+    columnCount,
+    viewType,
+    isPinned,
+  } = props;
   const [gridCollections, setGridCollections] = useState<CollectionData[]>();
   useEffect(() => {
     if (collections.length < columnCount) {
@@ -35,24 +42,76 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
     if (!gridCollections) {
       return;
     }
-    return (
-      <div className={listStyle.grid_collection_container}>
-        {gridCollections.map((item) => {
-          return (
-            <div className={listStyle.item}>
-              {!!item && (
-                <CollectionCard
-                  key={item.key}
-                  data={item}
-                  viewType={!!viewType ? viewType : "WIDE"}
-                  onClick={onCollectionClick}
-                />
-              )}
+
+    switch (columnCount) {
+      case 2:
+        return (
+          <div className={listStyle.grid_collection_container_count_2}>
+            <div className={listStyle.item_1}>
+              <CollectionCard
+                data={gridCollections[0]}
+                viewType={!!viewType ? viewType : "WIDE"}
+                onClick={onCollectionClick}
+                isPinned={!!isPinned ? isPinned : false}
+              />
             </div>
-          );
-        })}
-      </div>
-    );
+            <div className={listStyle.item_2}>
+              <CollectionCard
+                data={gridCollections[1]}
+                viewType={!!viewType ? viewType : "WIDE"}
+                onClick={onCollectionClick}
+                isPinned={!!isPinned ? isPinned : false}
+              />
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className={listStyle.grid_collection_container_count_3}>
+            <div className={listStyle.item_1}>
+              <CollectionCard
+                data={gridCollections[0]}
+                viewType={!!viewType ? viewType : "WIDE"}
+                onClick={onCollectionClick}
+              />
+            </div>
+            <div className={listStyle.item_2}>
+              <CollectionCard
+                data={gridCollections[1]}
+                viewType={!!viewType ? viewType : "WIDE"}
+                onClick={onCollectionClick}
+              />
+            </div>
+            <div className={listStyle.item_3}>
+              <CollectionCard
+                data={gridCollections[2]}
+                viewType={!!viewType ? viewType : "WIDE"}
+                onClick={onCollectionClick}
+              />
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className={listStyle.grid_collection_container}>
+            {gridCollections.map((item) => {
+              return (
+                <div className={listStyle.item}>
+                  {!!item && (
+                    <CollectionCard
+                      key={item.key}
+                      data={item}
+                      viewType={!!viewType ? viewType : "WIDE"}
+                      onClick={onCollectionClick}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+    }
   }, [onCollectionClick, gridCollections, viewType]);
 
   return (

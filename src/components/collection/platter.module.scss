@@ -1,16 +1,21 @@
 .platter_container {
   position: relative;
   width: 100%;
-
   margin: auto 0;
   padding-top: 112px;
   padding-bottom: 90px;
-  padding-left: 276px;
-  padding-right: 276px;
   box-sizing: border-box;
   .align_container {
-    margin: auto 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    max-width: 750px;
     width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+    box-sizing: border-box;
+    padding-top: 80px;
   }
 }
 

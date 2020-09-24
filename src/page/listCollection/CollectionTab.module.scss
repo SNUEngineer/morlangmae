@@ -30,8 +30,9 @@
     position: absolute;
     width: 100%;
     top: 41px;
-    margin-top: -0.5px;
+    margin-top: -1px;
     height: 1px;
+    min-height: 1px;
     background-color: #e0e0e0;
     z-index: 900;
     @media screen and (max-width: 750px) {
@@ -57,16 +58,13 @@
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: rgba(200, 200, 200, 0);
-    a {
-      text-algin: center;
-    }
     &:hover {
       color: #495057;
     }
 
     &.active {
       font-family: "Noto Sans CJK KR Regular";
-      
+
       border-bottom-color: #e0e0e0;
       border-bottom-style: solid;
       border-bottom-width: 3px;
@@ -80,7 +78,7 @@
     }
   }
   .tab_element_activated {
-    border-bottom: 2px solid #105710;
+    border-bottom: 1px solid #105710;
     color: #105710;
     font-family: "Noto Sans CJK KR Bold";
     z-index: 1000;
