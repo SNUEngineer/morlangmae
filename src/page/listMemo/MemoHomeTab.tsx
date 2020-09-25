@@ -7,13 +7,13 @@ import CollectionCard, {
 import MemoCard from "../../components/memo/list/memoCard";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import memoStyle from "./MemoHomeTab.module.scss";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
+import Header from "../../components/layout/Header/Header";
 
 export interface MemoHomeTabProps {}
 
@@ -131,24 +131,20 @@ export interface MemoInCollectionCardListProps {
 export function MemoInCollectionCardList(props: MemoInCollectionCardListProps) {
   const { collections, onCollectionClick } = props;
   return (
-    <div>
-      <div className={memoStyle.header_container}>
-        <div className={memoStyle.text}>컬렉션에 포함된 메모 모아보기</div>
-        <div className={memoStyle.go_to_all_list}>
-          <div className={memoStyle.go_to_text}>전체보기</div>
-        </div>
+    <div className={memoStyle.binge_container}>
+      <Header title={"컬렉션에 포함된 메모 모아보기"} subMenuType={"goToAll"} />
+      <div className={memoStyle.memo_list_container}>
+        <GridCollectionCardList
+          collections={collections.slice(0, 2)}
+          onClick={onCollectionClick}
+          columnCount={2}
+        />
+        <GridCollectionCardList
+          collections={collections.slice(2, 5)}
+          onClick={onCollectionClick}
+          columnCount={3}
+        />
       </div>
-      <div className={memoStyle.divider} />
-      <GridCollectionCardList
-        collections={collections.slice(0, 2)}
-        onClick={onCollectionClick}
-        columnCount={2}
-      />
-      <GridCollectionCardList
-        collections={collections.slice(2, 5)}
-        onClick={onCollectionClick}
-        columnCount={3}
-      />
     </div>
   );
 }
@@ -163,30 +159,27 @@ export function RequestMemoList(props: RequestMemoListProps) {
   const { memos, onMemoClick, isRequesting } = props;
   const slicedMemo = memos.slice(0, 4);
   return (
-    <div className={memoStyle.requesting_memo_container}>
-      <div className={memoStyle.header_container}>
-        <div className={memoStyle.memo_list_text}>
-          {isRequesting ? "내가 요청한 메모" : "요청 받은 메모"}
-        </div>
-        <div className={memoStyle.go_to_all_list}>
-          <div className={memoStyle.go_to_text}>전체보기</div>
-        </div>
+    <div className={memoStyle.request_container}>
+      <Header
+        title={isRequesting ? "내가 요청한 메모" : "요청 받은 메모"}
+        subMenuType={"requestMemo"}
+      />
+      <div className={memoStyle.memo_list_container}>
+        <Grid container>
+          {slicedMemo.map((item) => {
+            return (
+              <div className={memoStyle.list_item_container}>
+                <MemoCard
+                  key={item.key}
+                  data={item}
+                  viewType={"LIST"}
+                  onClick={onMemoClick}
+                />
+              </div>
+            );
+          })}
+        </Grid>
       </div>
-      <div className={memoStyle.divider} />
-      <Grid container>
-        {slicedMemo.map((item) => {
-          return (
-            <div className={memoStyle.list_item_container}>
-              <MemoCard
-                key={item.key}
-                data={item}
-                viewType={"LIST"}
-                onClick={onMemoClick}
-              />
-            </div>
-          );
-        })}
-      </Grid>
     </div>
   );
 }
@@ -199,30 +192,26 @@ export interface TempMemoListProps {
 export function TempMemoList(props: TempMemoListProps) {
   const { memos, onMemoClick } = props;
   return (
-    <div className={memoStyle.requesting_memo_container}>
-      <div className={memoStyle.header_container}>
-        <div className={memoStyle.text}>{"임시 저장중인 메모"}</div>
-        <div className={memoStyle.go_to_all_list}>
-          <div className={memoStyle.go_to_text}>전체보기</div>
-        </div>
+    <div className={memoStyle.temp_container}>
+      <Header title={"임시 저장중인 메모"} subMenuType={"goToAll"} />
+      <div className={memoStyle.memo_list_container}>
+        <Grid container>
+          <CarouselList showItems={3}>
+            {memos.map((item) => {
+              return (
+                <div className={memoStyle.list_item_container}>
+                  <MemoCard
+                    key={item.key}
+                    data={item}
+                    viewType={"TEMP"}
+                    onClick={onMemoClick}
+                  />
+                </div>
+              );
+            })}
+          </CarouselList>
+        </Grid>
       </div>
-      <div className={memoStyle.divider} />
-      <Grid container>
-        <CarouselList showItems={3}>
-          {memos.map((item) => {
-            return (
-              <div className={memoStyle.list_item_container}>
-                <MemoCard
-                  key={item.key}
-                  data={item}
-                  viewType={"TEMP"}
-                  onClick={onMemoClick}
-                />
-              </div>
-            );
-          })}
-        </CarouselList>
-      </Grid>
     </div>
   );
 }

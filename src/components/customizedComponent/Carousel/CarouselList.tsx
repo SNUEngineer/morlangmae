@@ -19,6 +19,14 @@ export default function CarouselList(props: CarouselListProps) {
       partialVisibilityGutter: 40,
     },
   };
+  const CustomRightArrow = ({ onClick, ...rest }) => {
+    const {
+      onMove,
+      carouselState: { currentSlide, deviceType },
+    } = rest;
+    // onMove means if dragging or swiping in progress.
+    return <button className={carouselStyle.test} onClick={() => onClick()} />;
+  };
 
   return (
     <Carousel

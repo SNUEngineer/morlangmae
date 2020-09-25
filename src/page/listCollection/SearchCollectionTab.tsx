@@ -3,7 +3,6 @@ import CollectionCardList from "../../components/collection/CollectionCardList";
 import CollectionTab from "./CollectionTab";
 
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import CollectionCard, {
@@ -12,6 +11,7 @@ import CollectionCard, {
 } from "../../components/collection/CollectionCard";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import collectionStyle from "./myCollectionTab.module.scss";
+import Header from "../../components/layout/Header/Header";
 
 export interface SearchCollectionTabProps {
   // attendedCollections: CollectionListProps;
@@ -99,7 +99,7 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
     <div className={collectionStyle.tab_container}>
       {/* <CollectionTab /> */}
       <ForUserCollectionCardList
-        helpfulCollections={testCollections}
+        usersCollections={testCollections}
         onCollectionClick={onCollectionClick}
       />
       <OftenFoundCollectionCardList
@@ -123,37 +123,36 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
 }
 
 export interface ForUserCollectionCardListProps {
-  helpfulCollections: CollectionData[];
+  usersCollections: CollectionData[];
   onCollectionClick(data: CollectionData): Promise<void>;
 }
 
 export function ForUserCollectionCardList(
   props: ForUserCollectionCardListProps
 ) {
-  const helpfulCollections = props.helpfulCollections;
+  const usersCollections = props.usersCollections;
 
   return (
     <div>
-      <div className={collectionStyle.header_container}>
-        <div className={collectionStyle.text}>김기연님을 위한 컬렉션</div>
+      <Header title={"김기연님을 위한 컬렉션"} subMenuType={"none"} />
+      <div className={collectionStyle.collection_list_container}>
+        <Grid container>
+          <CarouselList showItems={3.15}>
+            {usersCollections.map((item) => {
+              return (
+                <div className={collectionStyle.for_user_list_item_container}>
+                  <CollectionCard
+                    key={item.key}
+                    data={item}
+                    viewType={"CAROUSEL"}
+                    onClick={() => {}}
+                  />
+                </div>
+              );
+            })}
+          </CarouselList>
+        </Grid>
       </div>
-      <div className={collectionStyle.divider} />
-      <Grid container>
-        <CarouselList showItems={3.15}>
-          {helpfulCollections.map((item) => {
-            return (
-              <div className={collectionStyle.helpful_list_item_container}>
-                <CollectionCard
-                  key={item.key}
-                  data={item}
-                  viewType={"CAROUSEL"}
-                  onClick={() => {}}
-                />
-              </div>
-            );
-          })}
-        </CarouselList>
-      </Grid>
     </div>
   );
 }
@@ -169,27 +168,29 @@ export function OftenFoundCollectionCardList(
   const oftenCollections = props.oftenCollections;
 
   return (
-    <div>
-      <div className={collectionStyle.header_container}>
-        <div className={collectionStyle.text}>즐겨 찾는 컬렉션</div>
+    <div className={collectionStyle.often_collection_container}>
+      <Header title={"즐겨찾는 컬렉션"} subMenuType={"none"} />
+
+      <div className={collectionStyle.collection_list_container}>
+        <Grid container>
+          <CarouselList showItems={2.15} slideItems={2}>
+            {oftenCollections.map((item) => {
+              return (
+                <div
+                  className={collectionStyle.often_found_list_item_container}
+                >
+                  <CollectionCard
+                    key={item.key}
+                    data={item}
+                    viewType={"CAROUSEL_TWO"}
+                    onClick={() => {}}
+                  />
+                </div>
+              );
+            })}
+          </CarouselList>
+        </Grid>
       </div>
-      <div className={collectionStyle.divider} />
-      <Grid container>
-        <CarouselList showItems={2.15} slideItems={2}>
-          {oftenCollections.map((item) => {
-            return (
-              <div className={collectionStyle.often_found_list_item_container}>
-                <CollectionCard
-                  key={item.key}
-                  data={item}
-                  viewType={"CAROUSEL_TWO"}
-                  onClick={() => {}}
-                />
-              </div>
-            );
-          })}
-        </CarouselList>
-      </Grid>
     </div>
   );
 }
@@ -205,27 +206,29 @@ export function PopularCollectionCardList(
   const popularCollections = props.popularCollections;
 
   return (
-    <div>
-      <div className={collectionStyle.header_container}>
-        <div className={collectionStyle.text}>이번 달 인기있는 컬렉션</div>
+    <div className={collectionStyle.popular_collection_container}>
+      <Header title={"이번달 인기있는 컬렉션"} subMenuType={"none"} />
+
+      <div className={collectionStyle.collection_list_container}>
+        <Grid container>
+          <CarouselList showItems={3.15}>
+            {popularCollections.map((item) => {
+              return (
+                <div
+                  className={collectionStyle.often_found_list_item_container}
+                >
+                  <CollectionCard
+                    key={item.key}
+                    data={item}
+                    viewType={"CAROUSEL"}
+                    onClick={() => {}}
+                  />
+                </div>
+              );
+            })}
+          </CarouselList>
+        </Grid>
       </div>
-      <div className={collectionStyle.divider} />
-      <Grid container>
-        <CarouselList showItems={3.15}>
-          {popularCollections.map((item) => {
-            return (
-              <div className={collectionStyle.often_found_list_item_container}>
-                <CollectionCard
-                  key={item.key}
-                  data={item}
-                  viewType={"CAROUSEL"}
-                  onClick={() => {}}
-                />
-              </div>
-            );
-          })}
-        </CarouselList>
-      </Grid>
     </div>
   );
 }
@@ -266,12 +269,11 @@ export function RecentCollectionCardList(props: RecentCollectionCardListProps) {
     });
 
   return (
-    <div>
-      <div className={collectionStyle.header_container}>
-        <div className={collectionStyle.text}>최근 조회한 컬렉션</div>
+    <div className={collectionStyle.recent_collection_container}>
+      <Header title={"최근 조회한 컬렉션"} subMenuType={"none"} />
+      <div className={collectionStyle.collection_list_container}>
+        <Grid container>{recentCollectionCards}</Grid>
       </div>
-      <div className={collectionStyle.divider} />
-      <Grid container>{recentCollectionCards}</Grid>
     </div>
   );
 }
@@ -287,29 +289,26 @@ export function CompanyCollectionCardList(
   const companyCollections = props.companyCollections.slice(0, 8);
 
   return (
-    <div>
-      <div className={collectionStyle.header_container}>
-        <div className={collectionStyle.text}>회사 아카이브</div>
-        <div className={collectionStyle.go_to_all_menu}>
-          <div>전체보기</div>
-        </div>
+    <div className={collectionStyle.company_collection_container}>
+      <Header title={"회사 아카이브"} subMenuType={"goToAll"} />
+
+      <div className={collectionStyle.collection_list_container}>
+        <GridCollectionCardList
+          collections={companyCollections.slice(0, 2)}
+          onClick={props.onCollectionClick}
+          columnCount={2}
+        />
+        <GridCollectionCardList
+          collections={companyCollections.slice(2, 5)}
+          onClick={props.onCollectionClick}
+          columnCount={3}
+        />
+        <GridCollectionCardList
+          collections={companyCollections.slice(5, 8)}
+          onClick={props.onCollectionClick}
+          columnCount={3}
+        />
       </div>
-      <div className={collectionStyle.divider} />
-      <GridCollectionCardList
-        collections={companyCollections.slice(0, 2)}
-        onClick={props.onCollectionClick}
-        columnCount={2}
-      />
-      <GridCollectionCardList
-        collections={companyCollections.slice(2, 5)}
-        onClick={props.onCollectionClick}
-        columnCount={3}
-      />
-      <GridCollectionCardList
-        collections={companyCollections.slice(5, 8)}
-        onClick={props.onCollectionClick}
-        columnCount={3}
-      />
 
       <div className={collectionStyle.go_to_all_company}>
         <p>회사내 컬렉션 더보기 {">"}</p>

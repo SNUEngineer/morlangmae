@@ -89,10 +89,6 @@
   background-color: pink;
 }
 
-.requesting_memo_container {
-  margin-top: 100px;
-}
-
 .create_memo_container {
   position: relative;
   height: 206px;
@@ -189,4 +185,20 @@
       margin-bottom: 3px;
     }
   }
+}
+.memo_list_container {
+  margin-top: 28px;
+}
+
+.temp_container {
+  margin-top: 70px;
+}
+.binge_container {
+  margin-top: 70px;
+}
+.request_container {
+  margin-top: 100px;
+}
+.binge_collection_container {
+  margin-top: 100px;
 }

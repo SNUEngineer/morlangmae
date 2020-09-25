@@ -1,4 +1,4 @@
-.my_collection_list_container {
+.recent_collection_list_container {
   width: 100%;
   background-color: pink;
 }
@@ -7,20 +7,6 @@
   max-width: 717px;
   padding-top: 157px;
   margin: 0 auto;
-}
-
-.header_container {
-  margin-top: 100px;
-  margin-bottom: 5px;
-  display: flex;
-  flex-direction: row;
-  .text {
-    flex-grow: 1;
-    font-size: 27px;
-    color: #707070;
-  }
-  .sort_menu {
-  }
 }
 
 .search_container {
@@ -34,33 +20,12 @@
   }
 }
 
-.member_header_container {
-  margin-bottom: 100px;
-  .text {
-    font-size: 27px;
-    color: #707070;
-    margin-bottom: 11.5px;
-  }
-  .sort_menu {
-  }
-}
-
 .view_pager_container {
   width: 500px;
   height: 500px;
   background-color: pink;
 }
 
-.divider {
-  height: 1px;
-  width: 100%;
-  background-color: #e0e0e0;
-  margin-bottom: 45.5px;
-}
-
-.helpful_list_item_container {
-  width: 300px;
-}
 .for_user_list_item_container {
   width: 300px;
 }
@@ -77,14 +42,15 @@
   color: #707070;
 }
 
-.my_collection_container {
+.recent_collection_container {
+  margin-top: 70px;
 }
-
-.helpful_container {
-  margin-bottom: 141px;
+.often_collection_container {
+  margin-top: 70px;
 }
-
-.go_to_all_menu {
-  font-size: 14px;
-  color: #707070;
+.popular_collection_container {
+  margin-top: 70px;
+}
+.company_collection_container {
+  margin-top: 70px;
 }

@@ -12,7 +12,8 @@ import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
-import memoStyle from "./bingeMemoTab.module.scss";
+import memoStyle from "./MemoHomeTab.module.scss";
+import Header from "../../components/layout/Header/Header";
 
 export interface MemoHomeTabProps {}
 
@@ -144,32 +145,25 @@ export function BingeMemoInCollectionCardList(
   const collectionCards = collectionsGrid.map(
     (collections: CollectionData[], index) => {
       return (
-        <div className={memoStyle.my_collection_list_container}>
-          <GridCollectionCardList
-            key={index}
-            collections={collections}
-            onClick={props.onCollectionClick}
-            columnCount={columnCount}
-          />
-        </div>
+        <GridCollectionCardList
+          key={index}
+          collections={collections}
+          onClick={props.onCollectionClick}
+          columnCount={columnCount}
+        />
       );
     }
   );
 
   return (
-    <div>
-      <div className={memoStyle.header_container}>
-        <div className={memoStyle.text}>모아보기</div>
-        <div className={memoStyle.sort_menu}>
-          <Select value={filter} onChange={handleChange}>
-            <MenuItem value="ALL">전체</MenuItem>
-            <MenuItem value="IN_PROGRESS">진행</MenuItem>
-            <MenuItem value="DONE">완료</MenuItem>
-          </Select>
-        </div>
-      </div>
-      <div className={memoStyle.divider}></div>
-      <Grid container>{collectionCards}</Grid>
+    <div className={memoStyle.binge_collection_container}>
+      <Header
+        title={"모아보기"}
+        handleChange={handleChange}
+        filter={filter}
+        subMenuType={"filter"}
+      />
+      <div className={memoStyle.memo_list_container}>{collectionCards}</div>
     </div>
   );
 }

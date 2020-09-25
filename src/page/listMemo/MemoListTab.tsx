@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import memoStyle from "./MemoHomeTab.module.scss";
+import Header from "../../components/layout/Header/Header";
 
 export interface MemoListTabProps {}
 
@@ -109,19 +110,13 @@ export function MyMemoList(props: MyMemoListProps) {
     setFilter(event.target.value);
   };
   return (
-    <div className={memoStyle.requesting_memo_container}>
-      <div className={memoStyle.header_container}>
-        <div className={memoStyle.text}>{"나의 메모 리스트"}</div>
-        <div className={memoStyle.sort_menu}>
-          <Select value={filter} onChange={handleChange}>
-            <MenuItem value="ALL">전체</MenuItem>
-            <MenuItem value="IN_PROGRESS">임시 저장</MenuItem>
-            <MenuItem value="REQUESTED">요청 받은 메모</MenuItem>
-            <MenuItem value="REQUESTING">요청한 메모</MenuItem>
-            <MenuItem value="NOT_CHECKED">미확인 메모</MenuItem>
-          </Select>
-        </div>
-      </div>
+    <div className={memoStyle.request_container}>
+      <Header
+        title={"나의 메모 리스트"}
+        handleChange={handleChange}
+        filter={filter}
+        subMenuType={"filter"}
+      />
       <div className={memoStyle.divider} />
       <Grid container>
         {memos.map((item) => {

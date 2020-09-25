@@ -8,42 +8,58 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import PersonIcon from "@material-ui/icons/Person";
 import EditIcon from "@material-ui/icons/Edit";
-import { makeStyles } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
 import Dialog from "../Dialog";
 import menuStyle from "./menu.module.scss";
-
+import Popover from "@material-ui/core/Popover";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 export default function FloatingMenu(props) {
   const { options } = props;
 
-  const useStyles = makeStyles({
-    avatar: {
-      backgroundColor: blue[100],
-      color: blue[600],
-    },
-  });
+  const useStyles = makeStyles(() =>
+    createStyles({
+      avatar: {
+        backgroundColor: blue[100],
+        color: blue[600],
+      },
+      root: {
+        backgroundColor: "transparent",
+        height: "10px",
+        width: "20px",
+        minWidth: "20px",
+        color: "#a0a0a0",
+        boxShadow:
+          "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
+        "&:hover": {
+          background: "transparent",
+          boxShadow:
+            "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        },
+      },
+    })
+  );
 
   const conatinerEl = useRef<any>(null);
-
+  const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(options[1]);
-  const [menuCoordinates, setMenuCoordinates] = useState({
-    x: 0,
-    y: 0,
-  });
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (event) => {
     setOpen(true);
+    setAnchorEl(event.currentTarget);
   };
 
   const handleClose = (value) => {
     setOpen(false);
     setSelectedValue(value);
+    setAnchorEl(null);
   };
-
+  const id = open ? "simple-popover" : undefined;
+  const classes = useStyles();
   function DotMenuDialog(props) {
     const classes = useStyles();
-    const { onClose, selectedValue, open, menuCoordinates } = props;
+    const { onClose, selectedValue, open, anchorEl, id } = props;
 
     const handleClose = () => {
       onClose(selectedValue);
@@ -67,11 +83,19 @@ export default function FloatingMenu(props) {
       };
     }, [conatinerEl.current]);
     return (
-      <Dialog
+      <Popover
         onClose={handleClose}
-        aria-labelledby="simple-dialog-title"
+        id={id}
         open={open}
-        position={menuCoordinates}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
       >
         <div
           ref={conatinerEl}
@@ -95,29 +119,32 @@ export default function FloatingMenu(props) {
             })}
           </List>
         </div>
-      </Dialog>
+      </Popover>
     );
   }
 
   return (
     <div>
-      <div
-        className={menuStyle.button_container}
-        onClick={(event) => {
-          //좌표 설정 제대로...
-
-          setMenuCoordinates({
-            x: event.target.getBoundingClientRect().x,
-            y: event.target.getBoundingClientRect().y,
-          });
-          handleClickOpen();
-        }}
-      ></div>
+      <Button
+        aria-describedby={id}
+        variant="contained"
+        color="primary"
+        onClick={handleClickOpen}
+        className={classes.root}
+        // endIcon={
+        //   <div>
+        //     <MoreHorizIcon />
+        //   </div>
+        // }
+      >
+        <div>...</div>
+      </Button>
       <DotMenuDialog
         selectedValue={selectedValue}
-        menuCoordinates={menuCoordinates}
         open={open}
         onClose={handleClose}
+        anchorEl={anchorEl}
+        id={id}
       />
     </div>
   );

@@ -36,36 +36,6 @@
   margin: 0 auto;
 }
 
-.header_container {
-  margin-top: 70px;
-
-  letter-spacing: -1.2px;
-  display: flex;
-  flex-direction: row;
-  .text {
-    flex-grow: 1;
-    font-size: 22px;
-    letter-spacing: -1.2px;
-    margin-bottom: 12px;
-    color: #707070;
-    font-family: "Noto Sans CJK KR Bold";
-    font-style: normal;
-  }
-  .sort_menu {
-    position: relative;
-    letter-spacing: -1.2px;
-    color: #707070;
-    font-family: "Noto Sans CJK KR Bold";
-
-    .sort_select {
-      position: absolute;
-      right: 0px;
-      bottom: 12px;
-      height: 20px;
-    }
-  }
-}
-
 .search_container {
   width: 100%;
   margin-bottom: 90.5px;
@@ -99,13 +69,6 @@
   background-color: pink;
 }
 
-.divider {
-  height: 1px;
-  width: 100%;
-  background-color: #e0e0e0;
-  margin-top: 1px;
-}
-
 .helpful_list_item_container {
   width: 300px;
 }
@@ -124,20 +87,35 @@
   font-size: 20px;
 }
 
-.my_collection_container {
-}
 .collection_list_container {
   margin-top: 28px;
 }
+
+.my_collection_container {
+  margin-top: 70px;
+}
 .helpful_container {
+  margin-top: 70px;
   margin-bottom: 141px;
 }
-
-.select {
-  font-size: 50px;
+.pinned_container {
+  margin-top: 70px;
 }
 
 .menu_item_container {
   height: 100%;
   width: 100%;
+}
+
+.recent_collection_container {
+  margin-top: 70px;
+}
+.often_collection_container {
+  margin-top: 70px;
+}
+.popular_collection_container {
+  margin-top: 70px;
+}
+.company_collection_container {
+  margin-top: 70px;
 }
