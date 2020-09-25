@@ -5,6 +5,10 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 
 export interface MessageProps {
+  messageData: MessageData;
+}
+
+export interface MessageData {
   content: string;
   sentAt: Date;
   sender: MessageSender;
@@ -17,20 +21,21 @@ interface MessageSender {
 }
 
 export default function Message(props: MessageProps) {
+  const messageData = props.messageData
   return (
     <ListItem>
       <ListItemAvatar>
-        <Avatar alt={props.sender.displayName} src={props.sender.imageUrl} />
+        <Avatar alt={messageData.sender.displayName} src={messageData.sender.imageUrl} />
       </ListItemAvatar>
       <ListItemText
-        primary={props.content}
+        primary={messageData.content}
         secondary={
           <React.Fragment>
-            {props.sender.displayName + ' - '}
+            {messageData.sender.displayName + ' - '}
             {/* <time dateTime={props.sentAt.toISOString()}> */}
               {/* {props.sentAt.toLocaleTimeString()} */}
             {/* </time> */}
-            {props.sentAt}
+            {messageData.sentAt}
           </React.Fragment>
         }
       />

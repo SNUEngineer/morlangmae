@@ -2,15 +2,19 @@ import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import Message, { MessageProps } from './Message';
+import Message, { MessageData } from './Message';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import TextField from '@material-ui/core/TextField';
 
 export interface ThreadProps {
-  messages: MessageProps[];
+  messages: MessageData[];
   sendMessage(message: { content: string }): Promise<void>;
-  loadMessages(): Promise<MessageProps[]>;
+  loadMessages(): Promise<MessageData[]>;
+}
+
+export interface ThreadData {
+  message: MessageData[];
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -56,15 +60,15 @@ export default function Thread(props: ThreadProps) {
     return () => clearInterval(timer);
   })
 
-  const messageList = messages.map((messageProps: MessageProps, index: number) => {
+  const messageList = messages.map((messageData: MessageData, index: number) => {
     return (
-      <Message key={index} {...messageProps} />
+      <Message key={index} messageData={messageData} />
     )
   });
 
   return (
     <Fragment>
-      <List className={classes.messages}>
+      <List id="thread-list" className={classes.messages}>
         {messageList}
         <div ref={messagesRef} />
       </List>

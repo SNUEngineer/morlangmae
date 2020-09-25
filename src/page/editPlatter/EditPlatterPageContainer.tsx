@@ -1,43 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { getPlatter, PlatterView } from '../../services/platter.service';
-import { getThread, sendMessage, ThreadView } from '../../services/thread.service';
+import React, {  } from 'react';
+import { useAsync } from 'react-async';
+import { getPlatter, editPlatter } from '../../services/platter.service';
+import { getThread, sendMessage } from '../../services/thread.service';
 import EditPlatterPage from './EditPlatterPage';
+import { getCollection } from '../../services/collection.service';
 
 export interface EditPlatterPageContainerProps {
-  id: number;
+  platterId: number;
+}
+
+async function getData({ platterId }: any) {
+  const data = await Promise.all([getPlatter(platterId), getThread(platterId)])
+  const collection = await getCollection(data[0].collectionId)
+  return {
+    platter: data[0],
+    thread: data[1],
+    members: collection.members,
+  }
 }
 
 export default function EditPlatterPageContainer(props: EditPlatterPageContainerProps) {
-  const [platter, setPlatter] = useState<PlatterView | null>(null)
-  const [thread, setThread] = useState<ThreadView | null>(null)
+  const { data } = useAsync({
+    promiseFn: getData, platterId: props.platterId
+  })
   const loadMessages = async () => {
-    const thread = await getThread(props.id)
+    const thread = await getThread(props.platterId)
     return thread.messages
   }
   const writeMessage = async (message: any) => {
-    await sendMessage(props.id, message)
+    await sendMessage(props.platterId, message)
+  }
+  const doEditPlatter = async (data: any) => {
+    await editPlatter(props.platterId, data)
   }
 
-  useEffect(() => {
-    const fetchPlatter = async () => {
-      const platter = await getPlatter(props.id)
-      setPlatter(platter)
-    }
-    const fetchThread = async () => {
-      const thread = await getThread(props.id)
-      setThread(thread)
-    }
-    fetchPlatter()
-    fetchThread()
-  }, [props.id])
-
-  if (platter && thread) {
+  if (data) {
     return (
-      <EditPlatterPage {...platter} {...thread} sendMessage={writeMessage} loadMessages={loadMessages} />
+      <EditPlatterPage editPlatter={doEditPlatter} collectionMembers={data.members} platter={data.platter} messages={data.thread.messages} sendMessage={writeMessage} loadMessages={loadMessages} />
     )
   }
 
-  return (
-    <div />
-  )
+  return null
 }

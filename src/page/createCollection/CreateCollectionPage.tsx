@@ -49,7 +49,6 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
         </Typography>
         <form onSubmit={handleSubmit(props.createCollection)} className={classes.form} noValidate>
           <select name="collectionType" ref={register} >
-            <option aria-label="None" value="" />
             <option value="PROJECT">Project</option>
             <option value="TEAM">Team</option>
 

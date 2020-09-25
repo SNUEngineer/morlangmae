@@ -10,7 +10,7 @@ interface NotificationListProps {
 }
 
 export default function NotificationList(props: NotificationListProps) {
-  const notifications = props.notifications.map(notification => {
+  const notifications = props.notifications.slice(0, 7).map(notification => {
     return (
       <Notification
         key={notification.id}

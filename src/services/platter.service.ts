@@ -1,11 +1,39 @@
 import axios from '../common/axios';
 import { UserView } from './user.service';
 
-export async function createPlatter(collectionId: number): Promise<number> {
+interface CreatePlatterRequest {
+  title: string;
+  ccs: number[];
+  blocks: BlockView[];
+}
+
+export async function createPlatter(collectionId: number, request: CreatePlatterRequest): Promise<number> {
+  const { title, ccs, blocks } = request
   const res = await axios.post(
     `/collection/v1/${collectionId}/platters`,
     {
-      ccs: []
+      title,
+      ccs,
+      blocks,
+    }
+  )
+  return res.data.id
+}
+
+interface EditPlatterRequest {
+  title: string;
+  ccs: number[];
+  blocks: BlockView[];
+}
+
+export async function editPlatter(platterId: number, request: EditPlatterRequest): Promise<number> {
+  const { title, ccs, blocks } = request
+  const res = await axios.post(
+    `/platter/v1/${platterId}`,
+    {
+      title,
+      ccs,
+      blocks,
     }
   )
   return res.data.id
@@ -13,15 +41,19 @@ export async function createPlatter(collectionId: number): Promise<number> {
 
 export interface PlatterView {
   id: number;
+  collectionId: number;
+  title: string;
   status: string;
   createdDate: Date;
   blocks: BlockView[];
   createdBy: UserView;
+  members: UserView[];
 }
 
 export interface BlockView {
   type: string;
   content: string;
+  attaches: string;
 }
 
 export interface PlatterWriterView {

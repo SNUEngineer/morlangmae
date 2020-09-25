@@ -8,6 +8,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import CollectionsIcon from '@material-ui/icons/Collections';
 import NoteIcon from '@material-ui/icons/Note';
 import Divider from '@material-ui/core/Divider';
+import { COLLECTION_LIST, PROFILE } from '../common/paths';
 
 const drawerWidth = 240;
 
@@ -50,9 +51,9 @@ export default function Drawer() {
     >
       <Toolbar />
       <List>
-        <ListItemLink to="/collections" primary="컬렉션" icon={<CollectionsIcon />} />
+        <ListItemLink to={COLLECTION_LIST} primary="컬렉션" icon={<CollectionsIcon />} />
         <ListItemLink to="/memos" primary="메모" icon={<NoteIcon />} />
-        <ListItemLink to="/persona" primary="프로필" icon={<PersonIcon />} />
+        <ListItemLink to={PROFILE} primary="프로필" icon={<PersonIcon />} />
       </List>
       <Divider />
     </MuiDrawer>

@@ -35,12 +35,6 @@ export default function CollectionPage(props: CollectionPageProps) {
         <MyCollectionTab {...props.myCollectionTabPrpos} />
         <SearchCollectionTab {...props.searchCollectionTabProps} />
         <CreateCollectionTab {...props.createCollectionTabProps} />
-      { props.collectionId && (
-        <CollectionViewPageContainer hiddenToolbar={!!props.platterId} collectionId={props.collectionId} />
-      )}
-      { props.platterId && (
-        <EditPlatterPageContainer id={props.platterId} />
-      )}
     </Paper>
   )
 }

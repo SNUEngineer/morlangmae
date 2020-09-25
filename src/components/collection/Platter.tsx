@@ -7,63 +7,50 @@ import { UserView } from '../../services/user.service';
 import Typography from '@material-ui/core/Typography';
 import { BlockView } from '../../services/platter.service';
 import TextField from '@material-ui/core/TextField';
+import { PlatterData, viewToData } from '../platter/PlatterEditor';
 
 export interface PlatterProps {
   id: number;
-  title?: string;
-  blocks: BlockView[];
+  platterData: PlatterData;
   editable?: boolean;
-  createdBy: UserView;
-  createdDate: Date;
+  onClick(data: PlatterData): Promise<void>;
 }
 
 export default function Platter(props: PlatterProps) {
-  const holderId = `platter-view-${props.id}`
+  const holderId = `platter-view-${props.id}`;
+  const platterData = props.platterData;
   const onReady = () => {
-    if (!props.editable) {
-      const blocks = document.getElementById(holderId)
-      if (blocks) {
-        blocks.style.pointerEvents = "none";
-      }
-      const tools = document.querySelectorAll('.ce-toolbar');
-      tools.forEach((it: any) => it.style.display = "none")
+    const blocks = document.getElementById(holderId)
+    if (blocks) {
+      blocks.style.pointerEvents = "none";
     }
+    const tools = document.querySelectorAll('.ce-toolbar');
+    tools.forEach((it: any) => it.style.display = "none")
   }
-  const [editorRef, setEditorRef] = useState<any>(null)
-  const injectRef = (instance: any) => {
-    setEditorRef(instance)
+  const data = {
+    blocks: platterData.blocks.map(it => viewToData(it))
   }
   const onClick = async () => {
-    if (editorRef) {
-      console.log(await editorRef.save())
+    console.log(props.editable)
+    if (props.editable) {
+      props.onClick(platterData)
     }
   }
-  const blocks = {time: new Date().getTime(), blocks: [{type: 'paragraph', data: {text: 'hi'}}]}
-
   return (
-    <div>
-      <a href={`#platter-${props.id}`}>Platter</a>
-      <Typography>{props.createdDate}</Typography>
-      <Avatar alt={props.createdBy.displayName} src={props.createdBy.imageUrl} />
-      <Typography>{props.createdBy.displayName}</Typography>
-      <Typography>{props.createdBy.companyId}</Typography>
-      <TextField
-        required
-        defaultValue={props.title}
-        fullWidth
-        id="title"
-        name="title"
-      />
+    <div id={`platter-${props.id}`} onClick={onClick}>
+      <Typography>{platterData.createdDate}</Typography>
+      <Avatar alt={platterData.createdBy.displayName} src={platterData.createdBy.imageUrl} />
+      <Typography>{platterData.createdBy.displayName}</Typography>
+      <Typography>{platterData.createdBy.companyId}</Typography>
+      <Typography>{platterData.title}</Typography>
       <EditorJs
         holder={holderId}
-        data={blocks}
-        instanceRef={injectRef}
+        data={data}
         onReady={onReady}
-        tools={EDITOR_JS_TOOLS}
+        tools={EDITOR_JS_TOOLS as any}
       >
         <div id={holderId} />
       </EditorJs>
-      <Button onClick={onClick}>Give me data</Button>
     </div>
   )
 }

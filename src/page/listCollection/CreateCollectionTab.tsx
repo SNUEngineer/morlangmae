@@ -5,21 +5,24 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import { CollectionListItemProps } from '../../components/collection/CollectionListItem';
 import CollectionTab from './CollectionTab';
+import { COLLECTION_CREATE } from '../../common/paths';
+import { CollectionData } from '../../components/collection/CollectionCard';
 
 export interface CreateCollectionTabProps {
-  collections: CollectionListItemProps[];
+  collections: CollectionData[];
+  onCollectionClick(data: CollectionData): Promise<void>;
 }
 
 export default function CreateCollectionTab(props: CreateCollectionTabProps) {
   return (
     <div>
       <CollectionTab />
-      <CollectionList title="Create Collections" collections={props.collections} />
+      <CollectionList title="Create Collections" collections={props.collections} onCollectionClick={props.onCollectionClick} />
       <Grid container>
         <Grid item>
           <Button variant="contained">
-            <Link to="/collections/create">
-              {"Create"}
+            <Link to={COLLECTION_CREATE}>
+              Create
             </Link>
           </Button>
         </Grid>

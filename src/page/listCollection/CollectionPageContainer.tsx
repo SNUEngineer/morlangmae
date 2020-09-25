@@ -29,12 +29,14 @@ export default function CollectionPageContainer(props: CollectionPageContainerPr
     fetchMyCollections();
   }, []);
   return (
-    <CollectionPage
-      collectionId={props.collectionId}
-      platterId={props.platterId}
-      myCollectionTabPrpos={{ collections: collections }}
-      searchCollectionTabProps={{ companyCollections: companyCollections }}
-      createCollectionTabProps={{ collections: myCollections }}
-    />
+    <div>a</div>
+    // <CollectionPage
+      // collectionId={props.collectionId}
+      // platterId={props.platterId}
+      // myCollectionTabPrpos={{ collections: collections }}
+      // searchCollectionTabProps={{ companyCollections: companyCollections }}
+      // searchCollectionTabProps={{ companyCollections: [] }}
+      // createCollectionTabProps={{ collections: myCollections }}
+    // />
   )
 }

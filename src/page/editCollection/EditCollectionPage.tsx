@@ -82,8 +82,17 @@ function getStepContent(stepIndex: number, collection: any, setCollection: any, 
     case 0:
       return (
         <Paper>
-          <Typography>{collection.collectionType}</Typography>
-          <Typography>{collection.serviceType}</Typography>
+          <select name="collectionType" onChange={handleChange} value={collection.collectionType}>
+            <option value="PROJECT">Project</option>
+            <option value="TEAM">Team</option>
+          </select>
+          <select name="serviceType" onChange={handleChange} value={collection.serviceType}>
+            {props.serviceTypes.map(serviceType => {
+              return (
+                <option key={serviceType} value={serviceType}>{serviceType}</option>
+              )
+            })}
+          </select>
           <Card onDragOver={handleDragOver} onDrop={handleDrop} className={classes.imageCard}>
             <CardHeader title={collection.title} style={{ color: 'white' }} />
           </Card>
@@ -182,6 +191,7 @@ export interface EditCollectionPageProps {
   users: UserView[]
   uploadImage(file: File): Promise<{ uri: string }>;
   editCollection(collection: any): Promise<void>;
+  serviceTypes: string[];
 }
 
 export default function EditCollectionPage(props: EditCollectionPageProps) {
@@ -197,8 +207,8 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     title: collectionDetail.title,
     starDate: collectionDetail.startDate,
     endDate: collectionDetail.endDate,
-    members: collectionDetail.memberIds.map((id: number) => {
-      return props.users.find((user: UserView) => user.id === id)
+    members: collectionDetail.members.map((member: UserView) => {
+      return props.users.find((user: UserView) => user.id === member.id)
     }),
   })
 
@@ -239,4 +249,3 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     </div>
   );
 }
-

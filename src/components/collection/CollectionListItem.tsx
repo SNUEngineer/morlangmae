@@ -3,45 +3,46 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import { useHistory } from 'react-router-dom';
+import { CollectionData, CollectionStatus, CollectionType } from './CollectionCard';
 
 export interface CollectionListItemProps {
-  id: number;
-  title: string;
-  collectionType: string;
-  createdDate: Date;
-  status: string;
-  imageUrl: string;
-  notificationCount?: number;
-  onClick?(): Promise<void>;
+  data: CollectionData;
+  onClick(data: CollectionData): Promise<void>;
 }
 
 export default function CollectionListItem(props: CollectionListItemProps) {
-  const history = useHistory();
-  const handleClick = () => {
-    if (props.status === 'DRAFT') {
-      history.push(`collections/edit/${props.id}`)
-    } else {
-      history.push(`collections?id=${props.id}`)
+  const data = props.data;
+  const statusCodeToString = (status: CollectionStatus) => {
+    switch (status) {
+      case CollectionStatus.DRAFT: return '초안';
+      case CollectionStatus.REQUEST_PROGRESS: return '승인 대기';
+      case CollectionStatus.IN_PROGRESS: return '승인';
     }
   }
+  const collectionTypeToString = (collectionType: CollectionType) => {
+    switch (collectionType) {
+      case CollectionType.PROJECT: return '프로젝트';
+      case CollectionType.TEAM: return '팀';
+    }
+  }
+  const onClick = () => props.onClick(data)
 
   return (
-    <ListItem onClick={handleClick}>
+    <ListItem onClick={onClick}>
       <ListItemAvatar>
-        <Avatar variant="rounded" alt={props.title} src={props.imageUrl} />
+        <Avatar variant="rounded" alt={data.title} src={data.imageUrl} />
       </ListItemAvatar>
       <ListItemText
-        primary={props.title}
+        primary={data.title}
       />
       <ListItemText
-        primary={props.collectionType}
+        primary={collectionTypeToString(data.collectionType)}
       />
       <ListItemText
-        primary={props.status}
+        primary={statusCodeToString(data.status)}
       />
       <ListItemText
-        primary={props.createdDate}
+        primary={data.createdDate}
       />
     </ListItem>
   )

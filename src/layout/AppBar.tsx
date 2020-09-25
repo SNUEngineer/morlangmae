@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { fade, createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,6 +11,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover';
+import { ROOT } from '../common/paths';
+import NotificationPageContainer from '../page/notification/NotificationPageContainer';
+import { readNotification, getNotifications } from '../services/notification.service';
+import { NotificationData } from '../components/notification/Notification';
+import { useAsync } from 'react-async';
+import List from '@material-ui/core/List';
+import NotificationListContainer from './NotificationListContainer';
 
 const drawerWidth = 240;
 
@@ -42,12 +50,14 @@ export default function AppBar(props: any) {
   const classes = useStyles();
 
   return (
-    <MuiAppBar position="fixed" className={classes.appBar}>
+    <MuiAppBar position="fixed" className={classes.appBar} elevation={1}>
       <Toolbar>
         <Typography>
+          <Link to={ROOT}>
           Bailey
+          </Link>
         </Typography>
-        <Notification/>
+        <Notifications/>
         {/* <Search /> */}
       </Toolbar>
     </MuiAppBar>
@@ -104,8 +114,11 @@ const useStyles3 = makeStyles((theme: Theme) =>
   }),
 );
 
+async function getData() {
+  return await getNotifications();
+}
 
-export function Notification(props: any) {
+export function Notifications() {
   const classes = useStyles3()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event: any) => {
@@ -141,7 +154,7 @@ export function Notification(props: any) {
           root: classes.popover
         }}
       >
-        <Typography>Hello?</Typography>
+        <NotificationListContainer close={handleClose} />
       </Popover>
     </div>
   )
