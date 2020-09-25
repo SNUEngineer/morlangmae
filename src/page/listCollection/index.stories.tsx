@@ -12,7 +12,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
-import BasicMenuBar from "../../components/basicMenuBar/BasicMenuBar";
+import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
 export default { title: "collection page" };
 
 export function basic() {

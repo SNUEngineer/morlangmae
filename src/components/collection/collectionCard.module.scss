@@ -7,14 +7,27 @@
   padding: 0px;
 }
 .pinned_container {
-  height: 13px;
+  height: 16px;
   width: 100%;
-  background-color: red;
-  margin-bottom: 4px;
-  .pinned_icon {
+  overflow: hidden;
+  position: relative;
+  .icon_container {
     height: 100%;
-    width: 8px;
-    background-color: blue;
+    width: 16px;
+    margin-right: 10px;
+    position: relative;
+
+    img {
+      height: auto;
+      width: 8px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+    .pinned_icon {
+      content: url("../../resources/icons/pinned_collection_icon.png");
+    }
   }
 }
 

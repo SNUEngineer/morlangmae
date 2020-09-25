@@ -10,6 +10,22 @@
   position: relative;
 }
 
-.test {
+.test_container {
+  position: relative;
+
   background-color: red;
+
+  height: 100%;
+  width: 100%;
+  z-index: 9000;
+
+  .test {
+    background-color: blue;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100px;
+    width: 100px;
+    //transform: translate(100%, 0%);
+  }
 }

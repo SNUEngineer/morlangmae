@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import memoStyle from "./MemoHomeTab.module.scss";
+import Header from "../../components/layout/Header/Header";
 
 export interface MemoListTabProps {}
 
@@ -119,21 +120,14 @@ export function MyMemoList(props: MyMemoListProps) {
           <div className={memoStyle.image}></div>
         </div>
         <div className={memoStyle.list_container}>
-          <div className={memoStyle.in_collection_header_container}>
-            <div className={memoStyle.collection_info}>
-              <div className={memoStyle.service_type}>{"컨설팅"}</div>
-              <div className={memoStyle.title}>{"플랜비 직원 컨설팅"}</div>
-            </div>
-            <div className={memoStyle.sort_menu}>
-              <div className={memoStyle.select}>
-                <Select value={filter} onChange={handleChange}>
-                  <MenuItem value="ALL">전체</MenuItem>
-                  <MenuItem value="IN_PROGRESS">진행</MenuItem>
-                  <MenuItem value="DONE">완료</MenuItem>
-                </Select>
-              </div>
-            </div>
-          </div>
+          <div className={memoStyle.service_type}>{"컨설팅"}</div>
+          <Header
+            title={"플랜비 직원 컨설팅"}
+            handleChange={handleChange}
+            filter={filter}
+            subMenuType={"filter"}
+          />
+
           <div className={memoStyle.list_container_divider} />
           <Grid container>
             {memos.map((item) => {

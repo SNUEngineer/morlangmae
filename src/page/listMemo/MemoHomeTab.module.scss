@@ -146,7 +146,11 @@
   }
   .list_container {
     flex-grow: 1;
-
+    .service_type {
+      font-size: 14px;
+      font-family: "Noto Sans CJK KR Regular";
+      color: #707070;
+    }
     .in_collection_header_container {
       margin-bottom: 5px;
       margin-left: 5px;

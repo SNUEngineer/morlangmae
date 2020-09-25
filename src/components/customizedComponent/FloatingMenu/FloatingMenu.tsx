@@ -14,6 +14,8 @@ import menuStyle from "./menu.module.scss";
 import Popover from "@material-ui/core/Popover";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import MenuItem from "@material-ui/core/MenuItem";
+
 export default function FloatingMenu(props) {
   const { options } = props;
 
@@ -36,6 +38,21 @@ export default function FloatingMenu(props) {
           boxShadow:
             "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
         },
+      },
+      item: {
+        fontSize: "11.5px",
+        letterSpacing: "-0.98px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        minWidth: "86px",
+        textAlign: "center",
+        color: "#707070",
+        "&:hover": {
+          background: "#f0f0f0",
+          color: "#4BA34B",
+        },
+        borderBottomStyle: "solid",
+        borderBottomColor: "#E0E0E0",
+        borderBottomWidth: "0.5px",
       },
     })
   );
@@ -97,24 +114,13 @@ export default function FloatingMenu(props) {
           horizontal: "left",
         }}
       >
-        <div
-          ref={conatinerEl}
-          onload={() => {
-            console.log("setDialogSize ");
-            setDialogSize();
-          }}
-        >
+        <div ref={conatinerEl}>
           <List>
             {options.map((item) => {
               return (
-                <ListItem button onClick={() => handleListItemClick(item)}>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar}>
-                      <PersonIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={item} />
-                </ListItem>
+                <MenuItem className={classes.item}>
+                  <div className={menuStyle.menu_item_container}>{item}</div>
+                </MenuItem>
               );
             })}
           </List>
@@ -137,7 +143,9 @@ export default function FloatingMenu(props) {
         //   </div>
         // }
       >
-        <div>...</div>
+        <div className={menuStyle.icon_container}>
+          <img className={menuStyle.dot_icon} alt={"icon"} />
+        </div>
       </Button>
       <DotMenuDialog
         selectedValue={selectedValue}

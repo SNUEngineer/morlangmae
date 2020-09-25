@@ -3,7 +3,7 @@ import MemoHomeTab from "./MemoHomeTab";
 import MemoListTab from "./MemoListTab";
 import BingeMemoTab from "./BingeMemoTab";
 import MemoListInCollection from "./MemoListInCollection";
-import BasicMenuBar from "../../components/basicMenuBar/BasicMenuBar";
+import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
 import CollectionTab from "../listCollection/CollectionTab";
 
 export default { title: "memo page" };

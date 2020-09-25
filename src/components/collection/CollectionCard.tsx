@@ -76,9 +76,16 @@ export default function CollectionCard(props: CollectionCardProps) {
         >
           {(!!isPinned ? isPinned : false) && (
             <div className={collectionStyle.pinned_container}>
-              <div className={collectionStyle.pinned_icon}></div>
+              <div className={collectionStyle.icon_container}>
+                <img className={collectionStyle.pinned_icon} alt={"icon"} />
+              </div>
             </div>
           )}
+          {/* {(!!isPinned ? isPinned : false) && (
+            <div className={collectionStyle.icon_container}>
+              <img className={collectionStyle.pinned_icon} alt={"icon"} />
+            </div>
+          )} */}
 
           <div className={collectionStyle.service_type_and_menu}>
             <div className={collectionStyle.service_type}>

@@ -25,7 +25,12 @@ export default function CarouselList(props: CarouselListProps) {
       carouselState: { currentSlide, deviceType },
     } = rest;
     // onMove means if dragging or swiping in progress.
-    return <button className={carouselStyle.test} onClick={() => onClick()} />;
+    return (
+      <div className={carouselStyle.test_container}>
+        {" "}
+        <button className={carouselStyle.test} onClick={() => onClick()} />{" "}
+      </div>
+    );
   };
 
   return (
@@ -47,6 +52,7 @@ export default function CarouselList(props: CarouselListProps) {
       itemClass="carousel-item-padding-40-px"
       customDot={<div />}
       renderButtonGroupOutside={true}
+      //customRightArrow={<CustomRightArrow />}
       // customButtonGroup={<CustomButtonGroup />}
     >
       {props.children}

@@ -1,6 +1,6 @@
 import React from "react";
 import NotificationPage from "./NotificationPage";
-import BasicMenuBar from "../../components/basicMenuBar/BasicMenuBar";
+import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
 export default { title: "notification" };
 
 export function basic() {

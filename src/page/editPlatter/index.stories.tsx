@@ -1,7 +1,7 @@
 import React from "react";
 import EditPlatterPage from "./EditPlatterPage";
 import Scroll from "./Scroll";
-import BasicMenuBar from "../../components/basicMenuBar/BasicMenuBar";
+import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
 
 export default { title: "edit platter" };
 

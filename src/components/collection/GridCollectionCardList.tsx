@@ -74,6 +74,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 data={gridCollections[0]}
                 viewType={!!viewType ? viewType : "WIDE"}
                 onClick={onCollectionClick}
+                isPinned={!!isPinned ? isPinned : false}
               />
             </div>
             <div className={listStyle.item_2}>
@@ -81,6 +82,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 data={gridCollections[1]}
                 viewType={!!viewType ? viewType : "WIDE"}
                 onClick={onCollectionClick}
+                isPinned={!!isPinned ? isPinned : false}
               />
             </div>
             <div className={listStyle.item_3}>
@@ -88,6 +90,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 data={gridCollections[2]}
                 viewType={!!viewType ? viewType : "WIDE"}
                 onClick={onCollectionClick}
+                isPinned={!!isPinned ? isPinned : false}
               />
             </div>
           </div>

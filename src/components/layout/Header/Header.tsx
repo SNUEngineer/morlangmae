@@ -29,6 +29,7 @@ export default function Header(props: any) {
         color: "#707070",
         "&:hover": {
           background: "#f0f0f0",
+          color: "#4BA34B",
         },
         borderBottomStyle: "solid",
         borderBottomColor: "#E0E0E0",
