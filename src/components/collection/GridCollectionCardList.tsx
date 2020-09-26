@@ -25,7 +25,6 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
     pinned,
   } = props;
   const [gridCollections, setGridCollections] = useState<CollectionData[]>();
-  console.log("bbb " + pinned);
   useEffect(() => {
     if (collections.length < columnCount) {
       var newList = collections.concat(null);

@@ -16,7 +16,14 @@ import editStyle from "./editPlatterPage.module.scss";
 import classNames from "classnames";
 import { Link, Element } from "react-scroll";
 
-export interface EditPlatterPageProps extends PlatterProps, ThreadProps { }
+export interface EditPlatterPageProps extends PlatterProps, ThreadProps {
+  platter: PlatterData;
+  messages: MessageData[];
+  collectionMembers: UserView[];
+  editPlatter(data: any): Promise<void>;
+  sendMessage(message: { content: string }): Promise<void>;
+  loadMessages(): Promise<MessageData[]>;
+}
 
 export default function EditPlatterPage(props: EditPlatterPageProps) {
   // const { pathname } = useLocation();
@@ -59,7 +66,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
         open
         PaperComponent={PaperComponent}
 
-      //onClose={handleClose}
+        //onClose={handleClose}
       >
         <Element
           name="test7"
