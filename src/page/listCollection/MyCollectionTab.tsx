@@ -16,10 +16,6 @@ import { COLLECTION_LIST_MY_COLLECTION } from "../../common/paths";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import collectionStyle from "./myCollectionTab.module.scss";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-import classNames from "classnames";
-import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
-import ExpandLessRoundedIcon from "@material-ui/icons/ExpandLessRounded";
 import Header from "../../components/layout/Header/Header";
 
 // import Slider from "../../components/customizedComponent/Carousel";
@@ -110,10 +106,6 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     collection2,
   ];
   const history = useHistory();
-  const onCollectionClick = (data: CollectionData) => {
-    const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`;
-    history.push(path);
-  };
   return (
     <div className={collectionStyle.tab_container}>
       {/* <CollectionTab /> */}

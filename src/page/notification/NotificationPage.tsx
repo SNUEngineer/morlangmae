@@ -39,7 +39,7 @@ export default function NotificationPage(props: NotificationPageProps) {
     sentBy: sender,
   };
   const [notifications, setNotifications] = useState<NotificationData[]>([
-    props.initialNotifications.data, //test시 notification
+    notification, //props.initialNotifications.data, //test시 notification
   ]);
   const [cursor, setCursor] = useState<string | undefined>(
     props.initialNotifications.cursor

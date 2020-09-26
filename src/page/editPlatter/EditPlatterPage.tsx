@@ -82,12 +82,6 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   };
   const [title, setTitle] = useState(props.platter.title);
   const [members, setMembers] = useState(props.platter.members);
-  const setEditing = () => {
-    props.setEditing(true);
-  };
-  const unsetEditing = () => {
-    props.setEditing(false);
-  };
 
   return (
     <div>
@@ -181,7 +175,8 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
                 style={{ display: "inline-block", margin: "20px" }}
                 onClick={() => {
                   clickPlatterButton();
-                  setEditing();
+
+                  setEditing(true);
                 }}
               >
                 에디터
@@ -197,7 +192,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
                 style={{ display: "inline-block", margin: "20px" }}
                 onClick={() => {
                   clickPlatterButton();
-                  unsetEditing();
+                  setEditing(false);
                 }}
               >
                 플레터

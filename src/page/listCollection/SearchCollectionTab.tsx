@@ -112,30 +112,25 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
       <ForUserCollectionCardList
         //usersCollections={props.serviceCollections}
         usersCollections={testCollections}
-        onCollectionClick={onCollectionClick}
         {...functions}
       />
       <OftenFoundCollectionCardList
         oftenCollections={testCollections}
-        onCollectionClick={onCollectionClick}
         {...functions}
       />
       <PopularCollectionCardList
         //popularCollections={props.hotCollections}
         popularCollections={testCollections}
-        onCollectionClick={onCollectionClick}
         {...functions}
       />
       <RecentCollectionCardList
         //recentCollections={props.recentlyViewedCollections}
         recentCollections={testCollections}
-        onCollectionClick={onCollectionClick}
         {...functions}
       />
       <CompanyCollectionCardList
         //companyCollections={props.companyCollections}
         companyCollections={testCollections}
-        onCollectionClick={onCollectionClick}
         {...functions}
       />
     </div>
