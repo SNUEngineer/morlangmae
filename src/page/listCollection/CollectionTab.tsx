@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItemLink from "../../components/ListItemLink";
@@ -11,7 +11,7 @@ import tabStyle from "./CollectionTab.module.scss";
 import classNames from "classnames";
 
 export default function CollectionTab() {
-  const [clicked,setClicked] = useState("home");
+  const [clicked, setClicked] = useState("home");
   const categories = [
     {
       name: "home",
@@ -36,7 +36,8 @@ export default function CollectionTab() {
           <div
             className={classNames({
               [tabStyle.tab_element]: true,
-              [tabStyle.tab_element_activated]: c.name===clicked ? true :false ,
+              [tabStyle.tab_element_activated]:
+                c.name === clicked ? true : false,
             })}
             key={c.name}
             onClick={() => setClicked(c.name)}

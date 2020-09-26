@@ -7,7 +7,9 @@ export async function uploadFile(file: File): Promise<{ uri: string }> {
   return res.data
 }
 
-export async function uploadFiles(files: File[]): Promise<{ uris: string[] }> {
-  const res = await Promise.all(files.map(it => uploadFile(it)))
-  return { uris: res.map(it => it.uri) }
+export async function uploadFiles(files: File[] | FileList): Promise<{ uris: string[] }> {
+  const formData = new FormData()
+  Array.from(files).forEach(file => formData.append("files", file))
+  const res = await axios.post("files/v1/multi", formData)
+  return res.data
 }

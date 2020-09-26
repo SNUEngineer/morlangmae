@@ -136,6 +136,7 @@ function getStepContent(
         <Paper>
           <Typography>{collection.collectionType}</Typography>
           <Typography>{collection.serviceType}</Typography>
+
           <Card
             onDragOver={handleDragOver}
             onDrop={handleDrop}
@@ -396,6 +397,7 @@ export interface EditCollectionPageProps {
   users: UserView[];
   uploadImage(file: File): Promise<{ uri: string }>;
   editCollection(collection: any): Promise<void>;
+  serviceTypes: string[];
 }
 
 export default function EditCollectionPage(props: EditCollectionPageProps) {
@@ -413,8 +415,8 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     title: collectionDetail.title,
     startDate: collectionDetail.startDate,
     endDate: collectionDetail.endDate,
-    members: collectionDetail.memberIds.map((id: number) => {
-      return true;
+    members: collectionDetail.members.map((member: UserView) => {
+      return props.users.find((user: UserView) => user.id === member.id);
     }),
   });
 

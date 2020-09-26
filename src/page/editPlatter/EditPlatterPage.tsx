@@ -1,4 +1,8 @@
 import React, { useLayoutEffect, useState, useRef, useCallback } from "react";
+import PlatterEditor, {
+  PlatterEditorProps,
+  PlatterData,
+} from "../../components/platter/PlatterEditor";
 import Dialog from "../../components/customizedComponent/PlatterDialog/Dialog";
 import Platter, { PlatterProps } from "../../components/collection/Platter";
 import { useLocation, useHistory } from "react-router-dom";
@@ -15,6 +19,12 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import editStyle from "./editPlatterPage.module.scss";
 import classNames from "classnames";
 import { Link, Element } from "react-scroll";
+import { MessageData } from "../../components/thread/Message";
+import DialogContent from "@material-ui/core/DialogContent";
+import PlatterToolBar from "../../components/platter/PlatterToolBar";
+import { UserView } from "../../services/user.service";
+import queryString from "query-string";
+import Fab from "@material-ui/core/Fab";
 
 export interface EditPlatterPageProps extends PlatterProps, ThreadProps {
   platter: PlatterData;
@@ -26,11 +36,6 @@ export interface EditPlatterPageProps extends PlatterProps, ThreadProps {
 }
 
 export default function EditPlatterPage(props: EditPlatterPageProps) {
-  // const { pathname } = useLocation();
-  const history = useHistory();
-  // const handleClose = () => {
-  //   history.replace(pathname)
-  // }
   const [openThread, setOpenThread] = useState(false);
   const [openPlatter, setOpenPlatter] = useState(true);
 
@@ -38,6 +43,18 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   const threadContainerEl = useRef<any>(null);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [editorRef, setEditorRef] = useState(null);
+  const [isEditing, setEditing] = useState(false);
+  const { pathname, search } = useLocation();
+  const history = useHistory();
+  const handleClose = () => {
+    const query = queryString.parse(search);
+    delete query.platterId;
+    history.replace({
+      pathname,
+      search: queryString.stringify(query),
+    });
+  };
 
   const onScrollHandler = (event) => {
     console.log("Asdfasdfffsf");
@@ -56,14 +73,39 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
     setOpenPlatter(true);
     setTimeout(() => setOpenThread(false), 400);
   }, []);
+  const rootEl = useRef();
+  const onRendered = () => {
+    if (rootEl?.current) {
+      const current = rootEl.current as any;
+      current.style.zIndex = 1310;
+    }
+  };
+  const [title, setTitle] = useState(props.platter.title);
+  const [members, setMembers] = useState(props.platter.members);
+  const setEditing = () => {
+    props.setEditing(true);
+  };
+  const unsetEditing = () => {
+    props.setEditing(false);
+  };
 
   return (
     <div>
+      {isEditing && (
+        <PlatterToolBar
+          collectionMembers={props.collectionMembers}
+          setMembers={setMembers}
+          members={members}
+          editorRef={editorRef}
+        />
+      )}
+
       <Dialog
         fullWidth
         maxWidth="xl"
         fullScreen={fullScreen}
         open
+        onRendered={onRendered}
         PaperComponent={PaperComponent}
 
         //onClose={handleClose}
@@ -99,7 +141,15 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
                   [editStyle.platter_container_opened]: openPlatter,
                 })}
               >
-                <Platter editable {...props} />
+                <PlatterEditor
+                  disableEditing={!isEditing}
+                  title={title}
+                  changeTitle={setTitle}
+                  id={props.platter.id}
+                  data={props.platter}
+                  editorRef={editorRef}
+                  setEditorRef={setEditorRef}
+                />
               </div>
             </Element>
 
@@ -112,11 +162,31 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
                 })}
                 ref={threadContainerEl}
               >
-                <Thread {...props} />
+                <Thread
+                  messages={props.messages}
+                  sendMessage={props.sendMessage}
+                  loadMessages={props.loadMessages}
+                />
               </div>
             </Element>
 
             <div className={editStyle.fixed_menu_button}>
+              <Link
+                activeClass="active"
+                to="firstInsideContainer22"
+                spy={true}
+                smooth={true}
+                duration={250}
+                containerId="containerElement"
+                style={{ display: "inline-block", margin: "20px" }}
+                onClick={() => {
+                  clickPlatterButton();
+                  setEditing();
+                }}
+              >
+                에디터
+              </Link>
+
               <Link
                 activeClass="active"
                 to="firstInsideContainer"
@@ -127,6 +197,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
                 style={{ display: "inline-block", margin: "20px" }}
                 onClick={() => {
                   clickPlatterButton();
+                  unsetEditing();
                 }}
               >
                 플레터

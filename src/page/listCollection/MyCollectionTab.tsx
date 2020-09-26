@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { getMyCollections } from "../../services/collection.service";
+import { unpinCollection } from "../../services/collection.service";
 import { COLLECTION_LIST_MY_COLLECTION } from "../../common/paths";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import collectionStyle from "./myCollectionTab.module.scss";
@@ -24,18 +25,22 @@ import Header from "../../components/layout/Header/Header";
 // import Slider from "../../components/customizedComponent/Carousel";
 
 export interface MyCollectionTabProps {
-  // pinned: CollectionData[];
-  // myCollections: CollectionData[];
-  // helpfulCollections: CollectionData[];
-  // onCollectionClick(data: CollectionData): Promise<void>
+  pinned: CollectionData[];
+  myCollections: CollectionData[];
+  helpfulCollections: CollectionData[];
+  onCollectionClick(data: CollectionData): Promise<void>;
+  pinCollection(id: number): Promise<void>;
+  unpinCollection(id: number): Promise<void>;
 }
 
 export default function MyCollectionTab(props: MyCollectionTabProps) {
-  // const { pinned, myCollections, helpfulCollections, onCollectionClick } = props
-  //
-  //const myCollections = getCollections()
-  //  const pinned = getPinnedCollections()
-  // const helpfulCollections = getHelpfulCollections()
+  const {
+    pinned,
+    myCollections,
+    helpfulCollections,
+    onCollectionClick,
+    pinCollection,
+  } = props;
   const collection1 = {
     id: 0,
     title: "3분기 마케팅 전략",
@@ -120,14 +125,21 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
         <div className={collectionStyle.divider} />
       </div>
       <PinnedCollectionCardList
+        //pinned={pinned}
         pinned={testCollections}
         onCollectionClick={onCollectionClick}
+        pinCollection={pinCollection}
+        unpinCollection={unpinCollection}
       />
       <MyCollectionCardList
+        // myCollections={myCollections}
         myCollections={testCollections}
         onCollectionClick={onCollectionClick}
+        pinCollection={pinCollection}
+        unpinCollection={unpinCollection}
       />
       <HelpfulCollectionCardList
+        //helpfulCollections={helpfulCollections}
         helpfulCollections={testCollections}
         onCollectionClick={onCollectionClick}
       />
@@ -138,6 +150,8 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
 export interface PinnedCollectionCardListProps {
   pinned: CollectionData[];
   onCollectionClick(data: CollectionData): Promise<void>;
+  pinCollection(id: number): Promise<void>;
+  unpinCollection(id: number): Promise<void>;
 }
 
 export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
@@ -151,12 +165,16 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
         onClick={props.onCollectionClick}
         columnCount={2}
         pinned={true}
+        pinCollection={props.pinCollection}
+        unpinCollection={props.unpinCollection}
       />
       <GridCollectionCardList
         collections={pinned.slice(2, 5)}
         onClick={props.onCollectionClick}
         columnCount={3}
         pinned={true}
+        pinCollection={props.pinCollection}
+        unpinCollection={props.unpinCollection}
       />
     </div>
   );
@@ -165,6 +183,8 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
 export interface MyCollectionCardListProps {
   myCollections: CollectionData[];
   onCollectionClick(data: CollectionData): Promise<void>;
+  pinCollection(id: number): Promise<void>;
+  unpinCollection(id: number): Promise<void>;
 }
 
 export function MyCollectionCardList(props: MyCollectionCardListProps) {
@@ -174,9 +194,8 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
     setFilter(event.target.value);
   };
   const filteredCollections = myCollections.filter((data: CollectionData) => {
-    return filter === "ALL" || data.status === filter;
+    return filter === "ALL" || data.status.toString() === filter;
   });
-
   let columnList = [];
   let myCollectionsGrid = [];
   let index = 0;
@@ -228,6 +247,8 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
 export interface HelpfulCollectionCardListProps {
   helpfulCollections: CollectionData[];
   onCollectionClick(data: CollectionData): Promise<void>;
+  pinCollection(id: number): Promise<void>;
+  unpinCollection(id: number): Promise<void>;
 }
 
 export function HelpfulCollectionCardList(
@@ -250,7 +271,9 @@ export function HelpfulCollectionCardList(
                     key={item.key}
                     data={item}
                     viewType={"CAROUSEL"}
-                    onClick={() => {}}
+                    onClick={props.onCollectionClick}
+                    pinCollection={props.pinCollection}
+                    unpinCollection={props.unpinCollection}
                   />
                 </div>
               );

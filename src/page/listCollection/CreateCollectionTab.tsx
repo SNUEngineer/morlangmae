@@ -9,6 +9,7 @@ import CollectionCard, {
   CollectionCardProps,
   CollectionData,
 } from "../../components/collection/CollectionCard";
+import { COLLECTION_CREATE } from "../../common/paths";
 
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -17,7 +18,8 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import collectionStyle from "./myCollectionTab.module.scss";
 export interface CreateCollectionTabProps {
-  collections: CollectionListItemProps[];
+  collections: CollectionData[];
+  onCollectionClick(data: CollectionData): Promise<void>;
 }
 
 export default function CreateCollectionTab(props: CreateCollectionTabProps) {
@@ -29,7 +31,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
   };
   return (
     <div className={createStyle.tab_container}>
-      {/* <CollectionTab /> */}
+      <CollectionTab />
       {/* <CollectionList
         title="Create Collections"
         collections={props.collections}
@@ -62,16 +64,14 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
                 key={item.key}
                 data={item}
                 viewType={"LIST"}
-                onClick={() => {}}
+                onClick={props.onCollectionClick}
               />
             </div>
           );
         })}
         {/* <Grid item>
           <Button variant="contained">
-            <Link to="/collections/create">
-              {"Create"}
-            </Link>
+            <Link to={COLLECTION_CREATE}>Create</Link>
           </Button>
         </Grid> */}
       </Grid>

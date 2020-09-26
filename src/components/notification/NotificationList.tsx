@@ -12,20 +12,22 @@ interface NotificationListProps {
 
 export default function NotificationList(props: NotificationListProps) {
   console.log("props.notifications " + JSON.stringify(props.notifications));
-  const notifications = props.notifications.map((notification, index) => {
-    return (
-      <div className={notiStyle.list_container}>
-        <Notification
-          key={notification.id}
-          notification={notification}
-          onClick={props.onNotificationClick}
-        />
-        {props.notifications.length !== index + 1 && (
-          <div className={notiStyle.divider}></div>
-        )}
-      </div>
-    );
-  });
+  const notifications = props.notifications
+    .slice(0, 7)
+    .map((notification, index) => {
+      return (
+        <div className={notiStyle.list_container}>
+          <Notification
+            key={notification.id}
+            notification={notification}
+            onClick={props.onNotificationClick}
+          />
+          {props.notifications.length !== index + 1 && (
+            <div className={notiStyle.divider}></div>
+          )}
+        </div>
+      );
+    });
 
   return (
     <List>

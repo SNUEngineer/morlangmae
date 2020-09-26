@@ -10,10 +10,11 @@ export interface CollectionData {
   serviceType: string;
   title: string;
   imageUrl: string;
+  createdDate: Date;
   startDate: Date;
   endDate: Date;
   notificationCount: number;
-  status: string;
+
   pinned: boolean;
   status: CollectionStatus;
 }
@@ -52,11 +53,6 @@ export interface CollectionCardFunctions {
 export default function CollectionCard(props: CollectionCardProps) {
   const viewType = props.viewType;
   const [pinned, setPinned] = useState(props.pinned);
-  useEffect(() => {
-    console.log("aaa   " + props.pinned);
-    console.log("aaa   " + props.data.title);
-  }, [props.data.pinned]);
-
   const data = props.data;
   const notificationCount = !!data.notificationCount
     ? 0

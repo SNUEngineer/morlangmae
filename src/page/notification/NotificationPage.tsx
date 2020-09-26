@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Notification, {
@@ -6,6 +6,8 @@ import Notification, {
 } from "../../components/notification/Notification";
 import NotificationList from "../../components/notification/NotificationList";
 import notiStyle from "./notificationPage.module.scss";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 interface NotificationDataAndCursor {
   data: NotificationData[];
@@ -13,8 +15,10 @@ interface NotificationDataAndCursor {
 }
 
 interface NotificationPageProps {
-  //getMoreNotifications(cursor?: string): Promise<NotificationDataAndCursor>;
-  //onNotificationClick(notificationData: NotificationData): Promise<void>;
+  goBack(): Promise<void>;
+  initialNotifications: NotificationDataAndCursor;
+  getMoreNotifications(cursor?: string): Promise<NotificationDataAndCursor>;
+  onNotificationClick(notificationData: NotificationData): Promise<void>;
 }
 
 export default function NotificationPage(props: NotificationPageProps) {
@@ -35,15 +39,16 @@ export default function NotificationPage(props: NotificationPageProps) {
     sentBy: sender,
   };
   const [notifications, setNotifications] = useState<NotificationData[]>([
-    notification,
+    props.initialNotifications.data, //test시 notification
   ]);
-  const [cursor, setCursor] = useState<string | undefined>(undefined);
-  //   const onGetMoreNotifications = async () => {
-  //     const res = await props.getMoreNotifications(cursor);
-
-  // setNotifications([...notifications, ...res.data]);
-  //     setCursor(res.cursor)
-
+  const [cursor, setCursor] = useState<string | undefined>(
+    props.initialNotifications.cursor
+  );
+  const onGetMoreNotifications = async () => {
+    const res = await props.getMoreNotifications(cursor);
+    setNotifications([...notifications, ...res.data]);
+    setCursor(res.cursor);
+  };
   const notification1 = {
     id: 0,
     type: "COLLECTION",
@@ -81,6 +86,8 @@ export default function NotificationPage(props: NotificationPageProps) {
       <div className={notiStyle.navigation}>
         <div className={notiStyle.back_text}>{"< 이전으로"}</div>
       </div>
+      <Button onClick={props.goBack}>이전으로</Button>
+      <Typography>알림</Typography>
       <div className={notiStyle.container}>
         <div className={notiStyle.header_container}>
           <div className={notiStyle.text}>알림</div>
@@ -89,21 +96,13 @@ export default function NotificationPage(props: NotificationPageProps) {
 
         <div className={notiStyle.list_container}>
           <List>
-            {/* {notifications.map((notification) => {
-            return (
-              <Notification
-                key={notification.id}
-                notification={notification}
-                onClick={props.onNotificationClick}
-              />
-              
-            );
-          })} */}
             <NotificationList
               notifications={notifications}
               onClick={props.onNotificationClick}
             />
-            {/* <ListItem onClick={onGetMoreNotifications}>...</ListItem> */}
+            {cursor && (
+              <ListItem onClick={onGetMoreNotifications}>...</ListItem>
+            )}
           </List>
         </div>
       </div>

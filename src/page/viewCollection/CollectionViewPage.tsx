@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useRef } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import { useLocation, useHistory } from "react-router-dom";
@@ -16,38 +16,56 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import classNames from "classnames";
+import DialogContent from "@material-ui/core/DialogContent";
+import Typography from "@material-ui/core/Typography";
+import Popover from "@material-ui/core/Popover";
+import TextField from "@material-ui/core/TextField";
+import TableContainer from "@material-ui/core/TableContainer";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import { UserView } from "../../services/user.service";
 
 export interface CollectionViewPageProps extends CollectionProps {
-  hiddenToolbar?: boolean;
-  createPlatter: any;
+  hideToolbar?: boolean;
+  createPlatter(): Promise<void>;
+  onClose(): Promise<void>;
+}
+
+enum SortType {
+  RECENTLY_DESC,
+  RECENTLY_ASC,
 }
 
 export default function CollectionViewPage(props: CollectionViewPageProps) {
   const [editable, setEditable] = useState(false);
-  //const { pathname } = useLocation();
-  const history = useHistory();
-  // const handleClose = () => {
-  //   history.replace(pathname)
-  // }
+  const [sortType, setSortType] = useState(SortType.RECENTLY_ASC);
   return (
     <Fragment>
-      {!props.hiddenToolbar && (
-        <ToolBar
+      {!props.hideToolbar && (
+        <CollectionToolBar
           editable={editable}
           setEditable={setEditable}
+          sortType={sortType}
+          setSortType={setSortType}
           createPlatter={props.createPlatter}
+          collection={props.collectionDetail}
+          platters={props.platters}
         />
       )}
       <Dialog
+        disableEnforceFocus
         fullWidth
         maxWidth="lg"
         open
         PaperComponent={PaperComponent}
-        //onClose={handleClose}
+        onClose={props.onClose}
       >
-        {/* <DialogContent> */}
-        <Collection {...props} />
-        {/* </DialogContent> */}
+        <DialogContent>
+          <Collection {...props} editable={editable} />
+        </DialogContent>
       </Dialog>
     </Fragment>
   );
@@ -64,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const paperStyles = makeStyles((theme: Theme) =>
+const paperStyles = makeStyles(() =>
   createStyles({
     paper: {
       top: 30,
@@ -78,58 +96,11 @@ export function PaperComponent(props: PaperProps) {
   return <Paper {...props} className={clsx(inherited, classes.paper)} />;
 }
 
-export function ToolBar(props: any) {
+export function CollectionToolBar(props: any) {
   const classes = useStyles();
-  const options = ["진행 순", "진행 역순", "내가 참여한 플레터"];
-  const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(options[0]);
-
-  const [menuCoordinates, setMenuCoordinates] = useState({
-    x: 0,
-    y: 0,
-  });
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleChange = (event: any) => {
+    props.setSortType(event.target.value);
   };
-
-  const handleClose = (value) => {
-    setOpen(false);
-    setSelectedValue(value);
-  };
-
-  function DotMenuDialog(props) {
-    const { onClose, selectedValue, open } = props;
-
-    const handleClose = () => {
-      onClose(selectedValue);
-    };
-
-    const handleListItemClick = (value) => {
-      onClose(value);
-    };
-
-    return (
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="simple-dialog-title"
-        open={open}
-        classes={{
-          paperScroll: {},
-        }}
-      >
-        <List>
-          <ListItem button onClick={() => handleListItemClick(options[0])}>
-            <ListItemText primary={options[0]} />
-          </ListItem>
-
-          <ListItem button onClick={() => handleListItemClick(options[1])}>
-            <ListItemText primary={options[1]} />
-          </ListItem>
-        </List>
-      </Dialog>
-    );
-  }
 
   return (
     <AppBar
@@ -139,52 +110,171 @@ export function ToolBar(props: any) {
       })}
     >
       <Toolbar>
-        <div className={pageStyle.bar_container}>
-          <div className={pageStyle.mode_container}>
-            <Switch
-              checked={props.editable}
-              onChange={() => props.setEditable(!props.editable)}
-              name="collection-mode"
-            />
-          </div>
-          {/* # Platter Search # Sort */}
-          <div className={pageStyle.search_container}>
-            <div className={pageStyle.search_icon_container}>플레터 검색</div>
-            <div className={pageStyle.split_bar}></div>
-            <div className={pageStyle.search_bar}>
-              플레터 타이틀로 검색해주세요
-            </div>
-          </div>
-
-          <div className={pageStyle.item_align_menu}>
-            <div
-              className={pageStyle.dot_menu}
-              onClick={(event) => {
-                handleClickOpen();
-                setMenuCoordinates(event.target.getBoundingClientRect());
-              }}
-            >
-              {selectedValue}
-            </div>
-            <DotMenuDialog
-              selectedValue={selectedValue}
-              menuCoordinates={menuCoordinates}
-              open={open}
-              onClose={handleClose}
-            />
-          </div>
-
-          <div className={pageStyle.create_platter_container}>
-            <Button
-              onClick={props.createPlatter}
-              color="primary"
-              variant="contained"
-            >
-              +
-            </Button>
-          </div>
-        </div>
+        <Switch
+          checked={props.editable}
+          onChange={() => props.setEditable(!props.editable)}
+          name="collection-mode"
+        />
+        <Typography>{props.collection.title}</Typography>
+        <SearchPlatter
+          collectionTitle={props.collection.title}
+          platterSummaries={props.platters}
+        />
+        <select name="sortType" onChange={handleChange} value={props.sortType}>
+          <option value={SortType.RECENTLY_ASC}>시간 순</option>
+          <option value={SortType.RECENTLY_DESC}>최신 순</option>
+        </select>
+        {props.editable && (
+          <Button
+            onClick={props.createPlatter}
+            color="primary"
+            variant="contained"
+          >
+            +
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
+  );
+}
+
+interface SearchPlatterProps {
+  collectionTitle: string;
+  platterSummaries: PlatterSummaryData[];
+}
+
+function SearchPlatter(props: SearchPlatterProps) {
+  const [openSearchBar, setOpenSearchBar] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const inputEl = useRef(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleClick = () => {
+    setOpenSearchBar(true);
+    setAnchorEl(inputEl.current);
+  };
+
+  const handleClose = () => {
+    setOpenSearchBar(false);
+    setAnchorEl(null);
+  };
+
+  const handleChange = (event: any) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "platter-search-popover" : undefined;
+
+  return (
+    <Fragment>
+      <div ref={inputEl} style={{ display: "flex" }}>
+        {openSearchBar ? (
+          <Fragment>
+            <Typography>플래터 검색</Typography>
+            <TextField
+              variant="outlined"
+              name="title"
+              onChange={handleChange}
+            />
+          </Fragment>
+        ) : (
+          <Button variant="outlined" onClick={handleClick}>
+            플래터 리스트
+          </Button>
+        )}
+      </div>
+      <Popover
+        disableAutoFocus
+        disableEnforceFocus
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <PlatterSummaryList
+          searchQuery={searchQuery}
+          collectionTitle={props.collectionTitle}
+          platterSummaries={props.platterSummaries}
+        />
+      </Popover>
+    </Fragment>
+  );
+}
+
+interface PlatterSummaryListProps {
+  searchQuery: string;
+  collectionTitle: string;
+  platterSummaries: PlatterSummaryData[];
+}
+
+interface PlatterSummaryData {
+  id: number;
+  title: string;
+  createdBy: UserView;
+  createdDate: Date;
+  hasNotification?: boolean;
+  joined?: boolean;
+}
+
+enum ViewType {
+  ALL,
+  JOINED,
+}
+
+function PlatterSummaryList(props: PlatterSummaryListProps) {
+  console.log(props);
+
+  const [viewType, setViewType] = useState(ViewType.ALL);
+  const platterSummaires = props.platterSummaries
+    .filter((it) => viewType === ViewType.ALL || it.joined)
+    .filter((it) => it.title.includes(props.searchQuery));
+  const onClick = (event: any) => {
+    setViewType(event.target.value);
+  };
+
+  return (
+    <Fragment>
+      <Typography>{props.collectionTitle}의 리스트</Typography>
+      <Button variant="outlined" value={ViewType.ALL} onClick={onClick}>
+        전체보기
+      </Button>
+      <Button variant="outlined" value={ViewType.JOINED} onClick={onClick}>
+        참여 중인 플래터만 보기
+      </Button>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>플래터</TableCell>
+              <TableCell>담당자</TableCell>
+              <TableCell>날짜</TableCell>
+              <TableCell>알림</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {platterSummaires.map((data: PlatterSummaryData) => (
+              <TableRow
+                key={data.id}
+                onClick={() => (window.location.href = `#platter-${data.id}`)}
+              >
+                <TableCell>{data.title}</TableCell>
+                <TableCell>{data.createdBy.displayName}</TableCell>
+                <TableCell>{data.createdDate}</TableCell>
+                <TableCell>{data.hasNotification}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Fragment>
   );
 }

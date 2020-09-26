@@ -8,16 +8,22 @@ import Select from "@material-ui/core/Select";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
+  CollectionCardFunctions,
 } from "../../components/collection/CollectionCard";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import collectionStyle from "./myCollectionTab.module.scss";
 import Header from "../../components/layout/Header/Header";
+import Button from "@material-ui/core/Button";
 
 export interface SearchCollectionTabProps {
-  // attendedCollections: CollectionListProps;
-  // recentSearchedCollections: CollectionListProps;
-  // recommendedArchivedCollections: CollectionListProps;
-  companyCollections: CollectionCardProps[];
+  serviceCollections: CollectionData[];
+  hotCollections: CollectionData[];
+  recentlyViewedCollections: CollectionData[];
+  companyCollections: CollectionData[];
+  onCollectionClick(data: CollectionData): Promise<void>;
+  pinCollection(id: number): Promise<void>;
+  unpinCollection(id: number): Promise<void>;
+  viewAllCompanyCollection(): Promise<void>;
 }
 
 export default function SearchCollectionTab(props: SearchCollectionTabProps) {
@@ -93,38 +99,52 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
     collection4,
     collection5,
   ];
-  const onCollectionClick = (data: CollectionData) => {};
+
+  const functions = {
+    onClick: props.onCollectionClick,
+    pinCollection: props.pinCollection,
+    unpinCollection: props.unpinCollection,
+  };
 
   return (
     <div className={collectionStyle.tab_container}>
       {/* <CollectionTab /> */}
       <ForUserCollectionCardList
+        //usersCollections={props.serviceCollections}
         usersCollections={testCollections}
         onCollectionClick={onCollectionClick}
+        {...functions}
       />
       <OftenFoundCollectionCardList
         oftenCollections={testCollections}
         onCollectionClick={onCollectionClick}
+        {...functions}
       />
       <PopularCollectionCardList
+        //popularCollections={props.hotCollections}
         popularCollections={testCollections}
         onCollectionClick={onCollectionClick}
+        {...functions}
       />
       <RecentCollectionCardList
+        //recentCollections={props.recentlyViewedCollections}
         recentCollections={testCollections}
         onCollectionClick={onCollectionClick}
+        {...functions}
       />
       <CompanyCollectionCardList
+        //companyCollections={props.companyCollections}
         companyCollections={testCollections}
         onCollectionClick={onCollectionClick}
+        {...functions}
       />
     </div>
   );
 }
 
-export interface ForUserCollectionCardListProps {
+export interface ForUserCollectionCardListProps
+  extends CollectionCardFunctions {
   usersCollections: CollectionData[];
-  onCollectionClick(data: CollectionData): Promise<void>;
 }
 
 export function ForUserCollectionCardList(
@@ -145,7 +165,9 @@ export function ForUserCollectionCardList(
                     key={item.key}
                     data={item}
                     viewType={"CAROUSEL"}
-                    onClick={() => {}}
+                    onClick={props.onClick}
+                    pinCollection={props.pinCollection}
+                    unpinCollection={props.unpinCollection}
                   />
                 </div>
               );
@@ -157,9 +179,9 @@ export function ForUserCollectionCardList(
   );
 }
 
-export interface OftenFoundCollectionCardListProps {
+export interface OftenFoundCollectionCardListProps
+  extends CollectionCardFunctions {
   oftenCollections: CollectionData[];
-  onCollectionClick(data: CollectionData): Promise<void>;
 }
 
 export function OftenFoundCollectionCardList(
@@ -183,7 +205,9 @@ export function OftenFoundCollectionCardList(
                     key={item.key}
                     data={item}
                     viewType={"CAROUSEL_TWO"}
-                    onClick={() => {}}
+                    onClick={props.onClick}
+                    pinCollection={props.pinCollection}
+                    unpinCollection={props.unpinCollection}
                   />
                 </div>
               );
@@ -195,9 +219,9 @@ export function OftenFoundCollectionCardList(
   );
 }
 
-export interface PopularCollectionCardListProps {
+export interface PopularCollectionCardListProps
+  extends CollectionCardFunctions {
   popularCollections: CollectionData[];
-  onCollectionClick(data: CollectionData): Promise<void>;
 }
 
 export function PopularCollectionCardList(
@@ -221,7 +245,9 @@ export function PopularCollectionCardList(
                     key={item.key}
                     data={item}
                     viewType={"CAROUSEL"}
-                    onClick={() => {}}
+                    onClick={props.onClick}
+                    pinCollection={props.pinCollection}
+                    unpinCollection={props.unpinCollection}
                   />
                 </div>
               );
@@ -233,9 +259,8 @@ export function PopularCollectionCardList(
   );
 }
 
-export interface RecentCollectionCardListProps {
+export interface RecentCollectionCardListProps extends CollectionCardFunctions {
   recentCollections: CollectionData[];
-  onCollectionClick(data: CollectionData): Promise<void>;
 }
 
 export function RecentCollectionCardList(props: RecentCollectionCardListProps) {
@@ -260,7 +285,9 @@ export function RecentCollectionCardList(props: RecentCollectionCardListProps) {
           <GridCollectionCardList
             key={index}
             collections={collections}
-            onClick={props.onCollectionClick}
+            onClick={props.onClick}
+            pinCollection={props.pinCollection}
+            unpinCollection={props.unpinCollection}
             viewType={"SMALL_LIST"}
             columnCount={columnCount}
           />
@@ -278,9 +305,10 @@ export function RecentCollectionCardList(props: RecentCollectionCardListProps) {
   );
 }
 
-export interface CompanyCollectionCardListProps {
+export interface CompanyCollectionCardListProps
+  extends CollectionCardFunctions {
   companyCollections: CollectionData[];
-  onCollectionClick(data: CollectionData): Promise<void>;
+  viewAllCompanyCollection(): Promise<void>;
 }
 
 export function CompanyCollectionCardList(
@@ -295,17 +323,23 @@ export function CompanyCollectionCardList(
       <div className={collectionStyle.collection_list_container}>
         <GridCollectionCardList
           collections={companyCollections.slice(0, 2)}
-          onClick={props.onCollectionClick}
+          onClick={props.onClick}
+          pinCollection={props.pinCollection}
+          unpinCollection={props.unpinCollection}
           columnCount={2}
         />
         <GridCollectionCardList
           collections={companyCollections.slice(2, 5)}
-          onClick={props.onCollectionClick}
+          onClick={props.onClick}
+          pinCollection={props.pinCollection}
+          unpinCollection={props.unpinCollection}
           columnCount={3}
         />
         <GridCollectionCardList
           collections={companyCollections.slice(5, 8)}
-          onClick={props.onCollectionClick}
+          onClick={props.onClick}
+          pinCollection={props.pinCollection}
+          unpinCollection={props.unpinCollection}
           columnCount={3}
         />
       </div>
@@ -313,6 +347,7 @@ export function CompanyCollectionCardList(
       <div className={collectionStyle.go_to_all_company}>
         <p>회사내 컬렉션 더보기 {">"}</p>
       </div>
+      <Button onClick={props.viewAllCompanyCollection}>전체보기</Button>
     </div>
   );
 }

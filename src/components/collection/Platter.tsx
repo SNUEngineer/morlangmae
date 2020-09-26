@@ -10,37 +10,43 @@ import TextField from "@material-ui/core/TextField";
 import platterStyle from "./platter.module.scss";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
 import { makeStyles } from "@material-ui/core/styles";
+import { PlatterData, viewToData } from "../platter/PlatterEditor";
+
 export interface PlatterProps {
   id: number;
-  title?: string;
-  blocks: BlockView[];
+  platterData: PlatterData;
   editable?: boolean;
-  createdBy: UserView;
-  createdDate: Date;
+  onClick(data: PlatterData): Promise<void>;
 }
 
 export default function Platter(props: PlatterProps) {
   const holderId = `platter-view-${props.id}`;
+
+  const platterData = props.platterData;
   const onReady = () => {
-    if (!props.editable) {
-      const blocks = document.getElementById(holderId);
-      if (blocks) {
-        blocks.style.pointerEvents = "none";
-      }
-      const tools = document.querySelectorAll(".ce-toolbar");
-      tools.forEach((it: any) => (it.style.display = "none"));
+    const blocks = document.getElementById(holderId);
+    if (blocks) {
+      blocks.style.pointerEvents = "none";
+    }
+    const tools = document.querySelectorAll(".ce-toolbar");
+    tools.forEach((it: any) => (it.style.display = "none"));
+  };
+  const data = {
+    blocks: platterData.blocks.map((it) => viewToData(it)),
+  };
+  const onClick = async () => {
+    console.log(props.editable);
+    if (props.editable) {
+      props.onClick(platterData);
     }
   };
+
   const [editorRef, setEditorRef] = useState<any>(null);
 
   const injectRef = (instance: any) => {
     setEditorRef(instance);
   };
-  const onClick = async () => {
-    if (editorRef) {
-      console.log(await editorRef.save());
-    }
-  };
+
   const blocks = {
     time: new Date().getTime(),
     blocks: [{ type: "paragraph", data: { text: "hi" } }],
@@ -70,10 +76,9 @@ export default function Platter(props: PlatterProps) {
     <div className={platterStyle.platter_container}>
       <div className={platterStyle.align_container}>
         <a href={`#platter-${props.id}`}>Platter</a>
-        {/* <Typography>{props.createdDate}</Typography>
-      <Avatar alt={props.createdBy.displayName} src={props.createdBy.imageUrl} />
-      <Typography>{props.createdBy.displayName}</Typography>
-      <Typography>{props.createdBy.companyId}</Typography> */}
+        <div id={`platter-${props.id}`} onClick={onClick}>
+          {" "}
+        </div>
         <div className={platterStyle.dot_menu_container}>
           <div className={platterStyle.dot_menu}>
             <FloatingMenu options={options} />
@@ -94,7 +99,7 @@ export default function Platter(props: PlatterProps) {
             <TextField
               className={platterStyle.title}
               required
-              defaultValue={test.title}
+              defaultValue={platterData.title}
               fullWidth
               id="title"
               name="title"
@@ -109,16 +114,16 @@ export default function Platter(props: PlatterProps) {
 
             <div className={platterStyle.profile_container}>
               <Avatar
-                alt={test.displayName}
-                src={test.imageUrl}
+                alt={platterData.createdBy.displayName}
+                src={platterData.createdBy.imageUrl}
                 className={platterStyle.avatar}
               />
               <div className={platterStyle.name_text_container}>
                 <Typography className={platterStyle.name_text}>
-                  {test.displayName}
+                  {platterData.createdBy.displayName}
                 </Typography>
                 <Typography className={platterStyle.company_text}>
-                  {test.companyId}
+                  {platterData.createdBy.companyId}
                 </Typography>
               </div>
             </div>
@@ -127,10 +132,9 @@ export default function Platter(props: PlatterProps) {
         <div className={platterStyle.editor_container}>
           <EditorJs
             holder={holderId}
-            data={blocks}
-            instanceRef={injectRef}
+            data={data}
             onReady={onReady}
-            tools={EDITOR_JS_TOOLS}
+            tools={EDITOR_JS_TOOLS as any}
           >
             <div id={holderId} />
           </EditorJs>

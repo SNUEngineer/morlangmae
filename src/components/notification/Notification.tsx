@@ -25,7 +25,6 @@ export interface NotificationProps {
 export default function Notification(props: NotificationProps) {
   const notification = props.notification;
   const sender = notification.sentBy;
-  console.log("흐므흐므흐  " + JSON.stringify(notification));
   const onClick = () => props.onClick(notification);
 
   return (

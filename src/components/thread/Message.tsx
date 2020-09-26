@@ -6,6 +6,10 @@ import Avatar from "@material-ui/core/Avatar";
 import messageStyle from "./message.module.scss";
 
 export interface MessageProps {
+  messageData: MessageData;
+}
+
+export interface MessageData {
   content: string;
   sentAt: Date;
   sender: MessageSender;
@@ -18,19 +22,23 @@ interface MessageSender {
 }
 
 export default function Message(props: MessageProps) {
+  const messageData = props.messageData;
   return (
     <div className={messageStyle.message}>
       <div className={messageStyle.avatar}>
-        <Avatar alt={props.sender.displayName} src={props.sender.imageUrl} />
+        <Avatar
+          alt={messageData.sender.displayName}
+          src={messageData.sender.imageUrl}
+        />
       </div>
       <div className={messageStyle.content_container}>
         <div className={messageStyle.name_container}>
           <div className={messageStyle.name_text}>
             {props.sender.displayName}
           </div>
-          <div className={messageStyle.time_text}>{props.sentAt}</div>
+          <div className={messageStyle.time_text}>{messageData.sentAt}</div>
         </div>
-        <div className={messageStyle.content}>{props.content}</div>
+        <div className={messageStyle.content}>{messageData.content}</div>
       </div>
     </div>
   );
