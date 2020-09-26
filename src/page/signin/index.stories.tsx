@@ -1,10 +1,8 @@
-import React from 'react';
-import SignInPage from './SignInPage';
+import React from "react";
+import SignInPage from "./SignInPage";
 
-export default { title: 'SignIn' };
+export default { title: "SignIn" };
 
 export function basic() {
-  return (
-    <SignInPage />
-  );
-};
+  return <SignInPage />;
+}

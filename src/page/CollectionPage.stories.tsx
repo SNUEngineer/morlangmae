@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 // import CollectionPage from './CollectionPage';
 // import MyCollectionTab from './MyCollectionTab';
 // import SearchCollectionTab from './SearchCollectionTab';

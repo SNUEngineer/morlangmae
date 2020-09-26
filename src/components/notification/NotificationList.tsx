@@ -1,7 +1,7 @@
-import React from 'react';
-import Notification, { NotificationData } from './Notification';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import React from "react";
+import Notification, { NotificationData } from "./Notification";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 
 interface NotificationListProps {
   notifications: NotificationData[];
@@ -10,22 +10,20 @@ interface NotificationListProps {
 }
 
 export default function NotificationList(props: NotificationListProps) {
-  const notifications = props.notifications.slice(0, 7).map(notification => {
+  const notifications = props.notifications.slice(0, 7).map((notification) => {
     return (
       <Notification
         key={notification.id}
         notification={notification}
         onClick={props.onNotificationClick}
       />
-    )
-  })
+    );
+  });
 
   return (
     <List>
       {notifications}
-      <ListItem onClick={props.onViewAllNotifications}>
-        View all
-      </ListItem>
+      <ListItem onClick={props.onViewAllNotifications}>View all</ListItem>
     </List>
-  )
+  );
 }

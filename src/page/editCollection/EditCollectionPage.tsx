@@ -1,25 +1,25 @@
-import React, { useState, Fragment } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import InputBase from '@material-ui/core/InputBase';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { CollectionDetail } from '../../services/collection.service';
-import { UserView } from '../../services/user.service';
+import React, { useState, Fragment } from "react";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
+import InputBase from "@material-ui/core/InputBase";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { CollectionDetail } from "../../services/collection.service";
+import { UserView } from "../../services/user.service";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: '60%',
+      width: "60%",
     },
     backButton: {
       marginRight: theme.spacing(1),
@@ -28,79 +28,115 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
-  }),
+  })
 );
 
 function getSteps() {
-  return ['표지', '정보', '본문'];
+  return ["표지", "정보", "본문"];
 }
 
 const contentStyles = makeStyles((theme: Theme) =>
   createStyles({
     imageCard: {
-      width: '100%',
-      paddingBottom: '56.25%',
+      width: "100%",
+      paddingBottom: "56.25%",
       backgroundImage: (props: any) => `url('${props.imageUrl}')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center center',
-    }
+      backgroundSize: "cover",
+      backgroundPosition: "center center",
+    },
   })
-)
+);
 
-function getStepContent(stepIndex: number, collection: any, setCollection: any, props: EditCollectionPageProps) {
-  const classes = contentStyles(collection)
+function getStepContent(
+  stepIndex: number,
+  collection: any,
+  setCollection: any,
+  props: EditCollectionPageProps
+) {
+  const classes = contentStyles(collection);
 
   const handleChange = (e: any) => {
-    const name = e.target.name
-    const value = e.target.value
+    const name = e.target.name;
+    const value = e.target.value;
 
     setCollection({
       ...collection,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   const handleDrop = async (e: any) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
     if (e.dataTransfer.files.length !== 1) {
-      console.error("Unexpected file number", e.dataTransfer.files)
+      console.error("Unexpected file number", e.dataTransfer.files);
     } else {
-      const res = await props.uploadImage(e.dataTransfer.files[0])
+      const res = await props.uploadImage(e.dataTransfer.files[0]);
       setCollection({
         ...collection,
-        imageUrl: res.uri
-      })
+        imageUrl: res.uri,
+      });
     }
-  }
+  };
 
   const handleDragOver = (e: any) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   switch (stepIndex) {
     case 0:
       return (
         <Paper>
-          <select name="collectionType" onChange={handleChange} value={collection.collectionType}>
+          <select
+            name="collectionType"
+            onChange={handleChange}
+            value={collection.collectionType}
+          >
             <option value="PROJECT">Project</option>
             <option value="TEAM">Team</option>
           </select>
-          <select name="serviceType" onChange={handleChange} value={collection.serviceType}>
-            {props.serviceTypes.map(serviceType => {
+          <select
+            name="serviceType"
+            onChange={handleChange}
+            value={collection.serviceType}
+          >
+            {props.serviceTypes.map((serviceType) => {
               return (
-                <option key={serviceType} value={serviceType}>{serviceType}</option>
-              )
+                <option key={serviceType} value={serviceType}>
+                  {serviceType}
+                </option>
+              );
             })}
           </select>
-          <Card onDragOver={handleDragOver} onDrop={handleDrop} className={classes.imageCard}>
-            <CardHeader title={collection.title} style={{ color: 'white' }} />
+          <Card
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            className={classes.imageCard}
+          >
+            <CardHeader title={collection.title} style={{ color: "white" }} />
           </Card>
-          <TextField variant="outlined" name="title" onChange={handleChange} value={collection.title} />
-          <TextField variant="outlined" type="datetime-local" name="startDate" onChange={handleChange} value={collection.startDate} />
-          <TextField variant="outlined" type="datetime-local" name="endDate" onChange={handleChange} value={collection.endDate} />
+          <TextField
+            variant="outlined"
+            name="title"
+            onChange={handleChange}
+            value={collection.title}
+          />
+          <TextField
+            variant="outlined"
+            type="datetime-local"
+            name="startDate"
+            onChange={handleChange}
+            value={collection.startDate}
+          />
+          <TextField
+            variant="outlined"
+            type="datetime-local"
+            name="endDate"
+            onChange={handleChange}
+            value={collection.endDate}
+          />
         </Paper>
-      )
+      );
     case 1:
       return (
         <Paper>
@@ -114,8 +150,8 @@ function getStepContent(stepIndex: number, collection: any, setCollection: any, 
                 onChange={(event, newValue) => {
                   setCollection({
                     ...collection,
-                    members: newValue
-                  })
+                    members: newValue,
+                  });
                 }}
                 options={props.users}
                 renderInput={(params) => {
@@ -125,7 +161,7 @@ function getStepContent(stepIndex: number, collection: any, setCollection: any, 
                       inputProps={params.inputProps}
                       autoFocus
                     />
-                  )
+                  );
                 }}
                 getOptionLabel={(option) => option.displayName}
                 renderOption={(option: UserView) => (
@@ -139,25 +175,32 @@ function getStepContent(stepIndex: number, collection: any, setCollection: any, 
               {collection.members.map((user: UserView) => (
                 <div key={user.id}>
                   {user.displayName}
-                  <Button onClick={() => {
-                    setCollection({
-                      ...collection,
-                      members: collection.members.filter((it: UserView) => it.id !== user.id)
-                    })
-                  }}>
+                  <Button
+                    onClick={() => {
+                      setCollection({
+                        ...collection,
+                        members: collection.members.filter(
+                          (it: UserView) => it.id !== user.id
+                        ),
+                      });
+                    }}
+                  >
                     X
-                    </Button>
+                  </Button>
                 </div>
               ))}
             </Grid>
             <Grid item xs>
               <Card className={classes.imageCard}>
-                <CardHeader title={collection.title} style={{ color: 'white' }} />
+                <CardHeader
+                  title={collection.title}
+                  style={{ color: "white" }}
+                />
               </Card>
             </Grid>
           </Grid>
         </Paper>
-      )
+      );
     case 2:
       return (
         <Paper>
@@ -168,27 +211,28 @@ function getStepContent(stepIndex: number, collection: any, setCollection: any, 
               <Typography>{collection.serviceType}</Typography>
               <Typography>Attendence</Typography>
               {collection.members.map((user: UserView) => (
-                <div key={user.id}>
-                  {user.displayName}
-                </div>
+                <div key={user.id}>{user.displayName}</div>
               ))}
             </Grid>
             <Grid item xs>
               <Card className={classes.imageCard}>
-                <CardHeader style={{ color: 'white' }} title={collection.title} />
+                <CardHeader
+                  style={{ color: "white" }}
+                  title={collection.title}
+                />
               </Card>
             </Grid>
           </Grid>
         </Paper>
-      )
+      );
     default:
-      return 'Unknown stepIndex';
+      return "Unknown stepIndex";
   }
 }
 
 export interface EditCollectionPageProps {
   collectionDetail: CollectionDetail;
-  users: UserView[]
+  users: UserView[];
   uploadImage(file: File): Promise<{ uri: string }>;
   editCollection(collection: any): Promise<void>;
   serviceTypes: string[];
@@ -208,9 +252,9 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     starDate: collectionDetail.startDate,
     endDate: collectionDetail.endDate,
     members: collectionDetail.members.map((member: UserView) => {
-      return props.users.find((user: UserView) => user.id === member.id)
+      return props.users.find((user: UserView) => user.id === member.id);
     }),
-  })
+  });
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -218,7 +262,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
 
   const handleStepClick = (index: number) => {
     setActiveStep(index);
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -234,15 +278,18 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
           {getStepContent(activeStep, collection, setCollection, props)}
           <div>
             {activeStep === steps.length - 1 ? (
-              <Button variant="contained" color="primary" onClick={() => props.editCollection(collection)}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => props.editCollection(collection)}
+              >
                 Finish
               </Button>
             ) : (
-                <Button variant="contained" color="primary" onClick={handleNext}>
-                  Next
-                </Button>
-              )
-            }
+              <Button variant="contained" color="primary" onClick={handleNext}>
+                Next
+              </Button>
+            )}
           </div>
         </div>
       </div>

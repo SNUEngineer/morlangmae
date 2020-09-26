@@ -1,7 +1,7 @@
-import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
+import React from "react";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
 
 export interface NotificationData {
   id: number;
@@ -22,9 +22,9 @@ export interface NotificationProps {
 }
 
 export default function Notification(props: NotificationProps) {
-  const notification = props.notification
-  const sender = notification.sentBy
-  const onClick = () => props.onClick(notification)
+  const notification = props.notification;
+  const sender = notification.sentBy;
+  const onClick = () => props.onClick(notification);
 
   return (
     <ListItem onClick={onClick}>
@@ -36,5 +36,5 @@ export default function Notification(props: NotificationProps) {
       </ListItemAvatar>
       {sender.displayName}
     </ListItem>
-  )
+  );
 }

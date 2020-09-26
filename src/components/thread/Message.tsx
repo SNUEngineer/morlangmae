@@ -1,8 +1,8 @@
-import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
+import React from "react";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
 
 export interface MessageProps {
   messageData: MessageData;
@@ -21,24 +21,27 @@ interface MessageSender {
 }
 
 export default function Message(props: MessageProps) {
-  const messageData = props.messageData
+  const messageData = props.messageData;
   return (
     <ListItem>
       <ListItemAvatar>
-        <Avatar alt={messageData.sender.displayName} src={messageData.sender.imageUrl} />
+        <Avatar
+          alt={messageData.sender.displayName}
+          src={messageData.sender.imageUrl}
+        />
       </ListItemAvatar>
       <ListItemText
         primary={messageData.content}
         secondary={
           <React.Fragment>
-            {messageData.sender.displayName + ' - '}
+            {messageData.sender.displayName + " - "}
             {/* <time dateTime={props.sentAt.toISOString()}> */}
-              {/* {props.sentAt.toLocaleTimeString()} */}
+            {/* {props.sentAt.toLocaleTimeString()} */}
             {/* </time> */}
             {messageData.sentAt}
           </React.Fragment>
         }
       />
     </ListItem>
-  )
+  );
 }
