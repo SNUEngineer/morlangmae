@@ -150,13 +150,13 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
         collections={pinned.slice(0, 2)}
         onClick={props.onCollectionClick}
         columnCount={2}
-        isPinned={true}
+        pinned={true}
       />
       <GridCollectionCardList
         collections={pinned.slice(2, 5)}
         onClick={props.onCollectionClick}
         columnCount={3}
-        isPinned={true}
+        pinned={true}
       />
     </div>
   );

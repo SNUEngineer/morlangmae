@@ -13,7 +13,7 @@ export interface GridCollectionCardListProps {
   collections: CollectionData[];
   columnCount: number;
   viewType: string;
-  isPinned: boolean;
+  pinned: boolean;
   onCollectionClick(data: CollectionData): Promise<void>;
 }
 export function GridCollectionCardList(props: GridCollectionCardListProps) {
@@ -22,9 +22,10 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
     onCollectionClick,
     columnCount,
     viewType,
-    isPinned,
+    pinned,
   } = props;
   const [gridCollections, setGridCollections] = useState<CollectionData[]>();
+  console.log("bbb " + pinned);
   useEffect(() => {
     if (collections.length < columnCount) {
       var newList = collections.concat(null);
@@ -52,7 +53,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 data={gridCollections[0]}
                 viewType={!!viewType ? viewType : "WIDE"}
                 onClick={onCollectionClick}
-                isPinned={!!isPinned ? isPinned : false}
+                pinned={!!pinned ? pinned : false}
               />
             </div>
             <div className={listStyle.item_2}>
@@ -60,7 +61,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 data={gridCollections[1]}
                 viewType={!!viewType ? viewType : "WIDE"}
                 onClick={onCollectionClick}
-                isPinned={!!isPinned ? isPinned : false}
+                pinned={!!pinned ? pinned : false}
               />
             </div>
           </div>
@@ -74,7 +75,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 data={gridCollections[0]}
                 viewType={!!viewType ? viewType : "WIDE"}
                 onClick={onCollectionClick}
-                isPinned={!!isPinned ? isPinned : false}
+                pinned={!!pinned ? pinned : false}
               />
             </div>
             <div className={listStyle.item_2}>
@@ -82,7 +83,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 data={gridCollections[1]}
                 viewType={!!viewType ? viewType : "WIDE"}
                 onClick={onCollectionClick}
-                isPinned={!!isPinned ? isPinned : false}
+                pinned={!!pinned ? pinned : false}
               />
             </div>
             <div className={listStyle.item_3}>
@@ -90,7 +91,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 data={gridCollections[2]}
                 viewType={!!viewType ? viewType : "WIDE"}
                 onClick={onCollectionClick}
-                isPinned={!!isPinned ? isPinned : false}
+                pinned={!!pinned ? pinned : false}
               />
             </div>
           </div>

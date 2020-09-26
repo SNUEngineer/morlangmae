@@ -1,8 +1,4 @@
-import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
+import React, { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import collectionStyle from "./collectionCard.module.scss";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
@@ -10,6 +6,7 @@ import classNames from "classnames";
 
 export interface CollectionData {
   id: number;
+  collectionType: CollectionType;
   serviceType: string;
   title: string;
   imageUrl: string;
@@ -17,45 +14,71 @@ export interface CollectionData {
   endDate: Date;
   notificationCount: number;
   status: string;
-  isPinned: boolean;
+  pinned: boolean;
+  status: CollectionStatus;
 }
 
-export interface CollectionCardProps {
+export enum CollectionType {
+  PROJECT,
+  TEAM,
+}
+
+export enum CollectionStatus {
+  DRAFT,
+  REQUEST_PROGRESS,
+  DENIED,
+  IN_PROGRESS,
+  DONE,
+}
+
+export interface CollectionCardProps extends CollectionCardFunctions {
   data: CollectionData;
-  viewType: "NORMAL" | "WIDE" | "HORIZONTAL";
-
-  onClick(data: CollectionData): Promise<void>;
+  pinned: boolean;
+  viewType:
+    | "NORMAL"
+    | "WIDE"
+    | "CAROUSEL"
+    | "CAROUSEL_TWO"
+    | "LIST"
+    | "SMALL_LIST";
 }
 
-const useStyles = makeStyles((viewType: "NORMAL" | "WIDE") =>
-  createStyles({
-    root: {
-      width: viewType == "NORMAL" ? 300 : 500,
-    },
-    media: {
-      height: 0,
-      paddingTop: viewType == "NORMAL" ? "100%" : "62.25%",
-    },
-  })
-);
+export interface CollectionCardFunctions {
+  onClick(data: CollectionData): Promise<void>;
+  pinCollection(id: number): Promise<void>;
+  unpinCollection(id: number): Promise<void>;
+}
 
 export default function CollectionCard(props: CollectionCardProps) {
-  const { viewType, isPinned } = props;
-  const classes = useStyles(viewType);
+  const viewType = props.viewType;
+  const [pinned, setPinned] = useState(props.pinned);
+  useEffect(() => {
+    console.log("aaa   " + props.pinned);
+    console.log("aaa   " + props.data.title);
+  }, [props.data.pinned]);
+
   const data = props.data;
   const notificationCount = !!data.notificationCount
     ? 0
     : data.notificationCount;
-  const onClick = () => props.onClick(props.data);
+  const onClick = async () => props.onClick(props.data);
+  const pinCollection = async (event: any) => {
+    event.stopPropagation();
+    await props.pinCollection(props.data.id);
+    setPinned(true);
+  };
+  const unpinCollection = async (event: any) => {
+    event.stopPropagation();
+    await props.unpinCollection(props.data.id);
+    setPinned(false);
+  };
+
   const imageStyle = {
     backgroundImage: "url(" + data.imageUrl + ")",
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
   };
-  //  createdDate: 0,
-  //   startDate: 0,
-  //   endDate: 0,
   const dateText = data.startDate + " - " + data.endDate;
 
   const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
@@ -74,19 +97,18 @@ export default function CollectionCard(props: CollectionCardProps) {
           })}
           onClick={onClick}
         >
-          {(!!isPinned ? isPinned : false) && (
+          {(!!pinned ? pinned : false) && (
             <div className={collectionStyle.pinned_container}>
-              <div className={collectionStyle.icon_container}>
+              <div
+                className={collectionStyle.icon_container}
+                onClick={() => {
+                  unpinCollection();
+                }}
+              >
                 <img className={collectionStyle.pinned_icon} alt={"icon"} />
               </div>
             </div>
           )}
-          {/* {(!!isPinned ? isPinned : false) && (
-            <div className={collectionStyle.icon_container}>
-              <img className={collectionStyle.pinned_icon} alt={"icon"} />
-            </div>
-          )} */}
-
           <div className={collectionStyle.service_type_and_menu}>
             <div className={collectionStyle.service_type}>
               {data.serviceType}
@@ -118,15 +140,6 @@ export default function CollectionCard(props: CollectionCardProps) {
             </div>
           )}
         </div>
-        // <Card className={classes.root} onClick={onClick}>
-
-        //   <Typography>{data.serviceType}</Typography>
-        //   <CardHeader title={data.title} />
-        //   {notificationCount > 0 && <Typography>{notificationCount}</Typography>}
-        //   {data.imageUrl && (
-        //     <CardMedia image={data.imageUrl} className={classes.media} />
-        //   )}
-        // </Card>
       );
 
     case "LIST":
