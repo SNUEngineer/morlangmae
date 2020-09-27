@@ -45,7 +45,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [editorRef, setEditorRef] = useState(null);
   const [isEditing, setEditing] = useState(false);
-  const { pathname, search } = useLocation();
+  //const { pathname, search } = useLocation();
   const history = useHistory();
   const handleClose = () => {
     const query = queryString.parse(search);
@@ -80,7 +80,8 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
       current.style.zIndex = 1310;
     }
   };
-  const [title, setTitle] = useState(props.platter.title);
+  //const [title, setTitle] = useState(props.platter.title);
+  const [title, setTitle] = useState("dfsdf");
   const [members, setMembers] = useState(props.platter.members);
 
   return (
@@ -139,7 +140,8 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
                   disableEditing={!isEditing}
                   title={title}
                   changeTitle={setTitle}
-                  id={props.platter.id}
+                  //id={props.platter.id}
+                  id={1}
                   data={props.platter}
                   editorRef={editorRef}
                   setEditorRef={setEditorRef}

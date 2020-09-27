@@ -52,13 +52,13 @@ export default function Collection(props: CollectionProps) {
     <Card className={classes.root} elevation={0}>
       <CardMedia image={collectionDetail.imageUrl} className={classes.media} />
       {/* <AvatarGroup> */}
-      {collectionDetail.members.map((member: UserView) => (
+      {/* {collectionDetail.members.map((member: UserView) => (
         <Avatar
           key={member.id}
           alt={member.displayName}
           src={member.imageUrl}
         />
-      ))}
+      ))} */}
       {/* </AvatarGroup> */}
       {platters}
     </Card>

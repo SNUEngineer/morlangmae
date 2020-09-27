@@ -12,6 +12,7 @@ export interface EditPlatterPageContainerProps {
 async function getData({ platterId }: any) {
   const data = await Promise.all([getPlatter(platterId), getThread(platterId)]);
   const collection = await getCollection(data[0].collectionId);
+
   return {
     platter: data[0],
     thread: data[1],

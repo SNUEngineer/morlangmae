@@ -36,13 +36,23 @@ export function basic() {
     id: 0,
     messages: [message, message, message],
   };
-
+  const testMember1 = {
+    id: 0,
+    displayName: "송병근",
+  };
+  const testMember2 = {
+    id: 1,
+    displayName: "송상근",
+  };
+  const testMembers = [testMember1, testMember2];
   return (
     <EditPlatterPage
-      {...platter}
-      {...thread}
+      platter={platter}
       sendMessage={() => {}}
       loadMessages={() => {}}
+      editPlatter={() => {}}
+      collectionMembers={testMembers}
+      messages={thread.messages}
     />
   );
 }

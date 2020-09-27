@@ -63,7 +63,7 @@ export function basic() {
   return (
     <CollectionViewPage
       hiddenToolbar={false}
-      {...collection}
+      collectionDetail={collection}
       createPlatter={() => {}}
       platters={[platter]}
     />
