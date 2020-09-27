@@ -80,8 +80,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
       current.style.zIndex = 1310;
     }
   };
-  //const [title, setTitle] = useState(props.platter.title);
-  const [title, setTitle] = useState("dfsdf");
+  const [title, setTitle] = useState(props.platter.title);
   const [members, setMembers] = useState(props.platter.members);
 
   return (

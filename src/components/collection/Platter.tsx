@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import EditorJs from "react-editor-js";
-import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import { EDITOR_JS_TOOLS } from "../editor/tools";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 import platterStyle from "./platter.module.scss";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
-import { makeStyles } from "@material-ui/core/styles";
 import { PlatterData, viewToData } from "../platter/PlatterEditor";
 
 export interface PlatterProps {
@@ -39,16 +36,6 @@ export default function Platter(props: PlatterProps) {
     }
   };
 
-  const [editorRef, setEditorRef] = useState<any>(null);
-
-  const injectRef = (instance: any) => {
-    setEditorRef(instance);
-  };
-
-  const blocks = {
-    time: new Date().getTime(),
-    blocks: [{ type: "paragraph", data: { text: "hi" } }],
-  };
   const test = {
     displayName: "송병근",
     imageUrl:
@@ -59,24 +46,10 @@ export default function Platter(props: PlatterProps) {
     title: "1차 기획 회의",
   };
   const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
-  const useStyles = makeStyles({
-    underline: {
-      "&&&:before": {
-        borderBottom: "none",
-      },
-      "&&:after": {
-        borderBottom: "none",
-      },
-    },
-  });
-  const classes = useStyles();
   return (
     <div className={platterStyle.platter_container}>
       <div className={platterStyle.align_container}>
-        <a href={`#platter-${props.id}`}>Platter</a>
-        <div id={`platter-${props.id}`} onClick={onClick}>
-          {" "}
-        </div>
+        <div id={`platter-${props.id}`} onClick={onClick}></div>
         <div className={platterStyle.dot_menu_container}>
           <div className={platterStyle.dot_menu}>
             <FloatingMenu options={options} />
@@ -85,24 +58,10 @@ export default function Platter(props: PlatterProps) {
 
         <div className={platterStyle.platter_info_container}>
           <div className={platterStyle.title_container}>
-            <TextField
-              className={platterStyle.subtitle}
-              required
-              defaultValue={test.subtitle}
-              fullWidth
-              id="title"
-              name="title"
-              InputProps={{ classes }}
-            />
-            <TextField
-              className={platterStyle.title}
-              required
-              defaultValue={platterData.title}
-              fullWidth
-              id="title"
-              name="title"
-              InputProps={{ classes }}
-            />
+            <Typography className={platterStyle.subtitle}>
+              {test.subtitle}
+            </Typography>
+            <Typography className={platterStyle.title}>{test.title}</Typography>
           </div>
 
           <div className={platterStyle.writer_container}>
@@ -137,7 +96,6 @@ export default function Platter(props: PlatterProps) {
             <div id={holderId} />
           </EditorJs>
         </div>
-        <Button onClick={onClick}>Give me data</Button>
       </div>
     </div>
   );
