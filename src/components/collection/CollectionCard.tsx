@@ -76,6 +76,7 @@ export default function CollectionCard(props: CollectionCardProps) {
     backgroundRepeat: "no-repeat",
   };
   const dateText = data.startDate + " - " + data.endDate;
+  const listDateText = "2020.08.19";
 
   const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
 
@@ -170,14 +171,14 @@ export default function CollectionCard(props: CollectionCardProps) {
                 </div>
               </div>
               <div className={collectionStyle.date} onClick={onClick}>
-                <p className={collectionStyle.date_text}>{data.startDate}</p>
+                <p className={collectionStyle.date_text}>{listDateText}</p>
               </div>
             </div>
           </div>
         </div>
       );
 
-    case "SMALL_LIST":
+    case "SMALL_LIST_BACK_UP":
       return (
         <div className={collectionStyle.small_list_root} onClick={onClick}>
           <div className={collectionStyle.title_image} onClick={onClick}>
@@ -196,6 +197,43 @@ export default function CollectionCard(props: CollectionCardProps) {
               </div>
             </div>
           </div>
+        </div>
+      );
+
+    case "SMALL_LIST":
+      return (
+        <div className={collectionStyle.small_list_root} onClick={onClick}>
+          <div className={collectionStyle.title_image} onClick={onClick}>
+            <div className={collectionStyle.image} style={imageStyle}></div>
+          </div>
+          <div className={collectionStyle.document_info} onClick={onClick}>
+            <div className={collectionStyle.vertical_align}>
+              <div
+                className={classNames({
+                  [collectionStyle.collection_type]: true,
+                })}
+                onClick={onClick}
+              >
+                <div> {data.serviceType}</div>
+                <div
+                  className={classNames({
+                    [collectionStyle.collection_title]: true,
+                  })}
+                  onClick={onClick}
+                >
+                  {data.title}
+                </div>
+                <div className={collectionStyle.date_text} onClick={onClick}>
+                  {dateText}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={collectionStyle.collection_type_container}
+            onClick={onClick}
+          ></div>
         </div>
       );
 

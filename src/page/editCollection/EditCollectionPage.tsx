@@ -407,6 +407,16 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
   const steps = getSteps();
   const collectionDetail = props.collectionDetail;
   const [requestMember, setRequestMember] = useState<UserView[]>();
+
+  const testMember1 = {
+    id: 0,
+    displayName: "송병근",
+  };
+  const testMember2 = {
+    id: 1,
+    displayName: "송상근",
+  };
+  const testMembers = [testMember1, testMember2];
   const [collection, setCollection] = useState({
     id: collectionDetail.id,
     collectionType: collectionDetail.collectionType,
@@ -415,9 +425,10 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     title: collectionDetail.title,
     startDate: collectionDetail.startDate,
     endDate: collectionDetail.endDate,
-    members: collectionDetail.members.map((member: UserView) => {
-      return props.users.find((user: UserView) => user.id === member.id);
-    }),
+    // members: collectionDetail.members.map((member: UserView) => {
+    //   return props.users.find((user: UserView) => user.id === member.id);
+    // }),
+    members: testMembers,
   });
 
   const handleNext = () => {

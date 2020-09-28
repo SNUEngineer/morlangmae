@@ -3,6 +3,7 @@ import CollectionCard, {
   CollectionCardProps,
   CollectionData,
 } from "./CollectionCard";
+import classNames from "classnames";
 import Grid from "@material-ui/core/Grid";
 import listStyle from "./collectionList.module.scss";
 
@@ -43,7 +44,13 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
     switch (columnCount) {
       case 2:
         return (
-          <div className={listStyle.grid_collection_container_count_2}>
+          <div
+            className={classNames({
+              [listStyle.grid_collection_container_count_2]: true,
+              [listStyle.grid_collection_container_small_list]:
+                viewType === "SMALL_LIST",
+            })}
+          >
             <div className={listStyle.item_1}>
               <CollectionCard
                 data={gridCollections[0]}
@@ -112,7 +119,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
           </div>
         );
     }
-  }, [onCollectionClick, gridCollections, viewType]);
+  }, [onCollectionClick, gridCollections, viewType, columnCount, pinned]);
 
   return (
     <div>

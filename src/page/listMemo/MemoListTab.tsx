@@ -117,7 +117,6 @@ export function MyMemoList(props: MyMemoListProps) {
         filter={filter}
         subMenuType={"filter"}
       />
-      <div className={memoStyle.divider} />
       <Grid container>
         {memos.map((item) => {
           return (

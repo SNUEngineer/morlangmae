@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -6,49 +6,84 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles, theme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import { CreateDraftCollectionRequest } from "../../services/collection.service";
 import pageStyle from "./createCollectionPage.module.scss";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import classNames from "classnames";
+import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 
 export interface CreateCollectionPageProps {
   createCollection(request: CreateDraftCollectionRequest): Promise<void>;
   serviceTypes: string[];
 }
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
 export default function CreateCollectionPage(props: CreateCollectionPageProps) {
-  const createStyle = useStyles();
   const { register, handleSubmit } = useForm();
-  console.log("createStyle " + createStyle.paper);
-
+  const [filter, setFilter] = useState<string>("BASIC");
+  const [serviceFilter, setServiceFilter] = useState<string>("BASIC");
+  const handleChange = (event: any) => {
+    setFilter(event.target.value);
+  };
+  const useStyles = makeStyles(() =>
+    createStyles({
+      underline: {
+        "&&&:before": {
+          borderBottom: "none",
+        },
+        "&&:after": {
+          borderBottom: "none",
+        },
+      },
+      select: {
+        fontSize: "14px",
+        letterSpacing: "-0.98px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        color: "#707070",
+        height: "33px",
+        width: "150px",
+        textAlign: "center",
+        borderRadius: "5px",
+        borderColor: "#e0e0e0",
+        margin: "0px",
+        ul: {
+          backgroundColor: "red",
+          minHeight: "1000px",
+        },
+      },
+      root: {
+        fontSize: "11.5px",
+        letterSpacing: "-0.98px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        minWidth: "86px",
+        textAlign: "center",
+        position: "relative",
+        height: "30px",
+        color: "#707070",
+        margin: "0px",
+        "&:hover": {
+          background: "#f0f0f0",
+          color: "#4BA34B",
+        },
+        borderBottomStyle: "solid",
+        borderBottomColor: "#E0E0E0",
+        borderBottomWidth: "0.5px",
+      },
+      selected: {
+        "&:hover": {
+          color: "#4BA34B",
+        },
+      },
+    })
+  );
+  const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={pageStyle.paper}>
-        <Typography component="h1" variant="h5">
-          Create new collection
-        </Typography>
         <div className={pageStyle.bailey_text}>Bailey</div>
         <div className={pageStyle.create_text}>새 컬렉션 생성</div>
         <form
@@ -58,51 +93,133 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
         >
           <div>
             <div className={pageStyle.collection_type_container}>
-              <select
-                name="collectionType"
-                ref={register}
-                className={pageStyle.select}
-              >
-                <option aria-label="None" value="" />
-                <option value="PROJECT">Project</option>
-                <option value="TEAM">Team</option>
-              </select>
+              <div className={pageStyle.header}>컬렉션</div>
+              <div className={pageStyle.select}>
+                <Select
+                  onChange={handleChange}
+                  value={filter}
+                  className={classNames({
+                    [classes.select]: true,
+                    [classes.icon]: true,
+                    [pageStyle.select]: true,
+                  })}
+                  IconComponent={ExpandMoreRoundedIcon}
+                  variant={"outlined"}
+                  disableUnderline
+                >
+                  <MenuItem
+                    className={classNames({
+                      [classes.root]: true,
+                      [classes.selected]: true,
+                    })}
+                    value="BASIC"
+                  >
+                    <div className={pageStyle.menu_item_container}>
+                      <div className={pageStyle.text_container}>
+                        {" "}
+                        <div className={pageStyle.text}>
+                          {" "}
+                          설정해주세요{" "}
+                        </div>{" "}
+                      </div>
+                    </div>
+                  </MenuItem>
+                  <MenuItem
+                    className={classNames({
+                      [classes.root]: true,
+                      [classes.selected]: true,
+                    })}
+                    value="TEAM"
+                  >
+                    <div className={pageStyle.menu_item_container}>
+                      <p> 팀 </p>
+                    </div>
+                  </MenuItem>
+                  <MenuItem
+                    className={classNames({
+                      [classes.root]: true,
+                      [classes.selected]: true,
+                    })}
+                    value="PROJECT"
+                  >
+                    <div className={pageStyle.menu_item_container}>
+                      <p> 프로젝트 </p>
+                    </div>
+                  </MenuItem>
+                </Select>
+              </div>
             </div>
+
             <div className={pageStyle.service_type_container}>
-              <select
-                name="serviceType"
-                ref={register}
-                className={pageStyle.select}
-              >
-                {props.serviceTypes.map((serviceType) => {
-                  return (
-                    <option key={serviceType} value={serviceType}>
-                      {serviceType}
-                    </option>
-                  );
-                })}
-              </select>
+              <div className={pageStyle.header}>서비스</div>
+              <div className={pageStyle.select}>
+                <Select
+                  onChange={handleChange}
+                  value={filter}
+                  className={classNames({
+                    [classes.select]: true,
+                    [classes.icon]: true,
+                    [pageStyle.select]: true,
+                  })}
+                  IconComponent={ExpandMoreRoundedIcon}
+                  disableUnderline
+                >
+                  <MenuItem
+                    className={classNames({
+                      [classes.root]: true,
+                      [classes.selected]: true,
+                    })}
+                    value="ALL"
+                  >
+                    <div className={pageStyle.menu_item_container}>전체</div>
+                  </MenuItem>
+                  <MenuItem
+                    className={classNames({
+                      [classes.root]: true,
+                      [classes.selected]: true,
+                    })}
+                    value="IN_PROGRESS"
+                  >
+                    <div className={pageStyle.menu_item_container}>진행</div>
+                  </MenuItem>
+                  <MenuItem
+                    className={classNames({
+                      [classes.root]: true,
+                      [classes.selected]: true,
+                    })}
+                    value="DONE"
+                  >
+                    <div className={pageStyle.menu_item_container}>완료</div>
+                  </MenuItem>
+                </Select>
+              </div>
             </div>
           </div>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="title"
-            label="Collection Title"
-            name="title"
-            inputRef={register}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={pageStyle.submit}
-          >
-            Create
-          </Button>
+          <div className={pageStyle.text_field_container}>
+            <div className={pageStyle.align_container}>
+              <TextField
+                className={pageStyle.title}
+                margin="normal"
+                required
+                fullWidth
+                id="title"
+                name="title"
+                inputRef={register}
+                InputProps={{ classes }}
+              />
+            </div>
+          </div>
+          <div className={pageStyle.create_button}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={pageStyle.submit}
+            >
+              Create
+            </Button>
+          </div>
           <Grid container justify="flex-end">
             <Grid item>
               {/* <Link to="/collections">

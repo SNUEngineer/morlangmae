@@ -57,7 +57,6 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   };
 
   const onScrollHandler = (event) => {
-    console.log("Asdfasdfffsf");
     event.preventDefault();
     event.stopPropagation();
   };
@@ -164,58 +163,72 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
                 />
               </div>
             </Element>
-
-            <div className={editStyle.fixed_menu_button}>
-              <Link
-                activeClass="active"
-                to="firstInsideContainer22"
-                spy={true}
-                smooth={true}
-                duration={250}
-                containerId="containerElement"
-                style={{ display: "inline-block", margin: "20px" }}
-                onClick={() => {
-                  clickPlatterButton();
-
-                  setEditing(true);
-                }}
-              >
-                에디터
-              </Link>
-
-              <Link
-                activeClass="active"
-                to="firstInsideContainer"
-                spy={true}
-                smooth={true}
-                duration={250}
-                containerId="containerElement"
-                style={{ display: "inline-block", margin: "20px" }}
-                onClick={() => {
-                  clickPlatterButton();
-                  setEditing(false);
-                }}
-              >
-                플레터
-              </Link>
-
-              <Link
-                activeClass="active"
-                to="threadContainer"
-                spy={true}
-                smooth={true}
-                duration={250}
-                containerId="containerElement"
-                style={{ display: "inline-block", margin: "20px" }}
-                onClick={() => {
-                  clickThreadButton();
-                }}
-              >
-                스레드
-              </Link>
-            </div>
           </div>
         </Element>
+        <div className={editStyle.fixed_menu_button}>
+          <Link
+            activeClass="active"
+            to="firstInsideContainer22"
+            spy={true}
+            smooth={true}
+            duration={250}
+            containerId="containerElement"
+            style={{ display: "inline-block", margin: "8px" }}
+            onClick={() => {
+              clickPlatterButton();
+
+              setEditing(true);
+            }}
+          >
+            <div className={editStyle.button_container}>
+              <div className={editStyle.icon_container}>
+                <img className={editStyle.editor_icon} alt={"icon"} />
+              </div>
+              <div className={editStyle.text}>에디터</div>
+            </div>
+          </Link>
+
+          <Link
+            activeClass="active"
+            to="firstInsideContainer"
+            spy={true}
+            smooth={true}
+            duration={250}
+            containerId="containerElement"
+            style={{ display: "inline-block", margin: "8px" }}
+            onClick={() => {
+              clickPlatterButton();
+              setEditing(false);
+            }}
+          >
+            <div className={editStyle.button_container}>
+              <div className={editStyle.icon_container}>
+                <img className={editStyle.platter_icon} alt={"icon"} />
+              </div>
+              <div className={editStyle.text}>플레터</div>
+            </div>
+          </Link>
+
+          <Link
+            activeClass="active"
+            to="threadContainer"
+            spy={true}
+            smooth={true}
+            duration={250}
+            containerId="containerElement"
+            style={{ display: "inline-block", margin: "8px" }}
+            onClick={() => {
+              clickThreadButton();
+            }}
+          >
+            <div className={editStyle.button_container}>
+              <div className={editStyle.icon_container}>
+                <img className={editStyle.thread_icon} alt={"icon"} />
+              </div>
+              <div className={editStyle.text}>스레드</div>
+            </div>
+          </Link>
+        </div>
       </Dialog>
     </div>
   );

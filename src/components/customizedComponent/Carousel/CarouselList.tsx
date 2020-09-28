@@ -1,6 +1,6 @@
 import React from "react";
+// import Carousel from "./Craousel";
 import Carousel from "react-multi-carousel";
-import { CustomButtonGroup } from "./CarouselArrow";
 import carouselStyle from "./carouselArrow.module.scss";
 
 export interface CarouselListProps {
@@ -18,19 +18,6 @@ export default function CarouselList(props: CarouselListProps) {
       slidesToSlide: !!props.slideItems ? props.slideItems : 3, // optional, default to 1.
       partialVisibilityGutter: 40,
     },
-  };
-  const CustomRightArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide, deviceType },
-    } = rest;
-    // onMove means if dragging or swiping in progress.
-    return (
-      <div className={carouselStyle.test_container}>
-        {" "}
-        <button className={carouselStyle.test} onClick={() => onClick()} />{" "}
-      </div>
-    );
   };
 
   return (

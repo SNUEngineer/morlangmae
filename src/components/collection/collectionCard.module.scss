@@ -38,6 +38,9 @@
   cursor: pointer;
   box-sizing: border-box;
   .dot_menu {
+    opacity: 0;
+  }
+  .dot_menu_opened {
     opacity: 1;
   }
   &:hover {
@@ -60,7 +63,7 @@
 
   .title {
     font-size: 19px;
-    color: #707070;
+    color: #1d1d1f;
     margin-bottom: 16px;
     letter-spacing: -1px;
     font-family: "Noto Sans CJK KR Regular";
@@ -70,7 +73,7 @@
     position: relative;
     width: 100%;
     height: 220px;
-    background-color: gray;
+    background-color: #e0e0e0;
     .image {
       position: absolute;
       left: 0;
@@ -144,13 +147,87 @@
   }
 }
 
-.list_root {
+.small_list_root {
   $font_size_list: 20px;
   display: flex;
   flex-direction: row;
-  padding: 5px;
+  padding: 4.5px;
   background-color: white;
   height: 77px;
+  border-bottom-color: #e0e0e0;
+  border-bottom-style: solid;
+  border-width: 1px;
+  box-sizing: border-box;
+  &:hover {
+    background-color: #f9f9f9;
+  }
+  .p {
+    line-height: 1.5;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .title_image {
+    margin-left: 5px;
+    height: 100%;
+    width: 66px;
+    position: relative;
+
+    .image {
+      width: 100%;
+      height: 100%;
+      background-color: #e0e0e0;
+    }
+  }
+  .document_info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    color: #707070;
+    margin-left: 11px;
+    .vertical_align {
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+
+    .collection_type {
+      width: 300px;
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: -0.98px;
+      font-family: "Noto Sans CJK KR Regular";
+      color: #707070;
+    }
+
+    .collection_title {
+      font-size: 15px;
+      margin-top: 2px;
+      margin-bottom: 11px;
+      letter-spacing: -0.98px;
+      font-family: "Noto Sans CJK KR Regular";
+      color: #707070;
+    }
+
+    .date_text {
+      font-size: 10px;
+      letter-spacing: -0.5px;
+      font-family: "Noto Sans CJK KR Light";
+      color: #a0a0a0;
+    }
+  }
+}
+
+.list_root {
+  $font_size_list: 20px;
+  $ratio: 55/87;
+  $image_width: 100px;
+  display: flex;
+  flex-direction: row;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: white;
+  height: $image_width * $ratio;
   width: 100%;
   cursor: pointer;
 
@@ -158,7 +235,7 @@
   border-bottom-style: solid;
   border-width: 1px;
   &:hover {
-    background-color: gray;
+    background-color: #f9f9f9;
   }
   p {
     line-height: 1.5;
@@ -176,33 +253,34 @@
     letter-spacing: 0px;
   }
   .title_image {
+    width: 200px;
+
     .image {
-      width: 97px;
+      width: $image_width;
       height: 100%;
+      background-color: #e0e0e0;
     }
   }
   .title {
-    margin-left: 20px;
     width: 300px;
     text-align: left;
     font-size: $font_size_list;
   }
   .state {
-    margin-left: 20px;
     width: 100px;
     text-align: center;
     font-size: $font_size_list;
   }
   .authority {
-    margin-left: 20px;
-    width: 100px;
+    margin-left: 40px;
+    width: 80px;
     text-align: center;
     font-size: $font_size_list;
   }
   .collection_type_container {
     position: relative;
-    margin-left: 20px;
-    width: 150px;
+    margin-left: 5px;
+    width: 200px;
     font-size: $font_size_list;
     vertical-align: middle;
 
@@ -227,28 +305,28 @@
       }
     }
   }
-  .title_image {
-    margin-left: 20px;
-    width: 200px;
-  }
+
   .date {
+    flex-grow: 1;
+    width: 80px;
+    text-align: right;
   }
 }
 
-.small_list_root {
+.small_list_root_back_up {
   $font_size_list: 20px;
   display: flex;
   flex-direction: row;
   padding: 4px;
   width: 100%;
-  height: 77px;
+  height: 70px;
   background-color: white;
   border-bottom-color: #e0e0e0;
   border-bottom-style: solid;
   border-width: 1px;
   cursor: pointer;
   &:hover {
-    background-color: gray;
+    background-color: #f9f9f9;
   }
   p {
     line-height: 1.5;
@@ -269,6 +347,7 @@
     .image {
       width: 70px;
       height: 100%;
+      background-color: #e0e0e0;
     }
   }
 

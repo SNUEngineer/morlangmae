@@ -15,7 +15,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import createStyle from "./createCollectionTab.module.scss";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-
+import Header from "../../components/layout/Header/Header";
 import collectionStyle from "./myCollectionTab.module.scss";
 export interface CreateCollectionTabProps {
   collections: CollectionData[];
@@ -31,7 +31,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
   };
   return (
     <div className={createStyle.tab_container}>
-      <CollectionTab />
+      {/* <CollectionTab /> */}
       {/* <CollectionList
         title="Create Collections"
         collections={props.collections}
@@ -43,19 +43,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
           <div className={createStyle.create_text}>생성하기</div>
         </div>
       </div>
-
-      <div className={createStyle.header_container}>
-        <div className={createStyle.text}>나의 생성 컬렉션 리스트</div>
-        <div className={createStyle.sort_menu}>
-          <Select value={filter} onChange={handleChange}>
-            <MenuItem value="ALL">전체</MenuItem>
-            <MenuItem value="IN_PROGRESS">초안</MenuItem>
-            <MenuItem value="DONE">승인 대기</MenuItem>
-            <MenuItem value="DONE">승인</MenuItem>
-          </Select>
-        </div>
-      </div>
-      <div className={createStyle.divider} />
+      <Header title={"나의 생성 컬렉션 리스트"} subMenuType={"filter"} />
       <Grid container>
         {props.collections.map((item) => {
           return (

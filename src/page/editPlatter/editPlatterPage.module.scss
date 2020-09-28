@@ -6,13 +6,19 @@ $border-color: gray;
   padding-top: 300px;
   padding-left: 100px;
   padding-right: 100px;
+  box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
   overflow-y: scroll;
   height: 100vh;
   .container {
+    position: absolute;
+    height: 100%;
+    left: 50%;
+    transform: translate(-50%, 0);
     background-color: white;
     flex-direction: column;
-
+    width: 100%;
+    max-width: 1348px;
     .platter_container {
     }
     .platter_container_opened {
@@ -88,4 +94,51 @@ $border-color: gray;
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
+}
+
+.button_container {
+  height: 71px;
+  width: 71px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+
+  .icon_container {
+    height: 100%;
+    width: 100%;
+    margin-right: 10px;
+    position: relative;
+
+    img {
+      height: auto;
+      position: absolute;
+      left: 50%;
+
+      transform: translate(-50%, 0);
+    }
+    .editor_icon {
+      content: url("../../resources/icons/platter_edit_icon.png");
+      width: 15px;
+      top: 17px;
+    }
+    .platter_icon {
+      content: url("../../resources/icons/platter_icon.png");
+      width: 23px;
+      top: 18px;
+    }
+    .thread_icon {
+      content: url("../../resources/icons/platter_thread_icon.png");
+      width: 19px;
+      top: 19px;
+    }
+  }
+
+  .text {
+    text-align: center;
+    margin-bottom: 14px;
+    font-size: 12px;
+    font-family: "Noto Sans CJK KR Regular";
+    color: #707070;
+  }
 }

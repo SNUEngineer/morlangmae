@@ -42,7 +42,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     title: "3분기 마케팅 전략",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x6001.jpgafaf",
     collectionType: "team",
     serviceType: "마케팅",
     createdDate: "8월 10일",
@@ -54,7 +54,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     title: "플랜비 직원 컨설팅",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpgafaf",
     collectionType: "team",
     serviceType: "컨설팅",
     createdDate: 0,
@@ -66,7 +66,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     title: "SW-13 제품 디자인",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpgafaf",
     collectionType: "team",
     serviceType: "제품",
     createdDate: 0,
@@ -78,7 +78,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     title: "KW-13 제품 디자인",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpgafaf",
     collectionType: "team",
     serviceType: "제품",
     createdDate: 0,
@@ -90,7 +90,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     title: "프로케어 직원 컨설팅",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpgafaf",
     collectionType: "team",
     serviceType: "컨설팅",
     createdDate: 0,
@@ -151,23 +151,26 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
 
   return (
     <div className={collectionStyle.pinned_container}>
-      <Header title={"고정한 컬렉션"} subMenuType={"pinned"} />
-      <GridCollectionCardList
-        collections={pinned.slice(0, 2)}
-        onClick={props.onCollectionClick}
-        columnCount={2}
-        pinned={true}
-        pinCollection={props.pinCollection}
-        unpinCollection={props.unpinCollection}
-      />
-      <GridCollectionCardList
-        collections={pinned.slice(2, 5)}
-        onClick={props.onCollectionClick}
-        columnCount={3}
-        pinned={true}
-        pinCollection={props.pinCollection}
-        unpinCollection={props.unpinCollection}
-      />
+      <Header title={"고정한 컬렉션"} subMenuType={"none"} />
+
+      <div className={collectionStyle.collection_list_container}>
+        <GridCollectionCardList
+          collections={pinned.slice(0, 2)}
+          onClick={props.onCollectionClick}
+          columnCount={2}
+          pinned={true}
+          pinCollection={props.pinCollection}
+          unpinCollection={props.unpinCollection}
+        />
+        <GridCollectionCardList
+          collections={pinned.slice(2, 5)}
+          onClick={props.onCollectionClick}
+          columnCount={3}
+          pinned={true}
+          pinCollection={props.pinCollection}
+          unpinCollection={props.unpinCollection}
+        />
+      </div>
     </div>
   );
 }

@@ -73,7 +73,7 @@ export function createCollectionTab() {
     title: "3분기 마케팅 전략",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x6001.jpgafaf",
     collectionType: "team",
     serviceType: "마케팅",
     createdDate: "8월 10일",
@@ -85,7 +85,7 @@ export function createCollectionTab() {
     title: "플랜비 직원 컨설팅",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpgafaf",
     collectionType: "team",
     serviceType: "컨설팅",
     createdDate: 0,
@@ -97,7 +97,7 @@ export function createCollectionTab() {
     title: "SW-13 제품 디자인",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpgafaf",
     collectionType: "team",
     serviceType: "제품",
     createdDate: 0,
@@ -109,7 +109,7 @@ export function createCollectionTab() {
     title: "KW-13 제품 디자인",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpgafaf",
     collectionType: "team",
     serviceType: "제품",
     createdDate: 0,
@@ -121,7 +121,7 @@ export function createCollectionTab() {
     title: "프로케어 직원 컨설팅",
     status: "good",
     imageUrl:
-      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpg",
+      "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x600.jpgafaf",
     collectionType: "team",
     serviceType: "컨설팅",
     createdDate: 0,
@@ -136,7 +136,6 @@ export function createCollectionTab() {
     collection5,
     collection2,
   ];
-
   return (
     <BasicMenuBar>
       <CollectionTab />
