@@ -1,10 +1,12 @@
-import React from 'react';
-import CollectionListItem, { CollectionListItemProps } from './CollectionListItem';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import { CollectionData } from './CollectionCard';
+import React from "react";
+import CollectionListItem, {
+  CollectionListItemProps,
+} from "./CollectionListItem";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import { CollectionData } from "./CollectionCard";
 
 export interface CollectionListProps {
   title: string;
@@ -20,8 +22,12 @@ export default function CollectionList(props: CollectionListProps) {
       <List>
         {props.collections.map((data: CollectionData) => {
           return (
-            <CollectionListItem key={data.id} data={data} onClick={props.onCollectionClick} />
-          )
+            <CollectionListItem
+              key={data.id}
+              data={data}
+              onClick={props.onCollectionClick}
+            />
+          );
         })}
       </List>
     </Card>

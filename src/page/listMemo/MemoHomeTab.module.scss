@@ -1,0 +1,208 @@
+@font-face {
+  font-family: "Noto Sans CJK KR Thin";
+  src: url("../../fonts/NotoSansCJKkr-Thin.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Light";
+  src: url("../../fonts/NotoSansCJKkr-Light.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR DemiLight";
+  src: url("../../fonts/NotoSansCJKkr-DemiLight.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Regular";
+  src: url("../../fonts/NotoSansCJKkr-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Medium";
+  src: url("../../fonts/NotoSansCJKkr-Medium.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Bold";
+  src: url("../../fonts/NotoSansCJKkr-Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans CJK KR Black";
+  src: url("../../fonts/NotoSansCJKkr-Black.otf") format("opentype");
+}
+
+.header_container {
+  margin-top: 100px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  .text {
+    flex-grow: 1;
+    font-size: 27px;
+    letter-spacing: -1.35px;
+    font-family: "Noto Sans CJK KR Bold";
+    color: #707070;
+  }
+  .memo_list_text {
+    flex-grow: 1;
+    font-size: 20px;
+    letter-spacing: -1px;
+    font-family: "Noto Sans CJK KR Bold";
+    color: #707070;
+  }
+  .sort_menu {
+    position: relative;
+    width: 100px;
+    font-size: 14px;
+    letter-spacing: -0.98px;
+    font-family: "Noto Sans CJK KR Regular";
+    vertical-align: top;
+    background-color: pink;
+    .text {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: black;
+    }
+  }
+  .go_to_all_list {
+    position: relative;
+    cursor: pointer;
+    width: 80px;
+    font-size: 14px;
+    letter-spacing: -0.98px;
+    font-family: "Noto Sans CJK KR Regular";
+    vertical-align: top;
+    .go_to_text {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      color: #707070;
+    }
+  }
+}
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: #e0e0e0;
+  margin-bottom: 45.5px;
+}
+
+.list_item_container {
+  width: 100%;
+  background-color: pink;
+}
+
+.create_memo_container {
+  position: relative;
+  height: 206px;
+  width: 100%;
+  margin-bottom: 100px;
+  .drag_drop_container {
+    position: absolute;
+    width: 292px;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: gray;
+  }
+}
+
+.tab_container {
+  max-width: 717px;
+  padding-top: 66px;
+  margin: 0 auto;
+  margin-bottom: 300px;
+}
+.list_tab_container {
+  max-width: 870px;
+  padding-top: 50px;
+  margin: 0 auto;
+  margin-bottom: 300px;
+}
+.memo_in_collection_container {
+  max-width: 717px;
+  padding-top: 66px;
+  margin: 0 auto;
+  margin-bottom: 300px;
+
+  .divider {
+    height: 1px;
+    width: 100%;
+    background-color: #e0e0e0;
+    margin-bottom: 84.5px;
+  }
+
+  .split {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    .collection_title_image {
+      margin-right: 23.5px;
+      .image {
+        width: 297px;
+        height: 303px;
+        background-color: gray;
+      }
+    }
+  }
+  .list_container {
+    flex-grow: 1;
+    .service_type {
+      font-size: 14px;
+      font-family: "Noto Sans CJK KR Regular";
+      color: #707070;
+    }
+    .in_collection_header_container {
+      margin-bottom: 5px;
+      margin-left: 5px;
+      display: flex;
+      flex-direction: row;
+      height: 80px;
+      .collection_info {
+        flex-grow: 1;
+        .service_type {
+          font-size: 14px;
+          color: #707070;
+        }
+        .title {
+          margin-top: 5px;
+          font-size: 20px;
+          color: #707070;
+        }
+      }
+
+      .sort_menu {
+        background-color: pink;
+        position: relative;
+
+        .select {
+          position: absolute;
+          right: 0px;
+          bottom: 20px;
+        }
+      }
+    }
+
+    .list_container_divider {
+      height: 1px;
+      width: 100%;
+      background-color: #e0e0e0;
+      margin-bottom: 3px;
+    }
+  }
+}
+.memo_list_container {
+  margin-top: 28px;
+}
+
+.temp_container {
+  margin-top: 70px;
+}
+.binge_container {
+  margin-top: 70px;
+}
+.request_container {
+  margin-top: 100px;
+}
+.binge_collection_container {
+  margin-top: 100px;
+}

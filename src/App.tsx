@@ -1,36 +1,51 @@
-import React, { useState, Fragment } from 'react';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import AppBar from './layout/AppBar';
-import Drawer from './layout/Drawer';
-import { Toolbar, Typography } from '@material-ui/core';
-import AuthRoute from './common/auth/AuthRoute';
-import UnauthRoute from './common/auth/UnauthRoute';
-import SignInPage from './page/signin/SignInPage';
-import { signIn, signUp, SignInRequest, SignUpRequest } from './services/user.service';
-import SignUpPage from './page/signup/SignUpPage';
-import Error from './common/error'
-import CreateCollectionPageContainer from './page/createCollection/CreateCollectionPageContainer';
-import EditCollectionPageContainer from './page/editCollection/EditCollectionPageContainer';
-import PersonaPageContainer from './page/persona/PersonaPageContainer';
-import { COLLECTION_LIST, COLLECTION_LIST_MY_COLLECTION, COLLECTION_LIST_CREATED, COLLECTION_CREATE, ROOT, SIGN_IN, SIGN_UP, PROFILE, COLLECTION_EDIT, COLLECTION_LIST_COMPANY, NOTIFICATION } from './common/paths';
-import CreateCollectionTabContainer from './page/listCollection/CreateCollectionTabContainer';
-import MyCollectionTabContainer from './page/listCollection/MyCollectionTabContainer';
-import SearchCollectionTabContainer from './page/listCollection/SearchCollectionTabContainer';
-import queryString from 'query-string';
-import CompanyCollectionPageContainer from './page/listCollection/CompanyCollectionPageContainer';
-import { verify } from './services/account.service';
-import { resetToken, expireToken } from './common/axios';
-import NotificationPageContainer from './page/notification/NotificationPageContainer';
-
-
+import React, { useState, Fragment } from "react";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import AppBar from "./layout/AppBar";
+import Drawer from "./layout/Drawer";
+import { Toolbar, Typography } from "@material-ui/core";
+import AuthRoute from "./common/auth/AuthRoute";
+import UnauthRoute from "./common/auth/UnauthRoute";
+import SignInPage from "./page/signin/SignInPage";
+import {
+  signIn,
+  signUp,
+  SignInRequest,
+  SignUpRequest,
+} from "./services/user.service";
+import SignUpPage from "./page/signup/SignUpPage";
+import Error from "./common/error";
+import CreateCollectionPageContainer from "./page/createCollection/CreateCollectionPageContainer";
+import EditCollectionPageContainer from "./page/editCollection/EditCollectionPageContainer";
+import PersonaPageContainer from "./page/persona/PersonaPageContainer";
+import {
+  COLLECTION_LIST,
+  COLLECTION_LIST_MY_COLLECTION,
+  COLLECTION_LIST_CREATED,
+  COLLECTION_CREATE,
+  ROOT,
+  SIGN_IN,
+  SIGN_UP,
+  PROFILE,
+  COLLECTION_EDIT,
+  COLLECTION_LIST_COMPANY,
+  NOTIFICATION,
+} from "./common/paths";
+import CreateCollectionTabContainer from "./page/listCollection/CreateCollectionTabContainer";
+import MyCollectionTabContainer from "./page/listCollection/MyCollectionTabContainer";
+import SearchCollectionTabContainer from "./page/listCollection/SearchCollectionTabContainer";
+import queryString from "query-string";
+import CompanyCollectionPageContainer from "./page/listCollection/CompanyCollectionPageContainer";
+import { verify } from "./services/account.service";
+import { resetToken, expireToken } from "./common/axios";
+import NotificationPageContainer from "./page/notification/NotificationPageContainer";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: 'flex',
+      display: "flex",
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
@@ -46,49 +61,47 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
     },
     drawerContainer: {
-      overflow: 'auto',
+      overflow: "auto",
     },
     content: {
       flexGrow: 1,
       padding: theme.spacing(3),
     },
-  }),
+  })
 );
 
 function App() {
   const { pathname } = useLocation();
   const classes = useStyles();
-  const token = localStorage.getItem('Authorization');
+  const token = localStorage.getItem("Authorization");
   const [authenticated, setAuthenticated] = useState(token != null);
 
   async function validateToken() {
-    const token = localStorage.getItem('Authorization')
+    const token = localStorage.getItem("Authorization");
     try {
-      await verify()
+      await verify();
     } catch (e) {
-      expireToken()
+      expireToken();
     }
-    setAuthenticated(token != null)
+    setAuthenticated(token != null);
   }
-  validateToken()
+  validateToken();
 
   async function handleSignIn(request: SignInRequest) {
-    await signIn(request)
-    await validateToken()
+    await signIn(request);
+    await validateToken();
   }
 
   async function handleSignUp(request: SignUpRequest) {
-    await signUp(request)
-    await validateToken()
+    await signUp(request);
+    await validateToken();
   }
 
   return (
-    <div className={classes.root}>
+    <div className={appStyle.root}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography>
-            Bailey
-            </Typography>
+          <Typography>Bailey</Typography>
         </Toolbar>
       </AppBar>
       <div className={classes.body}>
@@ -117,21 +130,33 @@ function App() {
             hasDrawer
             authenticated={authenticated}
             path={COLLECTION_LIST}
-            render={(props: any) => <SearchCollectionTabContainer {...queryString.parse(props.location.search)} />}
+            render={(props: any) => (
+              <SearchCollectionTabContainer
+                {...queryString.parse(props.location.search)}
+              />
+            )}
           />
           <AuthRoute
             exact
             hasDrawer
             authenticated={authenticated}
             path={COLLECTION_LIST_MY_COLLECTION}
-            render={(props: any) => <MyCollectionTabContainer {...queryString.parse(props.location.search)} />}
+            render={(props: any) => (
+              <MyCollectionTabContainer
+                {...queryString.parse(props.location.search)}
+              />
+            )}
           />
           <AuthRoute
             exact
             hasDrawer
             authenticated={authenticated}
             path={COLLECTION_LIST_CREATED}
-            render={(props: any) => <CreateCollectionTabContainer {...queryString.parse(props.location.search)} />}
+            render={(props: any) => (
+              <CreateCollectionTabContainer
+                {...queryString.parse(props.location.search)}
+              />
+            )}
           />
           <AuthRoute
             exact
@@ -145,13 +170,21 @@ function App() {
             hasDrawer
             authenticated={authenticated}
             path={COLLECTION_LIST_COMPANY}
-            render={(props: any) => <CompanyCollectionPageContainer {...queryString.parse(props.location.search)} />}
+            render={(props: any) => (
+              <CompanyCollectionPageContainer
+                {...queryString.parse(props.location.search)}
+              />
+            )}
           />
           <AuthRoute
             exact
             authenticated={authenticated}
             path={COLLECTION_EDIT}
-            render={(props: any) => <EditCollectionPageContainer collectionId={props.match.params.id} />}
+            render={(props: any) => (
+              <EditCollectionPageContainer
+                collectionId={props.match.params.id}
+              />
+            )}
           />
           <AuthRoute
             exact
@@ -191,11 +224,8 @@ function PersonaView() {
         <PersonaPageContainer />
       </main>
     </Fragment>
-  )
+  );
 }
-
-
-
 
 function CreateCollectionView() {
   const classes = useStyles();
@@ -204,7 +234,7 @@ function CreateCollectionView() {
       <Toolbar />
       <CreateCollectionPageContainer />
     </main>
-  )
+  );
 }
 
 function ProjectView(props: any) {

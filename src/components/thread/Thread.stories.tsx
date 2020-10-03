@@ -1,9 +1,9 @@
-import React from 'react';
-import Thread from './Thread';
-import Message from './Message';
-import { profileImageUrl } from '../../storybook/images';
+import React from "react";
+import Thread from "./Thread";
+import Message from "./Message";
+import { profileImageUrl } from "../../storybook/images";
 
-export default { title: 'Threads' };
+export default { title: "Threads" };
 
 // export function thread() {
 //   const messages = [

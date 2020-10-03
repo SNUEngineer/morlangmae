@@ -1,24 +1,32 @@
-import React, { Fragment } from 'react';
-import { useAsync } from 'react-async';
-import { getCollections, CollectionView, getPinnedCollections, pinCollection, unpinCollection } from '../../services/collection.service';
-import MyCollectionTab from './MyCollectionTab';
-import { useHistory } from 'react-router-dom';
-import { CollectionData } from '../../components/collection/CollectionCard';
-import { COLLECTION_LIST_MY_COLLECTION } from '../../common/paths';
-import ModalManager from '../modalManager/ModelManager';
+import React, { Fragment } from "react";
+import { useAsync } from "react-async";
+import {
+  getCollections,
+  CollectionView,
+  getPinnedCollections,
+  pinCollection,
+  unpinCollection,
+} from "../../services/collection.service";
+import MyCollectionTab from "./MyCollectionTab";
+import { useHistory } from "react-router-dom";
+import { CollectionData } from "../../components/collection/CollectionCard";
+import { COLLECTION_LIST_MY_COLLECTION } from "../../common/paths";
+import ModalManager from "../modalManager/ModelManager";
 
 async function getMyCollections() {
-  const data = await Promise.all([getPinnedCollections(), getCollections()])
+  const data = await Promise.all([getPinnedCollections(), getCollections()]);
 
-  const pinned = data[0].map(it => viewToData(it))
-  pinned.forEach(it => it.pinned = true)
-  const myCollections = data[1].filter(it => pinned.every(it2 => it.id !== it2.id)).map(it => viewToData(it))
+  const pinned = data[0].map((it) => viewToData(it));
+  pinned.forEach((it) => (it.pinned = true));
+  const myCollections = data[1]
+    .filter((it) => pinned.every((it2) => it.id !== it2.id))
+    .map((it) => viewToData(it));
 
   return {
     pinned,
     myCollections,
-    helpfulCollections: data[1].map(it => viewToData(it)),
-  }
+    helpfulCollections: data[1].map((it) => viewToData(it)),
+  };
 }
 
 function viewToData(view: CollectionView): CollectionData {
@@ -26,7 +34,7 @@ function viewToData(view: CollectionView): CollectionData {
     ...view,
     notificationCount: 0,
     pinned: false,
-  }
+  };
 }
 
 interface MyCollectionTabContainerProps {
@@ -34,17 +42,19 @@ interface MyCollectionTabContainerProps {
   platterId?: number;
 }
 
-export default function MyCollectionTabContainer(props: MyCollectionTabContainerProps) {
-  const history = useHistory()
+export default function MyCollectionTabContainer(
+  props: MyCollectionTabContainerProps
+) {
+  const history = useHistory();
 
   const { data, error, isLoading } = useAsync({
-    promiseFn: getMyCollections
-  })
+    promiseFn: getMyCollections,
+  });
 
   const onCollectionClick = async (data: CollectionData) => {
-    const path = `${COLLECTION_LIST_MY_COLLECTION}?collectionId=${data.id}`
-    history.push(path)
-  }
+    const path = `${COLLECTION_LIST_MY_COLLECTION}?collectionId=${data.id}`;
+    history.push(path);
+  };
 
   if (data) {
     return (
@@ -57,9 +67,12 @@ export default function MyCollectionTabContainer(props: MyCollectionTabContainer
           pinCollection={pinCollection}
           unpinCollection={unpinCollection}
         />
-        <ModalManager collectionId={props.collectionId} platterId={props.platterId} />
+        <ModalManager
+          collectionId={props.collectionId}
+          platterId={props.platterId}
+        />
       </Fragment>
-    )
+    );
   }
 
   return null;

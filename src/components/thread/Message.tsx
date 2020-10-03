@@ -1,8 +1,9 @@
-import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
+import React from "react";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import messageStyle from "./message.module.scss";
 
 export interface MessageProps {
   messageData: MessageData;
@@ -21,24 +22,24 @@ interface MessageSender {
 }
 
 export default function Message(props: MessageProps) {
-  const messageData = props.messageData
+  const messageData = props.messageData;
   return (
-    <ListItem>
-      <ListItemAvatar>
-        <Avatar alt={messageData.sender.displayName} src={messageData.sender.imageUrl} />
-      </ListItemAvatar>
-      <ListItemText
-        primary={messageData.content}
-        secondary={
-          <React.Fragment>
-            {messageData.sender.displayName + ' - '}
-            {/* <time dateTime={props.sentAt.toISOString()}> */}
-              {/* {props.sentAt.toLocaleTimeString()} */}
-            {/* </time> */}
-            {messageData.sentAt}
-          </React.Fragment>
-        }
-      />
-    </ListItem>
-  )
+    <div className={messageStyle.message}>
+      <div className={messageStyle.avatar}>
+        <Avatar
+          alt={messageData.sender.displayName}
+          src={messageData.sender.imageUrl}
+        />
+      </div>
+      <div className={messageStyle.content_container}>
+        <div className={messageStyle.name_container}>
+          <div className={messageStyle.name_text}>
+            {messageData.sender.displayName}
+          </div>
+          <div className={messageStyle.time_text}>{messageData.sentAt}</div>
+        </div>
+        <div className={messageStyle.content}>{messageData.content}</div>
+      </div>
+    </div>
+  );
 }

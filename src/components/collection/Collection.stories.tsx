@@ -1,10 +1,10 @@
-import React from 'react';
-import CollectionListItem from './CollectionListItem';
-import CollectionCard from './CollectionCard';
-import { backgroundImageUrl } from '../../storybook/images';
-import CollectionCardList from './CollectionCardList';
+import React from "react";
+import CollectionListItem from "./CollectionListItem";
+import CollectionCard from "./CollectionCard";
+import { backgroundImageUrl } from "../../storybook/images";
+import CollectionCardList from "./CollectionCardList";
 
-export default { title: 'Collections' };
+export default { title: "Collections" };
 
 // export function collectionListItem() {
 //   return (

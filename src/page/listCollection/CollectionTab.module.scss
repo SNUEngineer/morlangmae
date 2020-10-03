@@ -1,0 +1,89 @@
+.colleciont_title_text {
+  font-size: 30px;
+  font-family: "Noto Sans CJK KR Bold";
+  color: #707070;
+  margin-top: 138px;
+  margin-bottom: 187px;
+  width: 100%;
+  text-align: center;
+}
+
+.tab_text {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.tab_block {
+  display: flex;
+  position: relative;
+  align-content: center;
+  justify-content: center;
+  align-items: enter;
+  width: 510px;
+  margin: 0 auto;
+  @media screen and (max-width: 750px) {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .underbar {
+    position: absolute;
+    width: 100%;
+    top: 41px;
+    margin-top: -1px;
+    height: 1px;
+    min-height: 1px;
+    background-color: #e0e0e0;
+    z-index: 900;
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      overflow-x: auto;
+    }
+  }
+
+  .tab_element {
+    font-size: 16px;
+    letter-spacing: -0.7px;
+    font-family: "Noto Sans CJK KR Regular";
+
+    width: 100px;
+    cursor: pointer;
+    white-space: pre;
+    text-decoration: none;
+
+    color: #707070;
+    margin-left: 11.65px;
+    margin-right: 11.65px;
+    padding-bottom: 16px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(200, 200, 200, 0);
+    &:hover {
+      color: #495057;
+    }
+
+    &.active {
+      font-family: "Noto Sans CJK KR Regular";
+
+      border-bottom-color: #e0e0e0;
+      border-bottom-style: solid;
+      border-bottom-width: 3px;
+      font-size: 17px;
+      &:hover {
+        color: #105710;
+      }
+    }
+
+    & + & {
+    }
+  }
+  .tab_element_activated {
+    border-bottom: 1px solid #105710;
+    color: #105710;
+    font-family: "Noto Sans CJK KR Bold";
+    z-index: 1000;
+    &:hover {
+      color: #105710;
+    }
+  }
+}

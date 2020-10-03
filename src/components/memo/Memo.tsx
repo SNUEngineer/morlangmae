@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Document, Page } from 'react-pdf';
+import React, { useState } from "react";
+import { Document, Page } from "react-pdf";
 
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(null);
@@ -22,7 +22,9 @@ export default function Memo(props: any) {
       >
         <Page pageNumber={pageNumber} />
       </Document>
-      <p>Page {pageNumber} of {numPages}</p>
+      <p>
+        Page {pageNumber} of {numPages}
+      </p>
     </div>
   );
 }

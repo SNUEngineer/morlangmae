@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useAsync } from 'react-async';
-import CollectionViewPage from './CollectionViewPage';
-import { getCollection, CollectionDetail } from '../../services/collection.service';
-import { getPlatters, createPlatter, PlatterView } from '../../services/platter.service'
-import { useLocation, useHistory } from 'react-router-dom';
-import queryString from 'query-string';
-import { PlatterData } from '../../components/platter/PlatterEditor';
+import React, { useState, useEffect } from "react";
+import { useAsync } from "react-async";
+import CollectionViewPage from "./CollectionViewPage";
+import {
+  getCollection,
+  CollectionDetail,
+} from "../../services/collection.service";
+import {
+  getPlatters,
+  createPlatter,
+  PlatterView,
+} from "../../services/platter.service";
+import { useLocation, useHistory } from "react-router-dom";
+import queryString from "query-string";
+import { PlatterData } from "../../components/platter/PlatterEditor";
 
 export interface CollectionViewPageContainerProps {
   collectionId: number;
@@ -13,39 +20,45 @@ export interface CollectionViewPageContainerProps {
 }
 
 async function getData({ collectionId }: any) {
-  const data = await Promise.all([getCollection(collectionId), getPlatters(collectionId)])
+  const data = await Promise.all([
+    getCollection(collectionId),
+    getPlatters(collectionId),
+  ]);
 
   return {
     collection: data[0],
-    platters: data[1].map(it => viewToData(it)),
-  }
+    platters: data[1].map((it) => viewToData(it)),
+  };
 }
 
 function viewToData(view: PlatterView): PlatterData {
   return {
     ...view,
-  }
+  };
 }
 
-export default function CollectionViewPageContainer(props: CollectionViewPageContainerProps) {
+export default function CollectionViewPageContainer(
+  props: CollectionViewPageContainerProps
+) {
   const { pathname, search } = useLocation();
   const history = useHistory();
-  
+
   const onClose = async () => {
     history.replace(pathname);
-  }
+  };
   const { data, reload } = useAsync({
-    promiseFn: getData, collectionId: props.collectionId,
-  })
+    promiseFn: getData,
+    collectionId: props.collectionId,
+  });
 
   const handleCreatePlatter = async () => {
     const query = queryString.parse(search);
-    query.platterId = 'CREATING';
+    query.platterId = "CREATING";
     history.push({
       pathname: pathname,
       search: queryString.stringify(query),
     });
-  }
+  };
 
   const onPlatterClick = async (data: PlatterData) => {
     const query = queryString.parse(search);
@@ -54,7 +67,7 @@ export default function CollectionViewPageContainer(props: CollectionViewPageCon
       pathname: pathname,
       search: queryString.stringify(query),
     });
-  }
+  };
 
   if (data) {
     return (
@@ -66,7 +79,7 @@ export default function CollectionViewPageContainer(props: CollectionViewPageCon
         onPlatterClick={onPlatterClick}
         onClose={onClose}
       />
-    )
+    );
   }
 
   return null;
