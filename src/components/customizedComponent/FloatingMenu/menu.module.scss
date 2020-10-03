@@ -1,0 +1,28 @@
+.button_container {
+  height: 10px;
+  width: 30px;
+  border-style: solid;
+  border-width: 0.5px;
+  border-radius: 10px;
+  border-color: blue;
+  cursor: pointer;
+  background-image: url("https://www.mathmlcentral.com/characters/glyphs/TripleDot_L.gif");
+}
+
+.icon_container {
+  height: 100%;
+  width: 16px;
+  position: relative;
+
+  img {
+    height: auto;
+    width: 14px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .dot_icon {
+    content: url("../../../resources/icons/dot_menu_icon.png");
+  }
+}

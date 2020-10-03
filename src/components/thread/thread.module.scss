@@ -1,0 +1,61 @@
+$container_left_margin: 100px;
+
+.thread_container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #aaaaaa;
+}
+
+.title_container {
+  margin-left: $container_left_margin;
+  margin-right: $container_left_margin;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 80px;
+  .subtitle {
+    font-size: 12px;
+    color: #707070;
+  }
+  .title {
+    margin-top: 6px;
+    font-size: 27px;
+    color: #707070;
+  }
+}
+
+.messages_container {
+  margin-top: -29px;
+  height: 0;
+  flex-grow: 1;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  padding-left: $container_left_margin;
+  padding-right: $container_left_margin;
+
+  background-color: #f2f2f2;
+}
+
+.text_area_container {
+  display: flex;
+  flex-direction: row;
+  padding-left: $container_left_margin + 40px;
+  padding-right: $container_left_margin + 40px;
+  height: 100px;
+  .text_area {
+    flex-grow: 1;
+  }
+
+  .send_button {
+    width: 50px;
+    height: 50px;
+    background-image: url("https://lh3.googleusercontent.com/proxy/_DRh-vTgNhQursLCvBWxsH3r6MFy7i9fq6HjSwIKgxFz-5KR8MKWqwzox5TM91ZZYatqNpK-3gSubwzpso4rPe6IwaoQmE7bbIQyg3HBWLl-3fevI-3UHo_FOIxBFtd-T9K9_ZYGzxhod3uOsTcZ-Qu3Q_oxovPw-m8YVf2GK_prySnbSrUBf2TJfqDGSTXCdIzIeWOFOAl5806RXXZS3pIcg4Ao8ZXrOE9UsCsjP9xmXXUxRaMzZuHXKiQYMhkwBK0_VgGyxSrzDYNgjH5gNSC9RVtptHnItrIlafrep5Z-D2L9KuhMj8hXS4adMlkiUzYY");
+
+    background-color: red;
+  }
+}

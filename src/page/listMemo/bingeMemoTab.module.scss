@@ -1,0 +1,56 @@
+.my_collection_list_container {
+  width: 100%;
+}
+
+.my_collection_title_container {
+  flex: display;
+  flex-direction: column;
+  margin-top: 100px;
+
+  .text {
+    font-size: 30px;
+    background-color: yellow;
+    width: 300px;
+  }
+  .sort_menu {
+    background-color: pink;
+    width: 300px;
+  }
+}
+
+.header_container {
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  .text {
+    flex-grow: 1;
+    font-size: 27px;
+    color: #707070;
+  }
+  .go_to_all_list {
+    background-color: pink;
+    .p {
+      line-height: 1.5;
+      display: inline-block;
+      vertical-align: bottom;
+    }
+  }
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: #e0e0e0;
+  margin-bottom: 54.5px;
+}
+
+.list_item_container {
+  width: 100%;
+  background-color: pink;
+}
+.tab_container {
+  max-width: 717px;
+  padding-top: 157px;
+  margin: 0 auto;
+  padding-bottom: 300px;
+}

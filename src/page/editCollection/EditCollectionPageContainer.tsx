@@ -1,35 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import EditCollectionPage from './EditCollectionPage';
-import { uploadFile } from '../../services/file.service';
-import { searchUsers, UserView } from '../../services/user.service';
-import { editCollection, progress, CollectionView, getCollection, CollectionDetail } from '../../services/collection.service';
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useAsync } from "react-async";
+import EditCollectionPage from "./EditCollectionPage";
+import { uploadFile } from "../../services/file.service";
+import { searchUsers, UserView } from "../../services/user.service";
+import {
+  editCollection,
+  progress,
+  getCollection,
+  getServiceTypes,
+} from "../../services/collection.service";
+import { COLLECTION_LIST } from "../../common/paths";
 
 export interface EditCollectionPageContainerProps {
   collectionId: number;
 }
 
-export default function EditCollectionPageContainer(props: EditCollectionPageContainerProps) {
-  const [collection, setCollection] = useState<CollectionDetail | null>(null);
-  const [users, setUsers] = useState<UserView[]>([]);
-  const history = useHistory();
+async function getData({ collectionId }: any) {
+  return await Promise.all([
+    getCollection(collectionId),
+    searchUsers(undefined),
+    getServiceTypes(),
+  ]);
+}
 
-  useEffect(() => {
-    const fetchCollection = async () => {
-      try {
-        const collection = await getCollection(props.collectionId);
-        setCollection(collection);
-      } catch (e) {
-        history.push('/collections')
-      }
-    }
-    const fetchUsers = async () => {
-      const users = await searchUsers(undefined);
-      setUsers(users)
-    }
-    fetchCollection();
-    fetchUsers();
-  }, [])
+export default function EditCollectionPageContainer(
+  props: EditCollectionPageContainerProps
+) {
+  const history = useHistory();
+  const collectionId = props.collectionId;
+
+  const { data, error, isLoading } = useAsync({
+    promiseFn: getData,
+    collectionId: collectionId,
+  });
 
   async function handleEditCollection(collection: any) {
     await editCollection(collection.id, {
@@ -38,23 +42,28 @@ export default function EditCollectionPageContainer(props: EditCollectionPageCon
       memberIds: collection.members.map((it: UserView) => it.id),
       startDate: new Date(collection.startDate),
       endDate: new Date(collection.endDate),
-    })
+    });
     try {
-      await progress(collection.id)
-    } catch (e) {
-
-    }
-    // history.push(`/collections/wait/${collection.id}`)
-    history.push('/collections')
+      await progress(collection.id);
+    } catch (e) {}
+    history.push(COLLECTION_LIST);
   }
 
-  if (collection && users.length > 0) {
+  if (error) {
+    history.push(COLLECTION_LIST);
+  }
+
+  if (data) {
     return (
-      <EditCollectionPage users={users} collectionDetail={collection} uploadImage={uploadFile} editCollection={handleEditCollection} />
+      <EditCollectionPage
+        collectionDetail={data[0]}
+        users={data[1]}
+        uploadImage={uploadFile}
+        editCollection={handleEditCollection}
+        serviceTypes={data[2]}
+      />
     );
   }
 
-  return (
-    <div>Loading</div>
-  )
+  return null;
 }

@@ -1,28 +1,43 @@
-import React, { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { Component, Fragment } from 'react';
+import { Route, Redirect, useHistory } from 'react-router-dom';
+import Drawer from '../../layout/Drawer';
+import { makeStyles, Theme, createStyles } from '@material-ui/core';
+import { SIGN_IN } from '../paths';
 
 export interface AuthRouteProps {
   authenticated: boolean;
+  hasDrawer?: boolean;
   component?: Component;
   [propName: string]: any;
 }
 
-export default function AuthRoute({ authenticated, component, render, ...rest }: AuthRouteProps) {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    content: {
+      flexGrow: 1,
+      paddingLeft: 240
+    },
+  })
+)
+
+export default function AuthRoute({ authenticated, hasDrawer, component, render, ...rest }: AuthRouteProps) {
+  const classes = useStyles()
+  const history = useHistory()
+
+  if (!authenticated) {
+    history.push(SIGN_IN)
+  }
+
   return (
     <Route
       {...rest}
       render={props =>
-        authenticated ? (
-          render ? (
-            render(props)
-          ) : (
-              <Component {...props} />
-            )
-        ) : (
-          <Redirect
-            to={{ pathname: "/sign-in", state: { from: props.location }}}
-          />
-        )
+        <Fragment>
+          {hasDrawer && <Drawer />}
+          <main className={classes.content}>
+            {render(props)}
+          </main>
+        </Fragment>
       }
     />
   );

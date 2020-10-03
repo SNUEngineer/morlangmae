@@ -1,40 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import CollectionViewPage from './CollectionViewPage';
-import { getCollection, CollectionDetail } from '../../services/collection.service';
-import { getPlatters, createPlatter } from '../../services/platter.service'
+import React, { useState, useEffect } from "react";
+import { useAsync } from "react-async";
+import CollectionViewPage from "./CollectionViewPage";
+import {
+  getCollection,
+  CollectionDetail,
+} from "../../services/collection.service";
+import {
+  getPlatters,
+  createPlatter,
+  PlatterView,
+} from "../../services/platter.service";
+import { useLocation, useHistory } from "react-router-dom";
+import queryString from "query-string";
+import { PlatterData } from "../../components/platter/PlatterEditor";
 
 export interface CollectionViewPageContainerProps {
-  hiddenToolbar?: boolean;
   collectionId: number;
+  hideToolbar?: boolean;
 }
 
-export default function CollectionViewPageContainer(props: CollectionViewPageContainerProps) {
-  const [collection, setCollection] = useState<CollectionDetail | null>(null)
-  const [platters, setPlatters] = useState<any[]>([])
+async function getData({ collectionId }: any) {
+  const data = await Promise.all([
+    getCollection(collectionId),
+    getPlatters(collectionId),
+  ]);
+
+  return {
+    collection: data[0],
+    platters: data[1].map((it) => viewToData(it)),
+  };
+}
+
+function viewToData(view: PlatterView): PlatterData {
+  return {
+    ...view,
+  };
+}
+
+export default function CollectionViewPageContainer(
+  props: CollectionViewPageContainerProps
+) {
+  const { pathname, search } = useLocation();
+  const history = useHistory();
+
+  const onClose = async () => {
+    history.replace(pathname);
+  };
+  const { data, reload } = useAsync({
+    promiseFn: getData,
+    collectionId: props.collectionId,
+  });
+
   const handleCreatePlatter = async () => {
-    await createPlatter(props.collectionId)
-  }
+    const query = queryString.parse(search);
+    query.platterId = "CREATING";
+    history.push({
+      pathname: pathname,
+      search: queryString.stringify(query),
+    });
+  };
 
-  useEffect(() => {
-    const fetchCollection = async () => {
-      const collection = await getCollection(props.collectionId);
-      setCollection(collection);
-    }
-    const fetchPlatters = async () => {
-      const platters = await getPlatters(props.collectionId)
-      setPlatters(platters)
-    }
-    fetchCollection();
-    fetchPlatters();
-  }, [])
+  const onPlatterClick = async (data: PlatterData) => {
+    const query = queryString.parse(search);
+    query.platterId = String(data.id);
+    history.push({
+      pathname: pathname,
+      search: queryString.stringify(query),
+    });
+  };
 
-  if (collection) {
+  if (data) {
     return (
-      <CollectionViewPage hiddenToolbar={props.hiddenToolbar} {...collection} createPlatter={handleCreatePlatter} platters={platters} />
-    )
+      <CollectionViewPage
+        hideToolbar={props.hideToolbar}
+        createPlatter={handleCreatePlatter}
+        collectionDetail={data.collection}
+        platters={data.platters}
+        onPlatterClick={onPlatterClick}
+        onClose={onClose}
+      />
+    );
   }
 
-  return (
-    <div />
-  )
+  return null;
 }

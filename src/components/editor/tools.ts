@@ -1,64 +1,46 @@
-// import Embed from '@editorjs/embed'
-// import Table from '@editorjs/table'
-// import Paragraph from '@editorjs/paragraph'
-// import List from '@editorjs/list'
-// import Warning from '@editorjs/warning'
-// import Code from '@editorjs/code'
-// import LinkTool from '@editorjs/link'
-import Image from '@editorjs/image';
-// import Raw from '@editorjs/raw'
-import Header from '@editorjs/header';
-// import Quote from '@editorjs/quote'
-// import Marker from '@editorjs/marker'
-// import CheckList from '@editorjs/checklist'
-// import Delimiter from '@editorjs/delimiter'
-// import InlineCode from '@editorjs/inline-code'
-// import SimpleImage from '@editorjs/simple-image'
-import Attaches from './attaches';
+import { uploadFiles } from '../../services/file.service'
+import Paragraph from '@editorjs/paragraph';
+import Header from './header';
+import Images from './images';
+import Files from './files';
 
-// export const EDITOR_JS_TOOLS = {
-//   embed: Embed,
-//   table: Table,
-//   paragraph: Paragraph,
-//   list: List,
-//   warning: Warning,
-//   code: Code,
-//   linkTool: LinkTool,
-//   image: Image,
-//   raw: Raw,
-//   header: Header,
-//   quote: Quote,
-//   marker: Marker,
-//   checklist: CheckList,
-//   delimiter: Delimiter,
-//   inlineCode: InlineCode,
-//   simpleImage: SimpleImage
-// }
-
-import axios from 'axios';
+async function uploadByFiles(files: File[]) {
+  const res = await uploadFiles(files)
+  return res.uris
+}
 
 export const EDITOR_JS_TOOLS = {
-  // image: {
-  //   class: Image,
+  header: {
+    class: Header,
+    config: {
+      placeholder: '헤더',
+      preserveBlank: true,
+      levels: [2, 3],
+      defaultLevel: 2,
+    },
+  },
+  paragraph: {
+    class: Paragraph,
+    // inlineToolbar: false,
+    config: {
+      placeholder: '내용',
+      preserveBlank: true,
+    },
+  },
+  images: {
+    class: Images,
+    config: {
+      uploader: {
+        uploadByFiles,
+      },
+    }
+  },
+  // files: {
+  //   class: Files,
   //   config: {
   //     uploader: {
-  //       uploadByFile(file: File) {
-  //         let formData = new FormData()
-  //         formData.append("file", file)
-  //         return axios.post(
-  //           "http://localhost:8080/api/files/v1", formData
-  //         ).then(res => {
-  //           return {
-  //             success: 1,
-  //             file: {
-  //               url: res.data.uri
-  //             }
-  //           }
-  //         });
-  //       }
-  //     }
+  //       uploadByFiles,
+  //     },
   //   }
-  // },
-  header: Header,
-  // attaches: Attaches,
+  // }
 }

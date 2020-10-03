@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import svg from './404.svg';
 import './index.css';
 
 export default function Error() {
-  useEffect(() => {
+  // useEffect(() => {
 
-  });
+  // });
 
   return (
     <Grid container>
       <Grid item xs={6}>
-        <img src={svg} />
+        <img alt="error-page" src={svg} />
       </Grid>
       <Grid item xs={6}>
         <h1>404</h1>
