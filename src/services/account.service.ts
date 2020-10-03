@@ -8,7 +8,7 @@ export function signIn({ username, password }: { username: string, password: str
       password,
     }
   ).then(res => {
-    resetToken(`Bearer ${res?.data?.token}`)
+    resetToken(`${res?.data?.token}`)
   });
 }
 
@@ -19,8 +19,16 @@ export function signUp() {
 
     }
   ).then(res => {
-    resetToken(`Bearer ${res?.data?.token}`)
+    resetToken(`${res?.data?.token}`)
   });
+}
+
+export function verify() {
+  return axios.post(
+    '/account/v1/verify'
+  ).then(res => {
+    resetToken(`${res?.data?.token}`)
+  })
 }
 
 export function logOut() {

@@ -1,0 +1,111 @@
+.platter_container {
+  position: relative;
+  width: 100%;
+  margin: auto 0;
+  padding-top: 112px;
+  padding-bottom: 90px;
+  box-sizing: border-box;
+  .align_container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    max-width: 750px;
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+    box-sizing: border-box;
+    padding-top: 80px;
+  }
+}
+
+.platter_info_container {
+  position: relative;
+  margin-top: 20px;
+  height: 80px;
+  margin-bottom: 140px;
+  .title_container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    .subtitle {
+      font-size: 15px;
+      color: #707070;
+    }
+
+    .title {
+      font-size: 37px;
+      color: #707070;
+    }
+  }
+
+  .writer_container {
+    position: absolute;
+    width: 200px;
+    bottom: 0;
+    right: 0;
+
+    .date_text {
+      text-align: right;
+      font-size: 11px;
+    }
+
+    .profile_container {
+      position: relative;
+      height: 50px;
+      .avatar {
+        position: absolute;
+        right: 130px;
+        top: 50%;
+        transform: translate(0%, -50%);
+        height: 35px;
+        width: 35px;
+      }
+
+      .name_text_container {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translate(0%, -50%);
+
+        .name_text {
+          text-align: right;
+          font-size: 11px;
+        }
+        .company_text {
+          text-align: right;
+          font-size: 11px;
+        }
+      }
+    }
+  }
+}
+
+.dot_menu_dialog {
+}
+.paper_scroll_paper {
+  display: flex;
+  max-height: calc(100% - 64px);
+  flex-direction: column;
+}
+.dot_menu_container {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  .dot_menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .scrollPaper {
+      background-color: black;
+      height: 100%;
+    }
+  }
+}
+.editor_container {
+}
+
+.MuiTextField-root {
+  font-size: 30px;
+}
