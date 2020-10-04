@@ -3,10 +3,14 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import notiStyle from "./notification.module.scss";
+import Comment from "./Comment";
+
+import classNames from "classnames";
 
 export interface NotificationData {
   id: number;
   type: "COLLECTION" | "PLATTER" | "MEMO";
+  comment: string;
   cause: string;
   createdDate: Date;
   sentBy: NotificationSender;
@@ -23,15 +27,76 @@ export interface NotificationProps {
 }
 
 export default function Notification(props: NotificationProps) {
-  const notification = props.notification;
+  const { notification } = props;
   const sender = notification.sentBy;
+  const comment = notification.comment;
   const onClick = () => props.onClick(notification);
 
+  if (!!comment) {
+    const commentData = {
+      sentBy: sender,
+      comment: comment,
+    };
+    return (
+      <ListItem onClick={onClick}>
+        <div
+          className={classNames({
+            [notiStyle.notification_container_pop_over]: false,
+            [notiStyle.notification_container_page]: true,
+          })}
+        >
+          <div className={notiStyle.type_container}>
+            <img
+              className={classNames({
+                [notiStyle.icon]: true,
+                [notiStyle.collection_icon]: true,
+                [notiStyle.platter_icon]: false,
+                [notiStyle.memo_icon]: false,
+              })}
+              alt={"icon"}
+            />
+            <div className={notiStyle.text}>{notification.type}</div>
+          </div>
+
+          <div className={notiStyle.comment_content_container}>
+            <div className={notiStyle.header}>
+              <div className={notiStyle.content}>
+                <div className={notiStyle.cause_text}>{notification.cause}</div>
+              </div>
+              <div className={notiStyle.info}>
+                <div className={notiStyle.created_at}>
+                  {notification.createdDate}
+                </div>
+              </div>
+            </div>
+
+            <Comment
+              className={notiStyle.content_container}
+              comment={commentData}
+            />
+          </div>
+        </div>
+      </ListItem>
+    );
+  }
   return (
     <ListItem onClick={onClick}>
-      <div className={notiStyle.notification_container}>
+      <div
+        className={classNames({
+          [notiStyle.notification_container_pop_over]: false,
+          [notiStyle.notification_container_page]: true,
+        })}
+      >
         <div className={notiStyle.type_container}>
-          <div className={notiStyle.icon}></div>
+          <img
+            className={classNames({
+              [notiStyle.icon]: true,
+              [notiStyle.collection_icon]: true,
+              [notiStyle.platter_icon]: false,
+              [notiStyle.memo_icon]: false,
+            })}
+            alt={"icon"}
+          />
           <div className={notiStyle.text}>{notification.type}</div>
         </div>
 
@@ -44,8 +109,10 @@ export default function Notification(props: NotificationProps) {
             <div className={notiStyle.created_at}>
               {notification.createdDate}
             </div>
-            <div className={notiStyle.avatar}>
-              <Avatar alt={sender.displayName} src={sender.imageUrl} />
+            <div className={notiStyle.avatar_container}>
+              <div className={notiStyle.avatar}>
+                <Avatar alt={sender.displayName} src={sender.imageUrl} />
+              </div>
             </div>
             <div className={notiStyle.name_text}>{sender.displayName}</div>
           </div>

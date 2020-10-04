@@ -58,6 +58,8 @@ class TextArea extends Component {
      */
     size: PropTypes.oneOf(["small", "medium", "large"]),
     textSize: PropTypes.number,
+    hideScroll: PropTypes.bool,
+    fontFamily: PropTypes.string,
     layout: PropTypes.oneOf(["stacked", "inline"]),
     /**
      * the textarea will expand vertically to fit the height of the content,
@@ -118,6 +120,7 @@ class TextArea extends Component {
      * when used with the `value` prop, the component will not control its own state
      */
     onChange: PropTypes.func,
+    border: PropTypes.object,
   };
 
   static defaultProps = {
@@ -140,6 +143,9 @@ class TextArea extends Component {
     height: undefined,
     maxHeight: undefined,
     textSize: 15,
+    fontFamily: "Noto Sans CJK KR Bold",
+    border: undefined,
+    hideScroll: false,
   };
 
   constructor() {
@@ -320,8 +326,14 @@ class TextArea extends Component {
       resize,
       size,
       textSize,
+      fontFamily,
+      border,
+      hideScroll,
     } = this.props;
 
+    const borderData = !!border
+      ? border
+      : { width: 0, color: "#4b4b4b", radius: "10px" };
     const props = omitProps(this.props, TextArea.propTypes);
 
     const classes = {
@@ -336,10 +348,14 @@ class TextArea extends Component {
       height: height, //!autoGrow ? height : null,
       maxHeight: maxHeight,
       outline: 0,
-      borderWidth: 0,
+      borderWidth: borderData.width,
+      borderRadius: borderData.radius,
+      borderColor: borderData.color,
       padding: 5,
       boxSizing: "border-box",
       fontSize: textSize,
+      fontFamily: fontFamily,
+      overflow: "hidden",
     };
 
     const textarea = (

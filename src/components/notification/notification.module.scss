@@ -1,4 +1,4 @@
-.notification_container {
+.notification_container_page {
   width: 100%;
   height: 156px;
   .type_container {
@@ -11,14 +11,23 @@
     .icon {
       height: 23px;
       width: 23px;
-      background-color: red;
       margin-right: 10px;
+    }
+    .collection_icon {
+      content: url("../../resources/icons/sidetab_collection_icon.png");
+    }
+    .platter_icon {
+      content: url("../../resources/icons/platter_icon.png");
+    }
+    .memo_icon {
+      content: url("../../resources/icons/sidetab_memo_icon_focus.png");
     }
 
     .text {
-      margin-top: 5px;
-      font-size: 14px;
       color: #afafaf;
+      font-family: "Noto Sans CJK KR Regular";
+      font-size: 14px;
+      letter-spacing: -0.98px;
     }
   }
 
@@ -35,7 +44,10 @@
         position: absolute;
         left: 0;
         top: 0;
+        font-family: "Noto Sans CJK KR Medium";
         font-size: 14px;
+        letter-spacing: -0.98px;
+
         color: #4b4b4b;
       }
       .where_text {
@@ -43,6 +55,8 @@
         left: 0;
         bottom: 0;
         font-size: 20px;
+        font-family: "Noto Sans CJK KR Regular";
+        letter-spacing: -0.98px;
         color: #4b4b4b;
       }
     }
@@ -52,14 +66,65 @@
         font-size: 10px;
         color: #868686;
         transform: translate(0%, -10%);
+        font-family: "Noto Sans CJK KR Regular";
+        letter-spacing: -0.98px;
       }
-      .avatar {
+      .avatar_container {
+        position: relative;
+        width: 100%;
+        height: 35px;
         margin-top: 15px;
         margin-bottom: 8px;
+        .avatar {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translate(-50%, 0);
+          height: 100%;
+          width: auto;
+        }
       }
+
       .name_text {
         font-size: 14px;
+        text-align: center;
         color: #707070;
+        font-family: "Noto Sans CJK KR Regular";
+        letter-spacing: -0.98px;
+        width: 100%;
+      }
+    }
+  }
+
+  .comment_content_container {
+    margin-bottom: 10px;
+    .header {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 22px;
+      .content {
+        flex-grow: 1;
+        position: relative;
+        .cause_text {
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-family: "Noto Sans CJK KR Medium";
+          font-size: 14px;
+          letter-spacing: -0.98px;
+
+          color: #4b4b4b;
+        }
+      }
+      .info {
+        .created_at {
+          text-align: center;
+          font-size: 10px;
+          color: #868686;
+          transform: translate(0%, -10%);
+          font-family: "Noto Sans CJK KR Regular";
+          letter-spacing: -0.98px;
+        }
       }
     }
   }

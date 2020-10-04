@@ -1,5 +1,10 @@
 import React, { useState, Fragment } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  Theme,
+  createStyles,
+  withStyles,
+} from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -18,6 +23,9 @@ import { CollectionDetail } from "../../services/collection.service";
 import { UserView } from "../../services/user.service";
 import editStyle from "./editCollectionPage.module.scss";
 import { TextArea } from "../../components/customizedComponent/TextArea";
+import StepConnector from "@material-ui/core/StepConnector";
+import PropTypes from "prop-types";
+import clsx from "clsx";
 
 //const [passwordActive, setPasswordActive] = useState(false);
 
@@ -33,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
+    step: {},
   })
 );
 
@@ -133,10 +142,15 @@ function getStepContent(
   switch (stepIndex) {
     case 0:
       return (
-        <Paper>
-          <Typography>{collection.collectionType}</Typography>
-          <Typography>{collection.serviceType}</Typography>
-
+        <div className={editStyle.first_step_container}>
+          <div className={editStyle.type_container}>
+            <div className={editStyle.collection_type}>
+              {collection.collectionType}
+            </div>
+            <div className={editStyle.service_type}>
+              {collection.serviceType}
+            </div>
+          </div>
           <Card
             onDragOver={handleDragOver}
             onDrop={handleDrop}
@@ -147,11 +161,16 @@ function getStepContent(
           <div className={editStyle.setting_container}>
             <div className={editStyle.set_title_container}>
               <div className={editStyle.text}>제목 설정</div>
-              <TextField
-                variant="outlined"
-                name="title"
+              <TextArea
+                inline
+                width="100%"
+                height="100px"
+                maxHeight="100px"
+                textSize={18}
                 onChange={handleChange}
-                value={collection.title}
+                defaultValue={collection.title}
+                fontFamily={"Noto Sans CJK KR Regular"}
+                border={{ width: 1, color: "#105710", radius: "10px" }}
               />
             </div>
             <div className={editStyle.set_date_container}>
@@ -186,7 +205,7 @@ function getStepContent(
               Next
             </Button>
           </div>
-        </Paper>
+        </div>
       );
     case 1:
       console.log("collection.members " + JSON.stringify(collection.members));
@@ -439,17 +458,107 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     setActiveStep(index);
   };
 
+  const ColorlibConnector = withStyles({
+    alternativeLabel: {
+      top: 22,
+    },
+    active: {
+      "& $line": {
+        backgroundColor: "green",
+        //"linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+      },
+    },
+    completed: {
+      "& $line": {
+        backgroundColor: "green",
+        //"linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+      },
+    },
+    line: {
+      height: 3,
+      border: 0,
+      backgroundColor: "#eaeaf0",
+      borderRadius: 1,
+    },
+  })(StepConnector);
+
+  const useColorlibStepIconStyles = makeStyles({
+    root: {
+      backgroundColor: "#ccc",
+      zIndex: 1,
+      color: "#fff",
+      width: 50,
+      height: 50,
+      display: "flex",
+      borderRadius: "50%",
+      justifyContent: "center",
+      alignItems: "center",
+      fontSize: "14px",
+      fontFamily: "Noto Sans CJK KR Regular",
+    },
+    active: {
+      //backgroundImage:  "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+      backgroundColor: "#105710",
+      //boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+    },
+    completed: {
+      // backgroundImage:  "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+      backgroundColor: "#105710",
+    },
+  });
+
+  function ColorlibStepIcon(props) {
+    const classes = useColorlibStepIconStyles();
+    const { active, completed } = props;
+
+    // const icons = {
+    //   1: <SettingsIcon /> <div>1</div>,
+    //   2: <GroupAddIcon />,
+    //   3: <VideoLabelIcon />,
+    // };
+    const icons = {
+      1: <div>1</div>,
+      2: <div>2</div>,
+      3: <div>3</div>,
+    };
+    return (
+      <div
+        className={clsx(classes.root, {
+          [classes.active]: active,
+          [classes.completed]: completed,
+        })}
+      >
+        {icons[String(props.icon)]}
+      </div>
+    );
+  }
+
+  ColorlibStepIcon.propTypes = {
+    active: PropTypes.bool,
+    completed: PropTypes.bool,
+    icon: PropTypes.node,
+  };
+
   return (
     <div className={classes.root}>
-      <Stepper activeStep={activeStep} alternativeLabel>
+      <Stepper
+        activeStep={activeStep}
+        connector={<ColorlibConnector />}
+        alternativeLabel
+      >
         {steps.map((label, index) => (
           <Step key={label} onClick={() => handleStepClick(index)}>
-            <StepLabel>{label}</StepLabel>
+            <StepLabel
+              StepIconComponent={ColorlibStepIcon}
+              className={classes.step}
+            >
+              {label}
+            </StepLabel>
           </Step>
         ))}
       </Stepper>
       <div>
-        <div>
+        <div className={editStyle.step_container}>
           {getStepContent(
             activeStep,
             collection,

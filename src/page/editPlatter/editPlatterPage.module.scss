@@ -23,122 +23,121 @@ $border-color: gray;
     }
     .platter_container_opened {
       min-height: calc(100vh + 300px);
+      ㅎ .platter_container_closed {
+        height: 0;
+        overflow: hidden;
+      }
+
+      .thread_container {
+      }
+      .thread_container_opened {
+        height: calc(100vh - 150px);
+        overflow: hidden;
+      }
+
+      .thread_container_closed {
+        height: 0;
+        overflow: hidden;
+      }
     }
-
-    .platter_container_closed {
-      height: 0;
-      overflow: hidden;
+    .container_thread_closed {
+      border-radius: 15px 15px 0 0;
+      border-style: solid;
+      border-width: $board_border_width;
+      border-color: $border-color;
+      border-bottom-color: transparent;
     }
-
-    .thread_container {
-    }
-    .thread_container_opened {
-      height: calc(100vh - 150px);
-      overflow: hidden;
-    }
-
-    .thread_container_closed {
-      height: 0;
-      overflow: hidden;
-    }
-  }
-  .container_thread_closed {
-    border-radius: 15px 15px 0 0;
-    border-style: solid;
-    border-width: $board_border_width;
-    border-color: $border-color;
-    border-bottom-color: transparent;
-  }
-  .container_thread_opened {
-    border-radius: 15px;
-    border-style: solid;
-    border-width: $board_border_width;
-    border-color: $border-color;
-  }
-}
-
-.board_container_thread_opened {
-  overflow-y: hidden;
-  padding-bottom: $board_bottom_margin;
-}
-.board_container_thread_closed {
-  overflow-y: scroll;
-}
-
-.fixed_menu_button {
-  position: fixed;
-  right: 0;
-  top: 100px;
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  .editor_button {
-    height: 80px;
-    width: 80px;
-    margin: 20px;
-    background-color: greenyellow;
-  }
-  .platter_button {
-    height: 80px;
-    width: 80px;
-    margin: 20px;
-    background-color: greenyellow;
-  }
-  .thread_button {
-    height: 80px;
-    width: 80px;
-    margin: 20px;
-    background-color: greenyellow;
-  }
-}
-::-webkit-scrollbar {
-  width: 0px;
-  background: transparent; /* make scrollbar transparent */
-}
-
-.button_container {
-  height: 71px;
-  width: 71px;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-
-  .icon_container {
-    height: 100%;
-    width: 100%;
-    margin-right: 10px;
-    position: relative;
-
-    img {
-      height: auto;
-      position: absolute;
-      left: 50%;
-
-      transform: translate(-50%, 0);
-    }
-    .editor_icon {
-      content: url("../../resources/icons/platter_edit_icon.png");
-      width: 15px;
-      top: 17px;
-    }
-    .platter_icon {
-      content: url("../../resources/icons/platter_icon.png");
-      width: 23px;
-      top: 18px;
-    }
-    .thread_icon {
-      content: url("../../resources/icons/platter_thread_icon.png");
-      width: 19px;
-      top: 19px;
+    .container_thread_opened {
+      border-radius: 15px;
+      border-style: solid;
+      border-width: $board_border_width;
+      border-color: $border-color;
     }
   }
 
-  .text {
-    text-align: center;
-    margin-bottom: 14px;
-    font-size: 12px;
-    font-family: "Noto Sans CJK KR Regular";
-    color: #707070;
+  .board_container_thread_opened {
+    overflow-y: hidden;
+    padding-bottom: $board_bottom_margin;
+  }
+  .board_container_thread_closed {
+    overflow-y: scroll;
+  }
+
+  .fixed_menu_button {
+    position: fixed;
+    right: 0;
+    top: 100px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    .editor_button {
+      height: 80px;
+      width: 80px;
+      margin: 20px;
+      background-color: greenyellow;
+    }
+    .platter_button {
+      height: 80px;
+      width: 80px;
+      margin: 20px;
+      background-color: greenyellow;
+    }
+    .thread_button {
+      height: 80px;
+      width: 80px;
+      margin: 20px;
+      background-color: greenyellow;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+  }
+
+  .button_container {
+    height: 71px;
+    width: 71px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    .icon_container {
+      height: 100%;
+      width: 100%;
+      margin-right: 10px;
+      position: relative;
+
+      img {
+        height: auto;
+        position: absolute;
+        left: 50%;
+
+        transform: translate(-50%, 0);
+      }
+      .editor_icon {
+        content: url("../../resources/icons/platter_edit_icon.png");
+        width: 15px;
+        top: 17px;
+      }
+      .platter_icon {
+        content: url("../../resources/icons/platter_icon.png");
+        width: 23px;
+        top: 18px;
+      }
+      .thread_icon {
+        content: url("../../resources/icons/platter_thread_icon.png");
+        width: 19px;
+        top: 19px;
+      }
+    }
+
+    .text {
+      text-align: center;
+      margin-bottom: 14px;
+      font-size: 12px;
+      font-family: "Noto Sans CJK KR Regular";
+      color: #707070;
+    }
   }
 }

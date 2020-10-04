@@ -14,7 +14,8 @@
   /* stylelint-disable-line property-blacklist */
   right: -0.25rem;
   /* stylelint-disable-line property-blacklist */
-  border: var(--focusOutlineWidth) var(--focusOutlineStyle) var(--focusOutlineColor);
+  border: var(--focusOutlineWidth) var(--focusOutlineStyle)
+    var(--focusOutlineColor);
   border-radius: calc(var(--borderRadius) * 1.5);
   transition: all 0.2s;
 
@@ -52,7 +53,7 @@
   text-align: start;
 
   &:focus {
-    ~.outline {
+    ~ .outline {
       transform: scale(1);
       opacity: 1;
     }
@@ -62,7 +63,7 @@
     border-color: var(--errorBorderColor);
 
     &:focus,
-    &:focus~.outline {
+    &:focus ~ .outline {
       border-color: var(--errorBorderColor);
     }
   }

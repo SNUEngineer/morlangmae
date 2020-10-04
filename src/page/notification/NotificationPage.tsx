@@ -8,6 +8,7 @@ import NotificationList from "../../components/notification/NotificationList";
 import notiStyle from "./notificationPage.module.scss";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Header from "../../components/layout/Header/Header";
 
 interface NotificationDataAndCursor {
   data: NotificationData[];
@@ -41,9 +42,8 @@ export default function NotificationPage(props: NotificationPageProps) {
   const [notifications, setNotifications] = useState<NotificationData[]>([
     notification, //props.initialNotifications.data, //test시 notification
   ]);
-  const [cursor, setCursor] = useState<string | undefined>(
-    props.initialNotifications.cursor
-  );
+  const [cursor, setCursor] = useState<string | undefined>();
+  //props.initialNotifications.cursor
   const onGetMoreNotifications = async () => {
     const res = await props.getMoreNotifications(cursor);
     setNotifications([...notifications, ...res.data]);
@@ -74,6 +74,7 @@ export default function NotificationPage(props: NotificationPageProps) {
     target: 0,
     read: true,
     createdDate: "오전 9:17",
+    comment: "새롭게 디자인 해봤습니다 확인 부탁드려요",
     sentBy: sender,
   };
   useEffect(() => {
@@ -87,12 +88,9 @@ export default function NotificationPage(props: NotificationPageProps) {
         <div className={notiStyle.back_text}>{"< 이전으로"}</div>
       </div>
       <Button onClick={props.goBack}>이전으로</Button>
-      <Typography>알림</Typography>
+
       <div className={notiStyle.container}>
-        <div className={notiStyle.header_container}>
-          <div className={notiStyle.text}>알림</div>
-        </div>
-        <div className={notiStyle.divider} />
+        <Header title={"알림"} subMenuType={"none"} />
 
         <div className={notiStyle.list_container}>
           <List>

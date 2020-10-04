@@ -28,6 +28,9 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
+  const handleServiceChange = (event: any) => {
+    setServiceFilter(event.target.value);
+  };
   const useStyles = makeStyles(() =>
     createStyles({
       underline: {
@@ -39,18 +42,16 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
         },
       },
       select: {
-        fontSize: "14px",
-        letterSpacing: "-0.98px",
-        fontFamily: "Noto Sans CJK KR Regular",
-        color: "#707070",
         height: "33px",
         width: "150px",
-        textAlign: "center",
         borderRadius: "5px",
         borderColor: "#e0e0e0",
         margin: "0px",
+        input: {
+          backgroundColor: "blue",
+        },
         ul: {
-          backgroundColor: "red",
+          backgroundColor: "blue",
           minHeight: "1000px",
         },
       },
@@ -64,6 +65,7 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
         height: "30px",
         color: "#707070",
         margin: "0px",
+
         "&:hover": {
           background: "#f0f0f0",
           color: "#4BA34B",
@@ -75,6 +77,22 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
       selected: {
         "&:hover": {
           color: "#4BA34B",
+        },
+      },
+      submit: {
+        height: "40px",
+        width: "95px",
+        color: "#4b4b4b",
+        fontFamily: "Noto Sans CJK KR Regular",
+        fontSize: "12px",
+        borderRadius: "30px",
+        backgroundColor: "#a0a0a0",
+        boxShadow:
+          "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
+        "&:hover": {
+          background: "transparent",
+          boxShadow:
+            "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
         },
       },
     })
@@ -116,11 +134,7 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
                   >
                     <div className={pageStyle.menu_item_container}>
                       <div className={pageStyle.text_container}>
-                        {" "}
-                        <div className={pageStyle.text}>
-                          {" "}
-                          설정해주세요{" "}
-                        </div>{" "}
+                        <div className={pageStyle.text}>설정해주세요</div>
                       </div>
                     </div>
                   </MenuItem>
@@ -132,7 +146,9 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
                     value="TEAM"
                   >
                     <div className={pageStyle.menu_item_container}>
-                      <p> 팀 </p>
+                      <div className={pageStyle.text_container}>
+                        <div className={pageStyle.text}>팀</div>
+                      </div>
                     </div>
                   </MenuItem>
                   <MenuItem
@@ -143,7 +159,9 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
                     value="PROJECT"
                   >
                     <div className={pageStyle.menu_item_container}>
-                      <p> 프로젝트 </p>
+                      <div className={pageStyle.text_container}>
+                        <div className={pageStyle.text}>프로젝트</div>
+                      </div>
                     </div>
                   </MenuItem>
                 </Select>
@@ -154,13 +172,14 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
               <div className={pageStyle.header}>서비스</div>
               <div className={pageStyle.select}>
                 <Select
-                  onChange={handleChange}
-                  value={filter}
+                  onChange={handleServiceChange}
+                  value={serviceFilter}
                   className={classNames({
                     [classes.select]: true,
                     [classes.icon]: true,
                     [pageStyle.select]: true,
                   })}
+                  variant={"outlined"}
                   IconComponent={ExpandMoreRoundedIcon}
                   disableUnderline
                 >
@@ -169,27 +188,52 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
                       [classes.root]: true,
                       [classes.selected]: true,
                     })}
-                    value="ALL"
+                    value="BASIC"
                   >
-                    <div className={pageStyle.menu_item_container}>전체</div>
+                    <div className={pageStyle.menu_item_container}>
+                      <div className={pageStyle.text_container}>
+                        <div className={pageStyle.text}>설정해주세요</div>
+                      </div>
+                    </div>
                   </MenuItem>
                   <MenuItem
                     className={classNames({
                       [classes.root]: true,
                       [classes.selected]: true,
                     })}
-                    value="IN_PROGRESS"
+                    value="디자인 마케팅"
                   >
-                    <div className={pageStyle.menu_item_container}>진행</div>
+                    <div className={pageStyle.menu_item_container}>
+                      <div className={pageStyle.text_container}>
+                        <div className={pageStyle.text}>디자인 마케팅</div>
+                      </div>
+                    </div>
                   </MenuItem>
                   <MenuItem
                     className={classNames({
                       [classes.root]: true,
                       [classes.selected]: true,
                     })}
-                    value="DONE"
+                    value="컨설팅"
                   >
-                    <div className={pageStyle.menu_item_container}>완료</div>
+                    <div className={pageStyle.menu_item_container}>
+                      <div className={pageStyle.text_container}>
+                        <div className={pageStyle.text}>컨설팅</div>
+                      </div>
+                    </div>
+                  </MenuItem>
+                  <MenuItem
+                    className={classNames({
+                      [classes.root]: true,
+                      [classes.selected]: true,
+                    })}
+                    value="제작"
+                  >
+                    <div className={pageStyle.menu_item_container}>
+                      <div className={pageStyle.text_container}>
+                        <div className={pageStyle.text}>제작</div>
+                      </div>
+                    </div>
                   </MenuItem>
                 </Select>
               </div>
@@ -210,15 +254,28 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
             </div>
           </div>
           <div className={pageStyle.create_button}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={pageStyle.submit}
-            >
-              Create
-            </Button>
+            <div className={pageStyle.align_button}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                시작하기
+              </Button>
+            </div>
+          </div>
+
+          <div className={pageStyle.cancel_container}>
+            <div className={pageStyle.align_button}>
+              <div className={pageStyle.cancel_button_container}>
+                <div className={pageStyle.icon_container}>
+                  <img className={pageStyle.icon} alt={"icon"} />
+                </div>
+                <div className={pageStyle.cancel_text}>취소</div>
+              </div>
+            </div>
           </div>
           <Grid container justify="flex-end">
             <Grid item>
