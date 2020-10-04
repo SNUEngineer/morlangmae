@@ -3,6 +3,7 @@
   flex-direction: row;
   height: 200px;
   margin-top: 50px;
+
   .text {
     font-size: 20px;
     margin-bottom: 10px;
@@ -14,12 +15,13 @@
     flex-grow: 1;
     padding: 5px;
     box-sizing: border-box;
-
+    margin-right: 20px;
     .title_text_field {
     }
   }
   .set_date_container {
     width: 0;
+    margin-left: 20px;
     flex-grow: 1;
     padding: 5px;
     box-sizing: border-box;
@@ -28,6 +30,7 @@
     .set_date {
       position: absolute;
       right: 0;
+      width: 100%;
     }
   }
 }
@@ -174,4 +177,42 @@
 
 .step_container {
   margin: 70px;
+}
+
+.header_container {
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+
+  .stepper_container {
+    flex-grow: 1;
+    width: 0px;
+    position: relative;
+    height: 100%;
+    .stepper {
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      width: 100%;
+      transform: translate(0, -50%);
+      .label {
+        font-family: "Noto Sans CJK KR Regular";
+        font-size: 14px;
+      }
+    }
+  }
+  .save_draft_container {
+    margin-left: 0px;
+    position: relative;
+    height: 100%;
+    width: 200px;
+
+    .button {
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      width: 100%;
+      transform: translate(0, -50%);
+    }
+  }
 }

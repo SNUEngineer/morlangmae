@@ -26,6 +26,11 @@ import { TextArea } from "../../components/customizedComponent/TextArea";
 import StepConnector from "@material-ui/core/StepConnector";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import DateFnsUtils from "@date-io/date-fns"; // choose your lib
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 
 //const [passwordActive, setPasswordActive] = useState(false);
 
@@ -41,7 +46,14 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
-    step: {},
+    step: {
+      fontFamily: "Noto Sans CJK KR Bold",
+    },
+    datePickerField: {
+      backgroundColor: "red",
+      width: "100%",
+      fontFamily: "Noto Sans CJK KR Bold",
+    },
   })
 );
 
@@ -57,6 +69,26 @@ const contentStyles = makeStyles((theme: Theme) =>
       backgroundImage: (props: any) => `url('${props.imageUrl}')`,
       backgroundSize: "cover",
       backgroundPosition: "center center",
+    },
+    picker: {
+      //backgroundColor: "red",
+      width: "100%",
+      "& div": {
+        borderBottom: "none",
+        fontSize: "14px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        "&&::before": {
+          borderBottom: "none",
+        },
+        underline: {
+          "&&:before": {
+            borderBottom: "none",
+          },
+          "&&:after": {
+            borderBottom: "none",
+          },
+        },
+      },
     },
   })
 );
@@ -176,21 +208,52 @@ function getStepContent(
             <div className={editStyle.set_date_container}>
               <div className={editStyle.set_date}>
                 <div className={editStyle.text}>기한 설정</div>
-                <TextField
+                {/* <TextField
                   variant="outlined"
                   type="datetime-local"
                   name="startDate"
                   onChange={handleChange}
                   value={collection.startDate}
                 />
-                <p />
+                
                 <TextField
                   variant="outlined"
                   type="datetime-local"
                   name="endDate"
                   onChange={handleChange}
                   value={collection.endDate}
-                />
+                /> */}
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    className={classes.picker}
+                    value={collection.startDate}
+                    name="startDate"
+                    onChange={handleChange}
+                    autoOk={true}
+                  />
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                    className={classes.picker}
+                    value={collection.endDate}
+                    name="endDate"
+                    onChange={handleChange}
+                  />
+                </MuiPickersUtilsProvider>
                 <div></div>
               </div>
             </div>
@@ -217,7 +280,7 @@ function getStepContent(
           <div className={editStyle.input_option_container}>asdf</div>
           <Grid container spacing={1}>
             <Grid item xs>
-              {/* <Autocomplete
+              <Autocomplete
                 id="users-search"
                 style={{ width: 300 }}
                 multiple
@@ -256,7 +319,8 @@ function getStepContent(
                     </div>
                   </Fragment>
                 )}
-              /> */}
+                length={4}
+              />
               <div className={editStyle.attended_user_container}>
                 {attendedUser(false)}
               </div>
@@ -285,6 +349,7 @@ function getStepContent(
                     id="password"
                     autoComplete="current-password"
                     disabled={!passwordActive}
+
                     //inputRef={register}
                   />
                 </div>
@@ -541,22 +606,42 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
 
   return (
     <div className={classes.root}>
-      <Stepper
-        activeStep={activeStep}
-        connector={<ColorlibConnector />}
-        alternativeLabel
-      >
-        {steps.map((label, index) => (
-          <Step key={label} onClick={() => handleStepClick(index)}>
-            <StepLabel
-              StepIconComponent={ColorlibStepIcon}
-              className={classes.step}
+      <div className={editStyle.header_container}>
+        <div className={editStyle.stepper_container}>
+          <div className={editStyle.stepper}>
+            <Stepper
+              activeStep={activeStep}
+              connector={<ColorlibConnector />}
+              alternativeLabel
             >
-              {label}
-            </StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+              {steps.map((label, index) => (
+                <Step key={label} onClick={() => handleStepClick(index)}>
+                  <StepLabel
+                    StepIconComponent={ColorlibStepIcon}
+                    className={classes.step}
+                  >
+                    <div className={editStyle.label}> {label} </div>
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </div>
+        </div>
+
+        <div className={editStyle.save_draft_container}>
+          <div className={editStyle.button}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNext}
+              className={editStyle.next_button}
+            >
+              초안으로 저장
+            </Button>
+          </div>
+        </div>
+      </div>
+
       <div>
         <div className={editStyle.step_container}>
           {getStepContent(

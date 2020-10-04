@@ -7,6 +7,7 @@
   "homepage": "./",
   "dependencies": {
     "@codexteam/ajax": "^4.2.0",
+    "@date-io/date-fns": "1.x",
     "@editorjs/checklist": "^1.1.0",
     "@editorjs/editorjs": "^2.18.0",
     "@editorjs/header": "^2.5.0",
@@ -37,6 +38,7 @@
     "bootstrap": "^4.5.2",
     "clsx": "^1.1.1",
     "create-react-class": "15.6.3",
+    "date-fns": "2.16.1",
     "electron-is-dev": "^1.2.0",
     "enquire.js": "2.1.6",
     "json2mq": "0.2.0",
