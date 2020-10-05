@@ -147,8 +147,10 @@ function getStepContent(
         <div className={editStyle.list_container}>
           {!!collection.members[0] &&
             collection.members.map((user: UserView) => (
-              <div key={user.id} className={editStyle.writer_info_container}>
-                {user.displayName}
+              <div key={user.id} className={editStyle.user_info}>
+                <div className={editStyle.user_info_text}>
+                  {user.displayName}
+                </div>
 
                 {!checking && (
                   <Button
@@ -275,9 +277,8 @@ function getStepContent(
       console.log("props.users " + JSON.stringify(collection.members));
 
       return (
-        <Paper>
-          <div>참여인원</div>
-          <div className={editStyle.input_option_container}>asdf</div>
+        <div className={editStyle.second_step_container}>
+          <div className={editStyle.attend_text}> 참여 인원</div>
           <Grid container spacing={1}>
             <Grid item xs>
               <Autocomplete
@@ -285,13 +286,15 @@ function getStepContent(
                 style={{ width: 300 }}
                 multiple
                 value={collection.members}
+                //원래는 props.users로 검색가능 대상이 나와야 함.
                 onChange={(event, newValue) => {
                   setCollection({
                     ...collection,
                     members: newValue,
                   });
                 }}
-                options={props.users}
+                options={collection.members}
+                //원래는 props.users로 검색가능 대상이 나와야 함.
                 renderInput={(params) => {
                   return (
                     <InputBase
@@ -305,21 +308,24 @@ function getStepContent(
                 getOptionLabel={(option) => option.displayName}
                 renderOption={(option: UserView) => (
                   <Fragment>
-                    <div className={editStyle.writer_container}>
+                    <div className={editStyle.search_attend_user_item}>
                       <Avatar
                         alt={option.displayName}
                         src={option.imageUrl}
                         className={editStyle.avatar}
                       />
 
-                      <div className={editStyle.writer_info_container}>
-                        <Typography>{option.displayName}</Typography>
-                        <Typography>삼성전자, 과장</Typography>
+                      <div className={editStyle.user_info}>
+                        <div className={editStyle.name_text}>
+                          {option.displayName}
+                        </div>
+                        <div className={editStyle.user_info_text}>
+                          삼성전자, 과장
+                        </div>
                       </div>
                     </div>
                   </Fragment>
                 )}
-                length={4}
               />
               <div className={editStyle.attended_user_container}>
                 {attendedUser(false)}
@@ -374,24 +380,30 @@ function getStepContent(
               </div>
             </Grid>
           </Grid>
-        </Paper>
+        </div>
       );
     case 2:
       return (
-        <Paper>
+        <div className={editStyle.third_step_container}>
           <Grid container spacing={1}>
             <Grid item xs>
-              <Typography variant="h3">{collection.title}</Typography>
-              <Typography>{collection.collectionType}</Typography>
-              <Typography>{collection.serviceType}</Typography>
+              <div className={editStyle.collection_title}>
+                {collection.title}
+              </div>
+              <div className={editStyle.collection_type}>
+                {collection.collectionType}
+              </div>
+              <div className={editStyle.service_type}>
+                {collection.serviceType}
+              </div>
 
-              <div className={editStyle.attended_user_check_container}>
-                <Typography className={editStyle.text}>참여 인원</Typography>
+              <div className={editStyle.attended_user_container}>
+                <div className={editStyle.attend_check_text}>참여 인원</div>
                 {attendedUser(true)}
               </div>
 
               <div className={editStyle.request_container}>
-                <Typography className={editStyle.text}>생성 요청</Typography>
+                <div className={editStyle.text}>생성 요청</div>
                 {/* <Autocomplete
                   id="users-search"
                   style={{ width: 300 }}
@@ -400,7 +412,7 @@ function getStepContent(
                   onChange={(event, newValue) => {
                     setRequestMember(requestMember.concat(newValue));
                   }}
-                  options={props.users}
+                  options={requestMember}
                   renderInput={(params) => {
                     return (
                       <InputBase
@@ -414,14 +426,14 @@ function getStepContent(
                   getOptionLabel={(option) => option.displayName}
                   renderOption={(option: UserView) => (
                     <Fragment>
-                      <div className={editStyle.writer_container}>
+                      <div className={editStyle.search_attend_user_item}>
                         <Avatar
                           alt={option.displayName}
                           src={option.imageUrl}
                           className={editStyle.avatar}
                         />
 
-                        <div className={editStyle.writer_info_container}>
+                        <div className={editStyle.user_info}>
                           <Typography>{option.displayName}</Typography>
                           <Typography>삼성전자, 과장</Typography>
                         </div>
@@ -431,7 +443,7 @@ function getStepContent(
                 /> */}
 
                 <div className={editStyle.request_member_container}>
-                  <div className={editStyle.writer_info_container}>
+                  <div className={editStyle.user_info}>
                     {!!requestMember && requestMember.displayName}
                   </div>
                 </div>
@@ -442,6 +454,11 @@ function getStepContent(
                     height="100px"
                     maxHeight="100px"
                     textSize={14}
+                    onChange={handleChange}
+                    // defaultValue={}
+                    fontFamily={"Noto Sans CJK KR Regular"}
+                    border={{ width: 1, color: "transparent", radius: "5px" }}
+                    backgroundColor={"#a0a0a0"}
                   />
                 </div>
               </div>
@@ -449,27 +466,26 @@ function getStepContent(
             <Grid item xs>
               <div className={editStyle.title_image_check}>
                 <div className={editStyle.text}>대표 썸네일</div>
-
                 <Card className={classes.imageCard}>
                   <CardHeader
                     style={{ color: "white" }}
                     title={collection.title}
                   />
                 </Card>
-              </div>
-              <div className={editStyle.first_next_button_container}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => props.editCollection(collection)}
-                  className={editStyle.next_button}
-                >
-                  Finish
-                </Button>
+                <div className={editStyle.third_finish_button_container}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => props.editCollection(collection)}
+                    className={editStyle.finish_button}
+                  >
+                    Finish
+                  </Button>
+                </div>
               </div>
             </Grid>
           </Grid>
-        </Paper>
+        </div>
       );
     default:
       return "Unknown stepIndex";

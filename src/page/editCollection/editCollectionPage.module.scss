@@ -1,156 +1,19 @@
-.setting_container {
-  display: flex;
-  flex-direction: row;
-  height: 200px;
-  margin-top: 50px;
-
-  .text {
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-family: "Noto Sans CJK KR Regular";
-  }
-
-  .set_title_container {
-    width: 0;
-    flex-grow: 1;
-    padding: 5px;
-    box-sizing: border-box;
-    margin-right: 20px;
-    .title_text_field {
-    }
-  }
-  .set_date_container {
-    width: 0;
-    margin-left: 20px;
-    flex-grow: 1;
-    padding: 5px;
-    box-sizing: border-box;
-    position: relative;
-
-    .set_date {
-      position: absolute;
-      right: 0;
-      width: 100%;
-    }
-  }
-}
-
 .input_option_container {
-  width: 400px;
+  width: 100%;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-bottom-color: black;
+
+  input {
+    font-size: 30px;
+    font-family: "Noto Sans CJK KR Regular";
+    color: #707070;
+  }
 }
 
 .next_button_container {
   position: relative;
   width: 100%;
-  .next_button {
-    position: absolute;
-    right: 0px;
-  }
-}
-
-.writer_container {
-  $avatar_width: 30px;
-  position: relative;
-  width: 300px;
-  height: 50px;
-  .avatar {
-    height: $avatar_width;
-    width: $avatar_width;
-    position: absolute;
-    left: 0px;
-    top: 50%;
-    transform: translate(0%, -50%);
-  }
-
-  .writer_info_container {
-    position: absolute;
-    left: $avatar_width + 30px;
-    top: 50%;
-    transform: translate(0%, -50%);
-    .name_text {
-    }
-    .company_info {
-    }
-  }
-}
-
-.attended_user_check_container {
-  margin-top: 20px;
-  height: 230px;
-  .text {
-    font-size: 30px;
-  }
-}
-.attended_user_container {
-  margin-top: 20px;
-  height: 150px;
-
-  .count_text {
-    height: 30px;
-  }
-  .list_container {
-    max-height: 100px;
-    margin: 5px;
-    background-color: #aaaaaaaa;
-    overflow: auto;
-  }
-}
-
-.password_container {
-  .is_password_container {
-    position: relative;
-    height: 20px;
-    background-color: greenyellow;
-    margin-top: 10px;
-    .check_box {
-      position: absolute;
-      box-sizing: border-box;
-      left: 0px;
-      width: 20px;
-      height: 20px;
-      margin: 0;
-    }
-    .text {
-      position: absolute;
-      left: 40px;
-      text-align: center;
-    }
-  }
-}
-
-.request_container {
-  .text {
-    font-size: 30px;
-  }
-  .request_member_container {
-    height: 30px;
-    margin: 5px;
-    background-color: #aaaaaaaa;
-    overflow: auto;
-  }
-  .request_comment_container {
-    margin-top: 20px;
-    height: 200px;
-  }
-}
-
-.title_image_check {
-  width: 100%;
-  height: 100%;
-  background-color: greenyellow;
-
-  .text {
-    font-size: 30px;
-    margin-bottom: 40px;
-  }
-}
-
-.first_next_button_container {
-  position: relative;
-  width: 100%;
-  height: 50px;
-  margin-top: 20px;
-
   .next_button {
     position: absolute;
     right: 0px;
@@ -172,6 +35,204 @@
     color: #707070;
     font-family: "Noto Sans CJK KR Regular";
     letter-spacing: -0.98px;
+  }
+  .setting_container {
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    margin-top: 50px;
+
+    .text {
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-family: "Noto Sans CJK KR Regular";
+    }
+
+    .set_title_container {
+      width: 0;
+      flex-grow: 1;
+      padding: 5px;
+      box-sizing: border-box;
+      margin-right: 20px;
+      .title_text_field {
+      }
+    }
+    .set_date_container {
+      width: 0;
+      margin-left: 20px;
+      flex-grow: 1;
+      padding: 5px;
+      box-sizing: border-box;
+      position: relative;
+
+      .set_date {
+        position: absolute;
+        right: 0;
+        width: 100%;
+      }
+    }
+  }
+}
+.second_step_container {
+  .attend_text {
+    font-family: "Noto Sans CJK KR Bold";
+    font-size: 16px;
+    color: #4b4b4b;
+  }
+
+  .password_container {
+    .is_password_container {
+      position: relative;
+      height: 20px;
+      margin-top: 10px;
+      .check_box {
+        position: absolute;
+        box-sizing: border-box;
+        left: 0px;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+      }
+      .text {
+        position: absolute;
+        left: 40px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.third_step_container {
+  .collection_title {
+    font-size: 25px;
+    text-align: left;
+    color: #4b4b4b;
+    font-family: "Noto Sans CJK KR Bold";
+    letter-spacing: -0.98px;
+  }
+  .collection_type {
+    font-size: 16px;
+    text-align: left;
+    color: #707070;
+    font-family: "Noto Sans CJK KR Regular";
+    letter-spacing: -0.98px;
+    margin-top: 5px;
+  }
+  .service_type {
+    font-size: 14px;
+    text-align: left;
+    color: #707070;
+    font-family: "Noto Sans CJK KR Regular";
+    letter-spacing: -0.98px;
+  }
+  .attend_check_text {
+    font-size: 25px;
+    text-align: left;
+    color: #4b4b4b;
+    font-family: "Noto Sans CJK KR Bold";
+    letter-spacing: -0.98px;
+  }
+
+  .request_container {
+    margin-top: 20px;
+    .text {
+      font-size: 25px;
+      text-align: left;
+      color: #4b4b4b;
+      font-family: "Noto Sans CJK KR Bold";
+      letter-spacing: -0.98px;
+    }
+    .request_member_container {
+      height: 30px;
+      margin: 5px;
+      background-color: #aaaaaaaa;
+      overflow: auto;
+    }
+    .request_comment_container {
+      margin-top: 20px;
+      height: 100px;
+    }
+  }
+  .title_image_check {
+    width: 100%;
+    height: 100%;
+    background-color: greenyellow;
+    display: flex;
+    flex-direction: column;
+    .text {
+      font-size: 25px;
+      text-align: left;
+      color: #4b4b4b;
+      font-family: "Noto Sans CJK KR Bold";
+      letter-spacing: -0.98px;
+      margin-bottom: 40px;
+    }
+    .third_finish_button_container {
+      position: relative;
+      width: 100%;
+      flex-grow: 1;
+      margin-top: 20px;
+      background-color: blue;
+      .finish_button {
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+      }
+    }
+  }
+}
+
+.attended_user_container {
+  margin-top: 20px;
+  height: 150px;
+
+  .count_text {
+    height: 30px;
+    font-family: "Noto Sans CJK KR Regular";
+    font-size: 14px;
+    color: #707070;
+  }
+  .list_container {
+    max-height: 100px;
+    margin-top: 5px;
+    background-color: #aaaaaaaa;
+    overflow: auto;
+    .user_info {
+      width: 100%;
+      position: relative;
+      height: 40px;
+
+      .user_info_text {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+
+        transform: translate(0%, -50%);
+        font-size: 14px;
+
+        color: #4b4b4b;
+        font-family: "Noto Sans CJK KR Regular";
+        letter-spacing: -0.98px;
+      }
+      Button {
+        position: absolute;
+        right: 0px;
+        top: 50%;
+        transform: translate(0%, -50%);
+      }
+    }
+  }
+}
+
+.first_next_button_container {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin-top: 20px;
+
+  .next_button {
+    position: absolute;
+    right: 0px;
   }
 }
 
@@ -213,6 +274,42 @@
       top: 50%;
       width: 100%;
       transform: translate(0, -50%);
+    }
+  }
+}
+
+.search_attend_user_item {
+  $avatar_width: 30px;
+  position: relative;
+  width: 300px;
+  height: 50px;
+  .avatar {
+    height: $avatar_width;
+    width: $avatar_width;
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translate(0%, -50%);
+  }
+
+  .user_info {
+    position: absolute;
+    left: $avatar_width + 30px;
+    top: 50%;
+    transform: translate(0%, -50%);
+    .name_text {
+      font-size: 14px;
+      text-align: left;
+      color: #4b4b4b;
+      font-family: "Noto Sans CJK KR Regular";
+      letter-spacing: -0.98px;
+    }
+    .user_info_text {
+      font-size: 14px;
+      text-align: left;
+      color: #707070;
+      font-family: "Noto Sans CJK KR Regular";
+      letter-spacing: -0.98px;
     }
   }
 }

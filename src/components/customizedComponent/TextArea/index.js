@@ -121,6 +121,7 @@ class TextArea extends Component {
      */
     onChange: PropTypes.func,
     border: PropTypes.object,
+    backgroundColor: PropTypes.string,
   };
 
   static defaultProps = {
@@ -145,6 +146,7 @@ class TextArea extends Component {
     textSize: 15,
     fontFamily: "Noto Sans CJK KR Bold",
     border: undefined,
+    backgroundColor: "transparent",
     hideScroll: false,
   };
 
@@ -329,6 +331,7 @@ class TextArea extends Component {
       fontFamily,
       border,
       hideScroll,
+      backgroundColor,
     } = this.props;
 
     const borderData = !!border
@@ -351,6 +354,7 @@ class TextArea extends Component {
       borderWidth: borderData.width,
       borderRadius: borderData.radius,
       borderColor: borderData.color,
+      backgroundColor: backgroundColor,
       padding: 5,
       boxSizing: "border-box",
       fontSize: textSize,
