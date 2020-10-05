@@ -124,7 +124,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
             <Element
               name="firstInsideContainer"
               style={{
-                marginBottom: "200px",
+                marginBottom: "0px",
               }}
             >
               <div
