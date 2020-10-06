@@ -54,7 +54,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-side-bar": "1.0.4",
-    "react-split-pane": "2.0.3",
+    "react-split-pane": "0.1.92",
     "react-textarea-autosize": "8.2.0",
     "react-zoom-pan-pinch": "1.6.1",
     "sass-loader": "9.0.3",
