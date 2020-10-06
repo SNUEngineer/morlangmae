@@ -83,6 +83,8 @@ export interface DotProps {
 export interface CarouselInternalState {
   itemWidth: number;
   containerWidth: number;
+  containerHeight: number;
+  hover: boolean;
   slidesToShow: number;
   currentSlide: number;
   totalItems: number;

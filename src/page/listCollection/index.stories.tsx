@@ -7,10 +7,6 @@ import SearchCollectionTab from "./SearchCollectionTab";
 
 import PinnedCollectionCardList from "./PinnedCollectionCardList";
 import createStyle from "./createCollectionTab.module.scss";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
 export default { title: "collection page" };

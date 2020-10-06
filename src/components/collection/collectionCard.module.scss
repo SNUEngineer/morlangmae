@@ -148,6 +148,7 @@
 }
 
 .small_list_root {
+  cursor: pointer;
   $font_size_list: 20px;
   display: flex;
   flex-direction: row;
@@ -219,6 +220,7 @@
 }
 
 .list_root {
+  cursor: pointer;
   $font_size_list: 20px;
   $ratio: 55/87;
   $image_width: 100px;
@@ -315,6 +317,7 @@
 
 .small_list_root_back_up {
   $font_size_list: 20px;
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   padding: 4px;

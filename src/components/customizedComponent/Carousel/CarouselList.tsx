@@ -1,8 +1,8 @@
 import React from "react";
 // import Carousel from "./Craousel";
-import Carousel from "react-multi-carousel";
+import Carousel from "./Carousel";
 import carouselStyle from "./carouselArrow.module.scss";
-
+import "./Carousel/assets/styles.scss";
 export interface CarouselListProps {
   showItems: number;
   slideItems: number;
@@ -10,7 +10,6 @@ export interface CarouselListProps {
 }
 
 export default function CarouselList(props: CarouselListProps) {
-  console.log("CarouselList CarouselListCarouselListCarouselList");
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },

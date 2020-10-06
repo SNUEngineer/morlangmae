@@ -1,6 +1,6 @@
 import {
   getPartialVisibilityGutter,
-  getWidthFromDeviceType
+  getWidthFromDeviceType,
 } from "./elementWidth";
 import { CarouselInternalState, CarouselProps } from "../types";
 
@@ -19,7 +19,13 @@ function getInitialState(
   partialVisibilityGutter: number | undefined;
   shouldRenderAtAll: boolean;
 } {
-  const { domLoaded, slidesToShow, containerWidth, itemWidth } = state;
+  const {
+    domLoaded,
+    slidesToShow,
+    containerWidth,
+    itemWidth,
+    containerHeight,
+  } = state;
   // old wrongly spelt partialVisbile prop kept to not make changes breaking
   const { deviceType, responsive, ssr, partialVisbile, partialVisible } = props;
   let flexBisis: number | string | undefined;
@@ -44,7 +50,7 @@ function getInitialState(
     flexBisis,
     domFullyLoaded,
     partialVisibilityGutter,
-    shouldRenderAtAll
+    shouldRenderAtAll,
   };
 }
 
@@ -79,7 +85,7 @@ function isInLeftEnd({ currentSlide }: CarouselInternalState): boolean {
 function isInRightEnd({
   currentSlide,
   totalItems,
-  slidesToShow
+  slidesToShow,
 }: CarouselInternalState): boolean {
   return !(currentSlide + slidesToShow < totalItems);
 }
@@ -118,7 +124,7 @@ function getTransform(
     partialVisible,
     responsive,
     deviceType,
-    centerMode
+    centerMode,
   } = props;
   const transform = transformPlaceHolder || state.transform;
   const partialVisibilityGutter = getPartialVisibilityGutter(
@@ -153,7 +159,7 @@ function getSlidesToSlide(
   );
   const ssr = props.ssr && props.deviceType && !domFullyLoaded;
   if (ssr) {
-    Object.keys(responsive).forEach(device => {
+    Object.keys(responsive).forEach((device) => {
       const { slidesToSlide } = responsive[device];
       if (deviceType === device && slidesToSlide) {
         slidesToScroll = slidesToSlide;
@@ -161,7 +167,7 @@ function getSlidesToSlide(
     });
   }
   if (domFullyLoaded) {
-    Object.keys(responsive).forEach(item => {
+    Object.keys(responsive).forEach((item) => {
       const { breakpoint, slidesToSlide } = responsive[item];
       const { max, min } = breakpoint;
       if (
@@ -185,5 +191,5 @@ export {
   getTransformForPartialVsibile,
   notEnoughChildren,
   getSlidesToSlide,
-  getTransform
+  getTransform,
 };

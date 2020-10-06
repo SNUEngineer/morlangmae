@@ -10,6 +10,9 @@
   overflow: hidden;
   position: relative;
 }
+.content-container {
+  overflow: hidden;
+}
 .react-multi-carousel-track {
   list-style: none;
   padding: 0;
@@ -33,6 +36,7 @@
   min-height: 43px;
   opacity: 1;
   cursor: pointer;
+  transform: translate(0, -50%);
 }
 .react-multiple-carousel__arrow:hover {
   background: rgba(0, 0, 0, 0.8);
@@ -47,14 +51,24 @@
   position: relative;
 }
 
+.arrow-container {
+  background-color: red;
+  opacity: 1;
+}
+
+.hover {
+  opacity: 1;
+}
 .react-multiple-carousel__arrow--left {
-  left: calc(4% + 1px);
+  left: calc(4% + 100px);
+  /* left: calc(-30px);
+  transform: translate(-50%, 0); */
 }
 .react-multiple-carousel__arrow--left::before {
   content: "\e824";
 }
 .react-multiple-carousel__arrow--right {
-  right: calc(4% + 1px);
+  right: calc(4% + 100px);
 }
 .react-multiple-carousel__arrow--right::before {
   content: "\e825";

@@ -9,7 +9,7 @@ interface LeftArrowProps {
 }
 interface RightArrowProps {
   customRightArrow?: React.ReactElement<any> | null;
-  getState: () => StateCallBack;
+  getState: () => {};
   next: () => void;
 }
 
@@ -28,6 +28,7 @@ const LeftArrow = ({
     <button
       aria-label="Go to previous slide"
       className="react-multiple-carousel__arrow react-multiple-carousel__arrow--left"
+      style={{ marginTop: getState().containerHeight / 2 }}
       onClick={() => previous()}
     />
   );
@@ -47,6 +48,7 @@ const RightArrow = ({
     <button
       aria-label="Go to next slide"
       className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+      style={{ marginTop: getState().containerHeight / 2 }}
       onClick={() => next()}
     />
   );
