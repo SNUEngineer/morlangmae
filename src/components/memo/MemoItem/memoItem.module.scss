@@ -23,7 +23,6 @@
   zoom: 0.4;
 }
 
-
 .memo_draggable {
   position: absolute;
   z-index: 500;
@@ -102,7 +101,7 @@
     width: 30px;
     margin: 10px;
     border-radius: 30px;
-    background-color: blue;
+    background-color: #105710;
   }
 }
 
@@ -122,8 +121,6 @@
     background-color: red;
   }
 }
-
-
 
 .memo_comment_container {
   width: 100%;

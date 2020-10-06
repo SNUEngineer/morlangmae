@@ -115,7 +115,7 @@ export default function Memo(props: any) {
 
     const onKeyUp = (event) => {
       if (event.keyCode === 32) {
-        //spcae bara
+        //spcae bar
         setKeyState((prevState) => ({ ...prevState, spacebar: false }));
         event.preventDefault();
       } else if (event.keyCode === 17) {
@@ -335,8 +335,13 @@ export default function Memo(props: any) {
             메뉴 열기{" "}
           </button>
         </div>
-        <SplitPane split="vertical" className={memoStyle.split_pane}>
-          <Pane initialSize="150px" minSize="150px" maxSize="150px">
+        <div className={memoStyle.split_pane}>
+          <div
+            className={memoStyle.split_pane_pdf_thumb}
+            initialSize="150px"
+            minSize="150px"
+            maxSize="150px"
+          >
             <div className={memoStyle.split_list_view}>
               <PDFThumbBar
                 pdf={pdfList}
@@ -347,8 +352,8 @@ export default function Memo(props: any) {
                 showThumbSidebar={true}
               />
             </div>
-          </Pane>
-          <Pane>
+          </div>
+          <div className={memoStyle.split_pane_pdf}>
             <div
               ref={panzoomBoxContainerEl}
               className={memoStyle.panzoom_box_container}
@@ -429,9 +434,9 @@ export default function Memo(props: any) {
                 </div>
               </PanZoom>
             </div>
-          </Pane>
+          </div>
           {sideMenuOpen && (
-            <Pane initialSize="250px" minSize="250px" maxSize="250px">
+            <div className={memoStyle.split_pane_menu}>
               <SideMenuBar
                 memoItem={currentMenuMemo()}
                 className={memoStyle.memo_item}
@@ -451,9 +456,9 @@ export default function Memo(props: any) {
                 panBoardSize={panBoardSize}
               />
               );
-            </Pane>
+            </div>
           )}
-        </SplitPane>
+        </div>
       </div>
       <Document
         file={props.fileUrl}

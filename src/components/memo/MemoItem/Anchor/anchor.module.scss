@@ -12,12 +12,14 @@
   margin-bottom: -1px * $height/2;
 }
 
-$main_anchor_width : 40px;
-$main_anchor_height : 40px;
+$main_anchor_width: 40px;
+$main_anchor_height: 40px;
 
-.container :focus {}
+.container :focus {
+}
 
-.memo_item {}
+.memo_item {
+}
 
 .memo_draggable {
   position: absolute;
@@ -25,24 +27,17 @@ $main_anchor_height : 40px;
   background-color: #ffffff;
 }
 
-
-
 .anchor_line {
   z-index: 300;
 }
 
-
 .anchor_box {
-
   background-color: #55555555;
   border-style: dashed;
   border-width: 1px;
   border-color: blue;
   position: absolute;
   z-index: 400;
-
-
-
 }
 
 .box_anchor_container {
@@ -51,12 +46,7 @@ $main_anchor_height : 40px;
 
 .box_container {
   z-index: 1;
-
-
-
 }
-
-
 
 .main_anchor_box_exists {
   position: absolute;
@@ -88,7 +78,7 @@ $main_anchor_height : 40px;
     left: $main_anchor_width/2;
     top: $main_anchor_height/2;
     border-radius: 30px;
-    background-color: green;
+    background-color: #105710;
     position: absolute;
   }
 }
@@ -101,7 +91,7 @@ $main_anchor_height : 40px;
   .anchor {
     @include box_anchor_size(20, 20);
     border-radius: 30px;
-    background-color: green;
+    background-color: #105710;
 
     position: absolute;
     right: 0;
