@@ -4,6 +4,7 @@ import pageStyle from "./creatingCollectionPage.module.scss";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import { makeStyles, createStyles, theme } from "@material-ui/core/styles";
+import classNames from "classnames";
 
 export interface CreatingCollectionPageProps {
   createCollection(request: CreateDraftCollectionRequest): Promise<void>;
@@ -39,7 +40,12 @@ export default function CreatingCollectionPage(
     switch (stage) {
       case 0:
         return (
-          <div className={pageStyle.container_1}>
+          <div
+            className={classNames({
+              [pageStyle.container_1]: true,
+              [pageStyle.fade_in]: true,
+            })}
+          >
             <div className={pageStyle.bailey_text}>Bailey</div>
             <div className={pageStyle.progress_container}>
               <div className={pageStyle.align_container}>
@@ -50,7 +56,12 @@ export default function CreatingCollectionPage(
         );
       case 1:
         return (
-          <div className={pageStyle.container_1}>
+          <div
+            className={classNames({
+              [pageStyle.container_1]: true,
+              [pageStyle.fade_in]: true,
+            })}
+          >
             <div className={pageStyle.bailey_text}>Bailey</div>
             <div className={pageStyle.button_container}>
               <Button

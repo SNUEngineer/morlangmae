@@ -3,6 +3,18 @@
   width: 100%;
   overflow: hidden;
 
+  .fade_in {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 2s linear;
+  }
+
+  .fade_out {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
+  }
+
   .content_container {
     position: fixed;
     left: 50%;
