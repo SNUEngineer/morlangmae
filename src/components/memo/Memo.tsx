@@ -115,7 +115,7 @@ export default function Memo(props: any) {
 
     const onKeyUp = (event) => {
       if (event.keyCode === 32) {
-        //spcae bar
+        //spcae bara
         setKeyState((prevState) => ({ ...prevState, spacebar: false }));
         event.preventDefault();
       } else if (event.keyCode === 17) {
