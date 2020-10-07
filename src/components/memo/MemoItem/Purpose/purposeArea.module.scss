@@ -1,0 +1,43 @@
+.purpose_button_selected {
+  color: white;
+  border-color: transparent;
+  background-color: green;
+  font-family: "Noto Sans CJK KR Bold";
+  font-size: 20px;
+  letter-spacing: -0.7px;
+}
+
+.purpose_button_unselected {
+  opacity: 0.8;
+  color: gray;
+  border-color: gray;
+  border-width: 1px;
+  background-color: transparent;
+  font-family: "Noto Sans CJK KR Regular";
+  font-size: 20px;
+  letter-spacing: -0.7px;
+}
+
+.purpose_button_basic {
+  width: 30%;
+  height: 40px;
+  border-radius: 15px;
+  text-align: center;
+  padding: auto 0;
+}
+
+.purpose_left {
+  position: absolute;
+  left: 0;
+}
+
+.purpose_center {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.purpose_right {
+  position: absolute;
+  right: 0;
+}

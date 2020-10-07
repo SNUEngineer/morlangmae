@@ -1,0 +1,210 @@
+.board {
+  height: 2000px;
+  width: 2000px;
+  position: absolute;
+  background-color: #ffffff;
+}
+
+.menu_bar {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: darkcyan;
+  border-bottom: gray;
+  border-width: 0.5px;
+  display: flex;
+  flex-direction: row;
+  .align_container {
+    position: relative;
+    height: 100%;
+    .verical_center {
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+  .center_menu_container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 2000;
+    .title_container {
+      display: flex;
+      flex-direction: row;
+      vertical-align: center;
+      .cloud_icon {
+        content: url("../../resources/icons/drop_down_close.png");
+        width: 10px;
+        height: 5px;
+      }
+      .title {
+        margin-left: 30px;
+        margin-right: 10px;
+      }
+      .dropdown_icon_opened {
+        content: url("../../resources/icons/drop_down_close.png");
+        width: 10px;
+        height: 5px;
+      }
+      .dropdown_icon_closed {
+        content: url("../../resources/icons/drop_down_open.png");
+        width: 10px;
+        height: 5px;
+      }
+    }
+  }
+  .menu_container {
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    flex-direction: row;
+
+    .menu_text {
+      font-size: 15px;
+      letter-spacing: -0.6px;
+      color: black;
+      cursor: pointer;
+    }
+    .menu_text_unfocused {
+      font-family: "Noto Sans CJK KR Regular";
+    }
+    .menu_text_focused {
+      font-family: "Noto Sans CJK KR Bold";
+    }
+    .bailey_conatiner {
+      width: 200px;
+      margin-left: 40px;
+      height: 100%;
+      .bailey_text {
+        font-size: 25px;
+        letter-spacing: -0.6px;
+        color: #105710;
+        font-family: "Frank Ruhl Libre Light";
+      }
+    }
+
+    .save_container {
+      width: 80px;
+      margin-left: 40px;
+      height: 100%;
+    }
+    .share_container {
+      width: 50px;
+      margin-left: 10px;
+      height: 100%;
+    }
+  }
+
+  .top_divider {
+    height: 0.5px;
+    margin-bottom: 0.5px;
+    background-color: #e0e0e0;
+    width: 100%;
+  }
+}
+.workspace_container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: red;
+  overflow: hidden;
+}
+
+.memo_board {
+  height: 100%;
+  width: 100%;
+  z-index: 999;
+  background-color: transparent;
+  position: absolute;
+}
+
+.document {
+  z-index: 1;
+}
+
+.page {
+  position: absolute;
+  z-index: 1;
+}
+
+.memo_item {
+  z-index: 999;
+  height: 0px;
+}
+
+.testt {
+}
+
+.pan_board {
+  position: relative;
+  overflow: hidden;
+  width: 6500px;
+  height: 4500px;
+  background-color: gray;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.panzoom_box_container {
+  width: 100%;
+  height: 100%;
+
+  .panzoom_box {
+    overflow: hidden;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    outline: 0;
+  }
+}
+
+.container {
+  height: 200px;
+  width: 200px;
+}
+
+.viewport {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 1000px;
+  background-color: #ffff44;
+}
+
+.list_item {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.split_list_view {
+  width: 100%;
+  height: 100%;
+}
+
+.split_pane {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+
+  .split_pane_pdf_thumb {
+    width: 150px;
+    height: 100%;
+  }
+  .split_pane_pdf {
+    flex-grow: 1;
+    width: 0px;
+    height: 100%;
+  }
+  .split_pane_menu {
+    width: 250px;
+    height: 100%;
+  }
+}

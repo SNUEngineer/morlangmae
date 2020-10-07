@@ -1,0 +1,13 @@
+.pdf-thumbnail-bar {
+  top: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: #f1f3f7;
+  border-right: #dce0e3 1px solid;
+  padding: 22px 0px;
+
+  &.hide {
+    margin-left: -190px;
+  }
+}

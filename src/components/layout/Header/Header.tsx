@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import headerStyle from "./Header.module.scss";
 import Select from "@material-ui/core/Select";
+import Selector from "../Selector/Selector";
 import MenuItem from "@material-ui/core/MenuItem";
 import classNames from "classnames";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
@@ -49,7 +50,8 @@ export default function Header(props: any) {
       case "filter":
         return (
           <div className={headerStyle.sort_select}>
-            <Select
+            <Selector filter={filter} />
+            {/* <Select
               value={filter}
               onChange={handleChange}
               className={classNames({
@@ -86,7 +88,7 @@ export default function Header(props: any) {
               >
                 <div className={headerStyle.menu_item_container}>완료</div>
               </MenuItem>
-            </Select>
+            </Select> */}
           </div>
         );
       case "goToAll":

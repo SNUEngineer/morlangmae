@@ -11,6 +11,7 @@ export function basic() {
 
 export function own() {
   return (
+    // <Memo fileUrl="https://github.com/wojtekmaj/react-pdf/files/2930577/compressed.tracemonkey-pldi-09.pdf" />
     <Memo fileUrl="https://raw.githubusercontent.com/degoes-consulting/lambdaconf-2015/master/speakers/jdegoes/intro-purescript/presentation.pdf" />
   );
 }

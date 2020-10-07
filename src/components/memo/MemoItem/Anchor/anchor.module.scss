@@ -1,0 +1,100 @@
+@mixin anchor_size($width, $height) {
+  width: 1px * $width;
+  height: 1px * $height;
+  margin-left: -1px * $width/2;
+  margin-top: -1px * $height/2;
+}
+
+@mixin box_anchor_size($width, $height) {
+  width: 1px * $width;
+  height: 1px * $height;
+  margin-right: -1px * $width/2;
+  margin-bottom: -1px * $height/2;
+}
+
+$main_anchor_width: 40px;
+$main_anchor_height: 40px;
+
+.container :focus {
+}
+
+.memo_item {
+}
+
+.memo_draggable {
+  position: absolute;
+  z-index: 500;
+  background-color: #ffffff;
+}
+
+.anchor_line {
+  z-index: 300;
+}
+
+.anchor_box {
+  background-color: #55555555;
+  border-style: dashed;
+  border-width: 1px;
+  border-color: blue;
+  position: absolute;
+  z-index: 400;
+}
+
+.box_anchor_container {
+  z-index: 1;
+}
+
+.box_container {
+  z-index: 1;
+}
+
+.main_anchor_box_exists {
+  position: absolute;
+  z-index: 500;
+  cursor: nwse-resize;
+
+  .anchor {
+    @include anchor_size(20, 20);
+    border-radius: 30px;
+    background-color: green;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+.main_anchor {
+  position: absolute;
+  z-index: 500;
+  cursor: pointer;
+  height: $main_anchor_height;
+  width: $main_anchor_width;
+  left: -1 * $main_anchor_width/2;
+  top: -1 * $main_anchor_height/2;
+
+  .anchor {
+    @include anchor_size(20, 20);
+    left: $main_anchor_width/2;
+    top: $main_anchor_height/2;
+    border-radius: 30px;
+    background-color: #105710;
+    position: absolute;
+  }
+}
+
+.box_anchor {
+  position: absolute;
+  z-index: 500;
+  cursor: nwse-resize;
+
+  .anchor {
+    @include box_anchor_size(20, 20);
+    border-radius: 30px;
+    background-color: #105710;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+}

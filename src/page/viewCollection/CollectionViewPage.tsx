@@ -8,6 +8,7 @@ import Collection, {
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Switch from "@material-ui/core/Switch";
+import Selector from "../../components/layout/Selector/Selector";
 import Button from "@material-ui/core/Button";
 import Paper, { PaperProps } from "@material-ui/core/Paper";
 import clsx from "clsx";
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
       top: 0,
       height: "60px",
       backgroundColor: "white",
+      position: "relative",
     },
   })
 );
@@ -110,20 +112,22 @@ export function CollectionToolBar(props: any) {
       })}
     >
       <Toolbar>
+        <div className={pageStyle.center_container}>
+          {props.collection.title}
+        </div>
+
         <Switch
           checked={props.editable}
           onChange={() => props.setEditable(!props.editable)}
           name="collection-mode"
         />
-        <Typography>{props.collection.title}</Typography>
+        <div className={pageStyle.menu_divider}></div>
         <SearchPlatter
           collectionTitle={props.collection.title}
           platterSummaries={props.platters}
         />
-        <select name="sortType" onChange={handleChange} value={props.sortType}>
-          <option value={SortType.RECENTLY_ASC}>시간 순</option>
-          <option value={SortType.RECENTLY_DESC}>최신 순</option>
-        </select>
+        <Selector filter={props.sortType} />
+
         {props.editable && (
           <Button
             onClick={props.createPlatter}
@@ -234,9 +238,16 @@ function PlatterSummaryList(props: PlatterSummaryListProps) {
   console.log(props);
 
   const [viewType, setViewType] = useState(ViewType.ALL);
-  const platterSummaires = props.platterSummaries
-    .filter((it) => viewType === ViewType.ALL || it.joined)
-    .filter((it) => it.title.includes(props.searchQuery));
+  // const platterSummaires = props.platterSummaries
+  //   .filter((it) => viewType === ViewType.ALL || it.joined)
+  //   .filter((it) => it.title.includes(props.searchQuery));
+  const ps1 = {
+    id: 0,
+    title: "string1111",
+    createdBy: 0,
+    createdDate: 0,
+  };
+  const platterSummaires = [ps1, ps1];
   const onClick = (event: any) => {
     setViewType(event.target.value);
   };
