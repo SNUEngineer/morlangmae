@@ -1,6 +1,12 @@
 import React, { useState, Fragment, useRef } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Dialog from "@material-ui/core/Dialog";
+import {
+  makeStyles,
+  createStyles,
+  useTheme,
+  Theme,
+} from "@material-ui/core/styles";
+
+import Dialog from "../../components/customizedComponent/PlatterDialog/Dialog";
 import { useLocation, useHistory } from "react-router-dom";
 import Collection, {
   CollectionProps,
@@ -28,6 +34,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import { UserView } from "../../services/user.service";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export interface CollectionViewPageProps extends CollectionProps {
   hideToolbar?: boolean;
@@ -43,6 +50,19 @@ enum SortType {
 export default function CollectionViewPage(props: CollectionViewPageProps) {
   const [editable, setEditable] = useState(false);
   const [sortType, setSortType] = useState(SortType.RECENTLY_ASC);
+  const Theme = useTheme();
+  const fullScreen = useMediaQuery(Theme.breakpoints.down("sm"));
+
+  const useStyles = makeStyles((Theme: Theme) =>
+    createStyles({
+      paper: {
+        "&&:MuiPaper-root": {
+          boxShadow: "none",
+        },
+      },
+    })
+  );
+  const classes = useStyles();
   return (
     <Fragment>
       {!props.hideToolbar && (
@@ -57,29 +77,30 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
         />
       )}
       <Dialog
+        fullScreen={fullScreen}
         disableEnforceFocus
         fullWidth
         maxWidth="lg"
         open
         PaperComponent={PaperComponent}
         onClose={props.onClose}
+        className={classes.paper}
       >
-        <DialogContent>
-          <Collection {...props} editable={editable} />
-        </DialogContent>
+        <Collection {...props} editable={editable} />
       </Dialog>
     </Fragment>
   );
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((Theme: Theme) =>
   createStyles({
     appBar: {
-      zIndex: theme.zIndex.drawer + 1000,
+      zIndex: Theme.zIndex.drawer + 1000,
       top: 0,
       height: "60px",
       backgroundColor: "white",
       position: "relative",
+      boxShadow: "none",
     },
   })
 );
@@ -103,6 +124,7 @@ export function CollectionToolBar(props: any) {
   const handleChange = (event: any) => {
     props.setSortType(event.target.value);
   };
+  const [openSearchBar, setOpenSearchBar] = useState(false);
 
   return (
     <AppBar
@@ -113,21 +135,29 @@ export function CollectionToolBar(props: any) {
     >
       <Toolbar>
         <div className={pageStyle.center_container}>
-          {props.collection.title}
+          {!openSearchBar && <div>{props.collection.title}</div>}
         </div>
-
         <Switch
           checked={props.editable}
           onChange={() => props.setEditable(!props.editable)}
           name="collection-mode"
         />
-        <div className={pageStyle.menu_divider}></div>
-        <SearchPlatter
-          collectionTitle={props.collection.title}
-          platterSummaries={props.platters}
-        />
-        <Selector filter={props.sortType} />
 
+        {/* {openSearchBar && }  */}
+        <div className={pageStyle.switch_container}>
+          <div className={pageStyle.view_mode}> </div>
+          <div className={pageStyle.task_mode}> </div>
+        </div>
+
+        <div className={pageStyle.search_platter}>
+          <SearchPlatter
+            collectionTitle={props.collection.title}
+            platterSummaries={props.platters}
+            openSearchBar={openSearchBar}
+            setOpenSearchBar={setOpenSearchBar}
+          />
+        </div>
+        <Selector filter={props.sortType} />
         {props.editable && (
           <Button
             onClick={props.createPlatter}
@@ -145,10 +175,12 @@ export function CollectionToolBar(props: any) {
 interface SearchPlatterProps {
   collectionTitle: string;
   platterSummaries: PlatterSummaryData[];
+  openSearchBar: boolean;
 }
 
 function SearchPlatter(props: SearchPlatterProps) {
-  const [openSearchBar, setOpenSearchBar] = useState(false);
+  const { openSearchBar, setOpenSearchBar } = props;
+
   const [anchorEl, setAnchorEl] = useState(null);
   const inputEl = useRef(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -171,17 +203,23 @@ function SearchPlatter(props: SearchPlatterProps) {
   const id = open ? "platter-search-popover" : undefined;
 
   return (
-    <Fragment>
+    <div
+      className={classNames({
+        [pageStyle.container_search]: true,
+        [pageStyle.container_search_close]: !openSearchBar,
+        [pageStyle.container_search_open]: openSearchBar,
+      })}
+    >
       <div ref={inputEl} style={{ display: "flex" }}>
         {openSearchBar ? (
-          <Fragment>
-            <Typography>플래터 검색</Typography>
+          <div className={pageStyle.search_menu_container}>
+            <div className={pageStyle.text}></div>
             <TextField
               variant="outlined"
               name="title"
               onChange={handleChange}
             />
-          </Fragment>
+          </div>
         ) : (
           <Button variant="outlined" onClick={handleClick}>
             플래터 리스트
@@ -203,6 +241,10 @@ function SearchPlatter(props: SearchPlatterProps) {
           vertical: "top",
           horizontal: "center",
         }}
+        style={{
+          zIndex: "2199",
+          marginTop: "0px",
+        }}
       >
         <PlatterSummaryList
           searchQuery={searchQuery}
@@ -210,7 +252,7 @@ function SearchPlatter(props: SearchPlatterProps) {
           platterSummaries={props.platterSummaries}
         />
       </Popover>
-    </Fragment>
+    </div>
   );
 }
 
@@ -236,7 +278,40 @@ enum ViewType {
 
 function PlatterSummaryList(props: PlatterSummaryListProps) {
   console.log(props);
-
+  const useStyles = makeStyles((Theme: Theme) =>
+    createStyles({
+      showAllButton: {
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        fontSize: "12px",
+        letterSpacing: "-0.7px",
+        fontFamily: "Noto Sans CJK KR Light",
+        position: "absolute",
+        height: "100%",
+        right: "0px",
+        top: "0px",
+      },
+      showAttedingButton: {
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        fontSize: "12px",
+        letterSpacing: "-0.7px",
+        borderWidth: "0px",
+        fontFamily: "Noto Sans CJK KR Light",
+        position: "absolute",
+        height: "100%",
+        right: "0px",
+        top: "19px",
+      },
+      firstCell: {
+        paddingLeft: "22px",
+      },
+      head_row: {
+        borderWidth: "0px",
+      },
+    })
+  );
+  const classes = useStyles();
   const [viewType, setViewType] = useState(ViewType.ALL);
   // const platterSummaires = props.platterSummaries
   //   .filter((it) => viewType === ViewType.ALL || it.joined)
@@ -253,22 +328,52 @@ function PlatterSummaryList(props: PlatterSummaryListProps) {
   };
 
   return (
-    <Fragment>
-      <Typography>{props.collectionTitle}의 리스트</Typography>
-      <Button variant="outlined" value={ViewType.ALL} onClick={onClick}>
-        전체보기
-      </Button>
-      <Button variant="outlined" value={ViewType.JOINED} onClick={onClick}>
-        참여 중인 플래터만 보기
-      </Button>
+    <div className={pageStyle.search_platter_container}>
+      <div className={pageStyle.header}>
+        <div className={pageStyle.collection_title}>
+          {props.collectionTitle}의 리스트
+        </div>
+        <div className={pageStyle.menu_container}>
+          <div className={pageStyle.show_all}>
+            <Button
+              value={ViewType.ALL}
+              onClick={onClick}
+              className={classes.showAllButton}
+            >
+              전체보기
+            </Button>
+          </div>
+          <div className={pageStyle.show_attending_platter}>
+            <Button
+              value={ViewType.JOINED}
+              onClick={onClick}
+              className={classes.showAttedingButton}
+            >
+              참여 중인 플래터만 보기
+            </Button>
+          </div>
+        </div>
+      </div>
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell>플래터</TableCell>
-              <TableCell>담당자</TableCell>
-              <TableCell>날짜</TableCell>
-              <TableCell>알림</TableCell>
+            <TableRow
+              className={classNames({
+                [pageStyle.head_row]: true,
+              })}
+            >
+              <TableCell
+                className={classNames({
+                  [pageStyle.head_cell]: true,
+                  [classes.firstCell]: true,
+                })}
+              >
+                플래터
+              </TableCell>
+              <TableCell className={pageStyle.head_cell}>담당자</TableCell>
+              <TableCell className={pageStyle.head_cell}>날짜</TableCell>
+              <TableCell className={pageStyle.head_cell}>알림</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -277,15 +382,28 @@ function PlatterSummaryList(props: PlatterSummaryListProps) {
                 key={data.id}
                 onClick={() => (window.location.href = `#platter-${data.id}`)}
               >
-                <TableCell>{data.title}</TableCell>
-                <TableCell>{data.createdBy.displayName}</TableCell>
-                <TableCell>{data.createdDate}</TableCell>
-                <TableCell>{data.hasNotification}</TableCell>
+                <TableCell
+                  className={classNames({
+                    [pageStyle.body_cell]: true,
+                    [classes.firstCell]: true,
+                  })}
+                >
+                  {data.title}
+                </TableCell>
+                <TableCell className={pageStyle.body_cell}>
+                  {data.createdBy.displayName}
+                </TableCell>
+                <TableCell className={pageStyle.body_cell}>
+                  {data.createdDate}
+                </TableCell>
+                <TableCell className={pageStyle.body_cell}>
+                  {data.hasNotification}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </Fragment>
+    </div>
   );
 }

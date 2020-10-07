@@ -5,7 +5,7 @@
   border-bottom-color: black;
 
   input {
-    font-size: 30px;
+    font-size: 15px;
     font-family: "Noto Sans CJK KR Regular";
     color: #707070;
   }
@@ -21,30 +21,32 @@
 }
 
 .first_step_container {
-  margin-bottom: 10px;
+  margin: 84px 119px 84px 119px;
   .collection_type {
-    font-size: 14px;
+    font-size: 20px;
     text-align: left;
     color: #707070;
     font-family: "Noto Sans CJK KR Regular";
     letter-spacing: -0.98px;
   }
   .service_type {
-    font-size: 25px;
+    font-size: 30px;
     text-align: left;
     color: #707070;
     font-family: "Noto Sans CJK KR Regular";
     letter-spacing: -0.98px;
+    margin-bottom: 20px;
+    margin-top: 20px;
   }
   .setting_container {
+    $margin_left_right_setting_box: 25px;
     display: flex;
     flex-direction: row;
-    height: 200px;
     margin-top: 50px;
 
     .text {
       font-size: 20px;
-      margin-bottom: 10px;
+      margin-bottom: 23px;
       font-family: "Noto Sans CJK KR Regular";
     }
 
@@ -53,13 +55,13 @@
       flex-grow: 1;
       padding: 5px;
       box-sizing: border-box;
-      margin-right: 20px;
+      margin-right: $margin_left_right_setting_box;
       .title_text_field {
       }
     }
     .set_date_container {
       width: 0;
-      margin-left: 20px;
+      margin-left: $margin_left_right_setting_box;
       flex-grow: 1;
       padding: 5px;
       box-sizing: border-box;
@@ -74,71 +76,102 @@
   }
 }
 .second_step_container {
+  margin: 137px 119px 137px 119px;
   .attend_text {
     font-family: "Noto Sans CJK KR Bold";
-    font-size: 16px;
-    color: #4b4b4b;
+    font-size: 20px;
+    letter-spacing: -0.98px;
+    color: #707070;
+    margin-bottom: 23px;
+  }
+  .setting_box {
+    max-width: 303px;
+
+    .password_container {
+      .is_password_container {
+        position: relative;
+        height: 20px;
+        margin-top: 10px;
+        .check_box {
+          position: absolute;
+          box-sizing: border-box;
+          left: 0px;
+          width: 20px;
+          height: 20px;
+          margin: 0;
+        }
+        .text {
+          position: absolute;
+          left: 40px;
+          text-align: center;
+        }
+      }
+    }
   }
 
-  .password_container {
-    .is_password_container {
+  .image_check_container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    .second_next_button_container {
       position: relative;
-      height: 20px;
-      margin-top: 10px;
-      .check_box {
+      width: 100%;
+      flex-grow: 1;
+
+      .next_button {
         position: absolute;
-        box-sizing: border-box;
-        left: 0px;
-        width: 20px;
-        height: 20px;
-        margin: 0;
-      }
-      .text {
-        position: absolute;
-        left: 40px;
-        text-align: center;
+        right: 0px;
+        bottom: 0px;
       }
     }
   }
 }
 
 .third_step_container {
-  .collection_title {
-    font-size: 25px;
-    text-align: left;
-    color: #4b4b4b;
-    font-family: "Noto Sans CJK KR Bold";
-    letter-spacing: -0.98px;
-  }
-  .collection_type {
-    font-size: 16px;
-    text-align: left;
-    color: #707070;
-    font-family: "Noto Sans CJK KR Regular";
-    letter-spacing: -0.98px;
-    margin-top: 5px;
-  }
-  .service_type {
-    font-size: 14px;
-    text-align: left;
-    color: #707070;
-    font-family: "Noto Sans CJK KR Regular";
-    letter-spacing: -0.98px;
-  }
-  .attend_check_text {
-    font-size: 25px;
-    text-align: left;
-    color: #4b4b4b;
-    font-family: "Noto Sans CJK KR Bold";
-    letter-spacing: -0.98px;
+  margin: 84px 119px 84px 119px;
+  .setting_box {
+    max-width: 313px;
+    .collection_title {
+      font-size: 30px;
+      text-align: left;
+      color: #707070;
+      font-family: "Noto Sans CJK KR Bold";
+      letter-spacing: -0.98px;
+    }
+    .collection_type {
+      font-size: 15px;
+      text-align: left;
+      color: #707070;
+      font-family: "Noto Sans CJK KR Regular";
+      letter-spacing: -0.98px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    .service_type {
+      font-size: 15px;
+      text-align: left;
+      color: #707070;
+      font-family: "Noto Sans CJK KR Regular";
+      letter-spacing: -0.98px;
+    }
+    .attend_check_text {
+      font-size: 30px;
+      text-align: left;
+      color: #707070;
+      font-family: "Noto Sans CJK KR Bold";
+      letter-spacing: -0.98px;
+      margin-bottom: 24px;
+    }
   }
 
   .request_container {
-    margin-top: 20px;
+    margin-top: 67px;
     .text {
-      font-size: 25px;
+      font-size: 30px;
       text-align: left;
-      color: #4b4b4b;
+      color: #707070;
       font-family: "Noto Sans CJK KR Bold";
       letter-spacing: -0.98px;
     }
@@ -159,9 +192,9 @@
     display: flex;
     flex-direction: column;
     .text {
-      font-size: 25px;
+      font-size: 30px;
       text-align: left;
-      color: #4b4b4b;
+      color: #707070;
       font-family: "Noto Sans CJK KR Bold";
       letter-spacing: -0.98px;
       margin-bottom: 40px;
@@ -180,29 +213,39 @@
   }
 }
 
-.attended_user_container {
-  margin-top: 20px;
+.attended_user_container_setting {
+  margin-top: 212px;
   height: 150px;
+}
+.attended_user_container_check {
+  margin-top: 84px;
+  height: 188px;
+}
 
+.attended_user_container {
   .count_text {
     height: 30px;
     font-family: "Noto Sans CJK KR Regular";
-    font-size: 14px;
+    font-size: 15px;
     color: #707070;
   }
   .list_container {
     max-height: 100px;
     margin-top: 5px;
-    background-color: #aaaaaaaa;
+
+    background-color: #f7f7f7;
     overflow: auto;
+    .list_container_padding_top {
+      height: 20px;
+    }
     .user_info {
       width: 100%;
       position: relative;
-      height: 40px;
+      height: 22px;
 
       .user_info_text {
         position: absolute;
-        left: 10px;
+        left: 14px;
         top: 50%;
 
         transform: translate(0%, -50%);
@@ -226,7 +269,7 @@
   position: relative;
   width: 100%;
   height: 50px;
-  margin-top: 20px;
+  margin-top: 75px;
 
   .next_button {
     position: absolute;
@@ -234,14 +277,10 @@
   }
 }
 
-.step_container {
-  margin: 70px;
-}
-
 .header_container {
   display: flex;
   flex-direction: row;
-  height: 100px;
+  height: 76px;
 
   .stepper_container {
     flex-grow: 1;
@@ -251,9 +290,10 @@
     .stepper {
       position: absolute;
       right: 0px;
-      top: 50%;
+      top: 0;
       width: 100%;
-      transform: translate(0, -50%);
+      //transform: translate(0, -50%);
+
       .label {
         font-family: "Noto Sans CJK KR Regular";
         font-size: 14px;
@@ -262,6 +302,7 @@
   }
   .save_draft_container {
     margin-left: 0px;
+    margin-right: 0px;
     position: relative;
     height: 100%;
     width: 200px;
@@ -310,4 +351,36 @@
       letter-spacing: -0.98px;
     }
   }
+}
+
+.test_window {
+  position: relative;
+  height: 100vh;
+
+  width: 100%;
+}
+.test_dialog {
+  left: 0px;
+  top: 0px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(200, 200, 200, 0.5);
+  padding: 62px 214px 62px 214px;
+  box-sizing: border-box;
+  z-index: 3000;
+}
+.background_content {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 900;
+}
+.root {
+  background-color: white;
+  padding-top: 100px;
+  border-radius: 15px;
+  overflow: hidden;
 }

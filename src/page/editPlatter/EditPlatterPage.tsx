@@ -100,7 +100,6 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
         open
         onRendered={onRendered}
         PaperComponent={PaperComponent}
-
         //onClose={handleClose}
       >
         <Element

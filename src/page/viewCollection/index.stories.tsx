@@ -1,5 +1,7 @@
 import React from "react";
 import CollectionViewPage from "./CollectionViewPage";
+
+import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
 export default { title: "collection view" };
 
 export function basic() {

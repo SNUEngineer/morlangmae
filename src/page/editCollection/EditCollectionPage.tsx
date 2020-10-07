@@ -31,23 +31,49 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+import classNames from "classnames";
 
 //const [passwordActive, setPasswordActive] = useState(false);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: "80%",
+      width: "100%",
     },
     backButton: {
       marginRight: theme.spacing(1),
     },
+    draftButton: {
+      height: "40px",
+      width: "145px",
+      color: "black",
+      fontFamily: "Noto Sans CJK KR Medium",
+      fontSize: "13px",
+      borderRadius: "10px",
+      backgroundColor: "#707070",
+      boxShadow:
+        "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
+      "&:hover": {
+        background: "#707070",
+        boxShadow:
+          "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+      },
+    },
+
     instructions: {
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
     step: {
       fontFamily: "Noto Sans CJK KR Bold",
+      padding: "0px",
+    },
+    stepper: {
+      paddingTop: "0px",
+      paddingBottom: "0px",
+      paddingRight: "0px",
+      paddingLeft: "119px",
+      marginLeft: "-16%",
     },
     datePickerField: {
       backgroundColor: "red",
@@ -58,17 +84,53 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function getSteps() {
-  return ["표지", "정보", "본문"];
+  return ["표지", "정보", "확인"];
 }
 
 const contentStyles = makeStyles((theme: Theme) =>
   createStyles({
+    nextButton: {
+      height: "40px",
+      width: "145px",
+      color: "black",
+      fontFamily: "Noto Sans CJK KR Medium",
+      fontSize: "13px",
+      borderRadius: "10px",
+      backgroundColor: "#707070",
+
+      boxShadow:
+        "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
+      "&:hover": {
+        background: "#707070",
+        boxShadow:
+          "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+      },
+    },
     imageCard: {
       width: "100%",
-      paddingBottom: "56.25%",
+      height: "546px",
       backgroundImage: (props: any) => `url('${props.imageUrl}')`,
       backgroundSize: "cover",
       backgroundPosition: "center center",
+    },
+    secondStepImageCard: {
+      width: "100%",
+      height: "auto",
+      minHeight: "300px",
+      backgroundImage: (props: any) => `url('${props.imageUrl}')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center center",
+    },
+    thirdStepImageCard: {
+      width: "100%",
+      height: "auto",
+      minHeight: "300px",
+      backgroundImage: (props: any) => `url('${props.imageUrl}')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center center",
+    },
+    passwordTextField: {
+      marginBottom: "0px",
     },
     picker: {
       //backgroundColor: "red",
@@ -145,6 +207,7 @@ function getStepContent(
               " 명 (참여자 리스트)"}
         </div>
         <div className={editStyle.list_container}>
+          <div className={editStyle.list_container_padding_top} />
           {!!collection.members[0] &&
             collection.members.map((user: UserView) => (
               <div key={user.id} className={editStyle.user_info}>
@@ -168,6 +231,7 @@ function getStepContent(
                 )}
               </div>
             ))}
+          <div className={editStyle.list_container_padding_top} />
         </div>
       </div>
     );
@@ -182,7 +246,8 @@ function getStepContent(
               {collection.collectionType}
             </div>
             <div className={editStyle.service_type}>
-              {collection.serviceType}
+              {/* {collection.serviceType} */}
+              서비스 종류
             </div>
           </div>
           <Card
@@ -198,8 +263,8 @@ function getStepContent(
               <TextArea
                 inline
                 width="100%"
-                height="100px"
-                maxHeight="100px"
+                height="165px"
+                maxHeight="165px"
                 textSize={18}
                 onChange={handleChange}
                 defaultValue={collection.title}
@@ -226,7 +291,7 @@ function getStepContent(
                   value={collection.endDate}
                 /> */}
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
+                  {/* <KeyboardDatePicker
                     disableToolbar
                     variant="inline"
                     format="MM/dd/yyyy"
@@ -254,7 +319,7 @@ function getStepContent(
                     value={collection.endDate}
                     name="endDate"
                     onChange={handleChange}
-                  />
+                  /> */}
                 </MuiPickersUtilsProvider>
                 <div></div>
               </div>
@@ -265,7 +330,11 @@ function getStepContent(
               variant="contained"
               color="primary"
               onClick={handleNext}
-              className={editStyle.next_button}
+              //className={editStyle.next_button}
+              className={classNames({
+                [classes.nextButton]: true,
+                [editStyle.next_button]: true,
+              })}
             >
               Next
             </Button>
@@ -281,102 +350,114 @@ function getStepContent(
           <div className={editStyle.attend_text}> 참여 인원</div>
           <Grid container spacing={1}>
             <Grid item xs>
-              <Autocomplete
-                id="users-search"
-                style={{ width: 300 }}
-                multiple
-                value={collection.members}
-                //원래는 props.users로 검색가능 대상이 나와야 함.
-                onChange={(event, newValue) => {
-                  setCollection({
-                    ...collection,
-                    members: newValue,
-                  });
-                }}
-                options={collection.members}
-                //원래는 props.users로 검색가능 대상이 나와야 함.
-                renderInput={(params) => {
-                  return (
-                    <InputBase
-                      className={editStyle.input_option_container}
-                      ref={params.InputProps.ref}
-                      inputProps={params.inputProps}
-                      autoFocus
-                    />
-                  );
-                }}
-                getOptionLabel={(option) => option.displayName}
-                renderOption={(option: UserView) => (
-                  <Fragment>
-                    <div className={editStyle.search_attend_user_item}>
-                      <Avatar
-                        alt={option.displayName}
-                        src={option.imageUrl}
-                        className={editStyle.avatar}
+              <div className={editStyle.setting_box}>
+                <Autocomplete
+                  id="users-search"
+                  style={{ width: 300 }}
+                  multiple
+                  value={collection.members}
+                  //원래는 props.users로 검색가능 대상이 나와야 함.
+                  onChange={(event, newValue) => {
+                    setCollection({
+                      ...collection,
+                      members: newValue,
+                    });
+                  }}
+                  options={collection.members}
+                  //원래는 props.users로 검색가능 대상이 나와야 함.
+                  renderInput={(params) => {
+                    return (
+                      <InputBase
+                        className={editStyle.input_option_container}
+                        ref={params.InputProps.ref}
+                        inputProps={params.inputProps}
+                        autoFocus
                       />
+                    );
+                  }}
+                  getOptionLabel={(option) => option.displayName}
+                  renderOption={(option: UserView) => (
+                    <Fragment>
+                      <div className={editStyle.search_attend_user_item}>
+                        <Avatar
+                          alt={option.displayName}
+                          src={option.imageUrl}
+                          className={editStyle.avatar}
+                        />
 
-                      <div className={editStyle.user_info}>
-                        <div className={editStyle.name_text}>
-                          {option.displayName}
-                        </div>
-                        <div className={editStyle.user_info_text}>
-                          삼성전자, 과장
+                        <div className={editStyle.user_info}>
+                          <div className={editStyle.name_text}>
+                            {option.displayName}
+                          </div>
+                          <div className={editStyle.user_info_text}>
+                            삼성전자, 과장
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Fragment>
-                )}
-              />
-              <div className={editStyle.attended_user_container}>
-                {attendedUser(false)}
-              </div>
-              <div className={editStyle.password_container}>
+                    </Fragment>
+                  )}
+                />
                 <div
-                  className={editStyle.is_password_container}
-                  onClick={(event: object) => {}}
+                  className={classNames({
+                    [editStyle.attended_user_container]: true,
+                    [editStyle.attended_user_container_setting]: true,
+                  })}
                 >
-                  <Checkbox
-                    className={editStyle.check_box}
-                    onChange={(event: object) => {
-                      setPasswordActive(event.target.checked);
-                    }}
-                  ></Checkbox>
-                  <div className={editStyle.text}>암호요구</div>
+                  {attendedUser(false)}
                 </div>
-                <div>
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    disabled={!passwordActive}
-
-                    //inputRef={register}
-                  />
+                <div className={editStyle.password_container}>
+                  <div
+                    className={editStyle.is_password_container}
+                    onClick={(event: object) => {}}
+                  >
+                    <Checkbox
+                      className={editStyle.check_box}
+                      onChange={(event: object) => {
+                        setPasswordActive(event.target.checked);
+                      }}
+                    ></Checkbox>
+                    <div className={editStyle.text}>암호요구</div>
+                  </div>
+                  <div>
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      disabled={!passwordActive}
+                      className={classes.passwordTextField}
+                      //inputRef={register}
+                    />
+                  </div>
                 </div>
               </div>
             </Grid>
             <Grid item xs>
-              <Card className={classes.imageCard}>
-                <CardHeader
-                  title={collection.title}
-                  style={{ color: "white" }}
-                />
-              </Card>
-              <div className={editStyle.first_next_button_container}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                  className={editStyle.next_button}
-                >
-                  Next
-                </Button>
+              <div className={editStyle.image_check_container}>
+                <Card className={classes.secondStepImageCard}>
+                  <CardHeader
+                    title={collection.title}
+                    style={{ color: "white" }}
+                  />
+                </Card>
+                <div className={editStyle.second_next_button_container}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classNames({
+                      [classes.nextButton]: true,
+                      [editStyle.next_button]: true,
+                    })}
+                  >
+                    Next
+                  </Button>
+                </div>
               </div>
             </Grid>
           </Grid>
@@ -387,24 +468,30 @@ function getStepContent(
         <div className={editStyle.third_step_container}>
           <Grid container spacing={1}>
             <Grid item xs>
-              <div className={editStyle.collection_title}>
-                {collection.title}
-              </div>
-              <div className={editStyle.collection_type}>
-                {collection.collectionType}
-              </div>
-              <div className={editStyle.service_type}>
-                {collection.serviceType}
-              </div>
+              <div className={editStyle.setting_box}>
+                <div className={editStyle.collection_title}>
+                  {collection.title}
+                </div>
+                <div className={editStyle.collection_type}>
+                  {collection.collectionType}
+                </div>
+                <div className={editStyle.service_type}>
+                  {collection.serviceType}
+                </div>
 
-              <div className={editStyle.attended_user_container}>
-                <div className={editStyle.attend_check_text}>참여 인원</div>
-                {attendedUser(true)}
-              </div>
+                <div
+                  className={classNames({
+                    [editStyle.attended_user_container]: true,
+                    [editStyle.attended_user_container_check]: true,
+                  })}
+                >
+                  <div className={editStyle.attend_check_text}>참여 인원</div>
+                  {attendedUser(true)}
+                </div>
 
-              <div className={editStyle.request_container}>
-                <div className={editStyle.text}>생성 요청</div>
-                {/* <Autocomplete
+                <div className={editStyle.request_container}>
+                  <div className={editStyle.text}>생성 요청</div>
+                  {/* <Autocomplete
                   id="users-search"
                   style={{ width: 300 }}
                   multiple
@@ -442,31 +529,32 @@ function getStepContent(
                   )}
                 /> */}
 
-                <div className={editStyle.request_member_container}>
-                  <div className={editStyle.user_info}>
-                    {!!requestMember && requestMember.displayName}
+                  <div className={editStyle.request_member_container}>
+                    <div className={editStyle.user_info}>
+                      {!!requestMember && requestMember.displayName}
+                    </div>
                   </div>
-                </div>
-                <div className={editStyle.request_comment_container}>
-                  <TextArea
-                    inline
-                    width="100%"
-                    height="100px"
-                    maxHeight="100px"
-                    textSize={14}
-                    onChange={handleChange}
-                    // defaultValue={}
-                    fontFamily={"Noto Sans CJK KR Regular"}
-                    border={{ width: 1, color: "transparent", radius: "5px" }}
-                    backgroundColor={"#a0a0a0"}
-                  />
+                  <div className={editStyle.request_comment_container}>
+                    <TextArea
+                      inline
+                      width="100%"
+                      height="100px"
+                      maxHeight="100px"
+                      textSize={14}
+                      onChange={handleChange}
+                      // defaultValue={}
+                      fontFamily={"Noto Sans CJK KR Regular"}
+                      border={{ width: 1, color: "transparent", radius: "5px" }}
+                      backgroundColor={"#a0a0a0"}
+                    />
+                  </div>
                 </div>
               </div>
             </Grid>
             <Grid item xs>
               <div className={editStyle.title_image_check}>
                 <div className={editStyle.text}>대표 썸네일</div>
-                <Card className={classes.imageCard}>
+                <Card className={classes.thirdStepImageCard}>
                   <CardHeader
                     style={{ color: "white" }}
                     title={collection.title}
@@ -477,7 +565,10 @@ function getStepContent(
                     variant="contained"
                     color="primary"
                     onClick={() => props.editCollection(collection)}
-                    className={editStyle.finish_button}
+                    className={classNames({
+                      [classes.nextButton]: true,
+                      [editStyle.finish_button]: true,
+                    })}
                   >
                     Finish
                   </Button>
@@ -541,50 +632,59 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
 
   const ColorlibConnector = withStyles({
     alternativeLabel: {
-      top: 22,
+      top: "19px", //원형 아이콘 높이의 반
     },
     active: {
       "& $line": {
-        backgroundColor: "green",
+        backgroundColor: "#a2a2a2",
+
         //"linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
       },
     },
     completed: {
       "& $line": {
-        backgroundColor: "green",
+        backgroundColor: "#a2a2a2",
         //"linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
       },
     },
     line: {
-      height: 3,
+      height: "1px",
       border: 0,
       backgroundColor: "#eaeaf0",
+      marginLeft: "8px",
+      marginRight: "8px",
       borderRadius: 1,
     },
   })(StepConnector);
 
   const useColorlibStepIconStyles = makeStyles({
     root: {
-      backgroundColor: "#ccc",
       zIndex: 1,
-      color: "#fff",
-      width: 50,
-      height: 50,
+      height: "38px",
+      width: "38px",
+      color: "#e0e0e0",
       display: "flex",
       borderRadius: "50%",
+      borderWidth: "1px",
+      borderColor: "#e0e0e0",
+      borderStyle: "solid",
       justifyContent: "center",
       alignItems: "center",
-      fontSize: "14px",
+      fontSize: "13px",
       fontFamily: "Noto Sans CJK KR Regular",
     },
     active: {
       //backgroundImage:  "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
       backgroundColor: "#105710",
+      borderColor: "transparent",
+      color: "#fff",
       //boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
     },
     completed: {
       // backgroundImage:  "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
       backgroundColor: "#105710",
+      borderColor: "transparent",
+      color: "#fff",
     },
   });
 
@@ -621,7 +721,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={editStyle.root}>
       <div className={editStyle.header_container}>
         <div className={editStyle.stepper_container}>
           <div className={editStyle.stepper}>
@@ -629,6 +729,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
               activeStep={activeStep}
               connector={<ColorlibConnector />}
               alternativeLabel
+              className={classes.stepper}
             >
               {steps.map((label, index) => (
                 <Step key={label} onClick={() => handleStepClick(index)}>
@@ -650,7 +751,10 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
               variant="contained"
               color="primary"
               onClick={handleNext}
-              className={editStyle.next_button}
+              className={classNames({
+                [classes.draftButton]: true,
+                [editStyle.next_button]: false,
+              })}
             >
               초안으로 저장
             </Button>

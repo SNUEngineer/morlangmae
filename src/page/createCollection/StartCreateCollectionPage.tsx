@@ -16,11 +16,11 @@ export default function StartCreateCollectionPage(
   const useStyles = makeStyles(() =>
     createStyles({
       submit: {
-        height: "40px",
-        width: "95px",
+        height: "50px",
+        width: "137px",
         color: "black",
         fontFamily: "Noto Sans CJK KR Medium",
-        fontSize: "13px",
+        fontSize: "18px",
         borderRadius: "30px",
         backgroundColor: "white",
         boxShadow:
