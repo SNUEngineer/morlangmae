@@ -252,9 +252,7 @@
       height: 100%;
       flex-grow: 1;
       width: 0;
-      border-style: solid;
-      border-color: #707070;
-      border-width: 1px;
+
       .mode_text {
         position: absolute;
         left: 50%;
@@ -264,20 +262,63 @@
     }
 
     .view_mode {
-      border-radius: $switch_radius 0 0 $switch_radius;
+      //   border-radius: $switch_radius 0 0 $switch_radius;
     }
     .task_mode {
-      border-radius: 0 $switch_radius $switch_radius 0;
+      //  border-radius: 0 $switch_radius $switch_radius 0;
     }
     .mode_active {
-      background-color: white;
+      border-bottom-style: solid;
+      border-bottom-color: white;
+      border-bottom-width: 3px;
     }
     .mode_inactive {
-      background-color: #707070;
+      border-bottom-style: solid;
+      border-bottom-color: transparent;
+      border-bottom-width: 3px;
     }
   }
 }
+.switch_container_back_up {
+  .switch {
+    $switch_radius: 36px;
+    display: flex;
+    flex-direction: row;
+    width: 168px;
+    height: 38px;
+    .mode {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      flex-grow: 1;
+      width: 0;
 
+      .mode_text {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .view_mode {
+      //   border-radius: $switch_radius 0 0 $switch_radius;
+    }
+    .task_mode {
+      //  border-radius: 0 $switch_radius $switch_radius 0;
+    }
+    .mode_active {
+      border-style: solid;
+      border-color: white;
+      border-width: 3px;
+    }
+    .mode_inactive {
+      border-style: solid;
+      border-color: transparent;
+      border-width: 3px;
+    }
+  }
+}
 .add_icon {
   margin-top: 3px;
   margin-right: -3px;

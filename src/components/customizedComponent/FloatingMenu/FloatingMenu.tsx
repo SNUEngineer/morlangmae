@@ -29,14 +29,16 @@ export default function FloatingMenu(props) {
         backgroundColor: "transparent",
         height: "10px",
         width: "20px",
-        minWidth: "20px",
+        minWidth: "0px",
+        padding: "0px",
         color: "#a0a0a0",
         boxShadow:
           "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
         "&:hover": {
           background: "transparent",
           boxShadow:
-            "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+            // "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+            "none",
         },
       },
       item: {

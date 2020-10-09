@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import platterStyle from "./platter.module.scss";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
 import { PlatterData, viewToData } from "../platter/PlatterEditor";
+import testProfile from "../../resources/icons/test_profile_image.png";
 
 export interface PlatterProps {
   id: number;
@@ -43,7 +44,7 @@ export default function Platter(props: PlatterProps) {
     companyId: "World Plus CNC",
     createdDate: "오전 9:05, 8월 8일 생성",
     subtitle: "현지인 들이 추천하는",
-    title: "1차 기획 회의",
+    title: "나이키 1차 기획 회의",
   };
   const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
   return (
@@ -58,9 +59,9 @@ export default function Platter(props: PlatterProps) {
 
         <div className={platterStyle.platter_info_container}>
           <div className={platterStyle.title_container}>
-            <Typography className={platterStyle.subtitle}>
+            {/* <Typography className={platterStyle.subtitle}>
               {test.subtitle}
-            </Typography>
+            </Typography> */}
             <Typography className={platterStyle.title}>{test.title}</Typography>
           </div>
 
@@ -72,15 +73,18 @@ export default function Platter(props: PlatterProps) {
             <div className={platterStyle.profile_container}>
               <Avatar
                 alt={platterData.createdBy.displayName}
-                src={platterData.createdBy.imageUrl}
+                //src={platterData.createdBy.imageUrl}
+                src={testProfile}
                 className={platterStyle.avatar}
               />
               <div className={platterStyle.name_text_container}>
                 <Typography className={platterStyle.name_text}>
-                  {platterData.createdBy.displayName}
+                  {/* {platterData.createdBy.displayName} */}
+                  송병근
                 </Typography>
                 <Typography className={platterStyle.company_text}>
-                  {platterData.createdBy.companyId}
+                  {/* {platterData.createdBy.companyId} */}
+                  Bailey, 피플 팀, 리더
                 </Typography>
               </div>
             </div>

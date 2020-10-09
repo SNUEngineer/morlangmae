@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   margin: auto 0;
-  padding-top: 112px;
+  padding-top: 72px;
   padding-bottom: 90px;
   box-sizing: border-box;
   align-content: center;
@@ -27,8 +27,8 @@
 
 .platter_info_container {
   position: relative;
-  margin-top: 20px;
-  height: 80px;
+  // margin-top: 5px;
+  height: 150px;
   margin-bottom: 140px;
   .title_container {
     position: absolute;
@@ -40,8 +40,10 @@
     }
 
     .title {
-      font-size: 37px;
+      font-size: 32px;
       color: #707070;
+      letter-spacing: -1.2px;
+      font-family: "Noto Sans CJK KR Bold";
     }
   }
 
@@ -53,15 +55,20 @@
 
     .date_text {
       text-align: right;
-      font-size: 11px;
+      font-size: 12px;
+      color: #707070;
+      letter-spacing: 0px;
+      font-family: "Noto Sans CJK KR Light";
     }
 
     .profile_container {
       position: relative;
+      margin-top: 64px;
       height: 50px;
+
       .avatar {
         position: absolute;
-        right: 130px;
+        right: 110px;
         top: 50%;
         transform: translate(0%, -50%);
         height: 35px;
@@ -77,10 +84,19 @@
         .name_text {
           text-align: right;
           font-size: 11px;
+
+          color: #707070;
+          letter-spacing: 0px;
+          font-family: "Noto Sans CJK KR Regular";
         }
         .company_text {
+          margin-top: 3px;
           text-align: right;
           font-size: 11px;
+
+          color: #707070;
+          letter-spacing: 0px;
+          font-family: "Noto Sans CJK KR Regular";
         }
       }
     }
