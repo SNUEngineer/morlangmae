@@ -4,7 +4,9 @@ import {
   Theme,
   createStyles,
   withStyles,
+  useTheme,
 } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -26,17 +28,22 @@ import { TextArea } from "../../components/customizedComponent/TextArea";
 import StepConnector from "@material-ui/core/StepConnector";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import Popover from "@material-ui/core/Popover";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+import Dialog from "@material-ui/core/Dialog";
 import classNames from "classnames";
 
 //const [passwordActive, setPasswordActive] = useState(false);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    paper: {
+      padding: "0px",
+    },
     root: {
       width: "100%",
     },
@@ -45,28 +52,32 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     draftButton: {
       height: "40px",
-      width: "145px",
-      color: "black",
+      width: "95px",
       fontFamily: "Noto Sans CJK KR Medium",
       fontSize: "13px",
-      borderRadius: "10px",
-      backgroundColor: "#707070",
-      boxShadow:
-        "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
+      borderRadius: "1px",
+      color: "#4D4F5C",
+      backgroundColor: "#F8F8F8",
+      borderColor: "#E0E0E0",
+      borderStyle: "solid",
+      letterSpacing: "-0.65px",
+      padding: "0px",
+      boxShadow: "none",
       "&:hover": {
-        background: "#707070",
-        boxShadow:
-          "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        backgroundColor: "#F0F0F0",
+        boxShadow: "none",
       },
     },
 
-    instructions: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
-    },
     step: {
       fontFamily: "Noto Sans CJK KR Bold",
       padding: "0px",
+      backgroundColor: "transparent",
+      "& .MuiStepLabel-label": {
+        marginTop: "4px",
+      },
+      "&&:active": {},
+      "&&:completed": {},
     },
     stepper: {
       paddingTop: "0px",
@@ -74,6 +85,18 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingRight: "0px",
       paddingLeft: "119px",
       marginLeft: "-16%",
+      backgroundColor: "transparent",
+    },
+    label: {
+      fontFamily: "Noto Sans CJK KR Medium",
+      fontSize: "14px",
+      letterSpacing: "-0.7px",
+      "&&:active": {
+        //color: "red",
+      },
+      "&&:completed": {
+        color: "#A2A2A2",
+      },
     },
     datePickerField: {
       backgroundColor: "red",
@@ -89,34 +112,58 @@ function getSteps() {
 
 const contentStyles = makeStyles((theme: Theme) =>
   createStyles({
-    nextButton: {
-      height: "40px",
-      width: "145px",
-      color: "black",
-      fontFamily: "Noto Sans CJK KR Medium",
-      fontSize: "13px",
-      borderRadius: "10px",
-      backgroundColor: "#707070",
-
-      boxShadow:
-        "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
+    show_list_button: {
+      minHeight: "0px",
+      minWidth: "0px",
+      padding: "0px",
+      margin: "-2px 0 0 0",
+      backgroundColor: "transparent",
+      boxShadow: "none",
+      "&:active": {
+        backgroundColor: "transparent",
+        boxShadow: "none",
+      },
       "&:hover": {
-        background: "#707070",
-        boxShadow:
-          "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        backgroundColor: "transparent",
+        boxShadow: "none",
+      },
+    },
+    delete_button: {
+      minHeight: "0px",
+      minWidth: "0px",
+    },
+    nextButton: {
+      cursor: "pointer",
+      height: "40px",
+      width: "95px",
+      color: "#105710",
+      fontFamily: "Noto Sans CJK KR Medium",
+      fontSize: "12px",
+      letterSpacing: "-0.6px",
+      borderRadius: "36px",
+      borderColor: "#105710",
+      borderWidth: "0.5px",
+      borderStyle: "solid",
+      backgroundColor: "transparent",
+      boxShadow: "none",
+      "&:hover": {
+        boxShadow: "none",
+        backgroundColor: "transparent",
       },
     },
     imageCard: {
       width: "100%",
       height: "546px",
-      backgroundImage: (props: any) => `url('${props.imageUrl}')`,
+      // backgroundImage: (props: any) => `url('${props.imageUrl}')`,
+      backgroundImage:
+        "url(https://cdn.civitatis.com/francia/paris/galeria/arco-triunfo-paris.jpg)",
       backgroundSize: "cover",
       backgroundPosition: "center center",
     },
     secondStepImageCard: {
       width: "100%",
       height: "auto",
-      minHeight: "300px",
+      minHeight: "289px",
       backgroundImage: (props: any) => `url('${props.imageUrl}')`,
       backgroundSize: "cover",
       backgroundPosition: "center center",
@@ -124,7 +171,7 @@ const contentStyles = makeStyles((theme: Theme) =>
     thirdStepImageCard: {
       width: "100%",
       height: "auto",
-      minHeight: "300px",
+      minHeight: "280px",
       backgroundImage: (props: any) => `url('${props.imageUrl}')`,
       backgroundSize: "cover",
       backgroundPosition: "center center",
@@ -154,8 +201,8 @@ const contentStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-function getStepContent(
+//const [open, setOpen] = useState(false);
+const getStepContent = (
   stepIndex: number,
   collection: any,
   setCollection: any,
@@ -163,11 +210,27 @@ function getStepContent(
   setPasswordActive,
   requestMember,
   setRequestMember: UserView[],
+  popOpen: boolean,
+  setPopOpen,
+  anchorEl,
+  setAnchorEl,
   props: EditCollectionPageProps,
   handleNext
-) {
+) => {
   const classes = contentStyles(collection);
+  console.log(" asdfasdfafafaaa " + popOpen);
+  const id = popOpen ? "simple-popover-search" : undefined;
 
+  const handleClickOpen = (event) => {
+    setPopOpen(true);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (value) => {
+    setPopOpen(false);
+    setSelectedValue(value);
+    setAnchorEl(null);
+  };
   const handleChange = (e: any) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -197,42 +260,128 @@ function getStepContent(
   };
 
   const attendedUser = (checking: boolean) => {
+    setTimeout(() => {
+      console.log("asdfasdfasdf    " + popOpen + "    " + passwordActive);
+      setPopOpen(false);
+    }, 3000);
     return (
       <div>
-        <div className={editStyle.count_text}>
-          {!!collection.members[0] &&
-            collection.members[0].displayName +
-              " 외 " +
-              (collection.members.length - 1) +
-              " 명 (참여자 리스트)"}
-        </div>
-        <div className={editStyle.list_container}>
-          <div className={editStyle.list_container_padding_top} />
-          {!!collection.members[0] &&
-            collection.members.map((user: UserView) => (
-              <div key={user.id} className={editStyle.user_info}>
-                <div className={editStyle.user_info_text}>
-                  {user.displayName}
-                </div>
+        {!checking && (
+          <div className={editStyle.count_text}>
+            {!!collection.members[0] &&
+              collection.members[0].displayName +
+                " 외 " +
+                (collection.members.length - 1) +
+                " 명 (참여자 리스트)"}
+          </div>
+        )}
 
-                {!checking && (
-                  <Button
-                    onClick={() => {
-                      setCollection({
-                        ...collection,
-                        members: collection.members.filter(
-                          (it: UserView) => it.id !== user.id
-                        ),
-                      });
-                    }}
-                  >
-                    X
-                  </Button>
-                )}
+        {!checking && (
+          <div className={editStyle.count_text}>
+            <div className={editStyle.list_container}>
+              <div className={editStyle.list_container_padding_top} />
+              {!!collection.members[0] &&
+                collection.members.map((user: UserView) => (
+                  <div key={user.id} className={editStyle.user_info}>
+                    <div className={editStyle.user_info_text}>
+                      {user.displayName}
+                    </div>
+
+                    {!checking && (
+                      <Button
+                        className={classes.delete_button}
+                        onClick={() => {
+                          setCollection({
+                            ...collection,
+                            members: collection.members.filter(
+                              (it: UserView) => it.id !== user.id
+                            ),
+                          });
+                        }}
+                      >
+                        <div className={editStyle.minus_container}>
+                          <div className={editStyle.minus}></div>
+                        </div>
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              <div className={editStyle.list_container_padding_top} />
+            </div>
+          </div>
+        )}
+        {checking && (
+          <div className={editStyle.count_text_check_container}>
+            <div className={editStyle.text}>리스트 보기</div>
+            <Button
+              aria-describedby={id}
+              variant="contained"
+              onClick={handleClickOpen}
+              className={classes.show_list_button}
+              endIcon={<img className={editStyle.go_to_icon} alt={"icon"} />}
+              // endIcon={
+              //   <div>
+              //     <MoreHorizIcon />
+              //   </div>
+              // }
+            >
+              <div className={editStyle.count_text_check}>
+                {!!collection.members[0] &&
+                  collection.members[0].displayName +
+                    " 외 " +
+                    (collection.members.length - 1) +
+                    " 명"}
               </div>
-            ))}
-          <div className={editStyle.list_container_padding_top} />
-        </div>
+            </Button>
+
+            <Popover
+              onClose={handleClose}
+              id={id}
+              // open={popOpen}
+              open={false}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <div className={editStyle.list_container}>
+                <div className={editStyle.list_container_padding_top} />
+                {!!collection.members[0] &&
+                  collection.members.map((user: UserView) => (
+                    <div key={user.id} className={editStyle.user_info}>
+                      <div className={editStyle.user_info_text}>
+                        {user.displayName}
+                      </div>
+
+                      {!checking && (
+                        <Button
+                          className={classes.delete_button}
+                          onClick={() => {
+                            setCollection({
+                              ...collection,
+                              members: collection.members.filter(
+                                (it: UserView) => it.id !== user.id
+                              ),
+                            });
+                          }}
+                        >
+                          <div className={editStyle.minus_container}>
+                            <div className={editStyle.minus}></div>
+                          </div>
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                <div className={editStyle.list_container_padding_top} />
+              </div>
+            </Popover>
+          </div>
+        )}
       </div>
     );
   };
@@ -247,7 +396,7 @@ function getStepContent(
             </div>
             <div className={editStyle.service_type}>
               {/* {collection.serviceType} */}
-              서비스 종류
+              {collection.title}
             </div>
           </div>
           <Card
@@ -259,22 +408,32 @@ function getStepContent(
           </Card>
           <div className={editStyle.setting_container}>
             <div className={editStyle.set_title_container}>
-              <div className={editStyle.text}>제목 설정</div>
+              <div className={editStyle.setting_stage_container}>
+                <div className={editStyle.number}>1</div>
+                <div className={editStyle.text}>제목 설정</div>
+              </div>
               <TextArea
                 inline
                 width="100%"
                 height="165px"
                 maxHeight="165px"
-                textSize={18}
+                textSize={15}
+                fontColor={"#4B4B4B"}
+                letterSpacing={"-0.75px"}
+                padding={"24px 30px 24px 30px"}
                 onChange={handleChange}
                 defaultValue={collection.title}
                 fontFamily={"Noto Sans CJK KR Regular"}
-                border={{ width: 1, color: "#105710", radius: "10px" }}
+                border={{ width: 0.5, color: "#E0E0E0", radius: "5px" }}
+                backgroundColor={"transparent"}
               />
             </div>
             <div className={editStyle.set_date_container}>
               <div className={editStyle.set_date}>
-                <div className={editStyle.text}>기한 설정</div>
+                <div className={editStyle.setting_stage_container}>
+                  <div className={editStyle.number}>2</div>
+                  <div className={editStyle.text}>기한 설정</div>
+                </div>
                 {/* <TextField
                   variant="outlined"
                   type="datetime-local"
@@ -336,7 +495,7 @@ function getStepContent(
                 [editStyle.next_button]: true,
               })}
             >
-              Next
+              다음 단계
             </Button>
           </div>
         </div>
@@ -347,13 +506,13 @@ function getStepContent(
 
       return (
         <div className={editStyle.second_step_container}>
-          <div className={editStyle.attend_text}> 참여 인원</div>
           <Grid container spacing={1}>
             <Grid item xs>
+              <div className={editStyle.attend_text}> 참여 인원</div>
               <div className={editStyle.setting_box}>
                 <Autocomplete
                   id="users-search"
-                  style={{ width: 300 }}
+                  style={{ width: "100%" }}
                   multiple
                   value={collection.members}
                   //원래는 props.users로 검색가능 대상이 나와야 함.
@@ -371,6 +530,7 @@ function getStepContent(
                         className={editStyle.input_option_container}
                         ref={params.InputProps.ref}
                         inputProps={params.inputProps}
+                        placeholder={"ID 또는 이름으로 참여 인원 추가"}
                         autoFocus
                       />
                     );
@@ -455,7 +615,7 @@ function getStepContent(
                       [editStyle.next_button]: true,
                     })}
                   >
-                    Next
+                    다음 단계
                   </Button>
                 </div>
               </div>
@@ -469,14 +629,25 @@ function getStepContent(
           <Grid container spacing={1}>
             <Grid item xs>
               <div className={editStyle.setting_box}>
-                <div className={editStyle.collection_title}>
-                  {collection.title}
+                <div className={editStyle.title_container}>
+                  <div className={editStyle.stage_title}>컬렉션</div>
+                  <div className={editStyle.collection_title}>
+                    {collection.title}
+                  </div>
                 </div>
-                <div className={editStyle.collection_type}>
-                  {collection.collectionType}
-                </div>
-                <div className={editStyle.service_type}>
-                  {collection.serviceType}
+                <div className={editStyle.collection_info_container}>
+                  <div className={editStyle.collection_type}>
+                    <div className={editStyle.type}>컬렉션 타입</div>
+                    <div className={editStyle.text}>
+                      {collection.collectionType}
+                    </div>
+                  </div>
+                  <div className={editStyle.service_type}>
+                    <div className={editStyle.type}>서비스 종류</div>
+                    <div className={editStyle.text}>
+                      {collection.serviceType}
+                    </div>
+                  </div>
                 </div>
 
                 <div
@@ -485,51 +656,75 @@ function getStepContent(
                     [editStyle.attended_user_container_check]: true,
                   })}
                 >
-                  <div className={editStyle.attend_check_text}>참여 인원</div>
+                  <div
+                    className={classNames({
+                      [editStyle.stage_title]: true,
+                      [editStyle.attend_check_text]: true,
+                    })}
+                  >
+                    참여 인원
+                  </div>
                   {attendedUser(true)}
                 </div>
 
                 <div className={editStyle.request_container}>
-                  <div className={editStyle.text}>생성 요청</div>
-                  {/* <Autocomplete
-                  id="users-search"
-                  style={{ width: 300 }}
-                  multiple
-                  value={requestMember}
-                  onChange={(event, newValue) => {
-                    setRequestMember(requestMember.concat(newValue));
-                  }}
-                  options={requestMember}
-                  renderInput={(params) => {
-                    return (
-                      <InputBase
-                        className={editStyle.input_option_container}
-                        ref={params.InputProps.ref}
-                        inputProps={params.inputProps}
-                        autoFocus
-                      />
-                    );
-                  }}
-                  getOptionLabel={(option) => option.displayName}
-                  renderOption={(option: UserView) => (
-                    <Fragment>
-                      <div className={editStyle.search_attend_user_item}>
-                        <Avatar
-                          alt={option.displayName}
-                          src={option.imageUrl}
-                          className={editStyle.avatar}
+                  <div
+                    className={classNames({
+                      [editStyle.stage_title]: true,
+                      [editStyle.authority_request_text]: true,
+                    })}
+                  >
+                    생성 요청
+                  </div>
+                  <Autocomplete
+                    id="users-search"
+                    style={{ width: "100%" }}
+                    multiple
+                    value={collection.members}
+                    //원래는 props.users로 검색가능 대상이 나와야 함.
+                    onChange={(event, newValue) => {
+                      setCollection({
+                        ...collection,
+                        members: newValue,
+                      });
+                    }}
+                    options={collection.members}
+                    //원래는 props.users로 검색가능 대상이 나와야 함.
+                    renderInput={(params) => {
+                      return (
+                        <InputBase
+                          className={editStyle.input_option_container}
+                          ref={params.InputProps.ref}
+                          inputProps={params.inputProps}
+                          placeholder={"ID 또는 이름으로 생성 권한자 설정"}
+                          autoFocus
                         />
+                      );
+                    }}
+                    getOptionLabel={(option) => option.displayName}
+                    renderOption={(option: UserView) => (
+                      <Fragment>
+                        <div className={editStyle.search_attend_user_item}>
+                          <Avatar
+                            alt={option.displayName}
+                            src={option.imageUrl}
+                            className={editStyle.avatar}
+                          />
 
-                        <div className={editStyle.user_info}>
-                          <Typography>{option.displayName}</Typography>
-                          <Typography>삼성전자, 과장</Typography>
+                          <div className={editStyle.user_info}>
+                            <div className={editStyle.name_text}>
+                              {option.displayName}
+                            </div>
+                            <div className={editStyle.user_info_text}>
+                              삼성전자, 과장
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </Fragment>
-                  )}
-                /> */}
+                      </Fragment>
+                    )}
+                  />
 
-                  <div className={editStyle.request_member_container}>
+                  {/* <div className={editStyle.request_member_container}>
                     <div className={editStyle.user_info}>
                       {!!requestMember && requestMember.displayName}
                     </div>
@@ -547,13 +742,12 @@ function getStepContent(
                       border={{ width: 1, color: "transparent", radius: "5px" }}
                       backgroundColor={"#a0a0a0"}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </Grid>
             <Grid item xs>
               <div className={editStyle.title_image_check}>
-                <div className={editStyle.text}>대표 썸네일</div>
                 <Card className={classes.thirdStepImageCard}>
                   <CardHeader
                     style={{ color: "white" }}
@@ -570,7 +764,7 @@ function getStepContent(
                       [editStyle.finish_button]: true,
                     })}
                   >
-                    Finish
+                    완료
                   </Button>
                 </div>
               </div>
@@ -581,7 +775,7 @@ function getStepContent(
     default:
       return "Unknown stepIndex";
   }
-}
+};
 
 export interface EditCollectionPageProps {
   collectionDetail: CollectionDetail;
@@ -594,11 +788,14 @@ export interface EditCollectionPageProps {
 export default function EditCollectionPage(props: EditCollectionPageProps) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
+  const [popOpen, setPopOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [passwordActive, setPasswordActive] = useState(false);
   const steps = getSteps();
   const collectionDetail = props.collectionDetail;
   const [requestMember, setRequestMember] = useState<UserView[]>();
-
+  const Theme = useTheme();
+  const fullScreen = useMediaQuery(Theme.breakpoints.down("sm"));
   const testMember1 = {
     id: 0,
     displayName: "송병근",
@@ -660,6 +857,8 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
   const useColorlibStepIconStyles = makeStyles({
     root: {
       zIndex: 1,
+      position: "relative",
+      cursor: "pointer",
       height: "38px",
       width: "38px",
       color: "#e0e0e0",
@@ -686,6 +885,11 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
       borderColor: "transparent",
       color: "#fff",
     },
+    icon: {
+      position: "absolute",
+      left: "50%",
+      top: "50%",
+    },
   });
 
   function ColorlibStepIcon(props) {
@@ -709,7 +913,8 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
           [classes.completed]: completed,
         })}
       >
-        {icons[String(props.icon)]}
+        {!completed && icons[String(props.icon)]}
+        {completed && <img alt={"icon"} className={classes.complete_icon} />}
       </div>
     );
   }
@@ -721,48 +926,57 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
   };
 
   return (
-    <div className={editStyle.root}>
-      <div className={editStyle.header_container}>
-        <div className={editStyle.stepper_container}>
-          <div className={editStyle.stepper}>
-            <Stepper
-              activeStep={activeStep}
-              connector={<ColorlibConnector />}
-              alternativeLabel
-              className={classes.stepper}
-            >
-              {steps.map((label, index) => (
-                <Step key={label} onClick={() => handleStepClick(index)}>
-                  <StepLabel
-                    StepIconComponent={ColorlibStepIcon}
-                    className={classes.step}
-                  >
-                    <div className={editStyle.label}> {label} </div>
-                  </StepLabel>
-                </Step>
-              ))}
-            </Stepper>
+    <Dialog
+      fullScreen={fullScreen}
+      disableEnforceFocus
+      fullWidth
+      maxWidth="xl"
+      open
+      PaperComponent={PaperComponent}
+      onClose={props.onClose}
+      className={classes.paper}
+    >
+      <div className={editStyle.root}>
+        <div className={editStyle.header_container}>
+          <div className={editStyle.stepper_container}>
+            <div className={editStyle.stepper}>
+              <Stepper
+                activeStep={activeStep}
+                connector={<ColorlibConnector />}
+                alternativeLabel
+                className={classes.stepper}
+              >
+                {steps.map((label, index) => (
+                  <Step key={label} onClick={() => handleStepClick(index)}>
+                    <StepLabel
+                      StepIconComponent={ColorlibStepIcon}
+                      className={classes.step}
+                    >
+                      <div className={classes.label}> {label} </div>
+                    </StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </div>
+          </div>
+
+          <div className={editStyle.save_draft_container}>
+            <div className={editStyle.button}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                className={classNames({
+                  [classes.draftButton]: true,
+                  [editStyle.next_button]: false,
+                })}
+              >
+                초안으로 저장
+              </Button>
+            </div>
           </div>
         </div>
-
-        <div className={editStyle.save_draft_container}>
-          <div className={editStyle.button}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleNext}
-              className={classNames({
-                [classes.draftButton]: true,
-                [editStyle.next_button]: false,
-              })}
-            >
-              초안으로 저장
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      <div>
+        <div className={editStyle.header_divider}></div>
         <div className={editStyle.step_container}>
           {getStepContent(
             activeStep,
@@ -773,11 +987,33 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
             requestMember,
             setRequestMember,
             handleNext,
+            popOpen,
+            setPopOpen,
+            anchorEl,
+            setAnchorEl,
             props
           )}
           <div></div>
         </div>
       </div>
-    </div>
+    </Dialog>
   );
+}
+
+const paperStyles = makeStyles(() =>
+  createStyles({
+    paper: {
+      backgroundColor: "transparent",
+      padding: "0px",
+      margin: "0px",
+      maxWidth: "1000px",
+      //maxHeight: "756px",
+      boxShadow: "none",
+    },
+  })
+);
+export function PaperComponent(props: PaperProps) {
+  const inherited = props.className;
+  const classes = paperStyles();
+  return <Paper {...props} className={clsx(inherited, classes.paper)} />;
 }

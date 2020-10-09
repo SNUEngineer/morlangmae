@@ -8,12 +8,22 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 
 export default function Selector(props: any) {
-  const { filter, handleChange } = props;
+  const { filter, handleChange, theme } = props;
   const useStyles = makeStyles(() =>
     createStyles({
-      select: {
+      selectBasic: {
         fontSize: "13px",
         letterSpacing: "-0.98px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        ul: {
+          backgroundColor: "red",
+          minHeight: "1000px",
+        },
+      },
+      collectionViewSelect: {
+        fontSize: "16px",
+        letterSpacing: "-0.8px",
+        color: "#E2E2E2",
         fontFamily: "Noto Sans CJK KR Regular",
         ul: {
           backgroundColor: "red",
@@ -43,6 +53,22 @@ export default function Selector(props: any) {
     })
   );
   const classes = useStyles();
+  const themeData = !!theme ? theme : "selectBasic";
+  const iconComponent = () => {
+    switch (themeData) {
+      case "selectBasic":
+        return <ExpandMoreRoundedIcon />;
+      case "COLVIEW":
+        return (
+          <img
+            alt={"icon"}
+            className={selectorStyle.collection_view_drop_down_icon}
+          />
+        );
+      default:
+        return ExpandMoreRoundedIcon;
+    }
+  };
 
   return (
     <div className={selectorStyle.root}>
@@ -50,10 +76,10 @@ export default function Selector(props: any) {
         value={filter}
         onChange={handleChange}
         className={classNames({
-          [classes.select]: true,
-          [classes.icon]: true,
+          [classes.selectBasic]: themeData === "selectBasic",
+          [classes.collectionViewSelect]: themeData === "COLVIEW",
         })}
-        IconComponent={ExpandMoreRoundedIcon}
+        IconComponent={iconComponent}
         disableUnderline
       >
         <MenuItem

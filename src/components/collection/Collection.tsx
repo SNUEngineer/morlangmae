@@ -30,7 +30,11 @@ const useStyles = makeStyles({
     width: "100%",
   },
   root: {
-    overflowY: "scroll",
+    //overflowY: "scroll",
+    height: "auto",
+  },
+  platter: {
+    height: "auto",
   },
 });
 
@@ -60,7 +64,7 @@ export default function Collection(props: CollectionProps) {
         />
       ))} */}
       {/* </AvatarGroup> */}
-      {platters}
+      <div className={classes.platter}>{platters}</div>
     </Card>
   );
 }

@@ -17,19 +17,20 @@ export default function CreatingCollectionPage(
   const useStyles = makeStyles(() =>
     createStyles({
       submit: {
-        height: "40px",
-        width: "145px",
-        color: "black",
+        color: "#136913",
         fontFamily: "Noto Sans CJK KR Medium",
-        fontSize: "13px",
-        borderRadius: "30px",
-        backgroundColor: "#707070",
-        boxShadow:
-          "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
+        fontSize: "16px",
+        letterSpacing: "-0.8px",
+        width: "170px",
+        backgroundColor: "transparent",
+        borderColor: "transparent",
+        boxShadow: "none",
+        padding: "5px",
+        minHeight: "0px",
+
         "&:hover": {
-          background: "#707070",
-          boxShadow:
-            "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+          background: "transparent",
+          boxShadow: "none",
         },
       },
     })
@@ -47,6 +48,7 @@ export default function CreatingCollectionPage(
             })}
           >
             <div className={pageStyle.bailey_text}>Bailey</div>
+
             <div className={pageStyle.progress_container}>
               <div className={pageStyle.align_container}>
                 <CircularProgress />
@@ -63,6 +65,7 @@ export default function CreatingCollectionPage(
             })}
           >
             <div className={pageStyle.bailey_text}>Bailey</div>
+            <div className={pageStyle.info_text}>생성 완료</div>
             <div className={pageStyle.button_container}>
               <Button
                 type="submit"
@@ -70,6 +73,7 @@ export default function CreatingCollectionPage(
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                endIcon={<img className={pageStyle.go_to_icon} alt={"icon"} />}
               >
                 생성한 컬렉션으로
               </Button>
@@ -80,6 +84,7 @@ export default function CreatingCollectionPage(
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                endIcon={<img className={pageStyle.go_to_icon} alt={"icon"} />}
               >
                 컬렉션 홈으로
               </Button>

@@ -57,3 +57,11 @@
 .root {
   z-index: 5000;
 }
+
+.collection_view_drop_down_icon {
+  margin-top: 2px;
+  margin-left: -10px;
+  height: auto;
+  width: 10px;
+  content: url("../../../resources/icons/collection_view_drop_down_icon.png");
+}

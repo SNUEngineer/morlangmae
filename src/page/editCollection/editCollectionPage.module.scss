@@ -1,12 +1,92 @@
+.root {
+  background-color: white;
+
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .step_container {
+    flex-grow: 1;
+    overflow-y: scroll;
+    max-height: 626px;
+    z-index: 2000;
+  }
+
+  .header_container {
+    display: flex;
+    flex-direction: row;
+    height: 62px;
+    z-index: 2500;
+    background-color: #f9f9f9;
+    padding: 38px 0 30px 0;
+
+    .stepper_container {
+      flex-grow: 1;
+      width: 0px;
+      position: relative;
+      height: 100%;
+      margin-right: 100px;
+
+      .stepper {
+        position: absolute;
+        right: 0px;
+        top: 0;
+        width: 100%;
+        //transform: translate(0, -50%);
+
+        .complete_icon {
+          position: absolute;
+
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+        img {
+          content: url("../../resources/icons/create_platter_check_icon.png");
+          width: 13px;
+          height: auto;
+        }
+      }
+    }
+    .save_draft_container {
+      margin-left: 0px;
+      margin-right: 0px;
+      position: relative;
+      height: 100%;
+      width: 200px;
+
+      .button {
+        position: absolute;
+        right: 0px;
+        top: 0%;
+        width: 100%;
+        transform: translate(0, 0%);
+      }
+    }
+  }
+  .header_divider {
+    width: 100%;
+
+    height: 1px;
+    background-color: #e0e0e0;
+    z-index: 3500;
+  }
+}
+
 .input_option_container {
   width: 100%;
-  border-bottom-width: 0.5px;
-  border-bottom-style: solid;
-  border-bottom-color: black;
-
+  border-radius: 5px;
+  border-color: #e0e0e0;
+  border-style: solid;
+  border-width: 0.5px;
+  background-color: white;
+  height: 42px;
+  padding-left: 14px;
+  box-shadow: "none";
   input {
     font-size: 15px;
-    font-family: "Noto Sans CJK KR Regular";
+    font-family: "Noto Sans CJK KR Light";
     color: #707070;
   }
 }
@@ -21,33 +101,61 @@
 }
 
 .first_step_container {
-  margin: 84px 119px 84px 119px;
+  margin: 58px 95px 88px 95px;
   .collection_type {
-    font-size: 20px;
+    font-size: 16px;
+    letter-spacing: -0.8px;
     text-align: left;
     color: #707070;
-    font-family: "Noto Sans CJK KR Regular";
-    letter-spacing: -0.98px;
+    font-family: "Noto Sans CJK KR Bold";
   }
   .service_type {
-    font-size: 30px;
+    font-size: 24px;
     text-align: left;
     color: #707070;
-    font-family: "Noto Sans CJK KR Regular";
-    letter-spacing: -0.98px;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    font-family: "Noto Sans CJK KR Bold";
+    letter-spacing: -1.2px;
+    margin-bottom: 38px;
+    margin-top: 1px;
   }
   .setting_container {
     $margin_left_right_setting_box: 25px;
     display: flex;
     flex-direction: row;
-    margin-top: 50px;
+    margin-top: 68px;
 
-    .text {
-      font-size: 20px;
-      margin-bottom: 23px;
-      font-family: "Noto Sans CJK KR Regular";
+    .setting_stage_container {
+      $icon_width_height: 24px;
+      margin-bottom: 15px;
+      position: relative;
+      height: 30px;
+
+      .number {
+        position: absolute;
+        height: $icon_width_height;
+        width: $icon_width_height;
+        left: 0px;
+        top: 50%;
+        margin-top: 1px;
+        transform: translate(0%, -50%);
+        background-color: #136913;
+        border-radius: 50%;
+        margin-right: 6px;
+        text-align: center;
+        font-family: "Noto Sans CJK KR Regular";
+        font-size: 15px;
+        color: white;
+      }
+      .text {
+        position: absolute;
+        left: $icon_width_height + 6px;
+        top: 50%;
+        transform: translate(0%, -50%);
+        font-size: 20px;
+        font-family: "Noto Sans CJK KR Bold";
+        letter-spacing: -1px;
+        color: #136913;
+      }
     }
 
     .set_title_container {
@@ -76,18 +184,20 @@
   }
 }
 .second_step_container {
-  margin: 137px 119px 137px 119px;
+  margin: 58px 92px 150px 92px;
+
   .attend_text {
     font-family: "Noto Sans CJK KR Bold";
-    font-size: 20px;
-    letter-spacing: -0.98px;
+    font-size: 24px;
+    letter-spacing: -1.2px;
     color: #707070;
-    margin-bottom: 23px;
+    margin-bottom: 22px;
   }
   .setting_box {
-    max-width: 303px;
+    max-width: 276px;
 
     .password_container {
+      margin-top: 30px;
       .is_password_container {
         position: relative;
         height: 20px;
@@ -130,50 +240,69 @@
 }
 
 .third_step_container {
-  margin: 84px 119px 84px 119px;
+  margin: 58px 91px 150px 91px;
+  .title_container {
+    display: flex;
+    flex-direction: row;
+
+    .collection_title {
+      font-size: 24px;
+      letter-spacing: -1.2px;
+      text-align: left;
+      color: #707070;
+      font-family: "Noto Sans CJK KR Regular";
+      margin-left: 15px;
+    }
+  }
+  .stage_title {
+    font-size: 24px;
+    letter-spacing: -1.2px;
+    text-align: left;
+    color: #707070;
+    font-family: "Noto Sans CJK KR Bold";
+  }
   .setting_box {
     max-width: 313px;
-    .collection_title {
-      font-size: 30px;
-      text-align: left;
-      color: #707070;
-      font-family: "Noto Sans CJK KR Bold";
-      letter-spacing: -0.98px;
-    }
-    .collection_type {
-      font-size: 15px;
-      text-align: left;
-      color: #707070;
-      font-family: "Noto Sans CJK KR Regular";
-      letter-spacing: -0.98px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-    }
-    .service_type {
-      font-size: 15px;
-      text-align: left;
-      color: #707070;
-      font-family: "Noto Sans CJK KR Regular";
-      letter-spacing: -0.98px;
+
+    .collection_info_container {
+      display: flex;
+      flex-direction: column;
+      margin-top: 24px;
+
+      .collection_type {
+        display: flex;
+        flex-direction: row;
+      }
+      .service_type {
+        display: flex;
+        flex-direction: row;
+        margin-top: 4px;
+      }
+      .type {
+        font-size: 15px;
+        letter-spacing: -0.75px;
+        text-align: left;
+        color: #707070;
+        font-family: "Noto Sans CJK KR Bold";
+        margin-right: 10px;
+      }
+      .text {
+        font-size: 15px;
+        letter-spacing: -0.75px;
+        text-align: left;
+        color: #707070;
+        font-family: "Noto Sans CJK KR Regular";
+      }
     }
     .attend_check_text {
-      font-size: 30px;
-      text-align: left;
-      color: #707070;
-      font-family: "Noto Sans CJK KR Bold";
-      letter-spacing: -0.98px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
   }
 
   .request_container {
-    margin-top: 67px;
-    .text {
-      font-size: 30px;
-      text-align: left;
-      color: #707070;
-      font-family: "Noto Sans CJK KR Bold";
-      letter-spacing: -0.98px;
+    margin-top: 68px;
+    .authority_request_text {
+      margin-bottom: 8px;
     }
     .request_member_container {
       height: 30px;
@@ -214,12 +343,11 @@
 }
 
 .attended_user_container_setting {
-  margin-top: 212px;
+  margin-top: 39px;
   height: 150px;
 }
 .attended_user_container_check {
-  margin-top: 84px;
-  height: 188px;
+  margin-top: 68px;
 }
 
 .attended_user_container {
@@ -227,21 +355,55 @@
     height: 30px;
     font-family: "Noto Sans CJK KR Regular";
     font-size: 15px;
-    color: #707070;
+    letter-spacing: -0.75px;
+    color: #55b855;
+  }
+  .count_text_check_container {
+    display: flex;
+    flex-direction: row;
+    .dropdown_icon {
+    }
+    img {
+      height: auto;
+      width: 10px;
+      margin-left: 2px;
+      margin-top: -3px;
+      content: url("../../resources/icons/create_collection_drop_down_icon.png");
+    }
+    .text {
+      font-size: 15px;
+      letter-spacing: -0.75px;
+      text-align: left;
+      color: #707070;
+      font-family: "Noto Sans CJK KR Bold";
+      margin-right: 10px;
+    }
+    .count_text_check {
+      height: 30px;
+      font-family: "Noto Sans CJK KR Regular";
+      font-size: 15px;
+      letter-spacing: -0.75px;
+      color: #55b855;
+    }
   }
   .list_container {
-    max-height: 100px;
+    height: 114px;
     margin-top: 5px;
-
-    background-color: #f7f7f7;
+    border-width: 0.5px;
+    border-style: solid;
+    border-color: #bababa;
+    border-radius: 5px;
     overflow: auto;
     .list_container_padding_top {
-      height: 20px;
+      height: 11px;
     }
     .user_info {
       width: 100%;
       position: relative;
-      height: 22px;
+      height: 28px;
+      &:hover {
+        background-color: #5cd25c;
+      }
 
       .user_info_text {
         position: absolute;
@@ -251,15 +413,35 @@
         transform: translate(0%, -50%);
         font-size: 14px;
 
-        color: #4b4b4b;
+        color: #7b7b7b;
         font-family: "Noto Sans CJK KR Regular";
-        letter-spacing: -0.98px;
+        letter-spacing: -0.7px;
       }
       Button {
         position: absolute;
-        right: 0px;
+        right: 12px;
         top: 50%;
+        width: 15px;
+        height: 15px;
+        background-color: #f2f2f2;
+        border-radius: 50%;
         transform: translate(0%, -50%);
+
+        .minus_container {
+          position: relative;
+          height: 100%;
+          width: 100%;
+
+          .minus {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 1px;
+            width: 8px;
+            background-color: #ff0000;
+          }
+        }
       }
     }
   }
@@ -274,46 +456,6 @@
   .next_button {
     position: absolute;
     right: 0px;
-  }
-}
-
-.header_container {
-  display: flex;
-  flex-direction: row;
-  height: 76px;
-
-  .stepper_container {
-    flex-grow: 1;
-    width: 0px;
-    position: relative;
-    height: 100%;
-    .stepper {
-      position: absolute;
-      right: 0px;
-      top: 0;
-      width: 100%;
-      //transform: translate(0, -50%);
-
-      .label {
-        font-family: "Noto Sans CJK KR Regular";
-        font-size: 14px;
-      }
-    }
-  }
-  .save_draft_container {
-    margin-left: 0px;
-    margin-right: 0px;
-    position: relative;
-    height: 100%;
-    width: 200px;
-
-    .button {
-      position: absolute;
-      right: 0px;
-      top: 50%;
-      width: 100%;
-      transform: translate(0, -50%);
-    }
   }
 }
 
@@ -377,10 +519,4 @@
   width: 100%;
   height: 100%;
   z-index: 900;
-}
-.root {
-  background-color: white;
-  padding-top: 100px;
-  border-radius: 15px;
-  overflow: hidden;
 }

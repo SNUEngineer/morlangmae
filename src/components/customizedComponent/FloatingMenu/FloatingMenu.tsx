@@ -74,6 +74,7 @@ export default function FloatingMenu(props) {
   };
   const id = open ? "simple-popover" : undefined;
   const classes = useStyles();
+
   function DotMenuDialog(props) {
     const classes = useStyles();
     const { onClose, selectedValue, open, anchorEl, id } = props;

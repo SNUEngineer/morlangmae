@@ -9,10 +9,10 @@ export default { title: "edit colleciton" };
 export function basic() {
   const collectionDetail = {
     id: 0,
-    collectionType: "team",
-    serviceType: "service",
+    collectionType: "프로젝트",
+    serviceType: "IT 컨설팅",
     imageUrl: null,
-    title: "테스트 타이틀",
+    title: "나이키 IT 컨설팅",
     startDate: 0,
     endDate: 0,
     memberIds: [0, 1, 2, 3],
@@ -100,22 +100,30 @@ export function basic() {
     collection2,
   ];
 
+  // return (
+  //   <div className={editStyle.test_window}>
+  //     <div className={editStyle.test_dialog}>
+  //       <EditCollectionPage
+  //         collectionDetail={collectionDetail}
+  //         users={[user1, user2]}
+  //         uploadImage={() => {}}
+  //         editCollection={() => {}}
+  //       />
+  //     </div>
+  //     <div className={editStyle.background_content}>
+  //       <BasicMenuBar>
+  //         <CollectionTab />
+  //         <CreateCollectionTab collections={testCollections} />
+  //       </BasicMenuBar>
+  //     </div>
+  //   </div>
+  // );
   return (
-    <div className={editStyle.test_window}>
-      <div className={editStyle.test_dialog}>
-        <EditCollectionPage
-          collectionDetail={collectionDetail}
-          users={[user1, user2]}
-          uploadImage={() => {}}
-          editCollection={() => {}}
-        />
-      </div>
-      <div className={editStyle.background_content}>
-        <BasicMenuBar>
-          <CollectionTab />
-          <CreateCollectionTab collections={testCollections} />
-        </BasicMenuBar>
-      </div>
-    </div>
+    <EditCollectionPage
+      collectionDetail={collectionDetail}
+      users={[user1, user2]}
+      uploadImage={() => {}}
+      editCollection={() => {}}
+    />
   );
 }
