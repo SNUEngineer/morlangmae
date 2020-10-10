@@ -206,7 +206,6 @@ export default function PlatterEditor(props: PlatterEditorProps) {
             <Typography className={platterStyle.date_text}>
               {test.createdDate}
             </Typography>
-
             <div className={platterStyle.profile_container}>
               <Avatar
                 alt={test.displayName}
