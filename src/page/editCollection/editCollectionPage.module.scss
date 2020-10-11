@@ -5,11 +5,12 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .step_container {
     flex-grow: 1;
     overflow-y: scroll;
-    max-height: 626px;
+    //max-height: 626px;
     z-index: 2000;
   }
 
@@ -179,6 +180,31 @@
         position: absolute;
         right: 0;
         width: 100%;
+
+        background-color: blue;
+        background-color: transparent;
+        .picker_container {
+          position: relative;
+          height: 100%;
+          width: 100%;
+          height: 165px;
+          border-width: 0.5px;
+          border-color: #e0e0e0;
+          border-radius: 5px;
+          border-style: solid;
+          padding: 0 30px 0 30px;
+          box-sizing: border-box;
+          .picker_start {
+            position: absolute;
+            top: 24px;
+            left: 0;
+          }
+          .picker_end {
+            position: absolute;
+            bottom: 24px;
+            left: 0;
+          }
+        }
       }
     }
   }
@@ -214,6 +240,23 @@
           position: absolute;
           left: 40px;
           text-align: center;
+        }
+      }
+      .text_field_container {
+        div {
+          &::before {
+            border-bottom-color: "transparent";
+          }
+        }
+        input {
+          font-size: 15px;
+          font-family: "Noto Sans CJK KR Light";
+          letter-spacing: -1.2px;
+          height: 40px;
+          padding: 0 14px 0 14px;
+          text-align: left;
+          color: #707070;
+          border-bottom-color: "transparent";
         }
       }
     }
@@ -386,61 +429,75 @@
       color: #55b855;
     }
   }
-  .list_container {
-    height: 114px;
-    margin-top: 5px;
-    border-width: 0.5px;
-    border-style: solid;
-    border-color: #bababa;
-    border-radius: 5px;
-    overflow: auto;
-    .list_container_padding_top {
-      height: 11px;
+}
+.attend_popover {
+  height: 114px;
+  width: 200px;
+
+  // marginTop: 5px,
+  // borderWidth: 0.5px,
+  // borderStyle: solid,
+  // borderColor: #bababa,
+  // borderRadius: 5px,
+  overflow: visible;
+}
+.list_container {
+  height: 114px;
+  width: 100%;
+  margin-top: 5px;
+  border-width: 0.5px;
+  border-style: solid;
+  border-color: #bababa;
+  border-radius: 5px;
+  background-color: white;
+  overflow: auto;
+
+  .list_container_padding_top {
+    height: 11px;
+  }
+  .user_info {
+    width: 100%;
+    position: relative;
+    height: 28px;
+    &:hover {
+      background-color: #5cd25c;
     }
-    .user_info {
-      width: 100%;
-      position: relative;
-      height: 28px;
-      &:hover {
-        background-color: #5cd25c;
-      }
 
-      .user_info_text {
-        position: absolute;
-        left: 14px;
-        top: 50%;
+    .user_info_text {
+      position: absolute;
+      left: 14px;
+      top: 50%;
 
-        transform: translate(0%, -50%);
-        font-size: 14px;
+      transform: translate(0%, -50%);
+      font-size: 14px;
 
-        color: #7b7b7b;
-        font-family: "Noto Sans CJK KR Regular";
-        letter-spacing: -0.7px;
-      }
-      Button {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        width: 15px;
-        height: 15px;
-        background-color: #f2f2f2;
-        border-radius: 50%;
-        transform: translate(0%, -50%);
+      color: #7b7b7b;
+      font-family: "Noto Sans CJK KR Regular";
+      letter-spacing: -0.7px;
+    }
+    Button {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      width: 15px;
+      height: 15px;
+      background-color: #f2f2f2;
+      border-radius: 50%;
+      transform: translate(0%, -50%);
 
-        .minus_container {
-          position: relative;
-          height: 100%;
-          width: 100%;
+      .minus_container {
+        position: relative;
+        height: 100%;
+        width: 100%;
 
-          .minus {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            height: 1px;
-            width: 8px;
-            background-color: #ff0000;
-          }
+        .minus {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          height: 1px;
+          width: 8px;
+          background-color: #ff0000;
         }
       }
     }

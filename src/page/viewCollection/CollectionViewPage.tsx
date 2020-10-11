@@ -201,6 +201,16 @@ export function CollectionToolBar(props: any) {
                 <div className={pageStyle.mode_text}>task</div>
               </div>
             </div>
+
+            <div className={pageStyle.bar_container}>
+              <div
+                className={classNames({
+                  [pageStyle.bar]: true,
+                  [pageStyle.view_bar]: !props.editable,
+                  [pageStyle.task_bar]: props.editable,
+                })}
+              ></div>
+            </div>
           </div>
         )}
 

@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import {
   makeStyles,
   Theme,
@@ -29,7 +29,7 @@ import StepConnector from "@material-ui/core/StepConnector";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import Popover from "@material-ui/core/Popover";
-import DateFnsUtils from "@date-io/date-fns"; // choose your lib
+import DateFnsUtils from "@date-io/date-fns"; // choose your lib //1.3.13버전 사용
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -41,6 +41,7 @@ import classNames from "classnames";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    popover: {},
     paper: {
       padding: "0px",
     },
@@ -178,16 +179,38 @@ const contentStyles = makeStyles((theme: Theme) =>
     },
     passwordTextField: {
       marginBottom: "0px",
+      height: "40px",
+      padding: "0px",
+      borderRadius: "5px",
+      borderColor: "#e0e0e0",
+      borderStyle: "solid",
+      borderWidth: "0.5px",
+      "& .MuiInput-underline.Mui-disabled:before": {
+        borderBottomColor: "transparent",
+        borderBottomWidth: "0px",
+      },
+      "& .MuiInput-underline:before": {
+        borderBottomColor: "transparent",
+        borderBottomWidth: "0px",
+      },
+      ".MuiInput-underline:after": {
+        borderBottomColor: "transparent",
+        borderBottomWidth: "0px",
+        backgroundColor: "red",
+      },
     },
     picker: {
       //backgroundColor: "red",
       width: "100%",
+      margin: "0 0 0 0",
+      padding: "0 30px 0 30px",
+      boxSizing: "border-box",
       "& div": {
         borderBottom: "none",
         fontSize: "14px",
         fontFamily: "Noto Sans CJK KR Regular",
         "&&::before": {
-          borderBottom: "none",
+          borderBottomColor: "transparent",
         },
         underline: {
           "&&:before": {
@@ -201,13 +224,19 @@ const contentStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
 //const [open, setOpen] = useState(false);
-const getStepContent = (
+
+export const getStepContent = (
   stepIndex: number,
   collection: any,
   setCollection: any,
   passwordActive: boolean,
   setPasswordActive,
+  popoverOpen: boolean,
+  setPopoverOpen,
+  popOverAnchorEl,
+  setPopOverAnchorEl,
   requestMember,
   setRequestMember: UserView[],
   popOpen: boolean,
@@ -217,17 +246,20 @@ const getStepContent = (
   props: EditCollectionPageProps,
   handleNext
 ) => {
-  const classes = contentStyles(collection);
-  console.log(" asdfasdfafafaaa " + popOpen);
-  const id = popOpen ? "simple-popover-search" : undefined;
+  const styleClasses = contentStyles(collection);
+  //const classes = useInputStyles();
+  const id = popoverOpen ? "simple-popover-search" : undefined;
 
   const handleClickOpen = (event) => {
-    setPopOpen(true);
-    setAnchorEl(event.currentTarget);
+    setPopoverOpen(true);
+    setPopOverAnchorEl(event.currentTarget);
   };
+  console.log("popOpen " + popOpen);
+  // setPasswordActive(false);
+  // setPopOpen(false);
 
   const handleClose = (value) => {
-    setPopOpen(false);
+    setPopoverOpen(false);
     setSelectedValue(value);
     setAnchorEl(null);
   };
@@ -260,10 +292,6 @@ const getStepContent = (
   };
 
   const attendedUser = (checking: boolean) => {
-    setTimeout(() => {
-      console.log("asdfasdfasdf    " + popOpen + "    " + passwordActive);
-      setPopOpen(false);
-    }, 3000);
     return (
       <div>
         {!checking && (
@@ -289,7 +317,7 @@ const getStepContent = (
 
                     {!checking && (
                       <Button
-                        className={classes.delete_button}
+                        className={styleClasses.delete_button}
                         onClick={() => {
                           setCollection({
                             ...collection,
@@ -317,7 +345,7 @@ const getStepContent = (
               aria-describedby={id}
               variant="contained"
               onClick={handleClickOpen}
-              className={classes.show_list_button}
+              className={styleClasses.show_list_button}
               endIcon={<img className={editStyle.go_to_icon} alt={"icon"} />}
               // endIcon={
               //   <div>
@@ -337,47 +365,57 @@ const getStepContent = (
             <Popover
               onClose={handleClose}
               id={id}
-              // open={popOpen}
-              open={false}
-              anchorEl={anchorEl}
+              open={popoverOpen}
+              //open={false}
+              anchorEl={popOverAnchorEl}
               anchorOrigin={{
                 vertical: "bottom",
-                horizontal: "right",
+                horizontal: "left",
               }}
               transformOrigin={{
                 vertical: "top",
-                horizontal: "right",
+                horizontal: "left",
               }}
+              PaperProps={{
+                style: {
+                  backgroundColor: "transparent",
+                  boxShadow: "none",
+                  overflow: "visible",
+                },
+              }}
+              className={styleClasses.popover}
             >
-              <div className={editStyle.list_container}>
-                <div className={editStyle.list_container_padding_top} />
-                {!!collection.members[0] &&
-                  collection.members.map((user: UserView) => (
-                    <div key={user.id} className={editStyle.user_info}>
-                      <div className={editStyle.user_info_text}>
-                        {user.displayName}
-                      </div>
+              <div className={editStyle.attend_popover}>
+                <div className={editStyle.list_container}>
+                  <div className={editStyle.list_container_padding_top} />
+                  {!!collection.members[0] &&
+                    collection.members.map((user: UserView) => (
+                      <div key={user.id} className={editStyle.user_info}>
+                        <div className={editStyle.user_info_text}>
+                          {user.displayName}
+                        </div>
 
-                      {!checking && (
-                        <Button
-                          className={classes.delete_button}
-                          onClick={() => {
-                            setCollection({
-                              ...collection,
-                              members: collection.members.filter(
-                                (it: UserView) => it.id !== user.id
-                              ),
-                            });
-                          }}
-                        >
-                          <div className={editStyle.minus_container}>
-                            <div className={editStyle.minus}></div>
-                          </div>
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                <div className={editStyle.list_container_padding_top} />
+                        {!checking && (
+                          <Button
+                            className={styleClasses.delete_button}
+                            onClick={() => {
+                              setCollection({
+                                ...collection,
+                                members: collection.members.filter(
+                                  (it: UserView) => it.id !== user.id
+                                ),
+                              });
+                            }}
+                          >
+                            <div className={editStyle.minus_container}>
+                              <div className={editStyle.minus}></div>
+                            </div>
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  <div className={editStyle.list_container_padding_top} />
+                </div>
               </div>
             </Popover>
           </div>
@@ -402,7 +440,7 @@ const getStepContent = (
           <Card
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            className={classes.imageCard}
+            className={styleClasses.imageCard}
           >
             <CardHeader title={collection.title} style={{ color: "white" }} />
           </Card>
@@ -449,38 +487,45 @@ const getStepContent = (
                   onChange={handleChange}
                   value={collection.endDate}
                 /> */}
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  {/* <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    KeyboardButtonProps={{
-                      "aria-label": "change date",
-                    }}
-                    className={classes.picker}
-                    value={collection.startDate}
-                    name="startDate"
-                    onChange={handleChange}
-                    autoOk={true}
-                  />
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    KeyboardButtonProps={{
-                      "aria-label": "change date",
-                    }}
-                    className={classes.picker}
-                    value={collection.endDate}
-                    name="endDate"
-                    onChange={handleChange}
-                  /> */}
-                </MuiPickersUtilsProvider>
-                <div></div>
+                <div className={editStyle.picker_container}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                      className={classNames({
+                        [editStyle.picker_start]: true,
+                        [styleClasses.picker]: true,
+                      })}
+                      value={collection.startDate}
+                      name="startDate"
+                      onChange={handleChange}
+                      autoOk={true}
+                    />
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                      className={classNames({
+                        [editStyle.picker_end]: true,
+                        [styleClasses.picker]: true,
+                      })}
+                      value={collection.endDate}
+                      name="endDate"
+                      onChange={handleChange}
+                    />
+                  </MuiPickersUtilsProvider>
+                </div>
               </div>
             </div>
           </div>
@@ -491,7 +536,7 @@ const getStepContent = (
               onClick={handleNext}
               //className={editStyle.next_button}
               className={classNames({
-                [classes.nextButton]: true,
+                [styleClasses.nextButton]: true,
                 [editStyle.next_button]: true,
               })}
             >
@@ -578,19 +623,30 @@ const getStepContent = (
                     ></Checkbox>
                     <div className={editStyle.text}>암호요구</div>
                   </div>
-                  <div>
+                  <div className={editStyle.text_field_container}>
                     <TextField
-                      variant="outlined"
                       margin="normal"
+                      // variant="none"
+                      disableUnderline
                       required
                       fullWidth
                       name="password"
-                      label="Password"
+                      placeholder="암호"
                       type="password"
                       id="password"
                       autoComplete="current-password"
                       disabled={!passwordActive}
-                      className={classes.passwordTextField}
+                      className={styleClasses.passwordTextField}
+                      InputProps={{
+                        underline: {
+                          "&&&:before": {
+                            borderBottom: "none",
+                          },
+                          "&&:after": {
+                            borderBottom: "none",
+                          },
+                        },
+                      }}
                       //inputRef={register}
                     />
                   </div>
@@ -599,7 +655,7 @@ const getStepContent = (
             </Grid>
             <Grid item xs>
               <div className={editStyle.image_check_container}>
-                <Card className={classes.secondStepImageCard}>
+                <Card className={styleClasses.secondStepImageCard}>
                   <CardHeader
                     title={collection.title}
                     style={{ color: "white" }}
@@ -611,7 +667,7 @@ const getStepContent = (
                     color="primary"
                     onClick={handleNext}
                     className={classNames({
-                      [classes.nextButton]: true,
+                      [styleClasses.nextButton]: true,
                       [editStyle.next_button]: true,
                     })}
                   >
@@ -748,7 +804,7 @@ const getStepContent = (
             </Grid>
             <Grid item xs>
               <div className={editStyle.title_image_check}>
-                <Card className={classes.thirdStepImageCard}>
+                <Card className={styleClasses.thirdStepImageCard}>
                   <CardHeader
                     style={{ color: "white" }}
                     title={collection.title}
@@ -760,7 +816,7 @@ const getStepContent = (
                     color="primary"
                     onClick={() => props.editCollection(collection)}
                     className={classNames({
-                      [classes.nextButton]: true,
+                      [styleClasses.nextButton]: true,
                       [editStyle.finish_button]: true,
                     })}
                   >
@@ -786,11 +842,13 @@ export interface EditCollectionPageProps {
 }
 
 export default function EditCollectionPage(props: EditCollectionPageProps) {
-  const classes = useStyles();
+  const styleClasses = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [popOpen, setPopOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [popOverAnchorEl, setPopOverAnchorEl] = useState(null);
   const [passwordActive, setPasswordActive] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const steps = getSteps();
   const collectionDetail = props.collectionDetail;
   const [requestMember, setRequestMember] = useState<UserView[]>();
@@ -893,7 +951,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
   });
 
   function ColorlibStepIcon(props) {
-    const classes = useColorlibStepIconStyles();
+    const styleClasses = useColorlibStepIconStyles();
     const { active, completed } = props;
 
     // const icons = {
@@ -908,13 +966,15 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     };
     return (
       <div
-        className={clsx(classes.root, {
-          [classes.active]: active,
-          [classes.completed]: completed,
+        className={clsx(styleClasses.root, {
+          [styleClasses.active]: active,
+          [styleClasses.completed]: completed,
         })}
       >
         {!completed && icons[String(props.icon)]}
-        {completed && <img alt={"icon"} className={classes.complete_icon} />}
+        {completed && (
+          <img alt={"icon"} className={styleClasses.complete_icon} />
+        )}
       </div>
     );
   }
@@ -934,7 +994,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
       open
       PaperComponent={PaperComponent}
       onClose={props.onClose}
-      className={classes.paper}
+      className={styleClasses.paper}
     >
       <div className={editStyle.root}>
         <div className={editStyle.header_container}>
@@ -944,15 +1004,15 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
                 activeStep={activeStep}
                 connector={<ColorlibConnector />}
                 alternativeLabel
-                className={classes.stepper}
+                className={styleClasses.stepper}
               >
                 {steps.map((label, index) => (
                   <Step key={label} onClick={() => handleStepClick(index)}>
                     <StepLabel
                       StepIconComponent={ColorlibStepIcon}
-                      className={classes.step}
+                      className={styleClasses.step}
                     >
-                      <div className={classes.label}> {label} </div>
+                      <div className={styleClasses.label}> {label} </div>
                     </StepLabel>
                   </Step>
                 ))}
@@ -967,7 +1027,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
                 color="primary"
                 onClick={handleNext}
                 className={classNames({
-                  [classes.draftButton]: true,
+                  [styleClasses.draftButton]: true,
                   [editStyle.next_button]: false,
                 })}
               >
@@ -984,6 +1044,10 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
             setCollection,
             passwordActive,
             setPasswordActive,
+            popoverOpen,
+            setPopoverOpen,
+            popOverAnchorEl,
+            setPopOverAnchorEl,
             requestMember,
             setRequestMember,
             handleNext,
@@ -1007,6 +1071,7 @@ const paperStyles = makeStyles(() =>
       padding: "0px",
       margin: "0px",
       maxWidth: "1000px",
+      height: "100%",
       //maxHeight: "756px",
       boxShadow: "none",
     },
@@ -1014,6 +1079,6 @@ const paperStyles = makeStyles(() =>
 );
 export function PaperComponent(props: PaperProps) {
   const inherited = props.className;
-  const classes = paperStyles();
-  return <Paper {...props} className={clsx(inherited, classes.paper)} />;
+  const styleClasses = paperStyles();
+  return <Paper {...props} className={clsx(inherited, styleClasses.paper)} />;
 }

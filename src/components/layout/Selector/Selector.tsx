@@ -25,6 +25,7 @@ export default function Selector(props: any) {
         letterSpacing: "-0.8px",
         color: "#E2E2E2",
         fontFamily: "Noto Sans CJK KR Regular",
+
         ul: {
           backgroundColor: "red",
           minHeight: "1000px",
@@ -44,6 +45,7 @@ export default function Selector(props: any) {
         borderBottomStyle: "solid",
         borderBottomColor: "#E0E0E0",
         borderBottomWidth: "0.5px",
+        zIndex: 10000,
       },
       selected: {
         "&:hover": {
