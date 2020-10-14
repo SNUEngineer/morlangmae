@@ -4,25 +4,19 @@ $border-color: gray;
 .board_container {
   position: relative;
   padding-top: 300px;
-  padding-left: 100px;
-  padding-right: 100px;
-  box-sizing: border-box;
+  padding-left: 120px;
+  padding-right: 120px;
   background-color: rgba(0, 0, 0, 0.3);
   overflow-y: scroll;
   height: 100vh;
   .container {
-    position: absolute;
-
-    left: 50%;
-    transform: translate(-50%, 0);
     background-color: white;
     flex-direction: column;
-    width: 100%;
-    max-width: 1348px;
+
     .platter_container {
-      min-height: calc(100vh + 300px);
     }
     .platter_container_opened {
+      min-height: calc(100vh + 300px);
     }
 
     .platter_container_closed {
@@ -50,7 +44,7 @@ $border-color: gray;
     border-bottom-color: transparent;
   }
   .container_thread_opened {
-    border-radius: 15px;
+    border-radius: 0 0 15px 15px;
     border-style: solid;
     border-width: $board_border_width;
     border-color: $border-color;
@@ -59,17 +53,15 @@ $border-color: gray;
 
 .board_container_thread_opened {
   overflow-y: hidden;
-  //padding-bottom: $board_bottom_margin;
   padding-bottom: $board_bottom_margin;
 }
 .board_container_thread_closed {
   overflow-y: scroll;
-  padding-bottom: 0px;
 }
 
 .fixed_menu_button {
   position: fixed;
-  right: 0;
+  right: 30px;
   top: 100px;
   height: 300px;
   display: flex;

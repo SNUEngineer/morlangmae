@@ -64,13 +64,14 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
     if (!openThread) {
       if (!!boardContainerEl.current) {
         setOpenThread(true);
+        setEditing(false);
         setTimeout(() => setOpenPlatter(false), 400);
       }
     }
   }, [openThread]);
   const clickPlatterButton = useCallback(() => {
     setOpenPlatter(true);
-    setTimeout(() => setOpenThread(false), 400);
+    setTimeout(() => setOpenThread(false), 200);
   }, []);
   const rootEl = useRef();
   const onRendered = () => {

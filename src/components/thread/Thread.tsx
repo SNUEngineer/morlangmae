@@ -103,11 +103,20 @@ export default function Thread(props: ThreadProps) {
                     width="100%"
                     height="100px"
                     maxHeight="200px"
-                    textSize={18}
+                    textSize={14}
+                    fontFamily={"Noto Sans CJK KR Regular"}
+                    padding={10}
                     textareaRef={register({ required: true })}
                   />
                 </div>
-                <div className={threadStyle.send_button}></div>
+
+                <div className={threadStyle.send_area}>
+                  <div className={threadStyle.align_container}>
+                    <div className={threadStyle.send_button_container}>
+                      <img alt={"icon"} className={threadStyle.send_button} />
+                    </div>{" "}
+                  </div>
+                </div>
               </div>
             </form>
           </ListItem>

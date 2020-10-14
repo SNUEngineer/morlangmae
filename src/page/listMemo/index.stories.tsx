@@ -4,14 +4,14 @@ import MemoListTab from "./MemoListTab";
 import BingeMemoTab from "./BingeMemoTab";
 import MemoListInCollection from "./MemoListInCollection";
 import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
-import CollectionTab from "../listCollection/CollectionTab";
+import MemoTab from "./MemoTab";
 
 export default { title: "memo page" };
 
 export function memoHomeTab() {
   return (
     <BasicMenuBar>
-      <CollectionTab />
+      <MemoTab />
       <MemoHomeTab />
     </BasicMenuBar>
   );
@@ -19,7 +19,7 @@ export function memoHomeTab() {
 export function memoListTab() {
   return (
     <BasicMenuBar>
-      <CollectionTab />
+      <MemoTab />
       <MemoListTab />
     </BasicMenuBar>
   );
@@ -27,7 +27,7 @@ export function memoListTab() {
 export function bingeMemoTab() {
   return (
     <BasicMenuBar>
-      <CollectionTab />
+      <MemoTab />
       <BingeMemoTab />
     </BasicMenuBar>
   );

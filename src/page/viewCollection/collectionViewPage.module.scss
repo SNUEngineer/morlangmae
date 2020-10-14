@@ -225,7 +225,8 @@
 .home_container {
   height: 100%;
   width: 19px;
-  margin-right: 10px;
+  margin-right: 30px;
+
   position: relative;
   cursor: pointer;
   img {
@@ -262,6 +263,10 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
+        font-size: 14px;
+        font-family: "Noto Sans CJK KR Regular";
+        letter-spacing: -0.98px;
+        color: #e2e2e2;
       }
     }
 

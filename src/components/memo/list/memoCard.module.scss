@@ -1,6 +1,6 @@
 .card_root {
   width: 100%;
-
+  cursor: pointer;
   .service_type_and_menu {
     display: flex;
     flex-direction: row;
@@ -100,8 +100,9 @@
   border-bottom-style: solid;
   border-width: 1px;
   box-sizing: border-box;
+  cursor: pointer;
   &:hover {
-    background-color: gray;
+    background-color: #f9f9f9;
   }
   .p {
     line-height: 1.5;
@@ -215,8 +216,9 @@
   border-bottom-color: gray;
   border-bottom-style: solid;
   border-width: 1px;
+  cursor: pointer;
   &:hover {
-    background-color: gray;
+    background-color: #f9f9f9;
   }
   .p {
     display: inline-block;
@@ -257,8 +259,9 @@
   background-color: white;
   border-width: 1px;
   box-sizing: border-box;
+  cursor: pointer;
   &:hover {
-    background-color: gray;
+    background-color: #f9f9f9;
   }
   .p {
     line-height: 1.5;

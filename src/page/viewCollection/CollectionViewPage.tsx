@@ -187,7 +187,7 @@ export function CollectionToolBar(props: any) {
                 })}
                 onClick={() => props.setEditable(false)}
               >
-                <div className={pageStyle.mode_text}>view</div>
+                <div className={pageStyle.mode_text}>뷰</div>
               </div>
               <div
                 className={classNames({
@@ -198,7 +198,7 @@ export function CollectionToolBar(props: any) {
                 })}
                 onClick={() => props.setEditable(true)}
               >
-                <div className={pageStyle.mode_text}>task</div>
+                <div className={pageStyle.mode_text}>테스크</div>
               </div>
             </div>
 
@@ -306,7 +306,7 @@ function SearchPlatter(props: SearchPlatterProps) {
         // },
       },
       popover: {
-        zIndex: "2199",
+        zIndex: "2300",
         marginTop: "7px",
         "& .MuiPaper-rounded": {
           backgroundColor: "transparent",

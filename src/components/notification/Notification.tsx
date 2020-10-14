@@ -4,7 +4,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import notiStyle from "./notification.module.scss";
 import Comment from "./Comment";
-
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 
 export interface NotificationData {
@@ -32,15 +32,25 @@ export default function Notification(props: NotificationProps) {
   const comment = notification.comment;
   const onClick = () => props.onClick(notification);
 
+  const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+      list_item: {
+        padding: "0px",
+      },
+    })
+  );
+  const classes = useStyles();
+
   if (!!comment) {
     const commentData = {
       sentBy: sender,
       comment: comment,
     };
     return (
-      <ListItem onClick={onClick}>
+      <ListItem onClick={onClick} className={classes.list_item}>
         <div
           className={classNames({
+            [notiStyle.notification_container]: true,
             [notiStyle.notification_container_pop_over]: false,
             [notiStyle.notification_container_page]: true,
           })}
@@ -80,9 +90,10 @@ export default function Notification(props: NotificationProps) {
     );
   }
   return (
-    <ListItem onClick={onClick}>
+    <ListItem onClick={onClick} className={classes.list_item}>
       <div
         className={classNames({
+          [notiStyle.notification_container]: true,
           [notiStyle.notification_container_pop_over]: false,
           [notiStyle.notification_container_page]: true,
         })}

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
 import Avatar from "@material-ui/core/Avatar";
 import platterStyle from "./PlatterEditor.module.scss";
+import testProfile from "../../resources/icons/test_profile_image.png";
 
 export interface PlatterEditorProps {
   id: number | "CREATING";
@@ -182,6 +183,45 @@ export default function PlatterEditor(props: PlatterEditorProps) {
         <div className={platterStyle.platter_info_container}>
           <div className={platterStyle.title_container}>
             <TextField
+              className={platterStyle.title}
+              required
+              defaultValue={test.title}
+              fullWidth
+              id="title"
+              name="title"
+              InputProps={{ classes }}
+            />
+          </div>
+
+          <div className={platterStyle.writer_container}>
+            <Typography className={platterStyle.date_text}>
+              {test.createdDate}
+            </Typography>
+
+            <div className={platterStyle.profile_container}>
+              <Avatar
+                //alt={platterData.createdBy.displayName}
+                //src={platterData.createdBy.imageUrl}
+                src={testProfile}
+                className={platterStyle.avatar}
+              />
+              <div className={platterStyle.name_text_container}>
+                <Typography className={platterStyle.name_text}>
+                  {/* {platterData.createdBy.displayName} */}
+                  송병근
+                </Typography>
+                <Typography className={platterStyle.company_text}>
+                  {/* {platterData.createdBy.companyId} */}
+                  Bailey, 피플 팀, 리더
+                </Typography>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* <div className={platterStyle.platter_info_container}>
+          <div className={platterStyle.title_container}>
+            <TextField
               disabled={props.disableEditing}
               required
               defaultValue={data.title}
@@ -222,7 +262,7 @@ export default function PlatterEditor(props: PlatterEditorProps) {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className={platterStyle.editor_container}>
           <EditorJs
             holder={holderId}

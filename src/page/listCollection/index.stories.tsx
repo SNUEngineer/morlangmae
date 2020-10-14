@@ -4,6 +4,7 @@ import CollectionTab from "./CollectionTab";
 import MyCollectionTab from "./MyCollectionTab";
 import CreateCollectionTab from "./CreateCollectionTab";
 import SearchCollectionTab from "./SearchCollectionTab";
+import CollectionListPage from "./CollectionListPage";
 
 import PinnedCollectionCardList from "./PinnedCollectionCardList";
 import createStyle from "./createCollectionTab.module.scss";
@@ -136,6 +137,13 @@ export function createCollectionTab() {
     <BasicMenuBar>
       <CollectionTab />
       <CreateCollectionTab collections={testCollections} />
+    </BasicMenuBar>
+  );
+}
+export function CollectionListTab() {
+  return (
+    <BasicMenuBar>
+      <CollectionListPage />
     </BasicMenuBar>
   );
 }

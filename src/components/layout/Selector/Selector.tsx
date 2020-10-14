@@ -81,6 +81,16 @@ export default function Selector(props: any) {
           [classes.selectBasic]: themeData === "selectBasic",
           [classes.collectionViewSelect]: themeData === "COLVIEW",
         })}
+        MenuProps={{
+          style: {
+            zIndex: 3000,
+          },
+          ".MuiPaper-root": {
+            style: {
+              backgroundColor: "blue",
+            },
+          },
+        }}
         IconComponent={iconComponent}
         disableUnderline
       >

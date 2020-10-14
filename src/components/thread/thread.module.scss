@@ -51,11 +51,33 @@ $container_left_margin: 100px;
     flex-grow: 1;
   }
 
-  .send_button {
+  .send_area {
     width: 50px;
-    height: 50px;
-    background-image: url("https://lh3.googleusercontent.com/proxy/_DRh-vTgNhQursLCvBWxsH3r6MFy7i9fq6HjSwIKgxFz-5KR8MKWqwzox5TM91ZZYatqNpK-3gSubwzpso4rPe6IwaoQmE7bbIQyg3HBWLl-3fevI-3UHo_FOIxBFtd-T9K9_ZYGzxhod3uOsTcZ-Qu3Q_oxovPw-m8YVf2GK_prySnbSrUBf2TJfqDGSTXCdIzIeWOFOAl5806RXXZS3pIcg4Ao8ZXrOE9UsCsjP9xmXXUxRaMzZuHXKiQYMhkwBK0_VgGyxSrzDYNgjH5gNSC9RVtptHnItrIlafrep5Z-D2L9KuhMj8hXS4adMlkiUzYY");
+    height: 100%;
+    position: relative;
+    .align_container {
+      width: 100%;
+      height: 50px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
-    background-color: red;
+      .send_button_container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+
+          transform: translate(-50%, -50%);
+          width: 31px;
+          height: auto;
+          content: url("../../resources/icons/thread_send_icon.png");
+        }
+      }
+    }
   }
 }
