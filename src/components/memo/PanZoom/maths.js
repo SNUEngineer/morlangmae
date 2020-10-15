@@ -1,3 +1,4 @@
+// @flow
 export type TransformationMatrix = {
   a: number,
   b: number,

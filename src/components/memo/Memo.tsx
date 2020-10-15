@@ -2,14 +2,11 @@ import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
 import { Document, Page } from "react-pdf";
 import memoStyle from "./memo.module.scss";
 import { PanZoom } from "./PanZoom";
-import SplitPane from "react-split-pane/lib/SplitPane";
-import Pane from "react-split-pane/lib/Pane";
 import MemoItem from "./MemoItem/MemoItem";
 import PDFPages from "./PDFList/PDFPages";
 import PDFThumbBar from "./PDFList/PDFThumbBar";
 import SideMenuBar from "./SideMenu/SideMenuBar";
 import classNames from "classnames";
-import Toolbar from "@material-ui/core/Toolbar";
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
 
 export default function Memo(props: any) {
