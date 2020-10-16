@@ -270,21 +270,17 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
 
           <div className={pageStyle.cancel_container}>
             <div className={pageStyle.align_button}>
-              <div className={pageStyle.cancel_button_container}>
+              <Link
+                className={pageStyle.cancel_button_container}
+                to="/collections"
+              >
                 <div className={pageStyle.icon_container}>
                   <img className={pageStyle.icon} alt={"icon"} />
                 </div>
                 <div className={pageStyle.cancel_text}>취소</div>
-              </div>
+              </Link>
             </div>
           </div>
-          <Grid container justify="flex-end">
-            <Grid item>
-              {/* <Link to="/collections">
-                Close
-              </Link> */}
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}></Box>

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import menuStyle from "./BasicMenuBar.module.scss";
 
 export default function BasicMenuBar(props: any) {
+  const { hasDrawer } = props;
+
   return (
     <div className={menuStyle.container}>
       <div className={menuStyle.top_container}>
@@ -21,7 +23,7 @@ export default function BasicMenuBar(props: any) {
       </div>
 
       <div className={menuStyle.bottom_container}>
-        <div className={menuStyle.side_container}>
+        {/* <div className={menuStyle.side_container}>
           <div className={menuStyle.fixed_container}>
             <div className={menuStyle.menu_container}>
               <div className={menuStyle.menu_item}>
@@ -51,9 +53,11 @@ export default function BasicMenuBar(props: any) {
             </div>
           </div>
         </div>
+
         <div className={menuStyle.content_container}>
           <div className={menuStyle.content}>{props.children}</div>
-        </div>
+        </div> */}
+        <div className={menuStyle.body_container}>{props.children}</div>
       </div>
     </div>
   );

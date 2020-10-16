@@ -40,6 +40,7 @@ import CompanyCollectionPageContainer from "./page/listCollection/CompanyCollect
 import { verify } from "./services/account.service";
 import { resetToken, expireToken } from "./common/axios";
 import NotificationPageContainer from "./page/notification/NotificationPageContainer";
+import BasicMenuBar from "./components/layout/basicMenuBar/BasicMenuBar";
 
 const drawerWidth = 240;
 
@@ -52,7 +53,8 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: theme.zIndex.drawer + 1,
     },
     body: {
-      paddingTop: 64,
+      height: "100%",
+      width: "100%",
     },
     drawer: {
       width: drawerWidth,
@@ -100,119 +102,121 @@ function App() {
 
   return (
     <div>
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography>Bailey</Typography>
-        </Toolbar>
-      </AppBar>
-      <div className={classes.body}>
-        <Switch>
-          <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+      <BasicMenuBar>
+        {/* <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <Typography>Bailey</Typography>
+          </Toolbar>
+        </AppBar> */}
+        <div className={classes.body}>
+          <Switch>
+            <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
 
-          <UnauthRoute
-            exact
-            authenticated={authenticated}
-            path={SIGN_IN}
-            render={() => <SignInPage handleSubmit={handleSignIn} />}
-          />
-          <UnauthRoute
-            exact
-            authenticated={authenticated}
-            path={SIGN_UP}
-            render={() => <SignUpPage handleSubmit={handleSignUp} />}
-          />
-          <AuthRoute
-            exact
-            authenticated={authenticated}
-            path={PROFILE}
-            render={() => <PersonaView />}
-          />
-          <AuthRoute
-            exact
-            hasDrawer
-            authenticated={authenticated}
-            path={COLLECTION_LIST}
-            render={(props: any) => (
-              <SearchCollectionTabContainer
-                {...queryString.parse(props.location.search)}
-              />
-            )}
-          />
-          <AuthRoute
-            exact
-            hasDrawer
-            authenticated={authenticated}
-            path={COLLECTION_LIST_MY_COLLECTION}
-            render={(props: any) => (
-              <MyCollectionTabContainer
-                {...queryString.parse(props.location.search)}
-              />
-            )}
-          />
-          <AuthRoute
-            exact
-            hasDrawer
-            authenticated={authenticated}
-            path={COLLECTION_LIST_CREATED}
-            render={(props: any) => (
-              <CreateCollectionTabContainer
-                {...queryString.parse(props.location.search)}
-              />
-            )}
-          />
-          <AuthRoute
-            exact
-            hasDrawer
-            authenticated={authenticated}
-            path={COLLECTION_CREATE}
-            render={() => <CreateCollectionView />}
-          />
-          <AuthRoute
-            exact
-            hasDrawer
-            authenticated={authenticated}
-            path={COLLECTION_LIST_COMPANY}
-            render={(props: any) => (
-              <CompanyCollectionPageContainer
-                {...queryString.parse(props.location.search)}
-              />
-            )}
-          />
-          <AuthRoute
-            exact
-            authenticated={authenticated}
-            path={COLLECTION_EDIT}
-            render={(props: any) => (
-              <EditCollectionPageContainer
-                collectionId={props.match.params.id}
-              />
-            )}
-          />
-          <AuthRoute
-            exact
-            authenticated={authenticated}
-            path="/memos"
-            render={(props: any) => <ProjectView {...props} />}
-          />
-          <AuthRoute
-            exact
-            hasDrawer
-            authenticated={authenticated}
-            path={NOTIFICATION}
-            render={(props: any) => <NotificationPageContainer />}
-          />
-          <AuthRoute
-            exact
-            authenticated={authenticated}
-            path={ROOT}
-            render={(props: any) => <ProjectView {...props} />}
-          />
-          <Route>
-            <Error />
-          </Route>
-        </Switch>
-      </div>
-      asdfasdf
+            <UnauthRoute
+              exact
+              authenticated={authenticated}
+              path={SIGN_IN}
+              render={() => <SignInPage handleSubmit={handleSignIn} />}
+            />
+            <UnauthRoute
+              exact
+              authenticated={authenticated}
+              path={SIGN_UP}
+              render={() => <SignUpPage handleSubmit={handleSignUp} />}
+            />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              path={PROFILE}
+              render={() => <PersonaView />}
+            />
+            <AuthRoute
+              exact
+              hasDrawer
+              authenticated={authenticated}
+              path={COLLECTION_LIST}
+              render={(props: any) => (
+                <SearchCollectionTabContainer
+                  {...queryString.parse(props.location.search)}
+                />
+              )}
+            />
+            <AuthRoute
+              exact
+              hasDrawer
+              authenticated={authenticated}
+              path={COLLECTION_LIST_MY_COLLECTION}
+              render={(props: any) => (
+                <MyCollectionTabContainer
+                  {...queryString.parse(props.location.search)}
+                />
+              )}
+            />
+            <AuthRoute
+              exact
+              hasDrawer
+              authenticated={authenticated}
+              path={COLLECTION_LIST_CREATED}
+              render={(props: any) => (
+                <CreateCollectionTabContainer
+                  {...queryString.parse(props.location.search)}
+                />
+              )}
+            />
+            <AuthRoute
+              exact
+              hasDrawer
+              authenticated={authenticated}
+              path={COLLECTION_CREATE}
+              render={() => <CreateCollectionView />}
+            />
+            <AuthRoute
+              exact
+              hasDrawer
+              authenticated={authenticated}
+              path={COLLECTION_LIST_COMPANY}
+              render={(props: any) => (
+                <CompanyCollectionPageContainer
+                  {...queryString.parse(props.location.search)}
+                />
+              )}
+            />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              path={COLLECTION_EDIT}
+              render={(props: any) => (
+                <EditCollectionPageContainer
+                  collectionId={props.match.params.id}
+                />
+              )}
+            />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              hasDrawer
+              path="/memos"
+              render={(props: any) => <ProjectView {...props} />}
+            />
+            <AuthRoute
+              exact
+              hasDrawer
+              authenticated={authenticated}
+              path={NOTIFICATION}
+              render={(props: any) => <NotificationPageContainer />}
+            />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              path={ROOT}
+              render={(props: any) => <ProjectView {...props} />}
+            />
+            <Route>
+              <Error />
+            </Route>
+          </Switch>
+        </div>
+      </BasicMenuBar>
     </div>
   );
 }
@@ -221,7 +225,7 @@ function PersonaView() {
   const classes = useStyles();
   return (
     <Fragment>
-      <Drawer />
+      {/* <Drawer /> */}
       <main className={classes.content}>
         <Toolbar />
         <PersonaPageContainer />
@@ -245,7 +249,7 @@ function ProjectView(props: any) {
 
   return (
     <Fragment>
-      <Drawer />
+      {/* <Drawer /> */}
       <main className={classes.content}>
         <Toolbar />
         <Projects {...props} />

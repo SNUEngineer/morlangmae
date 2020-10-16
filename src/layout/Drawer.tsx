@@ -9,6 +9,8 @@ import CollectionsIcon from "@material-ui/icons/Collections";
 import NoteIcon from "@material-ui/icons/Note";
 import Divider from "@material-ui/core/Divider";
 import { COLLECTION_LIST, PROFILE } from "../common/paths";
+import menuStyle from "./Drawer.module.scss";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -41,25 +43,29 @@ export default function Drawer() {
   const classes = useStyles();
 
   return (
-    <MuiDrawer
-      className={classes.drawer}
-      variant="permanent"
-      anchor="left"
-      classes={{
-        paper: classes.drawerPaper,
-      }}
-    >
-      <Toolbar />
-      <List>
-        <ListItemLink
-          to={COLLECTION_LIST}
-          primary="컬렉션"
-          icon={<CollectionsIcon />}
-        />
-        <ListItemLink to="/memos" primary="메모" icon={<NoteIcon />} />
-        <ListItemLink to={PROFILE} primary="프로필" icon={<PersonIcon />} />
-      </List>
-      <Divider />
-    </MuiDrawer>
+    <div className={menuStyle.side_container}>
+      <div className={menuStyle.fixed_container}>
+        <div className={menuStyle.menu_container}>
+          <Link className={menuStyle.menu_item} to={COLLECTION_LIST}>
+            <div className={menuStyle.icon_container}>
+              <img className={menuStyle.collection_icon} alt={"icon"} />
+            </div>
+            <div className={menuStyle.text}>컬렉션</div>
+          </Link>
+          <Link className={menuStyle.menu_item} to="/memos">
+            <div className={menuStyle.icon_container}>
+              <img className={menuStyle.memo_icon} alt={"icon"} />
+            </div>
+            <div className={menuStyle.text}>메모</div>
+          </Link>
+          <Link className={menuStyle.menu_item} to={PROFILE}>
+            <div className={menuStyle.icon_container}>
+              <img className={menuStyle.profile_icon} alt={"icon"} />
+            </div>
+            <div className={menuStyle.text}>프로필</div>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
