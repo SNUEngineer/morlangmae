@@ -1,6 +1,5 @@
 // @ts-nocheck
 import React from "react";
-import CollectionCardList from "../../components/collection/CollectionCardList";
 import CollectionTab from "./CollectionTab";
 
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
@@ -109,7 +108,9 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
 
   return (
     <div className={collectionStyle.tab_container}>
-      {/* <CollectionTab /> */}
+      <div className={collectionStyle.tab_menu_container}>
+        <CollectionTab />
+      </div>
       <ForUserCollectionCardList
         //usersCollections={props.serviceCollections}
         usersCollections={testCollections}

@@ -22,7 +22,9 @@ export default function CreateCollectionPageContainer() {
   const handleCreateCollection = async (
     request: CreateDraftCollectionRequest
   ): Promise<void> => {
+    console.log("lets create collection!! " + JSON.stringify(request));
     const id = await createCollection(request);
+    console.log("idididididi " + JSON.stringify(id));
     history.push(`/collections/edit/${id}`);
   };
 

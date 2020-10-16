@@ -110,7 +110,9 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
   const history = useHistory();
   return (
     <div className={collectionStyle.tab_container}>
-      {/* <CollectionTab /> */}
+      <div className={collectionStyle.tab_menu_container}>
+        <CollectionTab />
+      </div>
       <div className={collectionStyle.member_header_container}>
         <div className={collectionStyle.text}>김기연님의 컬렉션</div>
       </div>

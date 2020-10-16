@@ -32,7 +32,9 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
   };
   return (
     <div className={createStyle.tab_container}>
-      {/* <CollectionTab /> */}
+      <div className={collectionStyle.tab_menu_container}>
+        <CollectionTab />
+      </div>
       {/* <CollectionList
         title="Create Collections"
         collections={props.collections}

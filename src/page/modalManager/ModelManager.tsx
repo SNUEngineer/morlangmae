@@ -10,6 +10,7 @@ interface ModalManagerProps {
 }
 
 export default function ModalManager(props: ModalManagerProps) {
+  // hideToolbar 를 사용해야하는 이유...?
   return (
     <Fragment>
       {props.collectionId && (

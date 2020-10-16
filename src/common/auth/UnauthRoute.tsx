@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import { Route, Redirect } from "react-router-dom";
 
 export interface UnauthRouteProps {
   authenticated: boolean;
@@ -7,21 +7,26 @@ export interface UnauthRouteProps {
   [propName: string]: any;
 }
 
-export default function AuthRoute({ authenticated, component, render, ...rest }: UnauthRouteProps) {
+export default function AuthRoute({
+  authenticated,
+  component,
+  render,
+  ...rest
+}: UnauthRouteProps) {
+  console.log("authenticatedauthenticated " + authenticated);
+
   return (
     <Route
       {...rest}
-      render={props =>
+      render={(props) =>
         !authenticated ? (
           render ? (
             render(props)
           ) : (
-              <Component {...props} />
-            )
+            <Component {...props} />
+          )
         ) : (
-          <Redirect
-            to={{ pathname: "/", state: { from: props.location }}}
-          />
+          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
         )
       }
     />

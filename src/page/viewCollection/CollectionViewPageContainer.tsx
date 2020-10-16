@@ -25,6 +25,7 @@ async function getData({ collectionId }: any) {
     getCollection(collectionId),
     getPlatters(collectionId),
   ]);
+  console.log("collectionId " + JSON.stringify(data[0]));
 
   return {
     collection: data[0],

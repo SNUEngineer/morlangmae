@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import menuStyle from "./BasicMenuBar.module.scss";
-
+import { logOut } from "../../../services/user.service";
 export default function BasicMenuBar(props: any) {
   const { hasDrawer } = props;
 
@@ -14,6 +14,14 @@ export default function BasicMenuBar(props: any) {
               <img className={menuStyle.profile_icon} alt={"icon"} />
             </div>
             <div className={menuStyle.icon_container}>
+              <img className={menuStyle.notification_icon} alt={"icon"} />
+            </div>
+            <div
+              className={menuStyle.icon_container}
+              onClick={() => {
+                logOut();
+              }}
+            >
               <img className={menuStyle.notification_icon} alt={"icon"} />
             </div>
           </div>

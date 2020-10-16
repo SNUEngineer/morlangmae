@@ -66,7 +66,8 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
   const classes = useStyles();
   return (
     <Fragment>
-      {!props.hideToolbar && (
+      {/* {!props.hideToolbar && ( 여기서 hide tool bar는 platter를 수정하는 hide tool bar 인듯.*/}
+      {true && (
         <CollectionToolBar
           editable={editable}
           setEditable={setEditable}
@@ -111,10 +112,8 @@ const useStyles = makeStyles(() =>
       zIndex: 2200,
       top: 0,
       margin: "0px",
-
       height: "54px",
       backgroundColor: "#1D1D1F",
-      position: "relative",
       boxShadow: "none",
     },
     toolBar: {
@@ -152,6 +151,7 @@ export function CollectionToolBar(props: any) {
   const handleChange = (event: any) => {
     props.setSortType(event.target.value);
   };
+  console.log("CollectionToolBar 작동");
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const [filter, setFilter] = useState<string>("ALL");
   return (

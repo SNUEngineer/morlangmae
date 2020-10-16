@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -23,14 +23,22 @@ export interface CreateCollectionPageProps {
 }
 
 export default function CreateCollectionPage(props: CreateCollectionPageProps) {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [filter, setFilter] = useState<string>("BASIC");
   const [serviceFilter, setServiceFilter] = useState<string>("BASIC");
+  useEffect(() => {
+    // register("collectionType");
+    // register("serviceType");
+    register({ name: "collectionType" }, { required: true, min: 1 });
+    register({ name: "serviceType" }, { required: true, min: 1 }); // submit할 필드값으로 등록,
+  }, [register]);
   const handleChange = (event: any) => {
     setFilter(event.target.value);
+    setValue("collectionType", event.target.value);
   };
   const handleServiceChange = (event: any) => {
     setServiceFilter(event.target.value);
+    setValue("serviceType", event.target.value);
   };
   const useStyles = makeStyles(() =>
     createStyles({
@@ -181,13 +189,14 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
                     [pageStyle.select]: true,
                   })}
                   variant={"outlined"}
+                  ref={register}
                   IconComponent={ExpandMoreRoundedIcon}
                   disableUnderline
                 >
                   <MenuItem
                     className={classNames({
                       [classes.root]: true,
-                      [classes.selected]: true,
+                      // [classes.selected]: true,
                     })}
                     value="BASIC"
                   >
@@ -200,7 +209,7 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
                   <MenuItem
                     className={classNames({
                       [classes.root]: true,
-                      [classes.selected]: true,
+                      // [classes.selected]: true,
                     })}
                     value="디자인 마케팅"
                   >
@@ -213,7 +222,7 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
                   <MenuItem
                     className={classNames({
                       [classes.root]: true,
-                      [classes.selected]: true,
+                      // [classes.selected]: true,
                     })}
                     value="컨설팅"
                   >
@@ -226,7 +235,7 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
                   <MenuItem
                     className={classNames({
                       [classes.root]: true,
-                      [classes.selected]: true,
+                      // [classes.selected]: true,
                     })}
                     value="제작"
                   >

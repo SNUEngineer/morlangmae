@@ -37,7 +37,6 @@ import {
 } from "@material-ui/pickers";
 import Dialog from "@material-ui/core/Dialog";
 import classNames from "classnames";
-
 //const [passwordActive, setPasswordActive] = useState(false);
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -228,7 +227,7 @@ const contentStyles = makeStyles((theme: Theme) =>
 
 //const [open, setOpen] = useState(false);
 
-export const getStepContent = (
+function getStepContent(
   stepIndex: number,
   collection: any,
   setCollection: any,
@@ -244,9 +243,9 @@ export const getStepContent = (
   setPopOpen,
   anchorEl,
   setAnchorEl,
-  props: EditCollectionPageProps,
-  handleNext
-) => {
+  handleNext,
+  props: EditCollectionPageProps
+) {
   const styleClasses = contentStyles(collection);
   //const classes = useInputStyles();
   const id = popoverOpen ? "simple-popover-search" : undefined;
@@ -255,13 +254,11 @@ export const getStepContent = (
     setPopoverOpen(true);
     setPopOverAnchorEl(event.currentTarget);
   };
-  console.log("popOpen " + popOpen);
   // setPasswordActive(false);
   // setPopOpen(false);
 
   const handleClose = (value) => {
     setPopoverOpen(false);
-    setSelectedValue(value);
     setAnchorEl(null);
   };
   const handleChange = (e: any) => {
@@ -815,7 +812,10 @@ export const getStepContent = (
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => props.editCollection(collection)}
+                    onClick={() => {
+                      console.log("finish button clicked!!!1");
+                      props.editCollection(collection);
+                    }}
                     className={classNames({
                       [styleClasses.nextButton]: true,
                       [editStyle.finish_button]: true,
@@ -832,7 +832,7 @@ export const getStepContent = (
     default:
       return "Unknown stepIndex";
   }
-};
+}
 
 export interface EditCollectionPageProps {
   collectionDetail: CollectionDetail;
@@ -1051,11 +1051,11 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
             setPopOverAnchorEl,
             requestMember,
             setRequestMember,
-            handleNext,
             popOpen,
             setPopOpen,
             anchorEl,
             setAnchorEl,
+            handleNext,
             props
           )}
           <div></div>
