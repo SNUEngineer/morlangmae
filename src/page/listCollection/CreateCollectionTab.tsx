@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import CollectionList from "../../components/collection/CollectionList";
 import Grid from "@material-ui/core/Grid";

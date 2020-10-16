@@ -1,6 +1,6 @@
+// @ts-nocheck
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import anchorStyle from "./anchor.module.scss";
-import { TextArea } from "../TextArea";
 import Draggable from "react-draggable";
 import Line from "./AnchorLine/Line";
 import classNames from "classnames";

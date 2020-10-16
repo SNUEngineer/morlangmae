@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Fragment, useRef, useState } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import PlatterEditor, {

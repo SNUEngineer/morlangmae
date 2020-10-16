@@ -35,13 +35,14 @@ export enum CollectionStatus {
 export interface CollectionCardProps extends CollectionCardFunctions {
   data: CollectionData;
   pinned: boolean;
-  viewType:
-    | "NORMAL"
-    | "WIDE"
-    | "CAROUSEL"
-    | "CAROUSEL_TWO"
-    | "LIST"
-    | "SMALL_LIST";
+  viewType: string;
+  // | "NORMAL"
+  // | "WIDE"
+  // | "CAROUSEL"
+  // | "CAROUSEL_TWO"
+  // | "LIST"
+  // | "SMALL_LIST"
+  // | "SMALL_LIST_BACK_UP";
 }
 
 export interface CollectionCardFunctions {
@@ -99,7 +100,7 @@ export default function CollectionCard(props: CollectionCardProps) {
               <div
                 className={collectionStyle.icon_container}
                 onClick={() => {
-                  unpinCollection();
+                  //unpinCollection();
                 }}
               >
                 <img className={collectionStyle.pinned_icon} alt={"icon"} />
@@ -238,5 +239,6 @@ export default function CollectionCard(props: CollectionCardProps) {
       );
 
     default:
+      return <div></div>;
   }
 }

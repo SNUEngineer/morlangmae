@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 
 import selectorStyle from "./Selector.module.scss";

@@ -3,7 +3,7 @@ import { CreateDraftCollectionRequest } from "../../services/collection.service"
 import pageStyle from "./creatingCollectionPage.module.scss";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
-import { makeStyles, createStyles, theme } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 
 export interface CreatingCollectionPageProps {

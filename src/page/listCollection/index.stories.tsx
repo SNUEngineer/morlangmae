@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import CollectionPage from "./CollectionPage";
 import CollectionTab from "./CollectionTab";

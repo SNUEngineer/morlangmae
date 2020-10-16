@@ -9,7 +9,7 @@ interface LeftArrowProps {
 }
 interface RightArrowProps {
   customRightArrow?: React.ReactElement<any> | null;
-  getState: () => {};
+  getState: () => StateCallBack;
   next: () => void;
 }
 
@@ -48,6 +48,7 @@ const RightArrow = ({
     <button
       aria-label="Go to next slide"
       className="react-multiple-carousel__arrow react-multiple-carousel__arrow--right"
+      //style={{ marginTop: getState().containerHeight / 2 }}
       style={{ marginTop: getState().containerHeight / 2 }}
       onClick={() => next()}
     />

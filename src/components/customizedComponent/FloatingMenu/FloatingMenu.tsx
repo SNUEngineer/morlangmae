@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useRef, useLayoutEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";

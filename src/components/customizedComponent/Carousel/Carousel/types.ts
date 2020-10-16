@@ -94,18 +94,27 @@ export interface CarouselInternalState {
 }
 
 export default class Carousel extends React.Component<CarouselProps> {
+  // @ts-ignore
   previous: (slidesHavePassed: number) => void;
+  // @ts-ignore
   next: (slidesHavePassed: number) => void;
+  // @ts-ignore
   goToSlide: (slide: number, skipCallbacks?: SkipCallbackOptions) => void;
+  // @ts-ignore
   state: CarouselInternalState;
+  // @ts-ignore
   setClones: (
     slidesToShow: number,
     itemWidth?: number,
     forResizing?: boolean
   ) => void; // reset carousel in infinite mode.
+  // @ts-ignore
   setItemsToShow: (shouldCorrectItemPosition?: boolean) => void; // reset carousel in non-infinite mode.
+  // @ts-ignore
   correctClonesPosition: ({ domLoaded }: { domLoaded: boolean }) => void;
+  // @ts-ignore
   onMove: boolean;
   direction: Direction;
+  // @ts-ignore
   containerRef: React.RefObject<HTMLDivElement>;
 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import EditCollectionPage from "./EditCollectionPage";
 import editStyle from "./editCollectionPage.module.scss";

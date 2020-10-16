@@ -21,7 +21,14 @@ export interface CollectionData {
 
 export interface CollectionCardProps {
   data: CollectionData;
-  viewType: "NORMAL" | "WIDE" | "HORIZONTAL";
+  viewType:
+    | "NORMAL"
+    | "WIDE"
+    | "HORIZONTAL"
+    | "LIST"
+    | "IN_COLLECTION"
+    | "TEMP"
+    | "SMALL_LIST";
 
   onClick(data: CollectionData): Promise<void>;
 }

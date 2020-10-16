@@ -97,7 +97,9 @@ class Carousel extends React.Component<CarouselProps, CarouselInternalState> {
       props.transitionDuration || defaultTransitionDuration,
       this.setIsInThrottle
     );
+
     this.goToSlide = throttle(
+      // @ts-ignore
       this.goToSlide.bind(this),
       props.transitionDuration || defaultTransitionDuration,
       this.setIsInThrottle

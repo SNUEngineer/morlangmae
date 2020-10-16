@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect } from "react";
 import { UserView, getMe, editUser } from "../../services/user.service";
 import PersonaPage from "./PersonaPage";

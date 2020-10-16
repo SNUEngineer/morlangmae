@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useLayoutEffect } from "react";
 import ReactDOM from "react-dom";
 

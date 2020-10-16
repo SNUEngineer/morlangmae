@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import { useAsync } from "react-async";

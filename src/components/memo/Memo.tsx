@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
 import { Document, Page } from "react-pdf";
 import memoStyle from "./memo.module.scss";

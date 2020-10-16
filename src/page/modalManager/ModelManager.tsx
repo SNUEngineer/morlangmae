@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Fragment } from "react";
 import CollectionViewPageContainer from "../viewCollection/CollectionViewPageContainer";
 import CreatePlatterPageContainer from "../createPlatter/CreatePlatterPageContainer";

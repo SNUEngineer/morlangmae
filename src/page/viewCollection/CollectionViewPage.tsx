@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, Fragment, useRef, useEffect } from "react";
 import {
   makeStyles,

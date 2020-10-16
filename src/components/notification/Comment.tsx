@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";

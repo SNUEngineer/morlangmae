@@ -1,10 +1,11 @@
+// @ts-nocheck
 const throttle = (
   func: () => void,
   limit: number,
   setIsInThrottle?: (value?: boolean) => void
 ): (() => void) => {
   let inThrottle: boolean;
-  return function() {
+  return function () {
     const args = arguments;
     const context = this;
     if (!inThrottle) {

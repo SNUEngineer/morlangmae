@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import tabStyle from "./MemoTab.module.scss";
 import classNames from "classnames";

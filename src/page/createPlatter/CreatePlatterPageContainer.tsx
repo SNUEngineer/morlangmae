@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { useAsync } from "react-async";
 import { createPlatter } from "../../services/platter.service";

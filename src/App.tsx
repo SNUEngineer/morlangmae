@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, Fragment } from "react";
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
@@ -98,7 +99,7 @@ function App() {
   }
 
   return (
-    <div className={appStyle.root}>
+    <div>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography>Bailey</Typography>
@@ -107,6 +108,7 @@ function App() {
       <div className={classes.body}>
         <Switch>
           <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+
           <UnauthRoute
             exact
             authenticated={authenticated}
@@ -210,6 +212,7 @@ function App() {
           </Route>
         </Switch>
       </div>
+      asdfasdf
     </div>
   );
 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useLayoutEffect, useState, useRef, useCallback } from "react";
 import PlatterEditor, {
   PlatterEditorProps,

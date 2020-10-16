@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import sideStyle from "./sidebar.module.scss";
 import MemoItem from "../MemoItem/MemoItem";

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import MemoHomeTab from "./MemoHomeTab";
 import MemoListTab from "./MemoListTab";

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import EditPlatterPage from "./EditPlatterPage";
 import Scroll from "./Scroll";

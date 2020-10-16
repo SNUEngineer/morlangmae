@@ -1,7 +1,7 @@
-// @flow
+// @ts-nocheck
 import * as React from "react";
 import warning from "warning";
-import type {
+import {
   Coordinates,
   BoundCoordinates,
   TransformationParameters,

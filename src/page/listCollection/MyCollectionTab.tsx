@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import CollectionCard, {
@@ -36,6 +37,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     helpfulCollections,
     onCollectionClick,
     pinCollection,
+    unpinCollection,
   } = props;
   const collection1 = {
     id: 0,
