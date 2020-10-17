@@ -478,16 +478,17 @@ function PlatterSummaryList(props: PlatterSummaryListProps) {
   );
   const classes = useStyles();
   const [viewType, setViewType] = useState(ViewType.ALL);
-  // const platterSummaires = props.platterSummaries
-  //   .filter((it) => viewType === ViewType.ALL || it.joined)
-  //   .filter((it) => it.title.includes(props.searchQuery));
-  const ps1 = {
-    id: 0,
-    title: "string1111",
-    createdBy: 0,
-    createdDate: 0,
-  };
-  const platterSummaires = [ps1, ps1];
+  const platterSummaires = props.platterSummaries
+    .filter((it) => viewType === ViewType.ALL || it.joined)
+    .filter((it) => it.title.includes(props.searchQuery));
+  console.log("platterSummaires " + JSON.stringify(platterSummaires));
+  // const ps1 = {
+  //   id: 0,
+  //   title: "string1111",
+  //   createdBy: 0,
+  //   createdDate: 0,
+  // };
+  // const platterSummaires = [ps1, ps1];
   const onClick = (event: any) => {
     setViewType(event.target.value);
   };

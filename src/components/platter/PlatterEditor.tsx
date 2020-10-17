@@ -185,11 +185,13 @@ export default function PlatterEditor(props: PlatterEditorProps) {
             <TextField
               className={platterStyle.title}
               required
-              defaultValue={test.title}
+              defaultValue={data?.title}
+              placeholder={"플래터 제목을 입력해 주세요."}
               fullWidth
               id="title"
               name="title"
               InputProps={{ classes }}
+              onChange={changeTitle}
             />
           </div>
 

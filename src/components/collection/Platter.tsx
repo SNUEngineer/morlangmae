@@ -47,6 +47,9 @@ export default function Platter(props: PlatterProps) {
     title: "나이키 1차 기획 회의",
   };
   const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
+  console.log(
+    "platterdata?.titledata?.titledata?.title " + JSON.stringify(platterData)
+  );
   return (
     <div
       className={classNames({
@@ -68,25 +71,26 @@ export default function Platter(props: PlatterProps) {
             {/* <Typography className={platterStyle.subtitle}>
               {test.subtitle}
             </Typography> */}
-            <Typography className={platterStyle.title}>{test.title}</Typography>
+            <Typography className={platterStyle.title}>
+              {platterData?.title}
+            </Typography>
           </div>
 
           <div className={platterStyle.writer_container}>
             <Typography className={platterStyle.date_text}>
-              {test.createdDate}
+              {platterData?.createdDate}
             </Typography>
 
             <div className={platterStyle.profile_container}>
               <Avatar
                 alt={platterData.createdBy.displayName}
                 //src={platterData.createdBy.imageUrl}
-                src={testProfile}
+                src={platterData?.createdBy?.imageUrl}
                 className={platterStyle.avatar}
               />
               <div className={platterStyle.name_text_container}>
                 <Typography className={platterStyle.name_text}>
-                  {/* {platterData.createdBy.displayName} */}
-                  송병근
+                  {platterData.createdBy.displayName}
                 </Typography>
                 <Typography className={platterStyle.company_text}>
                   {/* {platterData.createdBy.companyId} */}

@@ -44,10 +44,10 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
       /> */}
 
       <div className={createStyle.create_button_container}>
-        <div className={createStyle.create_button}>
+        <Link className={createStyle.create_button} to={COLLECTION_CREATE}>
           <AddBoxIcon className={createStyle.create_button} />
           <div className={createStyle.create_text}>생성하기</div>
-        </div>
+        </Link>
       </div>
       <Header title={"나의 생성 컬렉션 리스트"} subMenuType={"filter"} />
       <Grid container>

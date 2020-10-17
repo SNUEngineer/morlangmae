@@ -249,7 +249,7 @@ export default function CollectionCard(props: CollectionCardProps) {
                 <p>{data.title}</p>
               </div>
               <div className={collectionStyle.state} onClick={onClick}>
-                <p>{"대기중"}</p>
+                <p>{data.status}</p>
               </div>
               <div className={collectionStyle.authority} onClick={onClick}>
                 <p>{"송병근"}</p>

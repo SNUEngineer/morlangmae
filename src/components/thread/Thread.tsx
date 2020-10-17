@@ -8,6 +8,8 @@ import ListItem from "@material-ui/core/ListItem";
 import TextField from "@material-ui/core/TextField";
 import threadStyle from "./thread.module.scss";
 import { TextArea } from "../customizedComponent/TextArea";
+import Button from "@material-ui/core/Button";
+import sendIcon from "../../resources/icons/thread_send_icon.png";
 
 export interface ThreadProps {
   messages: MessageData[];
@@ -33,6 +35,10 @@ const useStyles = makeStyles((theme: Theme) =>
     form: {
       width: "100%",
     },
+    send_button: {
+      width: "100%",
+      height: "100%",
+    },
   })
 );
 
@@ -40,7 +46,8 @@ export default function Thread(props: ThreadProps) {
   const [messages, setMessages] = useState(props.messages);
   const messagesRef = useRef<any>(null);
   const classes = useStyles();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm();
+
   const loadMessages = async () => {
     const messages = await props.loadMessages();
     setMessages(messages);
@@ -61,6 +68,14 @@ export default function Thread(props: ThreadProps) {
 
     return () => clearInterval(timer);
   });
+  useEffect(() => {
+    register({ name: "content" }, { required: true, min: 1 }); // custom register Antd input
+  }, [register]);
+  const handleChange = (e: any) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setValue(name, value);
+  };
 
   const messageList = messages.map(
     (messageData: MessageData, index: number) => {
@@ -99,6 +114,7 @@ export default function Thread(props: ThreadProps) {
               <div className={threadStyle.text_area_container}>
                 <div className={threadStyle.text_area}>
                   <TextArea
+                    name={"content"}
                     inline
                     width="100%"
                     height="100px"
@@ -107,14 +123,23 @@ export default function Thread(props: ThreadProps) {
                     fontFamily={"Noto Sans CJK KR Regular"}
                     padding={10}
                     textareaRef={register({ required: true })}
+                    onChange={handleChange}
                   />
                 </div>
 
                 <div className={threadStyle.send_area}>
                   <div className={threadStyle.align_container}>
-                    <div className={threadStyle.send_button_container}>
+                    {/* <div className={threadStyle.send_button_container} onClick={()=>{
+                      //  sendMessage(message: { content: string });
+                       sendMessage({message : {content : }})
+                    }}>
                       <img alt={"icon"} className={threadStyle.send_button} />
-                    </div>{" "}
+                    </div> */}
+                    <div className={threadStyle.send_button_container}>
+                      <Button type="submit" className={classes.send_button}>
+                        <img alt={"icon"} className={threadStyle.send_button} />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>

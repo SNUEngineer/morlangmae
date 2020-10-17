@@ -249,7 +249,7 @@ function getStepContent(
   const styleClasses = contentStyles(collection);
   //const classes = useInputStyles();
   const id = popoverOpen ? "simple-popover-search" : undefined;
-
+  console.log("props.usersprops.users " + JSON.stringify(props.users));
   const handleClickOpen = (event) => {
     setPopoverOpen(true);
     setPopOverAnchorEl(event.currentTarget);
@@ -294,7 +294,8 @@ function getStepContent(
       <div>
         {!checking && (
           <div className={editStyle.count_text}>
-            {!!collection.members[0] &&
+            {!!collection.members &&
+              collection.members.length > 0 &&
               collection.members[0].displayName +
                 " 외 " +
                 (collection.members.length - 1) +
@@ -492,7 +493,7 @@ function getStepContent(
                       variant="inline"
                       format="MM/dd/yyyy"
                       margin="normal"
-                      id="date-picker-inline"
+                      id="date-picker-inline-start"
                       KeyboardButtonProps={{
                         "aria-label": "change date",
                       }}
@@ -510,7 +511,7 @@ function getStepContent(
                       variant="inline"
                       format="MM/dd/yyyy"
                       margin="normal"
-                      id="date-picker-inline"
+                      id="date-picker-inline-end"
                       KeyboardButtonProps={{
                         "aria-label": "change date",
                       }}
@@ -565,7 +566,7 @@ function getStepContent(
                       members: newValue,
                     });
                   }}
-                  options={collection.members}
+                  options={props.users}
                   //원래는 props.users로 검색가능 대상이 나와야 함.
                   renderInput={(params) => {
                     return (
@@ -736,13 +737,8 @@ function getStepContent(
                     multiple
                     value={collection.members}
                     //원래는 props.users로 검색가능 대상이 나와야 함.
-                    onChange={(event, newValue) => {
-                      setCollection({
-                        ...collection,
-                        members: newValue,
-                      });
-                    }}
-                    options={collection.members}
+                    onChange={(event, newValue) => {}}
+                    options={props.users}
                     //원래는 props.users로 검색가능 대상이 나와야 함.
                     renderInput={(params) => {
                       return (
@@ -863,7 +859,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     id: 1,
     displayName: "송상근",
   };
-  const testMembers = [testMember1, testMember2];
+
   const [collection, setCollection] = useState({
     id: collectionDetail.id,
     collectionType: collectionDetail.collectionType,
@@ -872,12 +868,13 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     title: collectionDetail.title,
     startDate: collectionDetail.startDate,
     endDate: collectionDetail.endDate,
-    // members: collectionDetail.members.map((member: UserView) => {
-    //   return props.users.find((user: UserView) => user.id === member.id);
-    // }),
-    members: testMembers,
+    members: collectionDetail.members.map((member: UserView) => {
+      return props.users.find((user: UserView) => user.id === member.id);
+    }),
+    // members: collectionDetail.members,
   });
 
+  console.log("collectionDetail.createdBy " + JSON.stringify(collectionDetail));
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };

@@ -176,7 +176,7 @@ function App() {
               hasDrawer
               authenticated={authenticated}
               path={COLLECTION_CREATE}
-              render={() => <CreateCollectionView />}
+              render={() => <CreateCollectionPageContainer />}
             />
             <AuthRoute
               exact

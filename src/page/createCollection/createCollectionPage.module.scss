@@ -48,12 +48,19 @@
   font-family: "Noto Sans CJK KR Bold";
 }
 
-.paper {
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
+.root {
+  width: 100%;
   align-items: center;
-  width: 500px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  .paper {
+    // transform: translate(-50%, 0);
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+  }
 }
 
 .avatar {

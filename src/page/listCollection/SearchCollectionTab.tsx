@@ -93,11 +93,6 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
     collection3,
     collection4,
     collection5,
-    collection1,
-    collection2,
-    collection3,
-    collection4,
-    collection5,
   ];
 
   const functions = {

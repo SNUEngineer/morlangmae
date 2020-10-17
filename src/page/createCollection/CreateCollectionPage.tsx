@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -108,8 +107,7 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
   );
   const classes = useStyles();
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <div className={pageStyle.root}>
       <div className={pageStyle.paper}>
         <div className={pageStyle.bailey_text}>Bailey</div>
         <div className={pageStyle.create_text}>새 컬렉션 생성</div>
@@ -293,6 +291,6 @@ export default function CreateCollectionPage(props: CreateCollectionPageProps) {
         </form>
       </div>
       <Box mt={8}></Box>
-    </Container>
+    </div>
   );
 }
