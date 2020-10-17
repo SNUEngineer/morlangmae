@@ -1,3 +1,8 @@
+.platter_container_editable {
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
 .platter_container {
   position: relative;
   width: 100%;

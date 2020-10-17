@@ -44,8 +44,8 @@ export default function CollectionViewPageContainer(
 ) {
   const { pathname, search } = useLocation();
   const history = useHistory();
-
   const onClose = async () => {
+    console.log("onCloseonCloseonClose");
     history.replace(pathname);
   };
   const { data, reload } = useAsync({

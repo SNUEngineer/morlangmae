@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useCallback, useEffect } from "react";
 import CollectionCard, {
   CollectionCardProps,
@@ -14,14 +15,14 @@ export interface GridCollectionCardListProps {
   columnCount: number;
   viewType: string;
   pinned: boolean;
-  onCollectionClick(data: CollectionData): Promise<void>;
+  onClick(data: CollectionData): Promise<void>;
   pinCollection(id: number): Promise<void>;
   unpinCollection(id: number): Promise<void>;
 }
 export function GridCollectionCardList(props: GridCollectionCardListProps) {
   const {
     collections,
-    onCollectionClick,
+    onClick,
     columnCount,
     viewType,
     pinned,
@@ -31,21 +32,21 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
   const [gridCollections, setGridCollections] = useState<CollectionData[]>();
   useEffect(() => {
     if (collections.length < columnCount) {
-      const empty: CollectionData = {
-        id: -1,
-        title: "empty",
-        status: CollectionStatus.IN_PROGRESS,
-        imageUrl:
-          "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x6001.jpgafaf",
-        collectionType: CollectionType.PROJECT,
-        serviceType: "마케팅",
-        createdDate: new Date(),
-        startDate: new Date(),
-        endDate: new Date(),
-        notificationCount: 0,
-        pinned: false,
-      };
-      var newList = collections.concat(empty);
+      // const empty: CollectionData = {
+      //   id: -1,
+      //   title: "empty",
+      //   status: CollectionStatus.IN_PROGRESS,
+      //   imageUrl:
+      //     "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray-600x6001.jpgafaf",
+      //   collectionType: CollectionType.PROJECT,
+      //   serviceType: "마케팅",
+      //   createdDate: new Date(),
+      //   startDate: new Date(),
+      //   endDate: new Date(),
+      //   notificationCount: 0,
+      //   pinned: false,
+      // };
+      var newList = collections.concat(null);
       while (collections.length >= columnCount) {
         newList = newList.concat(empty);
       }
@@ -75,7 +76,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
               <CollectionCard
                 data={gridCollections[0]}
                 viewType={!!viewType ? viewType : "WIDE"}
-                onClick={onCollectionClick}
+                onClick={onClick}
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
@@ -85,7 +86,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
               <CollectionCard
                 data={gridCollections[1]}
                 viewType={!!viewType ? viewType : "WIDE"}
-                onClick={onCollectionClick}
+                onClick={onClick}
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
@@ -101,7 +102,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
               <CollectionCard
                 data={gridCollections[0]}
                 viewType={!!viewType ? viewType : "WIDE"}
-                onClick={onCollectionClick}
+                onClick={onClick}
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
@@ -111,7 +112,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
               <CollectionCard
                 data={gridCollections[1]}
                 viewType={!!viewType ? viewType : "WIDE"}
-                onClick={onCollectionClick}
+                onClick={onClick}
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
@@ -121,7 +122,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
               <CollectionCard
                 data={gridCollections[2]}
                 viewType={!!viewType ? viewType : "WIDE"}
-                onClick={onCollectionClick}
+                onClick={onClick}
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
@@ -141,7 +142,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                       key={index}
                       data={item}
                       viewType={!!viewType ? viewType : "WIDE"}
-                      onClick={onCollectionClick}
+                      onClick={onClick}
                       pinCollection={pinCollection}
                       unpinCollection={unpinCollection}
                       pinned={false}
@@ -153,7 +154,15 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
           </div>
         );
     }
-  }, [onCollectionClick, gridCollections, viewType, columnCount, pinned]);
+  }, [
+    onClick,
+    pinCollection,
+    unpinCollection,
+    gridCollections,
+    viewType,
+    columnCount,
+    pinned,
+  ]);
 
   return (
     <div>

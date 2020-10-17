@@ -18,7 +18,7 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import MenuItem from "@material-ui/core/MenuItem";
 
 export default function FloatingMenu(props) {
-  const { options } = props;
+  const { options, selectedOption } = props;
 
   const useStyles = makeStyles(() =>
     createStyles({
@@ -43,10 +43,13 @@ export default function FloatingMenu(props) {
         },
       },
       item: {
-        fontSize: "11.5px",
+        position: "relative",
+        fontSize: "13px",
         letterSpacing: "-0.98px",
         fontFamily: "Noto Sans CJK KR Regular",
         minWidth: "86px",
+        width: "190px",
+        height: "25px",
         textAlign: "center",
         color: "#707070",
         "&:hover": {
@@ -56,6 +59,13 @@ export default function FloatingMenu(props) {
         borderBottomStyle: "solid",
         borderBottomColor: "#E0E0E0",
         borderBottomWidth: "0.5px",
+      },
+      menu_item_container: {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+
+        transform: "translate(-50%, -50%)",
       },
     })
   );
@@ -88,6 +98,7 @@ export default function FloatingMenu(props) {
 
     const handleListItemClick = (value) => {
       onClose(value);
+      selectedOption(value);
     };
 
     const setDialogSize = () => {
@@ -122,9 +133,14 @@ export default function FloatingMenu(props) {
           <List>
             {options.map((item) => {
               return (
-                <MenuItem className={classes.item}>
-                  <div className={menuStyle.menu_item_container}>{item}</div>
-                </MenuItem>
+                <div
+                  className={classes.item}
+                  onClick={() => {
+                    handleListItemClick(item);
+                  }}
+                >
+                  <div className={classes.menu_item_container}>{item}</div>
+                </div>
               );
             })}
           </List>

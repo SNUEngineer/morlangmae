@@ -84,6 +84,8 @@ export default function SearchCollectionTabContainer(
   };
 
   if (data) {
+    console.log("datadatadata " + JSON.stringify(data));
+
     return (
       <Fragment>
         <SearchCollectionTab

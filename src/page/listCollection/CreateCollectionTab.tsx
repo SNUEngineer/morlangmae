@@ -18,9 +18,12 @@ import createStyle from "./createCollectionTab.module.scss";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import Header from "../../components/layout/Header/Header";
 import collectionStyle from "./myCollectionTab.module.scss";
+
 export interface CreateCollectionTabProps {
   collections: CollectionData[];
   onCollectionClick(data: CollectionData): Promise<void>;
+  pinCollection(id: number): Promise<void>;
+  unpinCollection(id: number): Promise<void>;
 }
 
 export default function CreateCollectionTab(props: CreateCollectionTabProps) {
@@ -56,6 +59,8 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
                 data={item}
                 viewType={"LIST"}
                 onClick={props.onCollectionClick}
+                pinCollection={props.pinCollection}
+                unpinCollection={props.unpinCollection}
               />
             </div>
           );

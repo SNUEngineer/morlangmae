@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from "react";
+import React, { useCallback } from "react";
 import CollectionTab from "./CollectionTab";
 
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
@@ -112,27 +112,23 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
         <CollectionTab />
       </div>
       <ForUserCollectionCardList
-        //usersCollections={props.serviceCollections}
-        usersCollections={testCollections}
+        usersCollections={props.serviceCollections}
         {...functions}
       />
       <OftenFoundCollectionCardList
-        oftenCollections={testCollections}
+        oftenCollections={testCollections} //일단 없음.
         {...functions}
       />
       <PopularCollectionCardList
-        //popularCollections={props.hotCollections}
-        popularCollections={testCollections}
+        popularCollections={props.hotCollections}
         {...functions}
       />
       <RecentCollectionCardList
-        //recentCollections={props.recentlyViewedCollections}
-        recentCollections={testCollections}
+        recentCollections={props.recentlyViewedCollections}
         {...functions}
       />
       <CompanyCollectionCardList
-        //companyCollections={props.companyCollections}
-        companyCollections={testCollections}
+        companyCollections={props.companyCollections}
         {...functions}
       />
     </div>
@@ -147,29 +143,38 @@ export interface ForUserCollectionCardListProps
 export function ForUserCollectionCardList(
   props: ForUserCollectionCardListProps
 ) {
-  const usersCollections = props.usersCollections;
+  const usersCollections = useCallback(() => {
+    let collections = props.usersCollections;
+    while (collections.length < 4) {
+      collections = collections.concat(null);
+    }
+    return collections;
+  }, [props.usersCollections]);
 
   return (
     <div>
       <Header title={"김기연님을 위한 컬렉션"} subMenuType={"none"} />
       <div className={collectionStyle.collection_list_container}>
         <Grid container>
-          <CarouselList showItems={3.15}>
-            {usersCollections.map((item) => {
-              return (
-                <div className={collectionStyle.for_user_list_item_container}>
-                  <CollectionCard
-                    key={item.key}
-                    data={item}
-                    viewType={"CAROUSEL"}
-                    onClick={props.onClick}
-                    pinCollection={props.pinCollection}
-                    unpinCollection={props.unpinCollection}
-                  />
-                </div>
-              );
-            })}
-          </CarouselList>
+          {props.usersCollections.length > 0 && (
+            <CarouselList showItems={3.15}>
+              {usersCollections().map((item, index) => {
+                return (
+                  <div className={collectionStyle.for_user_list_item_container}>
+                    <CollectionCard
+                      // key={item.key}
+                      key={index}
+                      data={item}
+                      viewType={"CAROUSEL"}
+                      onClick={props.onClick}
+                      pinCollection={props.pinCollection}
+                      unpinCollection={props.unpinCollection}
+                    />
+                  </div>
+                );
+              })}
+            </CarouselList>
+          )}
         </Grid>
       </div>
     </div>
@@ -184,7 +189,13 @@ export interface OftenFoundCollectionCardListProps
 export function OftenFoundCollectionCardList(
   props: OftenFoundCollectionCardListProps
 ) {
-  const oftenCollections = props.oftenCollections;
+  const oftenCollections = useCallback(() => {
+    let collections = props.oftenCollections;
+    while (collections.length < 4) {
+      collections = collections.concat(null);
+    }
+    return collections;
+  }, [props.oftenCollections]);
 
   return (
     <div className={collectionStyle.often_collection_container}>
@@ -192,24 +203,26 @@ export function OftenFoundCollectionCardList(
 
       <div className={collectionStyle.collection_list_container}>
         <Grid container>
-          <CarouselList showItems={2.15} slideItems={2}>
-            {oftenCollections.map((item) => {
-              return (
-                <div
-                  className={collectionStyle.often_found_list_item_container}
-                >
-                  <CollectionCard
-                    key={item.key}
-                    data={item}
-                    viewType={"CAROUSEL_TWO"}
-                    onClick={props.onClick}
-                    pinCollection={props.pinCollection}
-                    unpinCollection={props.unpinCollection}
-                  />
-                </div>
-              );
-            })}
-          </CarouselList>
+          {props.oftenCollections.length > 0 && (
+            <CarouselList showItems={2.15} slideItems={2}>
+              {oftenCollections().map((item, index) => {
+                return (
+                  <div
+                    className={collectionStyle.often_found_list_item_container}
+                  >
+                    <CollectionCard
+                      key={index}
+                      data={item}
+                      viewType={"CAROUSEL_TWO"}
+                      onClick={props.onClick}
+                      pinCollection={props.pinCollection}
+                      unpinCollection={props.unpinCollection}
+                    />
+                  </div>
+                );
+              })}
+            </CarouselList>
+          )}
         </Grid>
       </div>
     </div>
@@ -224,32 +237,39 @@ export interface PopularCollectionCardListProps
 export function PopularCollectionCardList(
   props: PopularCollectionCardListProps
 ) {
-  const popularCollections = props.popularCollections;
-
+  const popularCollections = useCallback(() => {
+    let collections = props.popularCollections;
+    while (collections.length < 4) {
+      collections = collections.concat(null);
+    }
+    return collections;
+  }, [props.popularCollections]);
   return (
     <div className={collectionStyle.popular_collection_container}>
       <Header title={"이번달 인기있는 컬렉션"} subMenuType={"none"} />
 
       <div className={collectionStyle.collection_list_container}>
         <Grid container>
-          <CarouselList showItems={3.15}>
-            {popularCollections.map((item) => {
-              return (
-                <div
-                  className={collectionStyle.often_found_list_item_container}
-                >
-                  <CollectionCard
-                    key={item.key}
-                    data={item}
-                    viewType={"CAROUSEL"}
-                    onClick={props.onClick}
-                    pinCollection={props.pinCollection}
-                    unpinCollection={props.unpinCollection}
-                  />
-                </div>
-              );
-            })}
-          </CarouselList>
+          {props.popularCollections.length > 0 && (
+            <CarouselList showItems={3.15}>
+              {popularCollections().map((item, index) => {
+                return (
+                  <div
+                    className={collectionStyle.often_found_list_item_container}
+                  >
+                    <CollectionCard
+                      key={index}
+                      data={item}
+                      viewType={"CAROUSEL"}
+                      onClick={props.onClick}
+                      pinCollection={props.pinCollection}
+                      unpinCollection={props.unpinCollection}
+                    />
+                  </div>
+                );
+              })}
+            </CarouselList>
+          )}
         </Grid>
       </div>
     </div>

@@ -229,7 +229,6 @@ class Carousel extends React.Component<CarouselProps, CarouselInternalState> {
     if (this.containerRef && this.containerRef.current) {
       const containerWidth = this.containerRef.current.offsetWidth;
       const containerHeight = this.containerRef.current.offsetHeight;
-      console.log("containerHeightcontainerHeight " + containerHeight);
 
       const itemWidth: number = getItemClientSideWidth(
         this.props,
@@ -639,10 +638,6 @@ class Carousel extends React.Component<CarouselProps, CarouselInternalState> {
     );
   }
   public getState() {
-    console.log("this statetstetaset " + JSON.stringify(this.state));
-    console.log(
-      "this statetstetaset " + JSON.stringify(this.state.containerHeight)
-    );
     return this.state;
   }
   public renderLeftArrow(): React.ReactNode {

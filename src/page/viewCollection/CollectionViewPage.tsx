@@ -40,6 +40,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 export interface CollectionViewPageProps extends CollectionProps {
   hideToolbar?: boolean;
   createPlatter(): Promise<void>;
+  onPlatterClick(): Promise<void>;
   onClose(): Promise<void>;
 }
 
@@ -66,8 +67,7 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
   const classes = useStyles();
   return (
     <Fragment>
-      {/* {!props.hideToolbar && ( 여기서 hide tool bar는 platter를 수정하는 hide tool bar 인듯.*/}
-      {true && (
+      {!props.hideToolbar && (
         <CollectionToolBar
           editable={editable}
           setEditable={setEditable}
@@ -76,6 +76,7 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
           createPlatter={props.createPlatter}
           collection={props.collectionDetail}
           platters={props.platters}
+          onClose={props.onClose}
         />
       )}
       <Dialog
@@ -98,7 +99,11 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
               [pageStyle.container]: true,
             })}
           >
-            <Collection {...props} editable={editable} />
+            <Collection
+              {...props}
+              editable={editable}
+              onPlatterClick={props.onPlatterClick}
+            />
           </div>
         </div>
       </Dialog>
@@ -171,7 +176,7 @@ export function CollectionToolBar(props: any) {
         </div>
 
         {!openSearchBar && (
-          <div className={pageStyle.home_container}>
+          <div className={pageStyle.home_container} onClick={props.onClose}>
             <img alt={"icon"} className={pageStyle.home_icon} />
           </div>
         )}

@@ -20,6 +20,7 @@ import CreateCollectionPageContainer from "./page/createCollection/CreateCollect
 import EditCollectionPageContainer from "./page/editCollection/EditCollectionPageContainer";
 import PersonaPageContainer from "./page/persona/PersonaPageContainer";
 import {
+  COLLECTION_LIST_TAB,
   COLLECTION_LIST,
   COLLECTION_LIST_MY_COLLECTION,
   COLLECTION_LIST_CREATED,
@@ -32,6 +33,7 @@ import {
   COLLECTION_LIST_COMPANY,
   NOTIFICATION,
 } from "./common/paths";
+import CollectionTab from "./page/listCollection/CollectionTab";
 import CreateCollectionTabContainer from "./page/listCollection/CreateCollectionTabContainer";
 import MyCollectionTabContainer from "./page/listCollection/MyCollectionTabContainer";
 import SearchCollectionTabContainer from "./page/listCollection/SearchCollectionTabContainer";
@@ -130,6 +132,12 @@ function App() {
               path={PROFILE}
               render={() => <PersonaView />}
             />
+            {/* <AuthRoute
+              hasDrawer
+              authenticated={authenticated}
+              path={COLLECTION_LIST_TAB}
+              render={(props: any) => <CollectionTab />}
+            /> */}
             <AuthRoute
               exact
               hasDrawer

@@ -7,7 +7,7 @@ import platterStyle from "./platter.module.scss";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
 import { PlatterData, viewToData } from "../platter/PlatterEditor";
 import testProfile from "../../resources/icons/test_profile_image.png";
-
+import classNames from "classnames";
 export interface PlatterProps {
   id: number;
   platterData: PlatterData;
@@ -48,7 +48,13 @@ export default function Platter(props: PlatterProps) {
   };
   const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
   return (
-    <div className={platterStyle.platter_container}>
+    <div
+      className={classNames({
+        [platterStyle.platter_container]: true,
+        [platterStyle.platter_container_editable]: props.editable,
+      })}
+      onClick={onClick}
+    >
       <div className={platterStyle.align_container}>
         <div id={`platter-${props.id}`} onClick={onClick}></div>
         <div className={platterStyle.dot_menu_container}>

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// @ts-nocheck
+import React, { useState, useEffect, useCallback } from "react";
 import Typography from "@material-ui/core/Typography";
 import collectionStyle from "./collectionCard.module.scss";
 import FloatingMenu from "../customizedComponent/FloatingMenu/FloatingMenu";
@@ -14,7 +15,6 @@ export interface CollectionData {
   startDate: Date;
   endDate: Date;
   notificationCount: number;
-
   pinned: boolean;
   status: CollectionStatus;
 }
@@ -52,35 +52,129 @@ export interface CollectionCardFunctions {
 }
 
 export default function CollectionCard(props: CollectionCardProps) {
-  const viewType = props.viewType;
+  const { viewType, data } = props;
   const [pinned, setPinned] = useState(props.pinned);
-  const data = props.data;
-  const notificationCount = !!data.notificationCount
-    ? 0
-    : data.notificationCount;
   const onClick = async () => props.onClick(props.data);
-  const pinCollection = async (event: any) => {
-    event.stopPropagation();
+  const pinCollection = async () => {
+    // event.stopPropagation();
+    console.log("props.pinCollection " + props.pinCollection);
     await props.pinCollection(props.data.id);
     setPinned(true);
   };
-  const unpinCollection = async (event: any) => {
-    event.stopPropagation();
+  const unpinCollection = async () => {
+    // event.stopPropagation();
+    console.log("props.unpinCollection " + props.unpinCollection);
     await props.unpinCollection(props.data.id);
     setPinned(false);
   };
 
-  const imageStyle = {
-    backgroundImage: "url(" + data.imageUrl + ")",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
+  const imageStyle = useCallback(() => {
+    if (!props.data) {
+      return "";
+    }
+    if (!!props.data.imageUrl) {
+      return {
+        backgroundImage: "url(" + props.data.imageUrl + ")",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      };
+    } else {
+      return {
+        backgroundImage:
+          "url(https://www.solidbackgrounds.com/images/3840x2160/3840x2160-dark-gray-solid-color-background.jpg)",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      };
+    }
+  }, [props.data]);
+  const dateText = useCallback(() => {
+    if (!props.data) {
+      return "";
+    }
+    if (!!props.data.startDate && !!props.data.startDate) {
+      return props.data.startDate + " - " + props.data.endDate;
+    }
+    if (!!props.data.startDate) {
+      return props.data.startDate;
+    }
+    return "";
+  }, [props.data]);
+
+  const options = useCallback(() => {
+    if (pinned) {
+      const optionsArray = [
+        "참여중인 인원 관리",
+        "수정하기",
+        "되돌아보기",
+        "핀 해제",
+      ];
+      return optionsArray;
+    } else {
+      const optionsArray = [
+        "참여중인 인원 관리",
+        "수정하기",
+        "되돌아보기",
+        "핀 설정",
+      ];
+      return optionsArray;
+    }
+  }, [pinned]);
+
+  const selectedOption = (option: string) => {
+    console.log("흠.....");
+    switch (option) {
+      case "핀 설정":
+        pinCollection();
+        break;
+      case "핀 해제":
+        unpinCollection();
+        break;
+    }
   };
-  const dateText = data.startDate + " - " + data.endDate;
-  const listDateText = "2020.08.19";
+  if (!props.data) {
+    switch (viewType) {
+      case "WIDE":
+      case "CAROUSEL":
+      case "CAROUSEL_TWO":
+        return (
+          <div
+            className={classNames({
+              [collectionStyle.card_root]: true,
+              [collectionStyle.card_basic]: viewType === "WIDE",
+              [collectionStyle.carousel_limit]: viewType === "CAROUSEL",
+              [collectionStyle.carousel_limit_two]: viewType === "CAROUSEL_TWO",
+            })}
+            onClick={onClick}
+          ></div>
+        );
 
-  const options = ["참여중인 인원 관리", "수정하기", "되돌아보기"];
+      case "LIST":
+        return (
+          <div className={collectionStyle.list_root} onClick={onClick}></div>
+        );
 
+      case "SMALL_LIST_BACK_UP":
+        return (
+          <div
+            className={collectionStyle.small_list_root}
+            onClick={onClick}
+          ></div>
+        );
+
+      case "SMALL_LIST":
+        return (
+          <div
+            className={collectionStyle.small_list_root}
+            onClick={onClick}
+          ></div>
+        );
+
+      default:
+        return <div></div>;
+    }
+  }
   switch (viewType) {
     case "WIDE":
     case "CAROUSEL":
@@ -112,16 +206,19 @@ export default function CollectionCard(props: CollectionCardProps) {
               {data.serviceType}
             </div>
             <div className={collectionStyle.dot_menu}>
-              <FloatingMenu options={options} />
+              <FloatingMenu
+                options={options()}
+                selectedOption={selectedOption}
+              />
             </div>
           </div>
           <div className={collectionStyle.title}>{data.title}</div>
-          {notificationCount > 0 && (
-            <Typography>{notificationCount}</Typography>
+          {data.notificationCount > 0 && (
+            <Typography>{data.notificationCount}</Typography>
           )}
           {data.imageUrl && (
             <div className={collectionStyle.image_container}>
-              <div className={collectionStyle.image} style={imageStyle}></div>
+              <div className={collectionStyle.image} style={imageStyle()}></div>
               <div className={collectionStyle.visible_block}>
                 <div className={collectionStyle.background_block}>
                   <div className={collectionStyle.type_and_title}>
@@ -132,7 +229,7 @@ export default function CollectionCard(props: CollectionCardProps) {
                       {data.title}
                     </div>
                   </div>
-                  <div className={collectionStyle.date_text}>{dateText}</div>
+                  <div className={collectionStyle.date_text}>{dateText()}</div>
                 </div>
               </div>
             </div>
@@ -144,7 +241,7 @@ export default function CollectionCard(props: CollectionCardProps) {
       return (
         <div className={collectionStyle.list_root} onClick={onClick}>
           <div className={collectionStyle.title_image} onClick={onClick}>
-            <div className={collectionStyle.image} style={imageStyle}></div>
+            <div className={collectionStyle.image} style={imageStyle()}></div>
           </div>
           <div className={collectionStyle.list_info_container}>
             <div className={collectionStyle.vertical_align}>
@@ -172,7 +269,7 @@ export default function CollectionCard(props: CollectionCardProps) {
                 </div>
               </div>
               <div className={collectionStyle.date} onClick={onClick}>
-                <p className={collectionStyle.date_text}>{listDateText}</p>
+                <p className={collectionStyle.date_text}>{dateText()}</p>
               </div>
             </div>
           </div>
@@ -183,7 +280,7 @@ export default function CollectionCard(props: CollectionCardProps) {
       return (
         <div className={collectionStyle.small_list_root} onClick={onClick}>
           <div className={collectionStyle.title_image} onClick={onClick}>
-            <div className={collectionStyle.image} style={imageStyle}></div>
+            <div className={collectionStyle.image} style={imageStyle()}></div>
           </div>
           <div className={collectionStyle.list_info_container}>
             <div className={collectionStyle.vertical_align}>
@@ -194,7 +291,7 @@ export default function CollectionCard(props: CollectionCardProps) {
                 <p>{data.title}</p>
               </div>
               <div className={collectionStyle.notfication}>
-                <p>15개</p>
+                <p>{data.notificationCount} 개</p>
               </div>
             </div>
           </div>
@@ -205,7 +302,7 @@ export default function CollectionCard(props: CollectionCardProps) {
       return (
         <div className={collectionStyle.small_list_root} onClick={onClick}>
           <div className={collectionStyle.title_image} onClick={onClick}>
-            <div className={collectionStyle.image} style={imageStyle}></div>
+            <div className={collectionStyle.image} style={imageStyle()}></div>
           </div>
           <div className={collectionStyle.document_info} onClick={onClick}>
             <div className={collectionStyle.vertical_align}>
@@ -225,7 +322,7 @@ export default function CollectionCard(props: CollectionCardProps) {
                   {data.title}
                 </div>
                 <div className={collectionStyle.date_text} onClick={onClick}>
-                  {dateText}
+                  {dateText()}
                 </div>
               </div>
             </div>

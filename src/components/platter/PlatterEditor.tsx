@@ -115,7 +115,7 @@ export default function PlatterEditor(props: PlatterEditorProps) {
   const changeTitle = async (event: any) => {
     props.changeTitle(event.target.value);
   };
-
+  console.log("PlatterEditorPlatterEditor");
   const onReady = () => {
     const blocks = document.getElementById(holderId);
     if (blocks) {

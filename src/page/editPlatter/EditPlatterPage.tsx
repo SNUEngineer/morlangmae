@@ -39,7 +39,7 @@ export interface EditPlatterPageProps extends PlatterProps, ThreadProps {
 export default function EditPlatterPage(props: EditPlatterPageProps) {
   const [openThread, setOpenThread] = useState(false);
   const [openPlatter, setOpenPlatter] = useState(true);
-
+  console.log("EditPlatterPageEditPlatterPageEditPlatterPage");
   const boardContainerEl = useRef<any>(null);
   const threadContainerEl = useRef<any>(null);
   const theme = useTheme();

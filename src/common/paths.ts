@@ -1,4 +1,6 @@
 export const ROOT = "";
+
+export const COLLECTION_LIST_TAB = "/collections";
 export const COLLECTION_LIST = "/collections/discover";
 export const COLLECTION_LIST_MY_COLLECTION = "/collections/my";
 export const COLLECTION_LIST_CREATED = "/collections/created";

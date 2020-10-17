@@ -24,6 +24,7 @@ async function getData({ platterId }: any) {
 export default function EditPlatterPageContainer(
   props: EditPlatterPageContainerProps
 ) {
+  console.log("EditPlatterPageContainer " + props.platterId);
   const { data } = useAsync({
     promiseFn: getData,
     platterId: props.platterId,
@@ -40,6 +41,7 @@ export default function EditPlatterPageContainer(
   };
 
   if (data) {
+    console.log("EditPlatterPageContainer datadata " + props.platterId);
     return (
       <EditPlatterPage
         editPlatter={doEditPlatter}
