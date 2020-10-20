@@ -244,6 +244,8 @@ function getStepContent(
   anchorEl,
   setAnchorEl,
   handleNext,
+  approver,
+  setApprover,
   props: EditCollectionPageProps
 ) {
   const styleClasses = contentStyles(collection);
@@ -305,7 +307,12 @@ function getStepContent(
 
         {!checking && (
           <div className={editStyle.count_text}>
-            <div className={editStyle.list_container}>
+            <div
+              className={classNames({
+                [editStyle.list_container]: true,
+                [editStyle.list_container_basic]: true,
+              })}
+            >
               <div className={editStyle.list_container_padding_top} />
               {!!collection.members[0] &&
                 collection.members.map((user: UserView) => (
@@ -385,7 +392,12 @@ function getStepContent(
               className={styleClasses.popover}
             >
               <div className={editStyle.attend_popover}>
-                <div className={editStyle.list_container}>
+                <div
+                  className={classNames({
+                    [editStyle.list_container]: true,
+                    [editStyle.list_container_basic]: true,
+                  })}
+                >
                   <div className={editStyle.list_container_padding_top} />
                   {!!collection.members[0] &&
                     collection.members.map((user: UserView) => (
@@ -735,9 +747,11 @@ function getStepContent(
                     id="users-search"
                     style={{ width: "100%" }}
                     multiple
-                    value={collection.members}
+                    //value={collection.members}
                     //원래는 props.users로 검색가능 대상이 나와야 함.
-                    onChange={(event, newValue) => {}}
+                    onChange={(event, newValue) => {
+                      setApprover(newValue[0]);
+                    }}
                     options={props.users}
                     //원래는 props.users로 검색가능 대상이 나와야 함.
                     renderInput={(params) => {
@@ -773,7 +787,33 @@ function getStepContent(
                       </Fragment>
                     )}
                   />
+                  <div className={editStyle.approver_user_info}>
+                    {!!approver && (
+                      <div
+                        className={classNames({
+                          [editStyle.list_container]: true,
+                          [editStyle.list_container_approver]: true,
+                        })}
+                      >
+                        <div className={editStyle.user_info}>
+                          <div className={editStyle.user_info_text}>
+                            {approver?.displayName}
+                          </div>
 
+                          <Button
+                            className={styleClasses.delete_button}
+                            onClick={() => {
+                              setApprover(null);
+                            }}
+                          >
+                            <div className={editStyle.minus_container}>
+                              <div className={editStyle.minus}></div>
+                            </div>
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   {/* <div className={editStyle.request_member_container}>
                     <div className={editStyle.user_info}>
                       {!!requestMember && requestMember.displayName}
@@ -809,15 +849,15 @@ function getStepContent(
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                      console.log("finish button clicked!!!1");
-                      props.editCollection(collection);
+                      console.log("finish button clicked!!!");
+                      props.editCollection(collection, approver, false);
                     }}
                     className={classNames({
                       [styleClasses.nextButton]: true,
                       [editStyle.finish_button]: true,
                     })}
                   >
-                    완료
+                    요청
                   </Button>
                 </div>
               </div>
@@ -859,6 +899,8 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     id: 1,
     displayName: "송상근",
   };
+
+  const [approver, setApprover] = useState<UserView>();
 
   const [collection, setCollection] = useState({
     id: collectionDetail.id,
@@ -1023,7 +1065,10 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleNext}
+                onClick={() => {
+                  console.log("finish button clicked!!!");
+                  props.editCollection(collection);
+                }}
                 className={classNames({
                   [styleClasses.draftButton]: true,
                   [editStyle.next_button]: false,
@@ -1053,6 +1098,8 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
             anchorEl,
             setAnchorEl,
             handleNext,
+            approver,
+            setApprover,
             props
           )}
           <div></div>

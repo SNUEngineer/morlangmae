@@ -34,6 +34,7 @@ export interface EditPlatterPageProps extends PlatterProps, ThreadProps {
   editPlatter(data: any): Promise<void>;
   sendMessage(message: { content: string }): Promise<void>;
   loadMessages(): Promise<MessageData[]>;
+  onClose: Promise<void>;
 }
 
 export default function EditPlatterPage(props: EditPlatterPageProps) {
@@ -83,7 +84,10 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   };
   const [title, setTitle] = useState(props.platter.title);
   const [members, setMembers] = useState(props.platter.members);
-
+  console.log(
+    "props.collectionMembersprops.collectionMembers " +
+      JSON.stringify(props.collectionMembers)
+  );
   return (
     <div>
       {isEditing && (
@@ -102,7 +106,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
         open
         onRendered={onRendered}
         PaperComponent={PaperComponent}
-        //onClose={handleClose}
+        onClick={props.onClose}
       >
         <Element
           name="test7"
@@ -121,6 +125,10 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
               [editStyle.container_thread_closed]: !openThread,
               [editStyle.container_thread_opened]: openThread,
             })}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
           >
             <Element
               name="firstInsideContainer"

@@ -21,6 +21,7 @@ import collectionStyle from "./myCollectionTab.module.scss";
 
 export interface CreateCollectionTabProps {
   collections: CollectionData[];
+  myId: number;
   onCollectionClick(data: CollectionData): Promise<void>;
   pinCollection(id: number): Promise<void>;
   unpinCollection(id: number): Promise<void>;
@@ -61,6 +62,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
                 onClick={props.onCollectionClick}
                 pinCollection={props.pinCollection}
                 unpinCollection={props.unpinCollection}
+                myId={props.myId}
               />
             </div>
           );

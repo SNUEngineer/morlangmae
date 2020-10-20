@@ -1,11 +1,6 @@
 // @ts-nocheck
 import React, { useState, Fragment, useRef, useEffect } from "react";
-import {
-  makeStyles,
-  createStyles,
-  useTheme,
-  Theme,
-} from "@material-ui/core/styles";
+import { makeStyles, createStyles, useTheme } from "@material-ui/core/styles";
 
 import Dialog from "../../components/customizedComponent/PlatterDialog/Dialog";
 import { useLocation, useHistory } from "react-router-dom";
@@ -20,12 +15,7 @@ import Button from "@material-ui/core/Button";
 import Paper, { PaperProps } from "@material-ui/core/Paper";
 import clsx from "clsx";
 import pageStyle from "./collectionViewPage.module.scss";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import classNames from "classnames";
-import DialogContent from "@material-ui/core/DialogContent";
-import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
 import TextField from "@material-ui/core/TextField";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -36,12 +26,19 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import { UserView } from "../../services/user.service";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { CollectionDetail } from "../../services/collection.service";
+import Avatar from "@material-ui/core/Avatar";
+import InputBase from "@material-ui/core/InputBase";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export interface CollectionViewPageProps extends CollectionProps {
   hideToolbar?: boolean;
   createPlatter(): Promise<void>;
+  editCollectionFn(collection: any): Promise<void>;
   onPlatterClick(): Promise<void>;
   onClose(): Promise<void>;
+  users: UserView[];
+  collectionDetail: CollectionDetail;
 }
 
 enum SortType {
@@ -54,7 +51,19 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
   const [sortType, setSortType] = useState(SortType.RECENTLY_ASC);
   const Theme = useTheme();
   const fullScreen = useMediaQuery(Theme.breakpoints.down("sm"));
-
+  const { collectionDetail } = props;
+  const [editCollection, setEditCollection] = useState({
+    id: collectionDetail.id,
+    collectionType: collectionDetail.collectionType,
+    serviceType: collectionDetail.serviceType,
+    imageUrl: collectionDetail.imageUrl,
+    title: collectionDetail.title,
+    startDate: collectionDetail.startDate,
+    endDate: collectionDetail.endDate,
+    members: collectionDetail.members.map((member: UserView) => {
+      return props.users.find((user: UserView) => user.id === member.id);
+    }),
+  });
   const useStyles = makeStyles((Theme: Theme) =>
     createStyles({
       paper: {
@@ -77,6 +86,8 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
           collection={props.collectionDetail}
           platters={props.platters}
           onClose={props.onClose}
+          editCollectionFn={props.editCollectionFn}
+          users={props.users}
         />
       )}
       <Dialog
@@ -87,6 +98,7 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
         open
         PaperComponent={PaperComponent}
         onClose={props.onClose}
+        onClick={props.onClose}
         className={classes.paper}
       >
         <div
@@ -98,6 +110,10 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
             className={classNames({
               [pageStyle.container]: true,
             })}
+            onClick={(event) => {
+              event.stopPropagation();
+              event.preventDefault();
+            }}
           >
             <Collection
               {...props}
@@ -247,8 +263,222 @@ export function CollectionToolBar(props: any) {
             //filter={props.sortType}
           />
         )}
+        {!openSearchBar && (
+          <EditMemberMenu
+            collection={props.collection}
+            users={props.users}
+            editCollectionFn={props.editCollectionFn}
+          />
+        )}
       </Toolbar>
     </AppBar>
+  );
+}
+
+interface EditMemberMenuProps {
+  collection: CollectionDetail;
+  editCollectionFn(collection: any): Promise<void>;
+  users: UserView[];
+}
+
+function EditMemberMenu(props: EditMemberMenuProps) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
+  const { collection, editCollectionFn } = props;
+
+  const [editedCollection, setEditedCollection] = useState({
+    id: collection.id,
+    collectionType: collection.collectionType,
+    serviceType: collection.serviceType,
+    imageUrl: collection.imageUrl,
+    title: collection.title,
+    startDate: collection.startDate,
+    endDate: collection.endDate,
+    members: collection.members.map((member: UserView) => {
+      return props.users.find((user: UserView) => user.id === member.id);
+    }),
+  });
+  const handleClickOpen = (event) => {
+    setOpen(true);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
+    setTimeout(() => {
+      setEditedCollection(collection);
+    }, 200);
+  };
+
+  const id = open ? "member-edit-popover" : undefined;
+
+  const useMyStyles = makeStyles(() =>
+    createStyles({
+      listButton: {
+        fontSize: "16px",
+        letterSpacing: "-0.8px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        color: "#E2E2E2",
+        // "&:hover": {
+        //   background: "trasparent",
+        //   color: "white",
+        // },
+      },
+      popover: {
+        zIndex: "2300",
+        marginTop: "7px",
+
+        "& .MuiPaper-rounded": {
+          backgroundColor: "transparent",
+          borderRadius: "0px",
+          overflow: "visible",
+          boxShadow: "none",
+        },
+      },
+      delete_button: {
+        minHeight: "0px",
+        minWidth: "0px",
+      },
+      edit_member_button: {},
+    })
+  );
+  const myClasses = useMyStyles();
+
+  const attendedUser = () => {
+    return (
+      <div className={pageStyle.attended_container}>
+        <div className={pageStyle.count_text}>
+          {!!editedCollection.members &&
+            editedCollection.members.length > 0 &&
+            editedCollection.members[0].displayName +
+              " 외 " +
+              (editedCollection.members.length - 1) +
+              " 명 (참여자 리스트)"}
+        </div>
+
+        <div
+          className={classNames({
+            [pageStyle.list_container]: true,
+          })}
+        >
+          <div className={pageStyle.list_container_padding_top} />
+          {!!editedCollection.members[0] &&
+            editedCollection.members.map((user: UserView) => (
+              <div key={user.id} className={pageStyle.user_info}>
+                <div className={pageStyle.user_info_text}>
+                  {user.displayName}
+                </div>
+
+                <Button
+                  className={myClasses.delete_button}
+                  onClick={() => {
+                    setEditedCollection({
+                      ...editedCollection,
+                      members: editedCollection.members.filter(
+                        (it: UserView) => it.id !== user.id
+                      ),
+                    });
+                  }}
+                >
+                  <div className={pageStyle.minus_container}>
+                    <div className={pageStyle.minus}></div>
+                  </div>
+                </Button>
+              </div>
+            ))}
+          <div className={pageStyle.list_container_padding_top} />
+        </div>
+      </div>
+    );
+  };
+  return (
+    <div className={pageStyle.attend_button}>
+      <Button
+        className={myClasses.listButton}
+        onClick={handleClickOpen}
+        aria-describedby={id}
+      >
+        참여인원
+      </Button>
+      <Popover
+        disableAutoFocus
+        disableEnforceFocus
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        className={myClasses.popover}
+      >
+        <div className={pageStyle.edit_member_container}>
+          <div className={pageStyle.top_container}>
+            <Autocomplete
+              id="users-search"
+              style={{ width: "100%" }}
+              multiple
+              value={editedCollection.members}
+              //원래는 props.users로 검색가능 대상이 나와야 함.
+              onChange={(event, newValue) => {
+                setEditedCollection({
+                  ...collection,
+                  members: newValue,
+                });
+              }}
+              options={props.users}
+              //원래는 props.users로 검색가능 대상이 나와야 함.
+              renderInput={(params) => {
+                return (
+                  <InputBase
+                    className={pageStyle.input_option_container}
+                    ref={params.InputProps.ref}
+                    inputProps={params.inputProps}
+                    placeholder={"ID 또는 이름으로 참여 인원 추가"}
+                    autoFocus
+                  />
+                );
+              }}
+              getOptionLabel={(option) => option.displayName}
+              renderOption={(option: UserView) => (
+                <Fragment>
+                  <div className={pageStyle.search_attend_user_item}>
+                    <Avatar
+                      alt={option.displayName}
+                      src={option.imageUrl}
+                      className={pageStyle.avatar}
+                    />
+
+                    <div className={pageStyle.user_info}>
+                      <div className={pageStyle.name_text}>
+                        {option.displayName}
+                      </div>
+                      <div className={pageStyle.user_info_text}>
+                        삼성전자, 과장
+                      </div>
+                    </div>
+                  </div>
+                </Fragment>
+              )}
+            />
+            <Button
+              // className={styleClasses.delete_button}
+              onClick={() => {
+                editCollectionFn(editedCollection);
+              }}
+            >
+              확인
+            </Button>
+          </div>
+          {attendedUser()}
+        </div>
+      </Popover>
+    </div>
   );
 }
 

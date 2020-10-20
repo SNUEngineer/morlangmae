@@ -8,7 +8,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import CollectionsIcon from "@material-ui/icons/Collections";
 import NoteIcon from "@material-ui/icons/Note";
 import Divider from "@material-ui/core/Divider";
-import { COLLECTION_LIST, PROFILE } from "../common/paths";
+import { COLLECTION_LIST, MEMO_HOME, PROFILE } from "../common/paths";
 import menuStyle from "./Drawer.module.scss";
 import { Link } from "react-router-dom";
 
@@ -52,7 +52,7 @@ export default function Drawer() {
             </div>
             <div className={menuStyle.text}>컬렉션</div>
           </Link>
-          <Link className={menuStyle.menu_item} to="/memos">
+          <Link className={menuStyle.menu_item} to={MEMO_HOME}>
             <div className={menuStyle.icon_container}>
               <img className={menuStyle.memo_icon} alt={"icon"} />
             </div>

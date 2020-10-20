@@ -18,6 +18,7 @@ export interface GridCollectionCardListProps {
   onClick(data: CollectionData): Promise<void>;
   pinCollection(id: number): Promise<void>;
   unpinCollection(id: number): Promise<void>;
+  reloadData(): Promise<void>;
 }
 export function GridCollectionCardList(props: GridCollectionCardListProps) {
   const {
@@ -28,8 +29,10 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
     pinned,
     pinCollection,
     unpinCollection,
+    reloadData,
   } = props;
   const [gridCollections, setGridCollections] = useState<CollectionData[]>();
+
   useEffect(() => {
     if (collections.length < columnCount) {
       // const empty: CollectionData = {
@@ -80,6 +83,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
+                reloadData={reloadData}
               />
             </div>
             <div className={listStyle.item_2}>
@@ -90,6 +94,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
+                reloadData={reloadData}
               />
             </div>
           </div>
@@ -106,6 +111,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
+                reloadData={reloadData}
               />
             </div>
             <div className={listStyle.item_2}>
@@ -116,6 +122,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
+                reloadData={reloadData}
               />
             </div>
             <div className={listStyle.item_3}>
@@ -126,6 +133,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                 pinned={!!pinned ? pinned : false}
                 pinCollection={pinCollection}
                 unpinCollection={unpinCollection}
+                reloadData={reloadData}
               />
             </div>
           </div>
@@ -146,6 +154,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
                       pinCollection={pinCollection}
                       unpinCollection={unpinCollection}
                       pinned={false}
+                      reloadData={reloadData}
                     />
                   )}
                 </div>
@@ -162,6 +171,7 @@ export function GridCollectionCardList(props: GridCollectionCardListProps) {
     viewType,
     columnCount,
     pinned,
+    reloadData,
   ]);
 
   return (

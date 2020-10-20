@@ -128,7 +128,14 @@ export async function editCollection(
 export async function progress(id: number): Promise<void> {
   await axios.put(`/collection/v1/${id}/progress`);
 }
-
+export async function requestProgress(
+  id: number,
+  requesteeId: number
+): Promise<void> {
+  await axios.put(`/collection/v1/${id}/request-progress`, {
+    requesteeId: requesteeId,
+  });
+}
 export async function pinCollection(id: number): Promise<void> {
   await axios.put(`/collection/v1/${id}/pin`);
 }

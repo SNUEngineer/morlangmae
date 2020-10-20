@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PlatterEditor, {
   PlatterEditorProps,
@@ -9,19 +9,14 @@ import Avatar from "@material-ui/core/Avatar";
 import CardMedia from "@material-ui/core/CardMedia";
 import { UserView } from "../../services/user.service";
 import Platter from "./Platter";
+import { CollectionDetail } from "../../services/collection.service";
 
 export interface CollectionProps {
-  collectionDetail: CollectionDetailData;
+  collectionDetail: CollectionDetail;
   platters: PlatterData[];
+
   editable?: boolean;
   onPlatterClick(data: PlatterData): Promise<void>;
-}
-
-interface CollectionDetailData {
-  id: number;
-  title: string;
-  imageUrl: string;
-  members: UserView[];
 }
 
 const useStyles = makeStyles({
@@ -40,6 +35,8 @@ const useStyles = makeStyles({
 
 export default function Collection(props: CollectionProps) {
   const classes = useStyles();
+  const collectionDetail = props.collectionDetail;
+
   const platters = props.platters.map((data: PlatterData) => {
     return (
       <Platter
@@ -51,7 +48,7 @@ export default function Collection(props: CollectionProps) {
       />
     );
   });
-  const collectionDetail = props.collectionDetail;
+
   const isPlatter = useCallback(() => {
     if (!!props.platters) {
       if (props.platters.length === 0) {

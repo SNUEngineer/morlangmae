@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Fragment, useState } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -12,6 +13,8 @@ import Avatar from "@material-ui/core/Avatar";
 import InputBase from "@material-ui/core/InputBase";
 import { UserView } from "../../services/user.service";
 import Typography from "@material-ui/core/Typography";
+import platterStyle from "./PlatterEditor.module.scss";
+import classNames from "classnames";
 
 interface PlatterToolBarProps {
   collectionMembers: UserView[];
@@ -163,9 +166,28 @@ const popOverStyles = makeStyles((theme: Theme) =>
     popover: {
       zIndex: `${theme.zIndex.drawer + 10001} !important` as any,
     },
+    show_list_button: {
+      minHeight: "0px",
+      minWidth: "0px",
+      padding: "0px",
+      margin: "-2px 0 0 0",
+      backgroundColor: "transparent",
+      boxShadow: "none",
+      "&:active": {
+        backgroundColor: "transparent",
+        boxShadow: "none",
+      },
+      "&:hover": {
+        backgroundColor: "transparent",
+        boxShadow: "none",
+      },
+    },
+    delete_button: {
+      minHeight: "0px",
+      minWidth: "0px",
+    },
   })
 );
-
 function ColorButton() {
   const classes = popOverStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -257,13 +279,119 @@ function LinkButton() {
 }
 
 interface AttendButtonProps {
-  collectionMembers: UserView[];
-  platterMembers: UserView[];
+  collectionMembers?: UserView[];
+  platterMembers?: UserView[];
   setPlatterMembers(platterMembers: UserView[]): void;
 }
 
 function AttendButton(props: AttendButtonProps) {
+  const [popOverAnchorEl, setPopOverAnchorEl] = useState(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const classes = popOverStyles();
+  const id = popoverOpen ? "simple-popover-search" : undefined;
+  console.log("props.usersprops.users " + JSON.stringify(props.users));
+  const handleClickOpen = (event) => {
+    setPopoverOpen(true);
+    setPopOverAnchorEl(event.currentTarget);
+  };
+  // setPasswordActive(false);
+  // setPopOpen(false);
+
+  const handleClose = (value) => {
+    setPopoverOpen(false);
+    setPopOverAnchorEl(null);
+  };
+  const attendedUser = (checking: boolean) => {
+    return (
+      <div className={platterStyle.attended_user_container}>
+        <div className={platterStyle.count_text_check_container}>
+          {!!props.platterMembers && !!props.platterMembers[0] && (
+            <Button
+              aria-describedby={id}
+              variant="contained"
+              onClick={handleClickOpen}
+              className={classes.show_list_button}
+              endIcon={<img className={platterStyle.go_to_icon} alt={"icon"} />}
+              // endIcon={
+              //   <div>
+              //     <MoreHorizIcon />
+              //   </div>
+              // }
+            >
+              <div className={platterStyle.count_text_check}>
+                {props.platterMembers[0].displayName +
+                  " 외 " +
+                  (props.platterMembers.length - 1) +
+                  " 명"}
+              </div>
+            </Button>
+          )}
+
+          <Popover
+            onClose={handleClose}
+            id={id}
+            open={popoverOpen}
+            //open={false}
+            anchorEl={popOverAnchorEl}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            PaperProps={{
+              style: {
+                backgroundColor: "transparent",
+                boxShadow: "none",
+                overflow: "visible",
+              },
+            }}
+            className={classes.popover}
+          >
+            <div className={platterStyle.attend_popover}>
+              <div
+                className={classNames({
+                  [platterStyle.list_container]: true,
+                  [platterStyle.list_container_basic]: true,
+                })}
+              >
+                <div className={platterStyle.list_container_padding_top} />
+                {!!props.platterMembers &&
+                  !!props.platterMembers[0] &&
+                  props.platterMembers.map((user: UserView) => (
+                    <div key={user.id} className={platterStyle.user_info}>
+                      <div className={platterStyle.user_info_text}>
+                        {user.displayName}
+                      </div>
+
+                      {!checking && (
+                        <Button
+                          className={classes.delete_button}
+                          onClick={() => {
+                            setPlatterMembers(
+                              props.platterMembers.filter(
+                                (it: UserView) => it.id !== user.id
+                              )
+                            );
+                          }}
+                        >
+                          <div className={platterStyle.minus_container}>
+                            <div className={platterStyle.minus}></div>
+                          </div>
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                <div className={platterStyle.list_container_padding_top} />
+              </div>
+            </div>
+          </Popover>
+        </div>
+      </div>
+    );
+  };
   return (
     <Fragment>
       <Autocomplete
@@ -278,8 +406,10 @@ function AttendButton(props: AttendButtonProps) {
         renderInput={(params) => {
           return (
             <InputBase
+              className={platterStyle.input_option_container}
               ref={params.InputProps.ref}
               inputProps={params.inputProps}
+              placeholder={"ID 또는 이름으로 참여 인원 추가"}
               autoFocus
             />
           );
@@ -287,13 +417,27 @@ function AttendButton(props: AttendButtonProps) {
         getOptionLabel={(option) => option.displayName}
         renderOption={(option: UserView) => (
           <Fragment>
-            <Avatar alt={option.displayName} src={option.imageUrl} />
-            <Typography>{option.displayName}</Typography>
+            <div className={platterStyle.search_attend_user_item}>
+              <Avatar
+                alt={option.displayName}
+                src={option.imageUrl}
+                className={platterStyle.avatar}
+              />
+
+              <div className={platterStyle.user_info}>
+                <div className={platterStyle.name_text}>
+                  {option.displayName}
+                </div>
+                <div className={platterStyle.user_info_text}>
+                  삼성전자, 과장
+                </div>
+              </div>
+            </div>
           </Fragment>
         )}
         classes={{ popper: classes.popover }}
       />
-      참여 인원 설정
+      {attendedUser()}
     </Fragment>
   );
 }

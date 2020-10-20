@@ -48,7 +48,7 @@ export default function MyCollectionTabContainer(
 ) {
   const history = useHistory();
 
-  const { data, error, isLoading } = useAsync({
+  const { data, reload, error, isLoading } = useAsync({
     promiseFn: getMyCollections,
   });
 
@@ -58,6 +58,7 @@ export default function MyCollectionTabContainer(
   };
 
   if (data) {
+    console.log("reloadDatareloadData 111 " + reload);
     return (
       <Fragment>
         <MyCollectionTab
@@ -67,6 +68,7 @@ export default function MyCollectionTabContainer(
           onCollectionClick={onCollectionClick}
           pinCollection={pinCollection}
           unpinCollection={unpinCollection}
+          reloadData={reload}
         />
         <ModalManager
           collectionId={props.collectionId}

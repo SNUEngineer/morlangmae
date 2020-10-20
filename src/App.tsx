@@ -32,11 +32,18 @@ import {
   COLLECTION_EDIT,
   COLLECTION_LIST_COMPANY,
   NOTIFICATION,
+  MEMO_HOME,
+  MEMO_LIST,
+  MEMO_BINGE,
+  MEMO_IN_COLLECTION,
 } from "./common/paths";
-import CollectionTab from "./page/listCollection/CollectionTab";
 import CreateCollectionTabContainer from "./page/listCollection/CreateCollectionTabContainer";
 import MyCollectionTabContainer from "./page/listCollection/MyCollectionTabContainer";
 import SearchCollectionTabContainer from "./page/listCollection/SearchCollectionTabContainer";
+import BingeMemoTab from "./page/listMemo/BingeMemoTab";
+import MemoHomeTab from "./page/listMemo/MemoHomeTab";
+import MemoListTab from "./page/listMemo/MemoListTab";
+import MemoListInCollection from "./page/listMemo/MemoListInCollection";
 import queryString from "query-string";
 import CompanyCollectionPageContainer from "./page/listCollection/CompanyCollectionPageContainer";
 import { verify } from "./services/account.service";
@@ -80,7 +87,10 @@ function App() {
   const classes = useStyles();
   const token = localStorage.getItem("Authorization");
   const [authenticated, setAuthenticated] = useState(token != null);
-
+  console.log(
+    " {...queryString.parse(props.location.search)} " +
+      { ...queryString.parse(props.location.search) }
+  );
   async function validateToken() {
     const token = localStorage.getItem("Authorization");
     try {
@@ -132,13 +142,15 @@ function App() {
               path={PROFILE}
               render={() => <PersonaView />}
             />
-            {/* <AuthRoute
+            <AuthRoute
               hasDrawer
               authenticated={authenticated}
+              type={"collection"}
               path={COLLECTION_LIST_TAB}
-              render={(props: any) => <CollectionTab />}
-            /> */}
-            <AuthRoute
+              // {...queryString.parse(props.location.search)}
+              render={(props: any) => <div />}
+            />
+            {/* <AuthRoute
               exact
               hasDrawer
               authenticated={authenticated}
@@ -170,7 +182,7 @@ function App() {
                   {...queryString.parse(props.location.search)}
                 />
               )}
-            />
+            /> */}
             <AuthRoute
               exact
               hasDrawer
@@ -203,8 +215,34 @@ function App() {
               exact
               authenticated={authenticated}
               hasDrawer
-              path="/memos"
-              render={(props: any) => <ProjectView {...props} />}
+              path={MEMO_HOME}
+              render={(props: any) => <MemoHomeTab {...props} />}
+            />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              hasDrawer
+              path={MEMO_LIST}
+              render={(props: any) => <MemoListTab {...props} />}
+            />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              hasDrawer
+              path={MEMO_BINGE}
+              render={(props: any) => <BingeMemoTab {...props} />}
+            />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              hasDrawer
+              path={MEMO_IN_COLLECTION}
+              render={(props: any) => (
+                <MemoListInCollection
+                  {...props}
+                  collectionId={props.match.params.id}
+                />
+              )}
             />
             <AuthRoute
               exact

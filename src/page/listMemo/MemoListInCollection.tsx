@@ -9,9 +9,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import memoStyle from "./MemoHomeTab.module.scss";
 import Header from "../../components/layout/Header/Header";
 
-export interface MemoListTabProps {}
+export interface MemoListTabProps {
+  collectionId: number;
+}
 
 export default function MemoListTab(props: MemoListTabProps) {
+  console.log("collectionIdcollectionId " + props.collectionId);
   const collection1 = {
     id: 0,
     title: "3분기 마케팅 전략",

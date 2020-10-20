@@ -25,17 +25,19 @@ export enum CollectionType {
 }
 
 export enum CollectionStatus {
-  DRAFT,
-  REQUEST_PROGRESS,
-  DENIED,
-  IN_PROGRESS,
-  DONE,
+  DRAFT = "DRAFT",
+  REQUEST_PROGRESS = "REQUEST_PROGRESS",
+  DENIED = "DENIED",
+  IN_PROGRESS = "IN_PROGRESS",
+  DONE = "DONE",
 }
 
 export interface CollectionCardProps extends CollectionCardFunctions {
   data: CollectionData;
   pinned: boolean;
   viewType: string;
+  myId: number;
+  reloadData?(): Promise<void>;
   // | "NORMAL"
   // | "WIDE"
   // | "CAROUSEL"
@@ -52,21 +54,41 @@ export interface CollectionCardFunctions {
 }
 
 export default function CollectionCard(props: CollectionCardProps) {
-  const { viewType, data } = props;
+  const { viewType, data, reloadData } = props;
   const [pinned, setPinned] = useState(props.pinned);
   const onClick = async () => props.onClick(props.data);
   const pinCollection = async () => {
     // event.stopPropagation();
     console.log("props.pinCollection " + props.pinCollection);
     await props.pinCollection(props.data.id);
+    // if (!!reloadData) {
+    //   await reloadData();
+    // }
+    await reloadData();
     setPinned(true);
   };
   const unpinCollection = async () => {
     // event.stopPropagation();
     console.log("props.unpinCollection " + props.unpinCollection);
     await props.unpinCollection(props.data.id);
+    // if (!!reloadData) {
+    //   await reloadData();
+    // }
+    await reloadData();
     setPinned(false);
   };
+
+  console.log("collection data " + JSON.stringify(data));
+  const isApprover = useCallback(() => {
+    //내가 승인권자인지. (내 id 조회하는 방법.))
+    if (!!data && !!data.approver) {
+      if (data.approver === props.myId) {
+        return true;
+      }
+    }
+
+    return false;
+  }, [data, props.myId]);
 
   const imageStyle = useCallback(() => {
     if (!props.data) {
@@ -187,9 +209,8 @@ export default function CollectionCard(props: CollectionCardProps) {
             [collectionStyle.carousel_limit]: viewType === "CAROUSEL",
             [collectionStyle.carousel_limit_two]: viewType === "CAROUSEL_TWO",
           })}
-          onClick={onClick}
         >
-          {(!!pinned ? pinned : false) && (
+          {(!!props.pinned ? props.pinned : false) && (
             <div className={collectionStyle.pinned_container}>
               <div
                 className={collectionStyle.icon_container}
@@ -197,7 +218,13 @@ export default function CollectionCard(props: CollectionCardProps) {
                   //unpinCollection();
                 }}
               >
-                <img className={collectionStyle.pinned_icon} alt={"icon"} />
+                <img
+                  className={classNames({
+                    [collectionStyle.pinned_icon]: pinned,
+                    [collectionStyle.unpinned_icon]: !pinned,
+                  })}
+                  alt={"icon"}
+                />
               </div>
             </div>
           )}
@@ -216,30 +243,33 @@ export default function CollectionCard(props: CollectionCardProps) {
           {data.notificationCount > 0 && (
             <Typography>{data.notificationCount}</Typography>
           )}
-          {data.imageUrl && (
-            <div className={collectionStyle.image_container}>
-              <div className={collectionStyle.image} style={imageStyle()}></div>
-              <div className={collectionStyle.visible_block}>
-                <div className={collectionStyle.background_block}>
-                  <div className={collectionStyle.type_and_title}>
-                    <div className={collectionStyle.service_type_text}>
-                      {data.serviceType}
-                    </div>
-                    <div className={collectionStyle.title_text}>
-                      {data.title}
-                    </div>
+          <div className={collectionStyle.image_container} onClick={onClick}>
+            <div className={collectionStyle.image} style={imageStyle()}></div>
+            <div className={collectionStyle.visible_block}>
+              <div className={collectionStyle.background_block}>
+                <div className={collectionStyle.type_and_title}>
+                  <div className={collectionStyle.service_type_text}>
+                    {data.serviceType}
                   </div>
-                  <div className={collectionStyle.date_text}>{dateText()}</div>
+                  <div className={collectionStyle.title_text}>{data.title}</div>
                 </div>
+                <div className={collectionStyle.date_text}>{dateText()}</div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       );
 
     case "LIST":
       return (
-        <div className={collectionStyle.list_root} onClick={onClick}>
+        <div
+          className={classNames({
+            [collectionStyle.list_root]: true,
+            [collectionStyle.list_root_approver]: isApprover(),
+            [collectionStyle.list_root_create]: !isApprover(),
+          })}
+          onClick={onClick}
+        >
           <div className={collectionStyle.title_image} onClick={onClick}>
             <div className={collectionStyle.image} style={imageStyle()}></div>
           </div>

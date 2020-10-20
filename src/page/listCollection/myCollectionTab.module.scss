@@ -41,14 +41,12 @@
 
 .tab_container {
   max-width: 716px;
-
   margin: 0 auto;
-  .tab_menu_container {
-    padding-bottom: 130px;
-    box-sizing: border-box;
-  }
 }
-
+.tab_menu_container {
+  padding-bottom: 130px;
+  box-sizing: border-box;
+}
 .search_container {
   width: 100%;
   margin-bottom: 90.5px;

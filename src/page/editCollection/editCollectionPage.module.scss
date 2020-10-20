@@ -441,8 +441,21 @@
   // borderRadius: 5px,
   overflow: visible;
 }
-.list_container {
+
+.approver_user_info {
+  height: 50px;
+  width: 100%;
+  position: relative;
+}
+.list_container_approver {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+}
+.list_container_basic {
   height: 114px;
+}
+.list_container {
   width: 100%;
   margin-top: 5px;
   border-width: 0.5px;

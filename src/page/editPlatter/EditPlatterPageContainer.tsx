@@ -5,6 +5,8 @@ import { getPlatter, editPlatter } from "../../services/platter.service";
 import { getThread, sendMessage } from "../../services/thread.service";
 import EditPlatterPage from "./EditPlatterPage";
 import { getCollection } from "../../services/collection.service";
+import { useLocation, useHistory } from "react-router-dom";
+import queryString from "query-string";
 
 export interface EditPlatterPageContainerProps {
   platterId: number;
@@ -24,11 +26,22 @@ async function getData({ platterId }: any) {
 export default function EditPlatterPageContainer(
   props: EditPlatterPageContainerProps
 ) {
-  console.log("EditPlatterPageContainer " + props.platterId);
   const { data } = useAsync({
     promiseFn: getData,
     platterId: props.platterId,
   });
+  const { pathname, search } = useLocation();
+  const history = useHistory();
+  const onClose = async () => {
+    const query = queryString.parse(search);
+    query.platterId = undefined;
+
+    history.push({
+      pathname: pathname,
+      search: queryString.stringify(query),
+    });
+  };
+
   const loadMessages = async () => {
     const thread = await getThread(props.platterId);
     return thread.messages;
@@ -41,7 +54,6 @@ export default function EditPlatterPageContainer(
   };
 
   if (data) {
-    console.log("EditPlatterPageContainer datadata " + props.platterId);
     return (
       <EditPlatterPage
         editPlatter={doEditPlatter}
@@ -50,6 +62,7 @@ export default function EditPlatterPageContainer(
         messages={data.thread.messages}
         sendMessage={writeMessage}
         loadMessages={loadMessages}
+        onClose={onClose}
       />
     );
   }

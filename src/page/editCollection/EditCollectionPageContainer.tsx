@@ -4,10 +4,11 @@ import { useHistory } from "react-router-dom";
 import { useAsync } from "react-async";
 import EditCollectionPage from "./EditCollectionPage";
 import { uploadFile } from "../../services/file.service";
-import { searchUsers, UserView } from "../../services/user.service";
+import { searchUsers, UserView, getMe } from "../../services/user.service";
 import {
   editCollection,
   progress,
+  requestProgress,
   getCollection,
   getServiceTypes,
 } from "../../services/collection.service";
@@ -36,17 +37,46 @@ export default function EditCollectionPageContainer(
     collectionId: collectionId,
   });
 
-  async function handleEditCollection(collection: any) {
-    await editCollection(collection.id, {
-      title: collection.title,
-      imageUrl: collection.imageUrl,
-      memberIds: collection.members.map((it: UserView) => it.id),
-      startDate: new Date(collection.startDate),
-      endDate: new Date(collection.endDate),
-    });
+  async function handleEditCollection(
+    collection: any,
+    approver?: UserView,
+    draftSave?: boolean
+  ) {
+    const draftSaving = !!draftSave ? draftSave : false;
+
+    const userView = await getMe();
     try {
+      //내가 승인권자면 자동으로 허용. 아니면 에러 캐칭됨.
       await progress(collection.id);
-    } catch (e) {}
+    } catch (e) {
+      console.log("progress 에러");
+    }
+    if (draftSaving) {
+      await editCollection(collection.id, {
+        title: collection.title,
+        imageUrl: collection.imageUrl,
+        memberIds: collection.members.map((it: UserView) => it.id),
+        startDate: new Date(collection.startDate),
+        endDate: new Date(collection.endDate),
+      });
+    } else {
+      //승인 시.
+      await editCollection(collection.id, {
+        title: collection.title,
+        imageUrl: collection.imageUrl,
+        memberIds: collection.members.map((it: UserView) => it.id),
+        startDate: new Date(collection.startDate),
+        endDate: new Date(collection.endDate),
+      });
+      try {
+        await requestProgress(collection.id, approver.id);
+      } catch (e) {
+        console.log("requestProgress 에러");
+      }
+
+      history.push(COLLECTION_LIST);
+    }
+
     history.push(COLLECTION_LIST);
   }
 

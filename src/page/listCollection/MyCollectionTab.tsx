@@ -21,6 +21,7 @@ export interface MyCollectionTabProps {
   onCollectionClick(data: CollectionData): Promise<void>;
   pinCollection(id: number): Promise<void>;
   unpinCollection(id: number): Promise<void>;
+  reloadData(): Promise<void>;
 }
 
 export default function MyCollectionTab(props: MyCollectionTabProps) {
@@ -31,6 +32,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     onCollectionClick,
     pinCollection,
     unpinCollection,
+    reloadData,
   } = props;
   const collection1 = {
     id: 0,
@@ -106,6 +108,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     pinCollection: props.pinCollection,
     unpinCollection: props.unpinCollection,
   };
+  console.log("reloadDatareloadData 222 " + reloadData);
   return (
     <div className={collectionStyle.tab_container}>
       <div className={collectionStyle.tab_menu_container}>
@@ -120,17 +123,20 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
       </div>
       <PinnedCollectionCardList
         pinned={pinned}
+        reloadData={reloadData}
         // pinned={testCollections}
         {...functions}
       />
       <MyCollectionCardList
         myCollections={myCollections}
+        reloadData={reloadData}
         // myCollections={testCollections}
         {...functions}
       />
       <HelpfulCollectionCardList
         //helpfulCollections={helpfulCollections}
         helpfulCollections={testCollections}
+        reloadData={reloadData}
         {...functions}
       />
     </div>
@@ -139,6 +145,7 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
 
 export interface PinnedCollectionCardListProps extends CollectionCardFunctions {
   pinned: CollectionData[];
+  reloadData(): Promise<void>;
 }
 
 export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
@@ -156,6 +163,7 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
           onClick={props.onClick}
           pinCollection={props.pinCollection}
           unpinCollection={props.unpinCollection}
+          reloadData={props.reloadData}
         />
         <GridCollectionCardList
           collections={pinned.slice(2, 5)}
@@ -164,6 +172,7 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
           onClick={props.onClick}
           pinCollection={props.pinCollection}
           unpinCollection={props.unpinCollection}
+          reloadData={props.reloadData}
         />
       </div>
     </div>
@@ -172,6 +181,7 @@ export function PinnedCollectionCardList(props: PinnedCollectionCardListProps) {
 
 export interface MyCollectionCardListProps extends CollectionCardFunctions {
   myCollections: CollectionData[];
+  reloadData(): Promise<void>;
 }
 
 export function MyCollectionCardList(props: MyCollectionCardListProps) {
@@ -180,6 +190,7 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
+
   const filteredCollections = myCollections.filter((data: CollectionData) => {
     return filter === "ALL" || data.status.toString() === filter;
   });
@@ -211,6 +222,7 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
             pinCollection={props.pinCollection}
             unpinCollection={props.unpinCollection}
             columnCount={columnCount}
+            reloadData={props.reloadData}
           />
         </div>
       );
@@ -236,6 +248,7 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
 export interface HelpfulCollectionCardListProps
   extends CollectionCardFunctions {
   helpfulCollections: CollectionData[];
+  reloadData(): Promise<void>;
 }
 
 export function HelpfulCollectionCardList(
@@ -261,6 +274,7 @@ export function HelpfulCollectionCardList(
                     onClick={props.onClick}
                     pinCollection={props.pinCollection}
                     unpinCollection={props.unpinCollection}
+                    reloadData={props.reloadData}
                   />
                 </div>
               );

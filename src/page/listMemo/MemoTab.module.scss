@@ -21,6 +21,7 @@
   align-items: enter;
   width: 510px;
   margin: 0 auto;
+  padding-bottom: 66px;
   @media screen and (max-width: 750px) {
     width: 100%;
     overflow-x: auto;
@@ -81,7 +82,7 @@
     border-bottom: 1px solid #105710;
     color: #105710;
     font-family: "Noto Sans CJK KR Bold";
-    z-index: 1000;
+    z-index: 950;
     &:hover {
       color: #105710;
     }

@@ -13,10 +13,12 @@ import {
 import { useHistory } from "react-router-dom";
 import { COLLECTION_CREATE, COLLECTION_LIST_CREATED } from "../../common/paths";
 import ModalManager from "../modalManager/ModelManager";
-
+import { getMe } from "../../services/user.service";
 async function getData() {
   const data = await getMyCollections();
-  return data.map((it) => viewToData(it));
+  const collections = data.map((it) => viewToData(it));
+  const me = await getMe();
+  return { collections: collections, myData: me };
 }
 
 function viewToData(view: CollectionView): CollectionData {
@@ -36,27 +38,34 @@ export default function CreateCollectionTabContainer(
   props: CreateCollectionTabContainerProps
 ) {
   const history = useHistory();
-  const handleClick = async (data: CollectionData) => {
-    if (data.status === CollectionStatus.DRAFT) {
+  const handleClick = async (collectionData: CollectionData) => {
+    if (collectionData.status === CollectionStatus.DRAFT) {
       // FIXME: change to constant path
-      history.push(`/collections/edit/${data.id}`);
-    } else if (data.status === CollectionStatus.REQUEST_PROGRESS) {
-      // do nothing
+      history.push(`/collections/edit/${collectionData.id}`);
+    } else if (collectionData.status === CollectionStatus.REQUEST_PROGRESS) {
+      if (data.myData.id === collectionData.approver) {
+        history.push(`/collections/edit/${collectionData.id}`);
+      }
     } else {
-      history.push(`${COLLECTION_LIST_CREATED}?collectionId=${data.id}`);
+      history.push(
+        `${COLLECTION_LIST_CREATED}?collectionId=${collectionData.id}`
+      );
     }
   };
 
   const { data, error, isLoading } = useAsync({
     promiseFn: getData,
   });
-
+  // const { myData, myError, myIsLoading } = useAsync({
+  //   promiseFn: getMyId,
+  // });
   if (data) {
     return (
       <Fragment>
         <CreateCollectionTab
-          collections={data}
+          collections={data.collections}
           onCollectionClick={handleClick}
+          myId={data.myData.id}
         />
         <ModalManager
           collectionId={props.collectionId}

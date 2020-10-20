@@ -76,6 +76,8 @@ export default function FloatingMenu(props) {
   const [selectedValue, setSelectedValue] = useState(options[1]);
 
   const handleClickOpen = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
     setOpen(true);
     setAnchorEl(event.currentTarget);
   };

@@ -15,7 +15,8 @@ import { GridCollectionCardList } from "../../components/collection/GridCollecti
 import memoStyle from "./MemoHomeTab.module.scss";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 import Header from "../../components/layout/Header/Header";
-
+import MemoTab from "./MemoTab";
+import { MEMO_HOME } from "../../common/paths";
 export interface MemoHomeTabProps {}
 
 export default function MemoHomeTab(props: MemoHomeTabProps) {
@@ -90,8 +91,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
 
   const history = useHistory();
   const onCollectionClick = (data: CollectionData) => {
-    const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //컬렉션에 포함된 메모를 확인하는 페이지로 이동
-    history.push(path);
+    history.push(`/memos/collections/${data.id}`);
   };
   const onMemoClick = () => {
     const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //메모로 이동
@@ -100,7 +100,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
 
   return (
     <div className={memoStyle.tab_container}>
-      {/* <CollectionTab /> */}
+      <MemoTab />
       <div className={memoStyle.create_memo_container}>
         <div className={memoStyle.drag_drop_container}></div>
       </div>

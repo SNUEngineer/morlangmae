@@ -8,7 +8,8 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import memoStyle from "./MemoHomeTab.module.scss";
 import Header from "../../components/layout/Header/Header";
-
+import MemoTab from "./MemoTab";
+import { MEMO_LIST } from "../../common/paths";
 export interface MemoListTabProps {}
 
 export default function MemoListTab(props: MemoListTabProps) {
@@ -83,8 +84,7 @@ export default function MemoListTab(props: MemoListTabProps) {
 
   const history = useHistory();
   const onCollectionClick = (data: CollectionData) => {
-    const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //컬렉션에 포함된 메모를 확인하는 페이지로 이동
-    history.push(path);
+    history.push(`/memos/collections/${data.id}`);
   };
   const onMemoClick = () => {
     const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //메모로 이동
@@ -93,7 +93,7 @@ export default function MemoListTab(props: MemoListTabProps) {
 
   return (
     <div className={memoStyle.list_tab_container}>
-      {/* <CollectionTab /> */}
+      <MemoTab />
       <MyMemoList memos={testCollections} onMemoClick={onMemoClick} />
     </div>
   );

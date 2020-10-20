@@ -1,4 +1,4 @@
-export const ROOT = "";
+export const ROOT = "/collections/discover";
 
 export const COLLECTION_LIST_TAB = "/collections";
 export const COLLECTION_LIST = "/collections/discover";
@@ -10,6 +10,10 @@ export const COLLECTION_START_CREATE = "/collections/start/create";
 export const COLLECTION_EDIT = "/collections/edit/:id";
 export const COLLECTION_VIEW = "/collections";
 export const PLATTER_EDIT = "";
+export const MEMO_HOME = "/memos/home";
+export const MEMO_LIST = "/memos/list";
+export const MEMO_BINGE = "/memos/binge";
+export const MEMO_IN_COLLECTION = "/memos/collections/:id";
 export const SIGN_IN = "/sign-in";
 export const SIGN_UP = "/sign-up";
 export const PROFILE = "/persona";
