@@ -78,3 +78,19 @@
   color: #707070;
   font-family: "AppleSDGothicNeoH00";
 }
+
+.main_container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  .main_page {
+    position: absolute;
+    overflow-y: scroll;
+    height: 100%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, 0);
+    top: 0px;
+  }
+}

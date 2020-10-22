@@ -8,8 +8,19 @@ import PDFPages from "./PDFList/PDFPages";
 import PDFThumbBar from "./PDFList/PDFThumbBar";
 import SideMenuBar from "./SideMenu/SideMenuBar";
 import classNames from "classnames";
+import {
+  MemoData,
+  MemoItemData,
+  MemoItemThreadData,
+} from "../../services/memo.service";
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
 
+export interface MemoProps {
+  isCreating: boolean;
+  memoData: MemoData;
+  memoItemDatas?: MemoItemData[];
+  memoItemThreadDatas?: MemoItemThreadData[];
+}
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
@@ -48,15 +59,6 @@ export default function Memo(props: any) {
   const [fisrtAlign, setFisrtAlign] = useState(true);
   const [listProgress, setListProgress] = useState(0);
 
-  const initMemo = [
-    {
-      itemID: 0,
-      pageNum: 1,
-      content: "테스트",
-      x: 0,
-      y: 0,
-    },
-  ];
   const initMemoItems = {
     writer: { writerID: 1, writerName: "김기연" },
     memoState: {
@@ -316,7 +318,7 @@ export default function Memo(props: any) {
       }}
     >
       <PDFPages
-        url={props.fileUrl}
+        url={props.memoData.fileUrl}
         setPdf={(loadPDF) => {
           setPdfList(loadPDF);
         }}
@@ -469,7 +471,7 @@ export default function Memo(props: any) {
                     className={memoStyle.testt}
                   >
                     <Document
-                      file={props.fileUrl}
+                      file={props.memoData.fileUrl}
                       onLoadSuccess={onDocumentLoadSuccess}
                       className={memoStyle.document}
                     >
@@ -515,7 +517,7 @@ export default function Memo(props: any) {
           )}
         </div>
         <Document
-          file={props.fileUrl}
+          file={props.memoData.fileUrl}
           onLoadSuccess={onDocumentLoadSuccess}
           className={memoStyle.document}
         >

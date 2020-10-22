@@ -4,12 +4,8 @@ import { useHistory } from "react-router-dom";
 import { CollectionData } from "../../components/collection/CollectionCard";
 import MemoCard from "../../components/memo/list/memoCard";
 import Grid from "@material-ui/core/Grid";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import memoStyle from "./MemoHomeTab.module.scss";
 import Header from "../../components/layout/Header/Header";
-import MemoTab from "./MemoTab";
-import { MEMO_LIST } from "../../common/paths";
 export interface MemoListTabProps {}
 
 export default function MemoListTab(props: MemoListTabProps) {
@@ -93,7 +89,6 @@ export default function MemoListTab(props: MemoListTabProps) {
 
   return (
     <div className={memoStyle.list_tab_container}>
-      <MemoTab />
       <MyMemoList memos={testCollections} onMemoClick={onMemoClick} />
     </div>
   );

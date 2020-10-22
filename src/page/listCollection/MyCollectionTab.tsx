@@ -111,9 +111,6 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
   console.log("reloadDatareloadData 222 " + reloadData);
   return (
     <div className={collectionStyle.tab_container}>
-      <div className={collectionStyle.tab_menu_container}>
-        <CollectionTab />
-      </div>
       <div className={collectionStyle.member_header_container}>
         <div className={collectionStyle.text}>김기연님의 컬렉션</div>
       </div>

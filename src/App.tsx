@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useCallback } from "react";
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import AppBar from "./layout/AppBar";
@@ -21,9 +21,6 @@ import EditCollectionPageContainer from "./page/editCollection/EditCollectionPag
 import PersonaPageContainer from "./page/persona/PersonaPageContainer";
 import {
   COLLECTION_LIST_TAB,
-  COLLECTION_LIST,
-  COLLECTION_LIST_MY_COLLECTION,
-  COLLECTION_LIST_CREATED,
   COLLECTION_CREATE,
   ROOT,
   SIGN_IN,
@@ -36,13 +33,16 @@ import {
   MEMO_LIST,
   MEMO_BINGE,
   MEMO_IN_COLLECTION,
+  MEMO_LIST_TAB,
 } from "./common/paths";
+import CollectionTab from "./page/listCollection/CollectionTab";
 import CreateCollectionTabContainer from "./page/listCollection/CreateCollectionTabContainer";
 import MyCollectionTabContainer from "./page/listCollection/MyCollectionTabContainer";
 import SearchCollectionTabContainer from "./page/listCollection/SearchCollectionTabContainer";
 import BingeMemoTab from "./page/listMemo/BingeMemoTab";
 import MemoHomeTab from "./page/listMemo/MemoHomeTab";
 import MemoListTab from "./page/listMemo/MemoListTab";
+import MemoTab from "./page/listMemo/MemoTab";
 import MemoListInCollection from "./page/listMemo/MemoListInCollection";
 import queryString from "query-string";
 import CompanyCollectionPageContainer from "./page/listCollection/CompanyCollectionPageContainer";
@@ -50,6 +50,7 @@ import { verify } from "./services/account.service";
 import { resetToken, expireToken } from "./common/axios";
 import NotificationPageContainer from "./page/notification/NotificationPageContainer";
 import BasicMenuBar from "./components/layout/basicMenuBar/BasicMenuBar";
+import appStyle from "./App.module.scss";
 
 const drawerWidth = 240;
 
@@ -83,14 +84,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function App() {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const classes = useStyles();
   const token = localStorage.getItem("Authorization");
   const [authenticated, setAuthenticated] = useState(token != null);
-  console.log(
-    " {...queryString.parse(props.location.search)} " +
-      { ...queryString.parse(props.location.search) }
-  );
+
+  //const [currentCategories, setCurrentCategories] = useState("collection");
+
   async function validateToken() {
     const token = localStorage.getItem("Authorization");
     try {
@@ -111,6 +111,81 @@ function App() {
     await signUp(request);
     await validateToken();
   }
+
+  const mainPages = useCallback(() => {
+    const memoList = () => {
+      if (pathname.includes("home")) {
+        return <MemoHomeTab {...queryString.parse(search)} />;
+      }
+      if (pathname.includes("list")) {
+        return <MemoListTab {...queryString.parse(search)} />;
+      }
+      if (pathname.includes("binge")) {
+        return <BingeMemoTab {...queryString.parse(search)} />;
+      }
+    };
+    const collectionList = () => {
+      if (pathname.includes("my")) {
+        return <MyCollectionTabContainer {...queryString.parse(search)} />;
+      }
+      if (pathname.includes("discover")) {
+        return <SearchCollectionTabContainer {...queryString.parse(search)} />;
+      }
+      if (pathname.includes("created")) {
+        return <CreateCollectionTabContainer {...queryString.parse(search)} />;
+      }
+    };
+
+    const memoStyle = {
+      opacity: pathname.startsWith("/memos") ? 1 : 0,
+      zIndex: pathname.startsWith("/memos") ? 800 : -1,
+    };
+    const collectionSytle = {
+      opacity: pathname.startsWith("/collections") ? 1 : 0,
+      zIndex: pathname.startsWith("/collections") ? 800 : -1,
+    };
+
+    return (
+      <div className={appStyle.main_container}>
+        <div
+          style={memoStyle}
+          className={appStyle.main_page}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
+          <div>
+            <MemoTab />
+          </div>
+          <div
+            style={{ minHeight: "800px" }}
+            // 부드러운 전환을 위한
+          >
+            {memoList()}
+          </div>
+        </div>
+        <div
+          style={collectionSytle}
+          className={appStyle.main_page}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
+          <div>
+            <CollectionTab />
+          </div>
+          <div
+            style={{ minHeight: "800px" }}
+            // 부드러운 전환을 위한
+          >
+            {collectionList()}
+          </div>
+        </div>
+      </div>
+    );
+  }, [pathname, search]);
 
   return (
     <div>
@@ -138,6 +213,7 @@ function App() {
             />
             <AuthRoute
               exact
+              hasDrawer
               authenticated={authenticated}
               path={PROFILE}
               render={() => <PersonaView />}
@@ -145,42 +221,43 @@ function App() {
             <AuthRoute
               hasDrawer
               authenticated={authenticated}
-              type={"collection"}
-              path={COLLECTION_LIST_TAB}
-              // {...queryString.parse(props.location.search)}
-              render={(props: any) => <div />}
+              path={["/collections", "/memos", "/persona"]}
+              render={(props: any) => mainPages()}
             />
             {/* <AuthRoute
-              exact
               hasDrawer
               authenticated={authenticated}
-              path={COLLECTION_LIST}
+              path={COLLECTION_LIST_TAB}
               render={(props: any) => (
-                <SearchCollectionTabContainer
-                  {...queryString.parse(props.location.search)}
-                />
+                <div>
+                  <div>
+                    <CollectionTab />
+                  </div>
+                  <div
+                    style={{ minHeight: "800px" }}
+                    // 부드러운 전환을 위한
+                  >
+                    {collectionList()}
+                  </div>
+                </div>
               )}
             />
             <AuthRoute
-              exact
               hasDrawer
               authenticated={authenticated}
-              path={COLLECTION_LIST_MY_COLLECTION}
+              path={MEMO_LIST_TAB}
               render={(props: any) => (
-                <MyCollectionTabContainer
-                  {...queryString.parse(props.location.search)}
-                />
-              )}
-            />
-            <AuthRoute
-              exact
-              hasDrawer
-              authenticated={authenticated}
-              path={COLLECTION_LIST_CREATED}
-              render={(props: any) => (
-                <CreateCollectionTabContainer
-                  {...queryString.parse(props.location.search)}
-                />
+                <div>
+                  <div>
+                    <MemoTab />
+                  </div>
+                  <div
+                    style={{ minHeight: "800px" }}
+                    // 부드러운 전환을 위한
+                  >
+                    {memoListPage()}
+                  </div>
+                </div>
               )}
             /> */}
             <AuthRoute
@@ -210,27 +287,6 @@ function App() {
                   collectionId={props.match.params.id}
                 />
               )}
-            />
-            <AuthRoute
-              exact
-              authenticated={authenticated}
-              hasDrawer
-              path={MEMO_HOME}
-              render={(props: any) => <MemoHomeTab {...props} />}
-            />
-            <AuthRoute
-              exact
-              authenticated={authenticated}
-              hasDrawer
-              path={MEMO_LIST}
-              render={(props: any) => <MemoListTab {...props} />}
-            />
-            <AuthRoute
-              exact
-              authenticated={authenticated}
-              hasDrawer
-              path={MEMO_BINGE}
-              render={(props: any) => <BingeMemoTab {...props} />}
             />
             <AuthRoute
               exact

@@ -5,18 +5,9 @@ import CollectionCard, {
   CollectionCardProps,
   CollectionData,
 } from "../../components/collection/CollectionCard";
-import MemoCard from "../../components/memo/list/memoCard";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import memoStyle from "./MemoHomeTab.module.scss";
 import Header from "../../components/layout/Header/Header";
-import MemoTab from "./MemoTab";
-import { MEMO_IN_COLLECTION } from "../../common/paths";
 export interface MemoHomeTabProps {}
 
 export default function MemoHomeTab(props: MemoHomeTabProps) {
@@ -91,7 +82,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
 
   const history = useHistory();
   const onCollectionClick = (data: CollectionData) => {
-    history.push(`/memos/collections/${data.id}`);
+    history.push(`/memo-in-collections/${data.id}`);
   };
   const onMemoClick = () => {
     const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //메모로 이동
@@ -100,7 +91,6 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
 
   return (
     <div className={memoStyle.tab_container}>
-      <MemoTab />
       <BingeMemoInCollectionCardList
         collections={testCollections}
         onCollectionClick={onCollectionClick}

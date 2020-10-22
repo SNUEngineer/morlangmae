@@ -6,17 +6,12 @@ import CollectionCard, {
   CollectionData,
 } from "../../components/collection/CollectionCard";
 import MemoCard from "../../components/memo/list/memoCard";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import memoStyle from "./MemoHomeTab.module.scss";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 import Header from "../../components/layout/Header/Header";
-import MemoTab from "./MemoTab";
-import { MEMO_HOME } from "../../common/paths";
+
 export interface MemoHomeTabProps {}
 
 export default function MemoHomeTab(props: MemoHomeTabProps) {
@@ -100,7 +95,6 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
 
   return (
     <div className={memoStyle.tab_container}>
-      <MemoTab />
       <div className={memoStyle.create_memo_container}>
         <div className={memoStyle.drag_drop_container}></div>
       </div>

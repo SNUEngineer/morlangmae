@@ -2,6 +2,7 @@ $top-bar-height: 48px;
 
 .container {
   width: 100%;
+
   background-color: yellow;
   .top_container {
     position: fixed;
@@ -70,12 +71,10 @@ $top-bar-height: 48px;
   .bottom_container {
     width: 100%;
     display: flex;
-    height: 100%;
-
+    height: 100vh;
     padding-top: $top-bar-height;
     box-sizing: border-box;
     flex-direction: row;
-    background-color: #f9f9f9;
     z-index: 9000;
 
     .body_container {

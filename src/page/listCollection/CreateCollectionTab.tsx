@@ -17,7 +17,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import createStyle from "./createCollectionTab.module.scss";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import Header from "../../components/layout/Header/Header";
-import collectionStyle from "./myCollectionTab.module.scss";
 
 export interface CreateCollectionTabProps {
   collections: CollectionData[];
@@ -36,9 +35,6 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
   };
   return (
     <div className={createStyle.tab_container}>
-      <div className={collectionStyle.tab_menu_container}>
-        <CollectionTab />
-      </div>
       {/* <CollectionList
         title="Create Collections"
         collections={props.collections}

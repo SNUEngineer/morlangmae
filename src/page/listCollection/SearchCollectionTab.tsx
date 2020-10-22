@@ -103,9 +103,6 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
 
   return (
     <div className={collectionStyle.tab_container}>
-      <div className={collectionStyle.tab_menu_container}>
-        <CollectionTab />
-      </div>
       <ForUserCollectionCardList
         usersCollections={props.serviceCollections}
         {...functions}
