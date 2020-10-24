@@ -13,6 +13,7 @@ import {
   MemoItemData,
   MemoItemThreadData,
 } from "../../services/memo.service";
+
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
 
 export interface MemoProps {
@@ -21,6 +22,7 @@ export interface MemoProps {
   memoItemDatas?: MemoItemData[];
   memoItemThreadDatas?: MemoItemThreadData[];
 }
+
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);

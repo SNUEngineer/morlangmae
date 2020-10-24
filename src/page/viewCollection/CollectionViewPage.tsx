@@ -76,20 +76,6 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
   const classes = useStyles();
   return (
     <Fragment>
-      {!props.hideToolbar && (
-        <CollectionToolBar
-          editable={editable}
-          setEditable={setEditable}
-          sortType={sortType}
-          setSortType={setSortType}
-          createPlatter={props.createPlatter}
-          collection={props.collectionDetail}
-          platters={props.platters}
-          onClose={props.onClose}
-          editCollectionFn={props.editCollectionFn}
-          users={props.users}
-        />
-      )}
       <Dialog
         fullScreen={fullScreen}
         disableEnforceFocus
@@ -106,6 +92,20 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
             [pageStyle.board_container]: true,
           })}
         >
+          {!props.hideToolbar && (
+            <CollectionToolBar
+              editable={editable}
+              setEditable={setEditable}
+              sortType={sortType}
+              setSortType={setSortType}
+              createPlatter={props.createPlatter}
+              collection={props.collectionDetail}
+              platters={props.platters}
+              onClose={props.onClose}
+              editCollectionFn={props.editCollectionFn}
+              users={props.users}
+            />
+          )}
           <div
             className={classNames({
               [pageStyle.container]: true,
@@ -130,7 +130,7 @@ export default function CollectionViewPage(props: CollectionViewPageProps) {
 const useStyles = makeStyles(() =>
   createStyles({
     appBar: {
-      zIndex: 2200,
+      zIndex: 3200,
       top: 0,
       margin: "0px",
       height: "54px",
@@ -187,89 +187,97 @@ export function CollectionToolBar(props: any) {
           [classes.toolBar]: true,
         })}
       >
-        <div className={pageStyle.center_container}>
-          {!openSearchBar && <div>{props.collection.title}</div>}
-        </div>
-
-        {!openSearchBar && (
-          <div className={pageStyle.home_container} onClick={props.onClose}>
-            <img alt={"icon"} className={pageStyle.home_icon} />
+        <div
+          className={pageStyle.menu_root_container}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+          }}
+        >
+          <div className={pageStyle.center_container}>
+            {!openSearchBar && <div>{props.collection.title}</div>}
           </div>
-        )}
 
-        {!openSearchBar && (
-          <div className={pageStyle.switch_container}>
-            <div className={pageStyle.switch}>
-              <div
-                className={classNames({
-                  [pageStyle.mode]: true,
-                  [pageStyle.view_mode]: true,
-                  [pageStyle.mode_active]: !props.editable,
-                  [pageStyle.mode_inactive]: props.editable,
-                })}
-                onClick={() => props.setEditable(false)}
-              >
-                <div className={pageStyle.mode_text}>뷰</div>
+          {!openSearchBar && (
+            <div className={pageStyle.home_container} onClick={props.onClose}>
+              <img alt={"icon"} className={pageStyle.home_icon} />
+            </div>
+          )}
+
+          {!openSearchBar && (
+            <div className={pageStyle.switch_container}>
+              <div className={pageStyle.switch}>
+                <div
+                  className={classNames({
+                    [pageStyle.mode]: true,
+                    [pageStyle.view_mode]: true,
+                    [pageStyle.mode_active]: !props.editable,
+                    [pageStyle.mode_inactive]: props.editable,
+                  })}
+                  onClick={() => props.setEditable(false)}
+                >
+                  <div className={pageStyle.mode_text}>뷰</div>
+                </div>
+                <div
+                  className={classNames({
+                    [pageStyle.mode]: true,
+                    [pageStyle.task_mode]: true,
+                    [pageStyle.mode_active]: props.editable,
+                    [pageStyle.mode_inactive]: !props.editable,
+                  })}
+                  onClick={() => props.setEditable(true)}
+                >
+                  <div className={pageStyle.mode_text}>테스크</div>
+                </div>
               </div>
-              <div
-                className={classNames({
-                  [pageStyle.mode]: true,
-                  [pageStyle.task_mode]: true,
-                  [pageStyle.mode_active]: props.editable,
-                  [pageStyle.mode_inactive]: !props.editable,
-                })}
-                onClick={() => props.setEditable(true)}
-              >
-                <div className={pageStyle.mode_text}>테스크</div>
+
+              <div className={pageStyle.bar_container}>
+                <div
+                  className={classNames({
+                    [pageStyle.bar]: true,
+                    [pageStyle.view_bar]: !props.editable,
+                    [pageStyle.task_bar]: props.editable,
+                  })}
+                ></div>
               </div>
             </div>
+          )}
 
-            <div className={pageStyle.bar_container}>
-              <div
+          <div className={pageStyle.search_platter}>
+            <SearchPlatter
+              collectionTitle={props.collection.title}
+              platterSummaries={props.platters}
+              openSearchBar={openSearchBar}
+              setOpenSearchBar={setOpenSearchBar}
+            />
+            {!openSearchBar && props.editable && (
+              <Button
+                onClick={props.createPlatter}
                 className={classNames({
-                  [pageStyle.bar]: true,
-                  [pageStyle.view_bar]: !props.editable,
-                  [pageStyle.task_bar]: props.editable,
+                  [classes.addButton]: true,
+                  [pageStyle.add_platter_button]: true,
                 })}
-              ></div>
-            </div>
+                startIcon={<img className={pageStyle.add_icon} alt={"icon"} />}
+              >
+                플래터 추가
+              </Button>
+            )}
           </div>
-        )}
-
-        <div className={pageStyle.search_platter}>
-          <SearchPlatter
-            collectionTitle={props.collection.title}
-            platterSummaries={props.platters}
-            openSearchBar={openSearchBar}
-            setOpenSearchBar={setOpenSearchBar}
-          />
-          {!openSearchBar && props.editable && (
-            <Button
-              onClick={props.createPlatter}
-              className={classNames({
-                [classes.addButton]: true,
-                [pageStyle.add_platter_button]: true,
-              })}
-              startIcon={<img className={pageStyle.add_icon} alt={"icon"} />}
-            >
-              플래터 추가
-            </Button>
+          {!openSearchBar && (
+            <Selector
+              filter={filter}
+              theme={"COLVIEW"}
+              //filter={props.sortType}
+            />
+          )}
+          {!openSearchBar && (
+            <EditMemberMenu
+              collection={props.collection}
+              users={props.users}
+              editCollectionFn={props.editCollectionFn}
+            />
           )}
         </div>
-        {!openSearchBar && (
-          <Selector
-            filter={filter}
-            theme={"COLVIEW"}
-            //filter={props.sortType}
-          />
-        )}
-        {!openSearchBar && (
-          <EditMemberMenu
-            collection={props.collection}
-            users={props.users}
-            editCollectionFn={props.editCollectionFn}
-          />
-        )}
       </Toolbar>
     </AppBar>
   );

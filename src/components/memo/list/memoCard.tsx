@@ -1,26 +1,30 @@
 import React from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import memoStyle from "./memoCard.module.scss";
 import classNames from "classnames";
+import { UserView } from "../../../services/user.service";
 
-export interface CollectionData {
+export interface MemoData {
   id: number;
-  serviceType: string;
+  fileUrl: string;
+  originFileUrl?: string;
+  sharedUserIds: UserView[];
+  writer: UserView;
   title: string;
-  imageUrl: string;
-  startDate: Date;
-  endDate: Date;
-  notificationCount: number;
-  pinned: boolean;
-  status: string;
+  platterId?: number;
+  collectionId?: number;
+  comment: string;
+  createdDate: Date;
+  imageUrl?: string;
+  notificationCount?: number;
+  status?: MemoStatus;
+  type?: MemoType;
 }
 
-export interface CollectionCardProps {
-  data: CollectionData;
+export interface MemoCardProps {
+  data: MemoData;
   viewType:
     | "NORMAL"
     | "WIDE"
@@ -30,22 +34,33 @@ export interface CollectionCardProps {
     | "TEMP"
     | "SMALL_LIST";
 
-  onClick(data: CollectionData): Promise<void>;
+  onClick(data: MemoData): Promise<void>;
+}
+
+export enum MemoType {
+  COLLECTION = "COLLECTION",
+  PLATTER = "PLATTER",
+}
+
+export enum MemoStatus {
+  DRAFT = "DRAFT",
+  IN_PROGRESS = "IN_PROGRESS",
+  DONE = "DONE",
 }
 
 const useStyles = makeStyles((viewType: "NORMAL" | "WIDE") =>
   createStyles({
     root: {
-      width: viewType == "NORMAL" ? 300 : 500,
+      width: viewType === "NORMAL" ? 300 : 500,
     },
     media: {
       height: 0,
-      paddingTop: viewType == "NORMAL" ? "100%" : "62.25%",
+      paddingTop: viewType === "NORMAL" ? "100%" : "62.25%",
     },
   })
 );
 
-export default function CollectionCard(props: CollectionCardProps) {
+export default function MemoCard(props: MemoCardProps) {
   const viewType = props.viewType;
   const classes = useStyles(viewType);
   const data = props.data;
@@ -62,38 +77,38 @@ export default function CollectionCard(props: CollectionCardProps) {
   //  createdDate: 0,
   //   startDate: 0,
   //   endDate: 0,
-  const dateText = data.startDate + " - " + data.endDate;
+  const dateText = data.createdDate;
 
   switch (viewType) {
-    case "WIDE":
-      return (
-        <Card className={memoStyle.card_root} onClick={onClick}>
-          <div className={memoStyle.service_type_and_menu}>
-            <div className={memoStyle.service_type}>{data.serviceType}</div>
-            <div className={memoStyle.dot_menu}>...</div>
-          </div>
-          <div className={memoStyle.title}>{data.title}</div>
-          {notificationCount > 0 && (
-            <Typography>{notificationCount}</Typography>
-          )}
-          {data.imageUrl && (
-            <div className={memoStyle.image_container}>
-              <div className={memoStyle.image} style={imageStyle}></div>
-              <div className={memoStyle.visible_block}>
-                <div className={memoStyle.background_block}>
-                  <div className={memoStyle.type_and_title}>
-                    <div className={memoStyle.service_type_text}>
-                      {data.serviceType}
-                    </div>
-                    <div className={memoStyle.title_text}>{data.title}</div>
-                  </div>
-                  <div className={memoStyle.date_text}>{dateText}</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </Card>
-      );
+    // case "WIDE":
+    //   return (
+    //     <Card className={memoStyle.card_root} onClick={onClick}>
+    //       <div className={memoStyle.service_type_and_menu}>
+    //         <div className={memoStyle.service_type}>{data.serviceType}</div>
+    //         <div className={memoStyle.dot_menu}>...</div>
+    //       </div>
+    //       <div className={memoStyle.title}>{data.title}</div>
+    //       {notificationCount > 0 && (
+    //         <Typography>{notificationCount}</Typography>
+    //       )}
+    //       {data.imageUrl && (
+    //         <div className={memoStyle.image_container}>
+    //           <div className={memoStyle.image} style={imageStyle}></div>
+    //           <div className={memoStyle.visible_block}>
+    //             <div className={memoStyle.background_block}>
+    //               <div className={memoStyle.type_and_title}>
+    //                 <div className={memoStyle.service_type_text}>
+    //                   {data.serviceType}
+    //                 </div>
+    //                 <div className={memoStyle.title_text}>{data.title}</div>
+    //               </div>
+    //               <div className={memoStyle.date_text}>{dateText}</div>
+    //             </div>
+    //           </div>
+    //         </div>
+    //       )}
+    //     </Card>
+    //   );
 
     case "LIST":
     case "IN_COLLECTION":
@@ -151,21 +166,21 @@ export default function CollectionCard(props: CollectionCardProps) {
         </div>
       );
 
-    case "SMALL_LIST":
-      return (
-        <div className={memoStyle.small_list_root} onClick={onClick}>
-          <div className={memoStyle.title_image} onClick={onClick}>
-            <div className={memoStyle.image} style={imageStyle}></div>
-          </div>
-          <div className={memoStyle.service_type} onClick={onClick}>
-            <p>{data.serviceType}</p>
-          </div>
-          <div className={memoStyle.title} onClick={onClick}>
-            <p>{data.title}</p>
-          </div>
-          <div className={memoStyle.notfication}>15개</div>
-        </div>
-      );
+    // case "SMALL_LIST":
+    //   return (
+    //     <div className={memoStyle.small_list_root} onClick={onClick}>
+    //       <div className={memoStyle.title_image} onClick={onClick}>
+    //         <div className={memoStyle.image} style={imageStyle}></div>
+    //       </div>
+    //       <div className={memoStyle.service_type} onClick={onClick}>
+    //         <p>{data.serviceType}</p>
+    //       </div>
+    //       <div className={memoStyle.title} onClick={onClick}>
+    //         <p>{data.title}</p>
+    //       </div>
+    //       <div className={memoStyle.notfication}>15개</div>
+    //     </div>
+    //   );
 
     case "TEMP":
       return (

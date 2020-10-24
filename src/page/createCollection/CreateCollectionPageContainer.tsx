@@ -6,6 +6,7 @@ import {
   getServiceTypes,
   CreateDraftCollectionRequest,
 } from "../../services/collection.service";
+import { COLLECTION_EDIT } from "../../common/paths";
 
 export default function CreateCollectionPageContainer() {
   const [serviceTypes, setServiceTypes] = useState<string[]>([]);
@@ -24,8 +25,8 @@ export default function CreateCollectionPageContainer() {
   ): Promise<void> => {
     console.log("lets create collection!! " + JSON.stringify(request));
     const id = await createCollection(request);
-    console.log("idididididi " + JSON.stringify(id));
-    history.push(`/collections/edit/${id}`);
+
+    history.push(`/collections-edit/${id}`);
   };
 
   return (

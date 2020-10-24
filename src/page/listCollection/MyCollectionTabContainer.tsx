@@ -20,7 +20,7 @@ async function getMyCollections() {
   const pinned = data[0].map((it) => viewToData(it));
   pinned.forEach((it) => (it.pinned = true));
   const myCollections = data[1]
-    .filter((it) => pinned.every((it2) => it.id !== it2.id))
+    .filter((it) => pinned.every((it2) => it.id !== it2.id)) //핀에 걸려있는 거라면 제외하는...
     .map((it) => viewToData(it));
 
   return {

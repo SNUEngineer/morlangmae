@@ -1,18 +1,20 @@
 import axios from "../common/axios";
 import { UserView } from "./user.service";
+import { MemoType, MemoStatus } from "../components/memo/list/memoCard";
 
-export interface MemoData {
-  memoId: number;
-  fileUrl: string;
-  originFileUrl?: string;
-  sharedUserIds: UserView[];
+export interface MemoView {
+  id: number;
   writer: UserView;
   title: string;
   platterId?: number;
   collectionId?: number;
   comment: string;
   createdDate: Date;
+  notificationCount?: number;
+  status?: MemoStatus;
+  type?: MemoType;
 }
+
 export interface MemoItemData {
   sender: UserView;
   createdDate: Date;

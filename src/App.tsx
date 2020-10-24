@@ -44,6 +44,7 @@ import MemoHomeTab from "./page/listMemo/MemoHomeTab";
 import MemoListTab from "./page/listMemo/MemoListTab";
 import MemoTab from "./page/listMemo/MemoTab";
 import MemoListInCollection from "./page/listMemo/MemoListInCollection";
+import Memo from "./page/listMemo/MemoListInCollection";
 import queryString from "query-string";
 import CompanyCollectionPageContainer from "./page/listCollection/CompanyCollectionPageContainer";
 import { verify } from "./services/account.service";

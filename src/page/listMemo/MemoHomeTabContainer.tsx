@@ -1,59 +1,46 @@
 // @ts-nocheck
 import React, { Fragment } from "react";
 import { useAsync } from "react-async";
-import {
-  CollectionView,
-  pinCollection,
-  unpinCollection,
-  getCompanyCollections,
-  getServiceCollections,
-  getHotCollections,
-  getRecentlyViewCollections,
-  getPinnedCollections,
-} from "../../services/collection.service";
+import { MemoView, getTemporariesMemos } from "../../services/memo.service";
+import { CollectionView } from "../../services/collection.service";
+import { MemoData } from "../../components/memo/list/memoCard";
 import { useHistory } from "react-router-dom";
 import { CollectionData } from "../../components/collection/CollectionCard";
 import { MEMO_WORK_STATION } from "../../common/paths";
-import SearchCollectionTab from "./SearchCollectionTab";
-import ModalManager from "../modalManager/ModelManager";
 import MemoHomeTab from "./MemoHomeTab";
 
-async function getMyCollections() {
+async function getHomeMemos() {
   const data = await Promise.all([
-    getServiceCollections(),
-    getHotCollections(),
-    getRecentlyViewCollections(),
-    getCompanyCollections(),
-    getPinnedCollections(),
+    getTemporariesMemos(),
+    getCollcetionsForMemos(),
+    getRequestingMemos(),
+    getRequestedMemos(),
+    getMyMemos(),
   ]);
 
-  const pinnedIds = data[4].map((it) => it.id);
-  const serviceCollections = data[0].map((it) => viewToData(it));
-  serviceCollections
-    .filter((it) => pinnedIds.some((it2) => it.id === it2))
-    .forEach((it) => (it.pinned = true));
-  const hotCollections = data[1].map((it) => viewToData(it));
-  hotCollections
-    .filter((it) => pinnedIds.some((it2) => it.id === it2))
-    .forEach((it) => (it.pinned = true));
-  const recentlyViewedCollections = data[2].map((it) => viewToData(it));
-  recentlyViewedCollections
-    .filter((it) => pinnedIds.some((it2) => it.id === it2))
-    .forEach((it) => (it.pinned = true));
-  const companyCollections = data[3].map((it) => viewToData(it));
-  companyCollections
-    .filter((it) => pinnedIds.some((it2) => it.id === it2))
-    .forEach((it) => (it.pinned = true));
+  const temporariesMemos = data[0].map((it) => viewToData(it));
+  const collcetionsForMemos = data[1].map((it) => viewToCollectionData(it));
+  const requestingMemos = data[2].map((it) => viewToData(it));
+  const requestedMemos = data[3].map((it) => viewToData(it));
+  const myMemos = data[4].map((it) => viewToData(it));
 
   return {
-    serviceCollections,
-    hotCollections,
-    recentlyViewedCollections,
-    companyCollections,
+    temporariesMemos,
+    collcetionsForMemos,
+    requestingMemos,
+    requestedMemos,
+    myMemos,
   };
 }
 
-function viewToData(view: CollectionView): CollectionData {
+function viewToData(view: MemoView): MemoData {
+  return {
+    ...view,
+    notificationCount: 0,
+  };
+}
+
+function viewToCollectionData(view: CollectionView): CollectionData {
   return {
     ...view,
     notificationCount: 0,
@@ -61,28 +48,22 @@ function viewToData(view: CollectionView): CollectionData {
   };
 }
 
-interface SearchCollectionTabContainerProps {
+interface MemoHomeTabContainerProps {
   collectionId?: number;
   platterId?: number;
 }
 
-export default function SearchCollectionTabContainer(
-  props: SearchCollectionTabContainerProps
-) {
+export default function MemoHomeTabContainer(props: MemoHomeTabContainerProps) {
   const history = useHistory();
-
   const { data } = useAsync({
-    promiseFn: getMyCollections,
+    promiseFn: getHomeMemos,
   });
-
   const onDropFile = async (fileUrl: string) => {
     const path = `${MEMO_WORK_STATION}?fileUrl=${fileUrl}`;
     history.push(path);
   };
 
   if (data) {
-    console.log("datadatadata " + JSON.stringify(data));
-
     return (
       <Fragment>
         <MemoHomeTab onDropFile={onDropFile} />

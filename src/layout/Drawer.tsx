@@ -58,11 +58,11 @@ export default function Drawer() {
   ];
   useEffect(() => {
     const currentPath = pathname + search;
-    if (pathname.startsWith("/collections/")) {
+    if (pathname.startsWith("/collections")) {
       setClicked("collection");
       setLastPath((prevState) => ({ ...prevState, collection: currentPath }));
     }
-    if (pathname.startsWith("/memos/")) {
+    if (pathname.startsWith("/memos")) {
       setClicked("memo");
       setLastPath((prevState) => ({ ...prevState, memo: currentPath }));
     }
