@@ -1,19 +1,18 @@
 // @ts-nocheck
 import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
 import { Document, Page } from "react-pdf";
-import memoStyle from "./memo.module.scss";
-import { PanZoom } from "./PanZoom";
-import MemoItem from "./MemoItem/MemoItem";
-import PDFPages from "./PDFList/PDFPages";
-import PDFThumbBar from "./PDFList/PDFThumbBar";
-import SideMenuBar from "./SideMenu/SideMenuBar";
+import memoStyle from "./memoWorkstation.module.scss";
+import { PanZoom } from "../../components/memo/PanZoom";
+import MemoItem from "../../components/memo/MemoItem/MemoItem";
+import PDFPages from "../../components/memo/PDFList/PDFPages";
+import PDFThumbBar from "../../components/memo/PDFList/PDFThumbBar";
+import SideMenuBar from "../../components/memo/SideMenu/SideMenuBar";
 import classNames from "classnames";
 import {
   MemoData,
   MemoItemData,
   MemoItemThreadData,
 } from "../../services/memo.service";
-
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
 
 export interface MemoProps {

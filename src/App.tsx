@@ -34,6 +34,7 @@ import {
   MEMO_BINGE,
   MEMO_IN_COLLECTION,
   MEMO_LIST_TAB,
+  MEMO_WORK_STATION,
 } from "./common/paths";
 import CollectionTab from "./page/listCollection/CollectionTab";
 import CreateCollectionTabContainer from "./page/listCollection/CreateCollectionTabContainer";
@@ -44,7 +45,7 @@ import MemoHomeTab from "./page/listMemo/MemoHomeTab";
 import MemoListTab from "./page/listMemo/MemoListTab";
 import MemoTab from "./page/listMemo/MemoTab";
 import MemoListInCollection from "./page/listMemo/MemoListInCollection";
-import Memo from "./page/listMemo/MemoListInCollection";
+import MemoWorkstationContainer from "./page/memoWorkstation/MemoWorkstationContainer";
 import queryString from "query-string";
 import CompanyCollectionPageContainer from "./page/listCollection/CompanyCollectionPageContainer";
 import { verify } from "./services/account.service";
@@ -301,6 +302,18 @@ function App() {
                 />
               )}
             />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              path={MEMO_WORK_STATION}
+              render={(props: any) => (
+                <MemoWorkstationContainer
+                  {...props}
+                  collectionId={props.match.params.id}
+                />
+              )}
+            />
+
             <AuthRoute
               exact
               hasDrawer

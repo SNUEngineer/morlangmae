@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
-import Memo from "./Memo";
+import MemoWorkstation from "./MemoWorkstation";
 import { useAsync } from "react-async";
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
 import queryString from "query-string";
@@ -31,8 +31,6 @@ export interface MemoContainerProps {
 
 export default function MemoContainer(props: EditCollectionPageContainerProps) {
   const { memoId, isCreating } = props;
-  const [serviceTypes, setServiceTypes] = useState<string[]>([]);
-  const history = useHistory();
   const { pathname, search } = useLocation();
   const query = queryString.parse(search);
   const { data, error, isLoading } = useAsync({
@@ -44,10 +42,13 @@ export default function MemoContainer(props: EditCollectionPageContainerProps) {
 
   const memoData = useCallback(() => {
     if (!!query) {
+      //console.log("query.fileUrl "+query.fileUrl);
       if (!!query.fileUrl && query.fileUrl.length > 0) {
         const creatingData = {
           originFileUrl: query.fileUrl,
-          fileUrl: query.fileUrl,
+          //fileUrl: query.fileUrl,
+          fileUrl:
+            "https://github.com/wojtekmaj/react-pdf/files/2930577/compressed.tracemonkey-pldi-09.pdf",
         };
         return creatingData;
       }
@@ -55,20 +56,12 @@ export default function MemoContainer(props: EditCollectionPageContainerProps) {
     return data.memo;
   }, [data, query]);
 
-  useEffect(() => {
-    const fetchServiceTypes = async () => {
-      const serviceTypes = await getServiceTypes();
-      setServiceTypes(serviceTypes);
-    };
-    fetchServiceTypes();
-  }, []);
-
   return (
-    <Memo
+    <MemoWorkstation
       isCreating={props.isCreating}
       memoData={memoData()}
-      memoItemDatas={data.memoItem}
-      memoItemThreadDatas={data.memoItemThread}
+      memoItemDatas={data?.memoItem}
+      memoItemThreadDatas={data?.memoItemThread}
     />
   );
 }
