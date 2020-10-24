@@ -18,18 +18,23 @@ import {
   addMemoItems,
 } from "../../services/memo.service";
 
-const getData = async ({ memoId }: any) => {
+const getMemoData = async ({ memoId }: any) => {
   console.log("dhodhdohdohdo");
+
   const me = await getMe();
-  // const memo = await getMemo(memoId);
-  // const memoItem = await getMemoItem(memoId);
-  // const memoItemThread = await getMemoItemThread(memoId).messages;
+  const memo = await getMemo(memoId);
+  const memoItem = await getMemoItem(memoId);
+  const memoItemThread = await getMemoItemThread(memoId).messages;
   return {
     me: me,
-    // memo: memo,
-    // memoItem: memoItem,
-    // memoItemThread: memoItemThread,
+    memo: memo,
+    memoItem: memoItem,
+    memoItemThread: memoItemThread,
   };
+};
+
+const asdf = () => {
+  console.log("dhodhdohdohdo");
 };
 
 export interface MemoWorkstationContainerProps {
@@ -38,14 +43,17 @@ export interface MemoWorkstationContainerProps {
   creatingFileUrl?: string;
 }
 
-export default function MemoContainer(props: MemoWorkstationContainerProps) {
+export default function MemoWorkstationContainer(
+  props: MemoWorkstationContainerProps
+) {
   const { search } = useLocation();
   const query = queryString.parse(search);
   const memoId = query.memoId;
   const { data, reload, error, isLoading } = useAsync({
-    promiseFn: getData,
+    promiseFn: getMemoData,
     memoId: memoId,
   });
+  console.log("datadatadata " + data);
   //fileurl은 memo id를 갖고 오거나, 직접 생성을 통해 만들어짐.
   const handleEditMemo = async (memoData: MemoData) => {};
   const handleAddMemoItem = async (
