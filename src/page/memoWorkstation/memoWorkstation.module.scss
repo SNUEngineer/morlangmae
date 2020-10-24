@@ -8,12 +8,13 @@
 .menu_bar {
   position: relative;
   width: 100%;
-  height: 40px;
-  background-color: darkcyan;
+  height: 54px;
+  background-color: #1d1d1f;
   border-bottom: gray;
   border-width: 0.5px;
   display: flex;
   flex-direction: row;
+
   .align_container {
     position: relative;
     height: 100%;
@@ -42,6 +43,10 @@
       .title {
         margin-left: 30px;
         margin-right: 10px;
+        color: white;
+        font-family: "Noto Sans CJK KR Bold";
+        font-size: 20px;
+        letter-spacing: -0.8px;
       }
       .dropdown_icon_opened {
         content: url("../../resources/icons/drop_down_close.png");
@@ -65,7 +70,7 @@
     .menu_text {
       font-size: 15px;
       letter-spacing: -0.6px;
-      color: black;
+      color: white;
       cursor: pointer;
     }
     .menu_text_unfocused {

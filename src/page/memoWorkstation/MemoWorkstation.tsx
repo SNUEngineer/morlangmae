@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
-import { Document, Page } from "react-pdf";
+import { Document, Page } from "react-pdf/dist/entry.webpack";
 import memoStyle from "./memoWorkstation.module.scss";
 import { PanZoom } from "../../components/memo/PanZoom";
 import MemoItem from "../../components/memo/MemoItem/MemoItem";
@@ -13,7 +13,74 @@ import {
   MemoItemData,
   MemoItemThreadData,
 } from "../../services/memo.service";
+import Toolbar from "@material-ui/core/Toolbar";
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
+
+export function MemoToolBar(props: any) {
+  const { sideMenuOpen, setSideMenuOpen } = props;
+  return (
+    <div className={memoStyle.menu_bar}>
+      <div className={memoStyle.center_menu_container}>
+        <div className={memoStyle.title_container}>
+          <img className={memoStyle.cloud_icon} alt={"icon"} />
+          <div className={memoStyle.title}>ㅁㄴㅇㄹㅁㅇㄴㄹ</div>
+          <img
+            className={classNames({
+              [memoStyle.dropdown_icon_opened]: sideMenuOpen,
+              [memoStyle.dropdown_icon_closed]: !sideMenuOpen,
+            })}
+            alt={"icon"}
+          />
+        </div>
+      </div>
+      <div className={memoStyle.menu_container}>
+        <div className={memoStyle.bailey_conatiner}>
+          <div className={memoStyle.align_container}>
+            <div className={memoStyle.verical_center}>
+              <div className={memoStyle.bailey_text}>Bailey</div>
+            </div>
+          </div>
+        </div>
+
+        <div className={memoStyle.save_container}>
+          <div className={memoStyle.align_container}>
+            <div className={memoStyle.verical_center}>
+              <div
+                className={classNames({
+                  [memoStyle.menu_text]: true,
+                  [memoStyle.menu_text_unfocused]: true,
+                  [memoStyle.menu_text_focused]: false,
+                })}
+              >
+                임시 저장
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={memoStyle.share_container}>
+          <div className={memoStyle.align_container}>
+            <div className={memoStyle.verical_center}>
+              <div
+                onClick={() => setSideMenuOpen(!sideMenuOpen)}
+                className={classNames({
+                  [memoStyle.menu_text]: true,
+                  [memoStyle.menu_text_unfocused]: !sideMenuOpen,
+                  [memoStyle.menu_text_focused]: sideMenuOpen,
+                })}
+              >
+                공유
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={memoStyle.logo_container}></div>
+      </div>
+
+      <div className={memoStyle.top_divider}></div>
+    </div>
+  );
+}
 
 export interface MemoProps {
   isCreating: boolean;
@@ -332,66 +399,10 @@ export default function Memo(props: any) {
       />
 
       <div className={memoStyle.workspace_container}>
-        <div className={memoStyle.menu_bar}>
-          <div className={memoStyle.center_menu_container}>
-            <div className={memoStyle.title_container}>
-              <img className={memoStyle.cloud_icon} alt={"icon"} />
-              <div className={memoStyle.title}>ㅁㄴㅇㄹㅁㅇㄴㄹ</div>
-              <img
-                className={classNames({
-                  [memoStyle.dropdown_icon_opened]: sideMenuOpen,
-                  [memoStyle.dropdown_icon_closed]: !sideMenuOpen,
-                })}
-                alt={"icon"}
-              />
-            </div>
-          </div>
-          <div className={memoStyle.menu_container}>
-            <div className={memoStyle.bailey_conatiner}>
-              <div className={memoStyle.align_container}>
-                <div className={memoStyle.verical_center}>
-                  <div className={memoStyle.bailey_text}>Bailey</div>
-                </div>
-              </div>
-            </div>
-
-            <div className={memoStyle.save_container}>
-              <div className={memoStyle.align_container}>
-                <div className={memoStyle.verical_center}>
-                  <div
-                    className={classNames({
-                      [memoStyle.menu_text]: true,
-                      [memoStyle.menu_text_unfocused]: true,
-                      [memoStyle.menu_text_focused]: false,
-                    })}
-                  >
-                    임시 저장
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={memoStyle.share_container}>
-              <div className={memoStyle.align_container}>
-                <div className={memoStyle.verical_center}>
-                  <div
-                    onClick={() => setSideMenuOpen(!sideMenuOpen)}
-                    className={classNames({
-                      [memoStyle.menu_text]: true,
-                      [memoStyle.menu_text_unfocused]: !sideMenuOpen,
-                      [memoStyle.menu_text_focused]: sideMenuOpen,
-                    })}
-                  >
-                    공유
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={memoStyle.logo_container}></div>
-          </div>
-
-          <div className={memoStyle.top_divider}></div>
-        </div>
+        <MemoToolBar
+          sideMenuOpen={sideMenuOpen}
+          setSideMenuOpen={setSideMenuOpen}
+        />
 
         <div className={memoStyle.split_pane}>
           <div

@@ -11,17 +11,18 @@ async function getData({ memoId, query }: any) {
     if (!!query.fileUrl && query.fileUrl.length > 0) {
       //fileurl이 존재
       return;
+    } else {
+      const memoId = query.memoId;
+      const memo = await getMemo(memoId);
+      const memoItem = await getMemoItem(memoId);
+      const memoItemThread = await getMemoItemThread(memoId);
+      return {
+        memo: memo,
+        memoItem: memoItem,
+        memoItemThread: memoItemThread,
+      };
     }
   }
-
-  const memo = await getMemo(memoId);
-  const memoItem = await getMemoItem(memoId);
-  const memoItemThread = await getMemoItemThread(memoId);
-  return {
-    memo: memo,
-    memoItem: memoItem,
-    memoItemThread: memoItemThread,
-  };
 }
 export interface MemoContainerProps {
   memoId: number;
@@ -46,9 +47,11 @@ export default function MemoContainer(props: EditCollectionPageContainerProps) {
       if (!!query.fileUrl && query.fileUrl.length > 0) {
         const creatingData = {
           originFileUrl: query.fileUrl,
-          //fileUrl: query.fileUrl,
-          fileUrl:
-            "https://github.com/wojtekmaj/react-pdf/files/2930577/compressed.tracemonkey-pldi-09.pdf",
+          fileUrl: query.fileUrl,
+          // fileUrl:
+          //   "https://github.com/wojtekmaj/react-pdf/files/2930577/compressed.tracemonkey-pldi-09.pdf",
+          // fileUrl:
+          //   "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         };
         return creatingData;
       }

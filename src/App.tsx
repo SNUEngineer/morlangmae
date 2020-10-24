@@ -46,6 +46,7 @@ import MemoListTab from "./page/listMemo/MemoListTab";
 import MemoTab from "./page/listMemo/MemoTab";
 import MemoListInCollection from "./page/listMemo/MemoListInCollection";
 import MemoWorkstationContainer from "./page/memoWorkstation/MemoWorkstationContainer";
+import MemoWorkstationTest from "./page/memoWorkstation/MemoWorkstationTest";
 import queryString from "query-string";
 import CompanyCollectionPageContainer from "./page/listCollection/CompanyCollectionPageContainer";
 import { verify } from "./services/account.service";
@@ -280,6 +281,17 @@ function App() {
                 />
               )}
             />
+            <AuthRoute
+              exact
+              authenticated={authenticated}
+              path={"/memo/test"}
+              render={(props: any) => (
+                <MemoWorkstationTest
+                  {...queryString.parse(props.location.search)}
+                />
+              )}
+            />
+
             <AuthRoute
               exact
               authenticated={authenticated}
