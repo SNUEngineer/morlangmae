@@ -5,23 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import memoStyle from "./memoCard.module.scss";
 import classNames from "classnames";
 import { UserView } from "../../../services/user.service";
-
-export interface MemoData {
-  id: number;
-  fileUrl: string;
-  originFileUrl?: string;
-  sharedUserIds: UserView[];
-  writer: UserView;
-  title: string;
-  platterId?: number;
-  collectionId?: number;
-  comment: string;
-  createdDate: Date;
-  imageUrl?: string;
-  notificationCount?: number;
-  status?: MemoStatus;
-  type?: MemoType;
-}
+import { MemoData } from "../../../services/memo.service";
 
 export interface MemoCardProps {
   data: MemoData;

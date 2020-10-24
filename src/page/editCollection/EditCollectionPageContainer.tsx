@@ -19,6 +19,7 @@ export interface EditCollectionPageContainerProps {
 }
 
 async function getData({ collectionId }: any) {
+  console.log("gma...");
   return await Promise.all([
     getCollection(collectionId),
     searchUsers(undefined),

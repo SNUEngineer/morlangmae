@@ -17,6 +17,7 @@ export default function Anchor(props: any) {
     setAnchor,
     panBoardSize,
     onHover,
+    handleUpdateState,
   } = props;
 
   const [anchorBoxVisible, setAnchorBoxVisible] = useState({
@@ -166,6 +167,7 @@ export default function Anchor(props: any) {
               ...prevState,
               anchorDragging: false,
             }));
+            handleUpdateState();
           }}
           onDrag={(e, coreData) => {
             e.preventDefault();
@@ -230,6 +232,7 @@ export default function Anchor(props: any) {
                 ...prevState,
                 boxAnchorDragging: false,
               }));
+              handleUpdateState();
             }}
             bounds={anchorBound}
             //pan board 너비 높이 - 메모 아이템 너비 높이

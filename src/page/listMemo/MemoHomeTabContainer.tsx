@@ -3,11 +3,13 @@ import React, { Fragment } from "react";
 import { useAsync } from "react-async";
 import { MemoView, getTemporariesMemos } from "../../services/memo.service";
 import { CollectionView } from "../../services/collection.service";
-import { MemoData } from "../../components/memo/list/memoCard";
+import { MemoData, createMemo } from "../../services/memo.service";
 import { useHistory } from "react-router-dom";
 import { CollectionData } from "../../components/collection/CollectionCard";
 import { MEMO_WORK_STATION } from "../../common/paths";
 import MemoHomeTab from "./MemoHomeTab";
+import { uploadFile } from "../../services/file.service";
+import { getMe } from "../../services/user.service";
 
 async function getHomeMemos() {
   const data = await Promise.all([
@@ -53,20 +55,34 @@ interface MemoHomeTabContainerProps {
   platterId?: number;
 }
 
+const handleDrop = async (e: any) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.dataTransfer.files.length !== 1) {
+    console.error("Unexpected file");
+  } else {
+    const res = await uploadFile(e.dataTransfer.files[0]);
+    const me = await getMe();
+    const request = {
+      title: "10월 24일 오후 10시에 생성된 메모입니다.",
+      fileUrl: res.uri,
+      collectionId: 11,
+      sharedUserIds: [me.id],
+    };
+    createMemo(request);
+  }
+};
+
 export default function MemoHomeTabContainer(props: MemoHomeTabContainerProps) {
   const history = useHistory();
   const { data } = useAsync({
     promiseFn: getHomeMemos,
   });
-  const onDropFile = async (fileUrl: string) => {
-    const path = `${MEMO_WORK_STATION}?fileUrl=${fileUrl}`;
-    history.push(path);
-  };
 
   if (data) {
     return (
       <Fragment>
-        <MemoHomeTab onDropFile={onDropFile} />
+        <MemoHomeTab handleDrop={handleDrop} />
       </Fragment>
     );
   }

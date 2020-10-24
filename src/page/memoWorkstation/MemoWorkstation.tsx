@@ -13,11 +13,12 @@ import {
   MemoItemData,
   MemoItemThreadData,
 } from "../../services/memo.service";
-import Toolbar from "@material-ui/core/Toolbar";
+import { UserView } from "../../services/user.service";
+
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
 
 export function MemoToolBar(props: any) {
-  const { sideMenuOpen, setSideMenuOpen } = props;
+  const { sideMenuOpen, setSideMenuOpen, handleSave } = props;
   return (
     <div className={memoStyle.menu_bar}>
       <div className={memoStyle.center_menu_container}>
@@ -73,7 +74,23 @@ export function MemoToolBar(props: any) {
             </div>
           </div>
         </div>
-
+        <div className={memoStyle.share_container}>
+          <div className={memoStyle.align_container}>
+            <div className={memoStyle.verical_center}>
+              <div
+                onClick={() => {
+                  props.handleSave();
+                }}
+                className={classNames({
+                  [memoStyle.menu_text]: true,
+                  [memoStyle.menu_text_unfocused]: true,
+                })}
+              >
+                저장
+              </div>
+            </div>
+          </div>
+        </div>
         <div className={memoStyle.logo_container}></div>
       </div>
 
@@ -83,15 +100,20 @@ export function MemoToolBar(props: any) {
 }
 
 export interface MemoProps {
-  isCreating: boolean;
   memoData: MemoData;
   memoItemDatas?: MemoItemData[];
   memoItemThreadDatas?: MemoItemThreadData[];
+  myData: UserView;
+  writeMessage: Promise<void>;
+  handleEditMemoItems: Promise<void>;
+  handleEditMemo: Promise<void>;
+  handleAddMemoItem: Promise<void>;
 }
 
 export default function Memo(props: any) {
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+  const [newItemId, setNewItemId] = useState(-100);
   const [pageSize, setPageSize] = useState({
     w: 2000,
     h: 500,
@@ -138,7 +160,16 @@ export default function Memo(props: any) {
       purpose: "request",
     },
   };
-  const [memoItems, setMemoItems] = useState([initMemoItems]);
+
+  const [newMemoItems, setNewMemoItems] = useState<MemoItemData[]>();
+  const [existingMemoItems, setExistingMemoItems] = useState<MemoItemData[]>();
+  const [deletingMemoItems, setDeletingMemoItems] = useState<MemoItemData[]>();
+
+  const memoItems = useCallback(() => {
+    return newMemoItems.concat(existingMemoItems);
+  }, [newMemoItems, existingMemoItems]);
+
+  const [memo, setMemo] = useState(props.memoData);
   const [currentCheckedWriters, setCurrentCheckedWriters] = useState([0]);
   const boardEl = useRef<HTMLDivElement>(null);
   const documentEl = useRef<HTMLDivElement>(null);
@@ -216,6 +247,24 @@ export default function Memo(props: any) {
     [fisrtAlign]
   );
 
+  const handleSave = async (e: any) => {
+    // id: number;
+    // fileUrl: string;
+    // sharedUserIds: number[];
+    // title: string;
+    // collectionId: number;
+    // comment: string;
+    // setMemo({
+    //   ...memo,
+    //   [name]: value,
+    // });
+    //이거 활용...
+    await props.handleEditMemo(memo);
+    await props.handleEditMemoItems(existingMemoItems);
+    await props.handleAddMemoItem(newMemoItems);
+    await props.deleteMemoItems(deletingMemoItems);
+  };
+
   const setPanzoomBoundary = useCallback(() => {
     const scaledBoard = {
       w: (panBoardSize.w + 1000) * documentPosition.scale, // 약간씩의 여백 (board 바깥부분).
@@ -249,35 +298,57 @@ export default function Memo(props: any) {
       scale: state.scale,
     });
   }
-  const onMouseDown = (event) => {
-    if (event.nativeEvent.which === 3) {
-      event.preventDefault();
+  const onMouseDown = useCallback(
+    (event: any) => {
+      if (event.nativeEvent.which === 3) {
+        event.preventDefault();
 
-      const newMemoItem = {
-        writer: { writerID: 0, writerName: "송병근" },
-        memoState: {
-          itemID: Date.now(),
-          pageNum: pageNumber,
-          content: "테스트",
-          x: event.nativeEvent.offsetX,
-          y: event.nativeEvent.offsetY,
-          purpose: "request",
-        },
-      };
-
-      const addedArray = memoItems.concat(newMemoItem);
-      setMemoItems(addedArray);
-    }
-  };
+        const newMemoItem = {
+          writer: { writerID: myData.id, writerName: myData.displayName },
+          memoState: {
+            itemID: newItemId,
+            pageNum: pageNumber,
+            content: "테스트",
+            x: event.nativeEvent.offsetX,
+            y: event.nativeEvent.offsetY,
+            createdDate: new Date(),
+            purpose: "request",
+            anchor: {
+              x: -1000,
+              y: -1000,
+              box: {
+                x: -1000,
+                y: -1000,
+              },
+            },
+          },
+        };
+        setNewItemId(newItemId - 1);
+        const addedArray = newMemoItems.concat(newMemoItem);
+        setNewMemoItems(addedArray);
+      }
+    },
+    [newItemId, newMemoItems, pageNumber]
+  );
 
   const deleteMemo = useCallback(
     (targetID: number) => {
-      const newList = memoItems.filter(
+      const newList = newMemoItems.filter(
         (item) => item.memoState.itemID !== targetID
       );
-      setMemoItems(newList);
+      setNewMemoItems(newList);
+      const existingList = existingMemoItems.filter((item) => {
+        if (item.memoState.itemID !== targetID) {
+          const newDeletingItems = deletingMemoItems.concat();
+          setDeletingMemoItems(newDeletingItems);
+          return false;
+        } else {
+          return true;
+        }
+      });
+      setExistingMemoItems(existingList);
     },
-    [memoItems]
+    [newMemoItems, existingMemoItems, deletingMemoItems]
   );
 
   const checkWriters = useCallback(
@@ -295,40 +366,35 @@ export default function Memo(props: any) {
     [currentCheckedWriters]
   );
 
-  const updateTextContent = useCallback(
-    (targetID: number, content) => {
-      const newList = memoItems.filter((item) => {
+  const updateMemoItem = useCallback(
+    (data: MemoItemData) => {
+      const newList = newMemoItems.filter((item) => {
+        if (item.memoState.itemID === data.memoState.itemID) {
+          item = data;
+        }
+        return true;
+      });
+
+      setNewMemoItems(newList);
+
+      const existingList = existingMemoItems.filter((item) => {
         if (item.memoState.itemID === targetID) {
           item.memoState.content = content;
         }
         return true;
       });
 
-      setMemoItems(newList);
+      setExistingMemoItems(existingList);
     },
-    [memoItems]
-  );
-
-  const onPurposeClick = useCallback(
-    (targetID: number, purpose) => {
-      const newList = memoItems.filter((item) => {
-        if (item.memoState.itemID === targetID) {
-          item.memoState.purpose = purpose;
-        }
-        return true;
-      });
-
-      setMemoItems(newList);
-    },
-    [memoItems]
+    [existingMemoItems, newMemoItems]
   );
 
   const currentPageMemos = useCallback(() => {
-    const newList = memoItems.filter(
+    const newList = memoItems().filter(
       (item) => item.memoState.pageNum === pageNumber
     );
     return newList;
-  }, [memoItems, pageNumber]);
+  }, [pageNumber, memoItems]);
 
   const focusOtherItem = useCallback(
     (next, memoState, writerID) => {
@@ -362,11 +428,11 @@ export default function Memo(props: any) {
   );
 
   const currentMenuMemo = useCallback(() => {
-    const newList = memoItems.filter(
+    const newList = memoItems().filter(
       (item) => item.memoState.itemID === currentFocusItem.itemID
     );
     return newList[0];
-  }, [memoItems, currentFocusItem]);
+  }, [currentFocusItem, memoItems]);
 
   const onDragOver = useCallback((e) => {
     e.preventDefault();
@@ -402,6 +468,7 @@ export default function Memo(props: any) {
         <MemoToolBar
           sideMenuOpen={sideMenuOpen}
           setSideMenuOpen={setSideMenuOpen}
+          handleSave={handleSave}
         />
 
         <div className={memoStyle.split_pane}>
@@ -448,12 +515,11 @@ export default function Memo(props: any) {
                     onDrop={onDrop}
                     onDragOver={onDragOver}
                   >
-                    {memoItems.map((item) => {
+                    {memoItems().map((item) => {
                       return (
                         <MemoItem
                           key={item.memoState.itemID}
-                          memoState={item.memoState}
-                          writer={item.writer}
+                          itemData={item}
                           className={memoStyle.memo_item}
                           keyState={keyState}
                           scale={documentPosition.scale}
@@ -461,17 +527,16 @@ export default function Memo(props: any) {
                           currentPageNum={pageNumber}
                           currentCheckedWriters={currentCheckedWriters}
                           deleteMemo={deleteMemo}
+                          updateMemoItem={updateMemoItem}
                           isFocus={
                             currentFocusItem.itemID === item.memoState.itemID
                               ? true
                               : false
                           }
-                          updateTextContent={updateTextContent}
                           focusHandler={(itemID) => {
                             setCurrentFocusItem({ itemID: itemID });
                           }}
                           isMenuItem={false}
-                          onPurposeClick={onPurposeClick}
                           panBoardSize={panBoardSize}
                         ></MemoItem>
                       );
@@ -511,14 +576,12 @@ export default function Memo(props: any) {
                 className={memoStyle.memo_item}
                 currentPageNum={pageNumber}
                 deleteMemo={deleteMemo}
-                updateTextContent={updateTextContent}
                 focusHandler={(itemID) => {
                   setCurrentFocusItem({ itemID: itemID });
                 }}
                 pageNumber={pageNumber}
                 isMenuItem={true}
                 focusOtherItem={focusOtherItem}
-                onPurposeClick={onPurposeClick}
                 memoItems={currentPageMemos()}
                 checkWriters={checkWriters}
                 currentCheckedWriters={currentCheckedWriters}

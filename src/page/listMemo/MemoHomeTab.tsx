@@ -13,7 +13,7 @@ import CarouselList from "../../components/customizedComponent/Carousel/Carousel
 import Header from "../../components/layout/Header/Header";
 
 export interface MemoHomeTabProps {
-  onDropFile(fileUrl: string): Promise<void>;
+  onDropFile(event: any): Promise<void>;
 }
 
 export default function MemoHomeTab(props: MemoHomeTabProps) {
@@ -94,22 +94,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
     const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //메모로 이동
     //history.push(path);
   };
-  const handleDrop = async (e: any) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.dataTransfer.files.length !== 1) {
-      console.error("Unexpected file");
-    } else {
-      //const res = await props.uploadImage(e.dataTransfer.files[0]);
-      console.log(
-        "afafafaasdfasdf " + JSON.stringify(e.dataTransfer.files[0].mozFullPath)
-      );
-      console.log(
-        "afafafaasdfasdf " + JSON.stringify(e.dataTransfer.files[0].name)
-      );
-      //props.onDropFile();
-    }
-  };
+
   const handleDragOver = (e: any) => {
     e.preventDefault();
   };
@@ -119,7 +104,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
         <div
           className={memoStyle.drag_drop_container}
           onDragOver={handleDragOver}
-          onDrop={handleDrop}
+          onDrop={props.handleDrop}
         ></div>
       </div>
 
