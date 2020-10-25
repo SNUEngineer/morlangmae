@@ -397,18 +397,22 @@ export default function Memo(props: any) {
           );
           if (item?.memoState.itemID === data?.memoState.itemID) {
             item = data;
-            console.log("update memo item  newnewnew " + JSON.stringify(item));
+            console.log("update eidieidi " + JSON.stringify(item));
           }
           return true;
         });
 
         setNewMemoItems(newList);
       }
+      console.log(
+        "update memo item  newnewnew " + JSON.stringify(newMemoItems)
+      );
 
       if (!!existingMemoItems && existingMemoItems.length !== 0) {
         const existingList = existingMemoItems.filter((item) => {
           if (item.memoState.itemID === data?.memoState.itemID) {
-            content = data;
+            item.memoState = data.memoState;
+
             console.log(
               "update memo item  exisintingnis " + JSON.stringify(item)
             );
