@@ -87,8 +87,8 @@ export default function Anchor(props: any) {
     };
     return box;
   }, [boxAnchor, anchor]);
-  const anchorDoubleClick = (event) => {
-    setBoxAnchor((prevState) => ({
+  const anchorDoubleClick = async (event) => {
+    await setBoxAnchor((prevState) => ({
       exist: true,
       x: anchor.x + 50,
       y: anchor.y + 50,
@@ -163,8 +163,8 @@ export default function Anchor(props: any) {
               anchorDragging: true,
             }));
           }}
-          onStop={(e, coreData) => {
-            setAnchorBoxVisible((prevState) => ({
+          onStop={async (e, coreData) => {
+            await setAnchorBoxVisible((prevState) => ({
               ...prevState,
               anchorDragging: false,
             }));
@@ -228,8 +228,8 @@ export default function Anchor(props: any) {
                 boxAnchorDragging: true,
               }));
             }}
-            onStop={(e, coreData) => {
-              setAnchorBoxVisible((prevState) => ({
+            onStop={async (e, coreData) => {
+              await setAnchorBoxVisible((prevState) => ({
                 ...prevState,
                 boxAnchorDragging: false,
               }));

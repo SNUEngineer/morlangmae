@@ -16,26 +16,18 @@ import Anchor from "./Anchor/Anchor";
 import WriterArea from "./Writer/WriterArea";
 import classNames from "classnames";
 
-// const newMemoItem = {
-//   writer: { writerID: myData.id, writerName: myData.displayName },
-//   memoState: {
-//     itemID: newItemId,
-//     pageNum: pageNumber,
-//     content: "테스트",
-//     x: event.nativeEvent.offsetX,
-//     y: event.nativeEvent.offsetY,
-//     createdDate: new Date(),
-//     purpose: "request",
-//     anchor :{
-//       x: 0,
-//       y: 0,
-//       box : {
-//         x: 0,
-//         y: 0,
-//       }
-//     }
-//   },
-// };
+export interface Anchor {
+  exist: boolean;
+  zoneDown: boolean;
+  x: number;
+  y: number;
+}
+
+export interface BoxAnchor {
+  exist: boolean;
+  x: number;
+  y: number;
+}
 
 export default function MemoItem(props: any) {
   const {
@@ -67,21 +59,8 @@ export default function MemoItem(props: any) {
   const [isDragging, setIsDragging] = useState(0);
   const [textContent, setTextContent] = useState("");
   const [onHover, setOnHover] = useState(false);
-  const [anchor, setAnchor] = useState({
-    exist: !!itemData?.memoState?.anchor?.x
-      ? itemData.memoState.anchor.x > -500
-      : false,
-    zoneDown: false,
-    x: 0,
-    y: 0,
-  });
-  const [boxAnchor, setBoxAnchor] = useState({
-    exist: !!itemData?.memoState?.anchor?.box?.x
-      ? itemData.memoState.anchor.box.x > -500
-      : false,
-    x: 0,
-    y: 0,
-  });
+  const [anchor, setAnchor] = useState<Anchor>();
+  const [boxAnchor, setBoxAnchor] = useState<BoxAnchor>();
   const [openComment, setOpenComment] = useState(false);
   const [bounds, setBounds] = useState({
     //pan board 너비 높이 - 메모 아이템 너비 높이
@@ -110,11 +89,12 @@ export default function MemoItem(props: any) {
   const contentTextAreaEl = useRef(null);
 
   const handleUpdateState = useCallback(() => {
+    console.log("memoItemData anchoranchoranchor " + JSON.stringify(anchor));
     const editedMemoItem = {
       writer: itemData.writer,
       memoState: {
         itemID: itemData.memoState.itemID,
-        pageNum: itemData.memoState.pageNumber,
+        pageNum: itemData.memoState.pageNum,
         content: textContent,
         x: memoPosition.x,
         y: memoPosition.y,
@@ -142,7 +122,7 @@ export default function MemoItem(props: any) {
     updateMemoItem,
   ]);
   const onAnchorZoneDragEnd = useCallback(
-    (event) => {
+    async (event) => {
       if (
         event.nativeEvent == null ||
         event.nativeEvent.offsetX == null ||
@@ -171,6 +151,8 @@ export default function MemoItem(props: any) {
         return;
       }
 
+      console.log("anchoranchor " + newAnchorX);
+      console.log("boxboxbox " + newAnchorY);
       setAnchor((prevState) => ({
         ...prevState,
         exist: true,
@@ -181,7 +163,9 @@ export default function MemoItem(props: any) {
         ...prevState,
         exist: false,
       }));
-      handleUpdateState();
+      setTimeout(() => {
+        handleUpdateState();
+      }, 3000);
     },
 
     [bounds, memoPosition, handleUpdateState]
@@ -201,10 +185,31 @@ export default function MemoItem(props: any) {
   }, [currentPageNum, memoItemData, currentCheckedWriters, isMenuItem]);
 
   useEffect(() => {
-    setMemoPosition(memoItemData?.memoState);
-    setItemID(memoItemData?.memoState.itemID);
-    //다시 로드 될때만 memo state의 컨텐츠를 받아오고, 그 후에는 간섭없이 memoItemData.memoState에 저장만 하기.
-  }, []);
+    if (!isMenuItem) {
+      const state = memoItemData?.memoState;
+      const anchor = state?.anchor;
+      const box = state?.anchor?.box;
+
+      console.log("memoItemData " + JSON.stringify(memoItemData));
+
+      setMemoPosition(state);
+      setPurpose(state.purpose);
+      setTextContent(state.content);
+      setAnchor({
+        exist: !!anchor.x ? anchor.x > -500 : false,
+        zoneDown: false,
+        x: anchor.x,
+        y: anchor.y,
+      });
+      setBoxAnchor({
+        exist: !!box.x ? box.x > -500 : false,
+        x: box.x,
+        y: box.y,
+      });
+      setItemID(memoItemData?.memoState.itemID);
+      //다시 로드 될때만 memo state의 컨텐츠를 받아오고, 그 후에는 간섭없이 memoItemData.memoState에 저장만 하기.
+    }
+  }, [memoItemData, isMenuItem]);
 
   useLayoutEffect(() => {
     if (isMenuItem) return;

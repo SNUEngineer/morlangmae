@@ -383,20 +383,27 @@ export default function Memo(props: any) {
     },
     [currentCheckedWriters]
   );
+  const updateTextContent = useCallback(
+    (targetID: number, content) => {
+      const newList = memoItems.filter((item) => {
+        if (item.memoState.itemID === targetID) {
+          item.memoState.content = content;
+        }
+        return true;
+      });
+
+      setMemoItems(newList);
+    },
+    [memoItems]
+  );
 
   const updateMemoItem = useCallback(
     (data: MemoItemData) => {
       console.log("update memo item " + newMemoItems.length);
       if (!!newMemoItems && newMemoItems.length !== 0) {
         const newList = newMemoItems.filter((item) => {
-          console.log(
-            "compare iidididid  " +
-              item?.memoState.itemID +
-              "  " +
-              data?.memoState.itemID
-          );
           if (item?.memoState.itemID === data?.memoState.itemID) {
-            item = data;
+            item.memoState = data.memoState;
             console.log("update eidieidi " + JSON.stringify(item));
           }
           return true;
