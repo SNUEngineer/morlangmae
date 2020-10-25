@@ -493,6 +493,7 @@ export default function Memo(props: any) {
         e.preventDefault();
         return false;
       }}
+      className={memoStyle.root}
     >
       <PDFPages
         url={props.memoData.fileUrl}
@@ -643,7 +644,7 @@ export default function Memo(props: any) {
             </div>
           )}
         </div>
-        <Document
+        {/* <Document
           file={props.memoData.fileUrl}
           onLoadSuccess={onDocumentLoadSuccess}
           className={memoStyle.document}
@@ -653,7 +654,7 @@ export default function Memo(props: any) {
             width={pageSize.w}
             className={memoStyle.page}
           />
-        </Document>
+        </Document> */}
       </div>
     </div>
   );

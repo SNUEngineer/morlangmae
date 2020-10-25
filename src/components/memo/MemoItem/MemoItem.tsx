@@ -89,7 +89,6 @@ export default function MemoItem(props: any) {
   const contentTextAreaEl = useRef(null);
 
   const handleUpdateState = useCallback(() => {
-    console.log("memoItemData anchoranchoranchor " + JSON.stringify(anchor));
     const editedMemoItem = {
       writer: itemData.writer,
       memoState: {
@@ -111,7 +110,7 @@ export default function MemoItem(props: any) {
       },
     };
 
-    updateMemoItem(editedMemoItem);
+    updateMemoItem(editedMemoItem); // 딜레이 자꾸 생기넹,..
   }, [
     itemData,
     purpose,
@@ -151,21 +150,17 @@ export default function MemoItem(props: any) {
         return;
       }
 
-      console.log("anchoranchor " + newAnchorX);
-      console.log("boxboxbox " + newAnchorY);
-      setAnchor((prevState) => ({
-        ...prevState,
+      setAnchor((currentState) => ({
+        ...currentState,
         exist: true,
         x: newAnchorX,
         y: newAnchorY,
       }));
-      setBoxAnchor((prevState) => ({
-        ...prevState,
+      setBoxAnchor((currentState) => ({
+        ...currentState,
         exist: false,
       }));
-      setTimeout(() => {
-        handleUpdateState();
-      }, 3000);
+      handleUpdateState();
     },
 
     [bounds, memoPosition, handleUpdateState]

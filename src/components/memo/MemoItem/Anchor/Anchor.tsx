@@ -87,13 +87,12 @@ export default function Anchor(props: any) {
     };
     return box;
   }, [boxAnchor, anchor]);
-  const anchorDoubleClick = async (event) => {
-    await setBoxAnchor((prevState) => ({
+  const anchorDoubleClick = (event) => {
+    setBoxAnchor((currentState) => ({
       exist: true,
       x: anchor.x + 50,
       y: anchor.y + 50,
     }));
-    handleUpdateState();
   };
 
   const isAnchorBoxVisible = useCallback(() => {
@@ -112,40 +111,40 @@ export default function Anchor(props: any) {
     e.preventDefault();
     e.stopPropagation();
     if (anchor.x <= boxAnchor.x) {
-      setAnchor((prevState) => ({
-        ...prevState,
+      setAnchor((currentState) => ({
+        ...currentState,
         x: coreData.x,
       }));
-      setBoxAnchor((prevState) => ({
-        ...prevState,
+      setBoxAnchor((currentState) => ({
+        ...currentState,
         x: coreData.x + setBoxStyle().width,
       }));
     } else {
-      setBoxAnchor((prevState) => ({
-        ...prevState,
+      setBoxAnchor((currentState) => ({
+        ...currentState,
         x: coreData.x,
       }));
-      setAnchor((prevState) => ({
-        ...prevState,
+      setAnchor((currentState) => ({
+        ...currentState,
         x: coreData.x + setBoxStyle().width,
       }));
     }
     if (anchor.y <= boxAnchor.y) {
-      setAnchor((prevState) => ({
-        ...prevState,
+      setAnchor((currentState) => ({
+        ...currentState,
         y: coreData.y,
       }));
-      setBoxAnchor((prevState) => ({
-        ...prevState,
+      setBoxAnchor((currentState) => ({
+        ...currentState,
         y: coreData.y + setBoxStyle().height,
       }));
     } else {
-      setBoxAnchor((prevState) => ({
-        ...prevState,
+      setBoxAnchor((currentState) => ({
+        ...currentState,
         y: coreData.y,
       }));
-      setAnchor((prevState) => ({
-        ...prevState,
+      setAnchor((currentState) => ({
+        ...currentState,
         y: coreData.y + setBoxStyle().height,
       }));
     }
@@ -158,14 +157,14 @@ export default function Anchor(props: any) {
           disabled={false}
           position={anchor}
           onStart={(e, coreData) => {
-            setAnchorBoxVisible((prevState) => ({
-              ...prevState,
+            setAnchorBoxVisible((currentState) => ({
+              ...currentState,
               anchorDragging: true,
             }));
           }}
           onStop={async (e, coreData) => {
-            await setAnchorBoxVisible((prevState) => ({
-              ...prevState,
+            await setAnchorBoxVisible((currentState) => ({
+              ...currentState,
               anchorDragging: false,
             }));
             handleUpdateState();
@@ -173,8 +172,8 @@ export default function Anchor(props: any) {
           onDrag={(e, coreData) => {
             e.preventDefault();
             e.stopPropagation();
-            setAnchor((prevState) => ({
-              ...prevState,
+            setAnchor((currentState) => ({
+              ...currentState,
               x: coreData.x,
               y: coreData.y,
             }));
@@ -188,17 +187,20 @@ export default function Anchor(props: any) {
               [anchorStyle.main_anchor]: !boxAnchor.exist,
               [anchorStyle.main_anchor_box_exists]: boxAnchor.exist,
             })}
-            onDoubleClick={anchorDoubleClick}
+            onDoubleClick={async (e) => {
+              await anchorDoubleClick(e);
+              handleUpdateState();
+            }}
             style={setResizeBox(true)}
             onMouseEnter={() => {
-              setAnchorBoxVisible((prevState) => ({
-                ...prevState,
+              setAnchorBoxVisible((currentState) => ({
+                ...currentState,
                 anchor: true,
               }));
             }}
             onMouseLeave={() => {
-              setAnchorBoxVisible((prevState) => ({
-                ...prevState,
+              setAnchorBoxVisible((currentState) => ({
+                ...currentState,
                 anchor: false,
               }));
             }}
@@ -216,21 +218,21 @@ export default function Anchor(props: any) {
             onDrag={(e, coreData) => {
               e.preventDefault();
               e.stopPropagation();
-              setBoxAnchor((prevState) => ({
-                ...prevState,
+              setBoxAnchor((currentState) => ({
+                ...currentState,
                 x: coreData.x,
                 y: coreData.y,
               }));
             }}
             onStart={(e, coreData) => {
-              setAnchorBoxVisible((prevState) => ({
-                ...prevState,
+              setAnchorBoxVisible((currentState) => ({
+                ...currentState,
                 boxAnchorDragging: true,
               }));
             }}
             onStop={async (e, coreData) => {
-              await setAnchorBoxVisible((prevState) => ({
-                ...prevState,
+              await setAnchorBoxVisible((currentState) => ({
+                ...currentState,
                 boxAnchorDragging: false,
               }));
               handleUpdateState();
@@ -243,14 +245,14 @@ export default function Anchor(props: any) {
               className={anchorStyle.box_anchor}
               style={setResizeBox(false)}
               onMouseEnter={() => {
-                setAnchorBoxVisible((prevState) => ({
-                  ...prevState,
+                setAnchorBoxVisible((currentState) => ({
+                  ...currentState,
                   boxAnchor: true,
                 }));
               }}
               onMouseLeave={() => {
-                setAnchorBoxVisible((prevState) => ({
-                  ...prevState,
+                setAnchorBoxVisible((currentState) => ({
+                  ...currentState,
                   boxAnchor: false,
                 }));
               }}
@@ -268,14 +270,14 @@ export default function Anchor(props: any) {
             scale={scale}
             onDrag={onDragHandler}
             onStart={(e, coreData) => {
-              setAnchorBoxVisible((prevState) => ({
-                ...prevState,
+              setAnchorBoxVisible((currentState) => ({
+                ...currentState,
                 boxDragging: true,
               }));
             }}
             onStop={(e, coreData) => {
-              setAnchorBoxVisible((prevState) => ({
-                ...prevState,
+              setAnchorBoxVisible((currentState) => ({
+                ...currentState,
                 boxDragging: false,
               }));
             }}
@@ -284,14 +286,14 @@ export default function Anchor(props: any) {
               className={anchorStyle.anchor_box}
               style={setBoxStyle()}
               onMouseEnter={() => {
-                setAnchorBoxVisible((prevState) => ({
-                  ...prevState,
+                setAnchorBoxVisible((currentState) => ({
+                  ...currentState,
                   box: true,
                 }));
               }}
               onMouseLeave={() => {
-                setAnchorBoxVisible((prevState) => ({
-                  ...prevState,
+                setAnchorBoxVisible((currentState) => ({
+                  ...currentState,
                   box: false,
                 }));
               }}
