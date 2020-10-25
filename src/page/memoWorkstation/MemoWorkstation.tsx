@@ -79,7 +79,7 @@ export function MemoToolBar(props: any) {
             <div className={memoStyle.verical_center}>
               <div
                 onClick={() => {
-                  props.handleSave();
+                  handleSave();
                 }}
                 className={classNames({
                   [memoStyle.menu_text]: true,
@@ -166,16 +166,29 @@ export default function Memo(props: any) {
   const [deletingMemoItems, setDeletingMemoItems] = useState<MemoItemData[]>();
 
   const memoItems = useCallback(() => {
+    // console.log("memoItemsmemoItems " + JSON.stringify(newMemoItems));
+    // console.log("memoItemsmemoItems " + JSON.stringify(existingMemoItems));
+
+    if (!newMemoItems || newMemoItems.length === 0) {
+      if (!existingMemoItems || existingMemoItems.length === 0) {
+        return [];
+      }
+      return existingMemoItems;
+    }
+    if (!existingMemoItems || existingMemoItems.length === 0) {
+      return newMemoItems;
+    }
     return newMemoItems.concat(existingMemoItems);
   }, [newMemoItems, existingMemoItems]);
 
   const [memo, setMemo] = useState(props.memoData);
-  const [currentCheckedWriters, setCurrentCheckedWriters] = useState([0]);
+  const [currentCheckedWriters, setCurrentCheckedWriters] = useState([
+    props.myData.id,
+  ]);
   const boardEl = useRef<HTMLDivElement>(null);
   const documentEl = useRef<HTMLDivElement>(null);
   const panzoomBoxContainerEl = useRef<HTMLDivElement>(null);
   const panzoomEl = useRef(null);
-
   useLayoutEffect(() => {
     function updateSize() {
       if (panzoomBoxContainerEl.current) {
@@ -232,7 +245,6 @@ export default function Memo(props: any) {
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
   }, [boardEl, documentEl, sideMenuOpen, panzoomBoxSize]);
-
   const onDocumentLoadSuccess = useCallback(
     ({ numPages }: any) => {
       setNumPages(numPages);
@@ -248,17 +260,6 @@ export default function Memo(props: any) {
   );
 
   const handleSave = async (e: any) => {
-    // id: number;
-    // fileUrl: string;
-    // sharedUserIds: number[];
-    // title: string;
-    // collectionId: number;
-    // comment: string;
-    // setMemo({
-    //   ...memo,
-    //   [name]: value,
-    // });
-    //이거 활용...
     await props.handleEditMemo(memo);
     await props.handleEditMemoItems(existingMemoItems);
     await props.handleAddMemoItem(newMemoItems);
@@ -304,7 +305,10 @@ export default function Memo(props: any) {
         event.preventDefault();
 
         const newMemoItem = {
-          writer: { writerID: myData.id, writerName: myData.displayName },
+          writer: {
+            writerID: props.myData.id,
+            writerName: props.myData.displayName,
+          },
           memoState: {
             itemID: newItemId,
             pageNum: pageNumber,
@@ -324,29 +328,43 @@ export default function Memo(props: any) {
           },
         };
         setNewItemId(newItemId - 1);
-        const addedArray = newMemoItems.concat(newMemoItem);
-        setNewMemoItems(addedArray);
+        if (!newMemoItems || newMemoItems.length === 0) {
+          setNewMemoItems([newMemoItem]);
+        } else {
+          const addedArray = newMemoItems.concat(newMemoItem);
+          setNewMemoItems(addedArray);
+        }
+        console.log("newMemoItems " + JSON.stringify(newMemoItems));
       }
     },
-    [newItemId, newMemoItems, pageNumber]
+    [newItemId, newMemoItems, pageNumber, props.myData]
   );
-
   const deleteMemo = useCallback(
     (targetID: number) => {
-      const newList = newMemoItems.filter(
-        (item) => item.memoState.itemID !== targetID
-      );
-      setNewMemoItems(newList);
-      const existingList = existingMemoItems.filter((item) => {
-        if (item.memoState.itemID !== targetID) {
-          const newDeletingItems = deletingMemoItems.concat();
-          setDeletingMemoItems(newDeletingItems);
-          return false;
-        } else {
-          return true;
-        }
-      });
-      setExistingMemoItems(existingList);
+      if (!!newMemoItems && newMemoItems.length !== 0) {
+        const newList = newMemoItems.filter(
+          (item) => item.memoState.itemID !== targetID
+        );
+        setNewMemoItems(newList);
+      }
+
+      if (!!existingMemoItems && existingMemoItems.length !== 0) {
+        const existingList = existingMemoItems.filter((item) => {
+          if (item.memoState.itemID !== targetID) {
+            if (!deletingMemoItems || deletingMemoItems.length === 0) {
+              setDeletingMemoItems([item]);
+            } else {
+              const newDeletingItems = deletingMemoItems.concat(item);
+              setDeletingMemoItems(newDeletingItems);
+            }
+
+            return false;
+          } else {
+            return true;
+          }
+        });
+        setExistingMemoItems(existingList);
+      }
     },
     [newMemoItems, existingMemoItems, deletingMemoItems]
   );
@@ -368,23 +386,38 @@ export default function Memo(props: any) {
 
   const updateMemoItem = useCallback(
     (data: MemoItemData) => {
-      const newList = newMemoItems.filter((item) => {
-        if (item.memoState.itemID === data.memoState.itemID) {
-          item = data;
-        }
-        return true;
-      });
+      console.log("update memo item " + newMemoItems.length);
+      if (!!newMemoItems && newMemoItems.length !== 0) {
+        const newList = newMemoItems.filter((item) => {
+          console.log(
+            "compare iidididid  " +
+              item?.memoState.itemID +
+              "  " +
+              data?.memoState.itemID
+          );
+          if (item?.memoState.itemID === data?.memoState.itemID) {
+            item = data;
+            console.log("update memo item  newnewnew " + JSON.stringify(item));
+          }
+          return true;
+        });
 
-      setNewMemoItems(newList);
+        setNewMemoItems(newList);
+      }
 
-      const existingList = existingMemoItems.filter((item) => {
-        if (item.memoState.itemID === targetID) {
-          item.memoState.content = content;
-        }
-        return true;
-      });
+      if (!!existingMemoItems && existingMemoItems.length !== 0) {
+        const existingList = existingMemoItems.filter((item) => {
+          if (item.memoState.itemID === data?.memoState.itemID) {
+            content = data;
+            console.log(
+              "update memo item  exisintingnis " + JSON.stringify(item)
+            );
+          }
+          return true;
+        });
 
-      setExistingMemoItems(existingList);
+        setExistingMemoItems(existingList);
+      }
     },
     [existingMemoItems, newMemoItems]
   );
@@ -443,7 +476,6 @@ export default function Memo(props: any) {
     e.preventDefault();
     return false;
   }, []);
-
   return (
     <div
       onContextMenu={(e) => {
@@ -516,29 +548,38 @@ export default function Memo(props: any) {
                     onDragOver={onDragOver}
                   >
                     {memoItems().map((item) => {
+                      const pageNumCorrect =
+                        pageNumber === item?.memoState?.pageNum;
+                      const checkWriterCorrect = !!currentCheckedWriters
+                        ? currentCheckedWriters.includes(item?.writer.writerID)
+                        : false;
+
                       return (
-                        <MemoItem
-                          key={item.memoState.itemID}
-                          itemData={item}
-                          className={memoStyle.memo_item}
-                          keyState={keyState}
-                          scale={documentPosition.scale}
-                          writerID={"송병근"}
-                          currentPageNum={pageNumber}
-                          currentCheckedWriters={currentCheckedWriters}
-                          deleteMemo={deleteMemo}
-                          updateMemoItem={updateMemoItem}
-                          isFocus={
-                            currentFocusItem.itemID === item.memoState.itemID
-                              ? true
-                              : false
-                          }
-                          focusHandler={(itemID) => {
-                            setCurrentFocusItem({ itemID: itemID });
-                          }}
-                          isMenuItem={false}
-                          panBoardSize={panBoardSize}
-                        ></MemoItem>
+                        pageNumCorrect &&
+                        checkWriterCorrect && (
+                          <MemoItem
+                            key={item.memoState.itemID}
+                            itemData={item}
+                            className={memoStyle.memo_item}
+                            keyState={keyState}
+                            scale={documentPosition.scale}
+                            writerID={"송병근"}
+                            currentPageNum={pageNumber}
+                            currentCheckedWriters={currentCheckedWriters}
+                            deleteMemo={deleteMemo}
+                            updateMemoItem={updateMemoItem}
+                            isFocus={
+                              currentFocusItem.itemID === item.memoState.itemID
+                                ? true
+                                : false
+                            }
+                            focusHandler={(itemID) => {
+                              setCurrentFocusItem({ itemID: itemID });
+                            }}
+                            isMenuItem={false}
+                            panBoardSize={panBoardSize}
+                          ></MemoItem>
+                        )
                       );
                     })}
                   </div>
@@ -572,7 +613,7 @@ export default function Memo(props: any) {
           {sideMenuOpen && (
             <div className={memoStyle.split_pane_menu}>
               <SideMenuBar
-                memoItem={currentMenuMemo()}
+                itemData={currentMenuMemo()}
                 className={memoStyle.memo_item}
                 currentPageNum={pageNumber}
                 deleteMemo={deleteMemo}

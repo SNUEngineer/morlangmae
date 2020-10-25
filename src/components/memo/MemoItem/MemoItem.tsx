@@ -57,7 +57,7 @@ export default function MemoItem(props: any) {
     y: 0,
   });
   const [memoItemData, setMemoItemData] = useState(itemData);
-  const [purpose, setPurpose] = useState(itemData.memoState.purpose);
+  const [purpose, setPurpose] = useState(itemData?.memoState?.purpose);
 
   const memoSize = {
     w: 350,
@@ -68,13 +68,17 @@ export default function MemoItem(props: any) {
   const [textContent, setTextContent] = useState("");
   const [onHover, setOnHover] = useState(false);
   const [anchor, setAnchor] = useState({
-    exist: itemData.memoState.anchor.x > -500,
+    exist: !!itemData?.memoState?.anchor?.x
+      ? itemData.memoState.anchor.x > -500
+      : false,
     zoneDown: false,
     x: 0,
     y: 0,
   });
   const [boxAnchor, setBoxAnchor] = useState({
-    exist: itemData.memoState.anchor.box.x > -500,
+    exist: !!itemData?.memoState?.anchor?.box?.x
+      ? itemData.memoState.anchor.box.x > -500
+      : false,
     x: 0,
     y: 0,
   });
@@ -177,8 +181,10 @@ export default function MemoItem(props: any) {
         ...prevState,
         exist: false,
       }));
+      handleUpdateState();
     },
-    [bounds, memoPosition]
+
+    [bounds, memoPosition, handleUpdateState]
   );
 
   const onDragHandler = useCallback(
@@ -187,22 +193,16 @@ export default function MemoItem(props: any) {
   );
 
   useEffect(() => {
-    const pageNumCorrect = currentPageNum === memoItemData.memoState.pageNum;
+    const pageNumCorrect = currentPageNum === memoItemData?.memoState?.pageNum;
     const checkWriterCorrect = !!currentCheckedWriters
-      ? currentCheckedWriters.includes(memoItemData.writer.writerID)
+      ? currentCheckedWriters.includes(memoItemData?.writer.writerID)
       : false;
     setIsVisible(pageNumCorrect && checkWriterCorrect);
-  }, [
-    currentPageNum,
-    memoItemData.memoState.pageNum,
-    currentCheckedWriters,
-    memoItemData.writer,
-    isMenuItem,
-  ]);
+  }, [currentPageNum, memoItemData, currentCheckedWriters, isMenuItem]);
 
   useEffect(() => {
-    setMemoPosition(memoItemData.memoState);
-    setItemID(memoItemData.memoState.itemID);
+    setMemoPosition(memoItemData?.memoState);
+    setItemID(memoItemData?.memoState.itemID);
     //다시 로드 될때만 memo state의 컨텐츠를 받아오고, 그 후에는 간섭없이 memoItemData.memoState에 저장만 하기.
   }, []);
 
@@ -248,7 +248,6 @@ export default function MemoItem(props: any) {
           onMouseDown={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log("item id    " + memoItemData.memoState.itemID);
           }}
         >
           {!isMenuItem && (
@@ -277,7 +276,7 @@ export default function MemoItem(props: any) {
             }}
             onStop={(e, coreData) => {
               setIsDragging(false);
-              setMemoItemData();
+              handleUpdateState();
             }}
             onDrag={(e, coreData) => {
               e.preventDefault();
@@ -320,8 +319,8 @@ export default function MemoItem(props: any) {
               <div className={itemStyle.purpose_area}>
                 <PurposeArea
                   onPurposeClick={onPurposeClick}
-                  memoPurpose={memoItemData.memoState.purpose}
-                  itemID={memoItemData.memoState.itemID}
+                  memoPurpose={memoItemData?.memoState.purpose}
+                  itemID={memoItemData?.memoState.itemID}
                   isDragging={isDragging}
                 ></PurposeArea>
               </div>
@@ -361,14 +360,16 @@ export default function MemoItem(props: any) {
                   width="100%"
                   height="500px"
                   maxHeight="500px"
-                  value={memoItemData.memoState.content}
+                  //value={memoItemData?.memoState.content}
+                  value={textContent}
                   ref={contentTextAreaEl}
                   textSize={18}
                   fontFamily={"Noto Sans CJK KR Regular"}
                   padding={10}
                   onChange={(event) => {
                     setTextContent(event.target.value);
-                    updateMemoItem();
+
+                    handleUpdateState();
                   }}
                 />
               </div>

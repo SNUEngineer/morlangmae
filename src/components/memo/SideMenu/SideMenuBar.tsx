@@ -180,8 +180,7 @@ export default function SideMenuBar(props: any) {
       </div>
 
       <MemoItem
-        memoState={memoItem.memoState}
-        writer={memoItem.writer}
+        memoItem={memoItem}
         currentPageNum={pageNumber}
         deleteMemo={deleteMemo}
         isFocus={true}

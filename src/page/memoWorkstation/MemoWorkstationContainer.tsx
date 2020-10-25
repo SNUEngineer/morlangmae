@@ -19,22 +19,24 @@ import {
 } from "../../services/memo.service";
 
 const getMemoData = async ({ memoId }: any) => {
-  console.log("dhodhdohdohdo");
-
   const me = await getMe();
-  const memo = await getMemo(memoId);
-  const memoItem = await getMemoItem(memoId);
-  const memoItemThread = await getMemoItemThread(memoId).messages;
+  // const memo = await getMemo(memoId);
+  // const memoItem = await getMemoItem(memoId);
+  // const memoItemThread = await getMemoItemThread(memoId).messages;
+  const testMemo = {
+    id: 1,
+    collection_id: 10,
+    title: "첫 메모",
+    fileUrl:
+      "https://github.com/wojtekmaj/react-pdf/files/2930577/compressed.tracemonkey-pldi-09.pdf",
+    createdBy: 10,
+  };
   return {
     me: me,
-    memo: memo,
-    memoItem: memoItem,
-    memoItemThread: memoItemThread,
+    memo: testMemo,
+    // memoItem: memoItem,
+    // memoItemThread: memoItemThread,
   };
-};
-
-const asdf = () => {
-  console.log("dhodhdohdohdo");
 };
 
 export interface MemoWorkstationContainerProps {
@@ -53,7 +55,7 @@ export default function MemoWorkstationContainer(
     promiseFn: getMemoData,
     memoId: memoId,
   });
-  console.log("datadatadata " + data);
+
   //fileurl은 memo id를 갖고 오거나, 직접 생성을 통해 만들어짐.
   const handleEditMemo = async (memoData: MemoData) => {};
   const handleAddMemoItem = async (
@@ -102,4 +104,5 @@ export default function MemoWorkstationContainer(
       />
     );
   }
+  return null;
 }

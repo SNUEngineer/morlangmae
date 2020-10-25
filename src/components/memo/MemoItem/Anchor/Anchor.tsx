@@ -93,6 +93,7 @@ export default function Anchor(props: any) {
       x: anchor.x + 50,
       y: anchor.y + 50,
     }));
+    handleUpdateState();
   };
 
   const isAnchorBoxVisible = useCallback(() => {
