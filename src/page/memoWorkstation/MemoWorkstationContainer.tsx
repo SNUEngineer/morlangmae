@@ -17,7 +17,6 @@ import {
   editMemo,
   addMemoItems,
 } from "../../services/memo.service";
-
 const getMemoData = async ({ memoId }: any) => {
   const me = await getMe();
   // const memo = await getMemo(memoId);
@@ -48,13 +47,17 @@ export interface MemoWorkstationContainerProps {
 export default function MemoWorkstationContainer(
   props: MemoWorkstationContainerProps
 ) {
-  const { search } = useLocation();
+  const history = useHistory();
+  const { pathname, search } = useLocation();
   const query = queryString.parse(search);
   const memoId = query.memoId;
   const { data, reload, error, isLoading } = useAsync({
     promiseFn: getMemoData,
     memoId: memoId,
   });
+  const onClose = async () => {
+    history.replace(pathname);
+  };
 
   //fileurl은 memo id를 갖고 오거나, 직접 생성을 통해 만들어짐.
   const handleEditMemo = async (memoData: MemoData) => {};
@@ -101,6 +104,7 @@ export default function MemoWorkstationContainer(
         handleEditMemo={handleEditMemo}
         handleEditMemoItems={handleEditMemoItems}
         handleAddMemoItem={handleAddMemoItem}
+        onClose={onClose}
       />
     );
   }

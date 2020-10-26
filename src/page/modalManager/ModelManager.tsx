@@ -12,23 +12,6 @@ interface ModalManagerProps {
 export default function ModalManager(props: ModalManagerProps) {
   // hideToolbar 를 사용해야하는 이유...?
 
-  const platterPage = useCallback(() => {
-    if (!!props.platterId) {
-      if (props.platterId === "CREATING") {
-        return (
-          <CreatePlatterPageContainer
-            collectionId={props.collectionId as number}
-          />
-        );
-      } else {
-        console.log("edit platter page container " + props.platterId);
-        return (
-          <EditPlatterPageContainer platterId={props.platterId as number} />
-        );
-      }
-    }
-    return <div></div>;
-  }, [props.platterId, props.collectionId]);
   return (
     <Fragment>
       {props.collectionId && (
@@ -37,7 +20,38 @@ export default function ModalManager(props: ModalManagerProps) {
           hideToolbar={Boolean(props.platterId)}
         />
       )}
-      {platterPage()}
+      {!!props.platterId && (
+        <PlatterView
+          platterId={props.platterId}
+          collectionId={props.collectionId}
+          reload={props.reload}
+        ></PlatterView>
+      )}
     </Fragment>
   );
+}
+
+function PlatterView(props: any) {
+  const platterPage = useCallback(() => {
+    if (!!props.platterId) {
+      if (props.platterId === "CREATING") {
+        return (
+          <CreatePlatterPageContainer
+            collectionId={props.collectionId as number}
+            reload={props.reload}
+          />
+        );
+      } else {
+        console.log("edit platter page container " + props.platterId);
+        return (
+          <EditPlatterPageContainer
+            platterId={props.platterId as number}
+            reload={props.reload}
+          />
+        );
+      }
+    }
+    return <div></div>;
+  }, [props.platterId, props.collectionId, props.reload]);
+  return platterPage();
 }

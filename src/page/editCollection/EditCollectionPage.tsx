@@ -242,6 +242,7 @@ function getStepContent(
   popOpen: boolean,
   setPopOpen,
   anchorEl,
+
   setAnchorEl,
   handleNext,
   approver,
@@ -876,6 +877,7 @@ export interface EditCollectionPageProps {
   uploadImage(file: File): Promise<{ uri: string }>;
   editCollection(collection: any): Promise<void>;
   serviceTypes: string[];
+  onClose(): Promise<void>;
 }
 
 export default function EditCollectionPage(props: EditCollectionPageProps) {

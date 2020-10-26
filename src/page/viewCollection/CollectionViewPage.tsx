@@ -169,12 +169,22 @@ export function PaperComponent(props: PaperProps) {
 
 export function CollectionToolBar(props: any) {
   const classes = useStyles();
+
+  const [openSearchBar, setOpenSearchBar] = useState(false);
+  const options = [
+    {
+      value: SortType.RECENTLY_ASC,
+      text: "시간 진행 순",
+    },
+    {
+      value: SortType.RECENTLY_DESC,
+      text: "시간 역 순",
+    },
+  ];
   const handleChange = (event: any) => {
     props.setSortType(event.target.value);
   };
-  console.log("CollectionToolBar 작동");
-  const [openSearchBar, setOpenSearchBar] = useState(false);
-  const [filter, setFilter] = useState<string>("ALL");
+
   return (
     <AppBar
       position="fixed"
@@ -264,11 +274,17 @@ export function CollectionToolBar(props: any) {
             )}
           </div>
           {!openSearchBar && (
-            <Selector
-              filter={filter}
-              theme={"COLVIEW"}
-              //filter={props.sortType}
-            />
+            <div className={pageStyle.basic_container}>
+              <div className={pageStyle.align_container}>
+                <Selector
+                  filter={props.sortType}
+                  theme={"COLVIEW"}
+                  handleChange={handleChange}
+                  options={options}
+                  //filter={props.sortType}
+                />
+              </div>
+            </div>
           )}
           {!openSearchBar && (
             <EditMemberMenu
@@ -347,7 +363,14 @@ function EditMemberMenu(props: EditMemberMenuProps) {
         minHeight: "0px",
         minWidth: "0px",
       },
-      edit_member_button: {},
+      edit_member_button: {
+        fontSize: "16px",
+        letterSpacing: "-0.8px",
+        fontFamily: "Noto Sans CJK KR Regular",
+        color: "#E2E2E2",
+        padding: "0px",
+        width: "100px",
+      },
     })
   );
   const myClasses = useMyStyles();
@@ -401,13 +424,17 @@ function EditMemberMenu(props: EditMemberMenuProps) {
   };
   return (
     <div className={pageStyle.attend_button}>
-      <Button
-        className={myClasses.listButton}
-        onClick={handleClickOpen}
-        aria-describedby={id}
-      >
-        참여인원
-      </Button>
+      <div className={pageStyle.button_container}>
+        <div className={pageStyle.align_container}>
+          <Button
+            className={myClasses.edit_member_button}
+            onClick={handleClickOpen}
+            aria-describedby={id}
+          >
+            참여인원
+          </Button>
+        </div>
+      </div>
       <Popover
         disableAutoFocus
         disableEnforceFocus
@@ -544,6 +571,7 @@ function SearchPlatter(props: SearchPlatterProps) {
         letterSpacing: "-0.8px",
         fontFamily: "Noto Sans CJK KR Regular",
         color: "#E2E2E2",
+
         // "&:hover": {
         //   background: "trasparent",
         //   color: "white",

@@ -184,6 +184,20 @@ export interface MyCollectionCardListProps extends CollectionCardFunctions {
 export function MyCollectionCardList(props: MyCollectionCardListProps) {
   const myCollections = props.myCollections;
   const [filter, setFilter] = useState<string>("ALL");
+  const options = [
+    {
+      value: "ALL",
+      text: "전체",
+    },
+    {
+      value: "IN_PROGRESS",
+      text: "진행",
+    },
+    {
+      value: "DONE",
+      text: "완료",
+    },
+  ];
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
@@ -233,6 +247,7 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
         handleChange={handleChange}
         filter={filter}
         subMenuType={"filter"}
+        options={options}
       />
 
       <div className={collectionStyle.collection_list_container}>

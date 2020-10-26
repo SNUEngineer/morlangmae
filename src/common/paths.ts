@@ -9,6 +9,7 @@ export const COLLECTION_CREATE = "/collections-create/";
 export const COLLECTION_START_CREATE = "/collections/start/create";
 export const COLLECTION_EDIT = "/collections-edit/:id";
 export const COLLECTION_VIEW = "/collections";
+export const COLLECTION_LIST_PAGE = "/collections-all";
 export const PLATTER_EDIT = "";
 export const MEMO_LIST_TAB = "/memos";
 export const MEMO_HOME = "/memos/home";

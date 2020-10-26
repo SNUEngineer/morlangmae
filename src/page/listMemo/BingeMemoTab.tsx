@@ -100,7 +100,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
 }
 
 export interface BingeMemoInCollectionCardListProps {
-  myCollections: CollectionData[];
+  collections: CollectionData[];
   onCollectionClick(data: CollectionData): Promise<void>;
 }
 
@@ -109,6 +109,20 @@ export function BingeMemoInCollectionCardList(
 ) {
   const collections = props.collections;
   const [filter, setFilter] = useState<string>("ALL");
+  const options = [
+    {
+      value: "ALL",
+      text: "전체",
+    },
+    {
+      value: "IN_PROGRESS",
+      text: "진행",
+    },
+    {
+      value: "DONE",
+      text: "완료",
+    },
+  ];
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
@@ -153,6 +167,7 @@ export function BingeMemoInCollectionCardList(
         handleChange={handleChange}
         filter={filter}
         subMenuType={"filter"}
+        options={options}
       />
       <div className={memoStyle.memo_list_container}>{collectionCards}</div>
     </div>

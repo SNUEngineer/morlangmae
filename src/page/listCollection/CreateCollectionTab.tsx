@@ -28,27 +28,56 @@ export interface CreateCollectionTabProps {
 
 export default function CreateCollectionTab(props: CreateCollectionTabProps) {
   console.log("collectionscollections " + JSON.stringify(props.collections));
-
+  const options = [
+    {
+      value: "ALL",
+      text: "전체",
+    },
+    {
+      value: "DRAFT",
+      text: "초안",
+    },
+    {
+      value: "REQUEST_PROGRESS",
+      text: "생성요청",
+    },
+    {
+      value: "IN_PROGRESS",
+      text: "진행",
+    },
+    {
+      value: "DONE",
+      text: "완료",
+    },
+  ];
   const [filter, setFilter] = useState<string>("ALL");
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
+
+  const filteredCollections = props.collections.filter(
+    (data: CollectionData) => {
+      return filter === "ALL" || data.status.toString() === filter;
+    }
+  );
+
   return (
     <div className={createStyle.tab_container}>
-      {/* <CollectionList
-        title="Create Collections"
-        collections={props.collections}
-      /> */}
-
       <div className={createStyle.create_button_container}>
         <Link className={createStyle.create_button} to={COLLECTION_CREATE}>
           <AddBoxIcon className={createStyle.create_button} />
           <div className={createStyle.create_text}>생성하기</div>
         </Link>
       </div>
-      <Header title={"나의 생성 컬렉션 리스트"} subMenuType={"filter"} />
-      <Grid container>
-        {props.collections.map((item) => {
+      <Header
+        title={"나의 생성 컬렉션 리스트"}
+        handleChange={handleChange}
+        filter={filter}
+        subMenuType={"filter"}
+        options={options}
+      />
+      <div className={createStyle.list_container}>
+        {filteredCollections.map((item) => {
           return (
             <div className={createStyle.list_item_container}>
               <CollectionCard
@@ -68,7 +97,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
             <Link to={COLLECTION_CREATE}>Create</Link>
           </Button>
         </Grid> */}
-      </Grid>
+      </div>
     </div>
   );
 }

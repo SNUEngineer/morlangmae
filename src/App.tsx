@@ -35,11 +35,13 @@ import {
   MEMO_IN_COLLECTION,
   MEMO_LIST_TAB,
   MEMO_WORK_STATION,
+  COLLECTION_LIST_PAGE,
 } from "./common/paths";
 import CollectionTab from "./page/listCollection/CollectionTab";
 import CreateCollectionTabContainer from "./page/listCollection/CreateCollectionTabContainer";
 import MyCollectionTabContainer from "./page/listCollection/MyCollectionTabContainer";
 import SearchCollectionTabContainer from "./page/listCollection/SearchCollectionTabContainer";
+import CollectionListPageContainer from "./page/listCollection/CollectionListPageContainer";
 import BingeMemoTab from "./page/listMemo/BingeMemoTab";
 import MemoHomeTab from "./page/listMemo/MemoHomeTab";
 import MemoListTab from "./page/listMemo/MemoListTab";
@@ -115,89 +117,9 @@ function App() {
     await validateToken();
   }
 
-  const mainPages = useCallback(() => {
-    const memoList = () => {
-      if (pathname.includes("home")) {
-        return <MemoHomeTab {...queryString.parse(search)} />;
-      }
-      if (pathname.includes("list")) {
-        return <MemoListTab {...queryString.parse(search)} />;
-      }
-      if (pathname.includes("binge")) {
-        return <BingeMemoTab {...queryString.parse(search)} />;
-      }
-    };
-    const collectionList = () => {
-      if (pathname.includes("my")) {
-        return <MyCollectionTabContainer {...queryString.parse(search)} />;
-      }
-      if (pathname.includes("discover")) {
-        return <SearchCollectionTabContainer {...queryString.parse(search)} />;
-      }
-      if (pathname.includes("created")) {
-        return <CreateCollectionTabContainer {...queryString.parse(search)} />;
-      }
-    };
-
-    const memoStyle = {
-      opacity: pathname.startsWith("/memos") ? 1 : 0,
-      zIndex: pathname.startsWith("/memos") ? 800 : -1,
-    };
-    const collectionSytle = {
-      opacity: pathname.startsWith("/collections") ? 1 : 0,
-      zIndex: pathname.startsWith("/collections") ? 800 : -1,
-    };
-
-    return (
-      <div className={appStyle.main_container}>
-        <div
-          style={memoStyle}
-          className={appStyle.main_page}
-          onClick={(event) => {
-            event.stopPropagation();
-            event.preventDefault();
-          }}
-        >
-          <div>
-            <MemoTab />
-          </div>
-          <div
-            style={{ minHeight: "800px" }}
-            // 부드러운 전환을 위한
-          >
-            {memoList()}
-          </div>
-        </div>
-        <div
-          style={collectionSytle}
-          className={appStyle.main_page}
-          onClick={(event) => {
-            event.stopPropagation();
-            event.preventDefault();
-          }}
-        >
-          <div>
-            <CollectionTab />
-          </div>
-          <div
-            style={{ minHeight: "800px" }}
-            // 부드러운 전환을 위한
-          >
-            {collectionList()}
-          </div>
-        </div>
-      </div>
-    );
-  }, [pathname, search]);
-
   return (
     <div>
       <BasicMenuBar>
-        {/* <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <Typography>Bailey</Typography>
-          </Toolbar>
-        </AppBar> */}
         <div className={classes.body}>
           <Switch>
             <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
@@ -225,50 +147,29 @@ function App() {
               hasDrawer
               authenticated={authenticated}
               path={["/collections", "/memos", "/persona"]}
-              render={(props: any) => mainPages()}
-            />
-            {/* <AuthRoute
-              hasDrawer
-              authenticated={authenticated}
-              path={COLLECTION_LIST_TAB}
               render={(props: any) => (
-                <div>
-                  <div>
-                    <CollectionTab />
-                  </div>
-                  <div
-                    style={{ minHeight: "800px" }}
-                    // 부드러운 전환을 위한
-                  >
-                    {collectionList()}
-                  </div>
-                </div>
+                <MainPage pathname={pathname} search={search}></MainPage>
               )}
             />
             <AuthRoute
               hasDrawer
               authenticated={authenticated}
-              path={MEMO_LIST_TAB}
+              path={COLLECTION_LIST_PAGE}
               render={(props: any) => (
-                <div>
-                  <div>
-                    <MemoTab />
-                  </div>
-                  <div
-                    style={{ minHeight: "800px" }}
-                    // 부드러운 전환을 위한
-                  >
-                    {memoListPage()}
-                  </div>
-                </div>
+                <CollectionListPageContainer
+                  {...queryString.parse(props.location.search)}
+                />
               )}
-            /> */}
+            />
+
             <AuthRoute
               exact
               hasDrawer
               authenticated={authenticated}
               path={COLLECTION_CREATE}
-              render={() => <CreateCollectionPageContainer />}
+              render={() => (
+                <CreateCollectionPageContainer currentPath={pathname} />
+              )}
             />
             <AuthRoute
               exact
@@ -292,16 +193,6 @@ function App() {
               )}
             />
 
-            <AuthRoute
-              exact
-              authenticated={authenticated}
-              path={COLLECTION_EDIT}
-              render={(props: any) => (
-                <EditCollectionPageContainer
-                  collectionId={props.match.params.id}
-                />
-              )}
-            />
             <AuthRoute
               exact
               authenticated={authenticated}
@@ -363,16 +254,6 @@ function PersonaView() {
   );
 }
 
-function CreateCollectionView() {
-  const classes = useStyles();
-  return (
-    <main className={classes.content}>
-      <Toolbar />
-      <CreateCollectionPageContainer />
-    </main>
-  );
-}
-
 function ProjectView(props: any) {
   const classes = useStyles();
 
@@ -385,6 +266,100 @@ function ProjectView(props: any) {
       </main>
     </Fragment>
   );
+}
+
+function MainPage(props: any) {
+  const { pathname, search } = props;
+
+  const mainPages = useCallback(() => {
+    const query = queryString.parse(search);
+    const editModal = () => {
+      if (search.includes("editingId")) {
+        return <EditCollectionPageContainer collectionId={query.editingId} />;
+      }
+    };
+    const memoWorkstation = () => {
+      if (search.includes("memoId")) {
+        return <MemoWorkstationContainer memoId={query.editingId} />;
+      }
+    };
+    const memoList = () => {
+      if (pathname.includes("home")) {
+        return <MemoHomeTab {...queryString.parse(search)} />;
+      }
+      if (pathname.includes("list")) {
+        return <MemoListTab {...queryString.parse(search)} />;
+      }
+      if (pathname.includes("binge")) {
+        return <BingeMemoTab {...queryString.parse(search)} />;
+      }
+    };
+    const collectionList = () => {
+      if (pathname.includes("/my")) {
+        return <MyCollectionTabContainer {...queryString.parse(search)} />;
+      }
+      if (pathname.includes("/discover")) {
+        return <SearchCollectionTabContainer {...queryString.parse(search)} />;
+      }
+      if (pathname.includes("/created")) {
+        return <CreateCollectionTabContainer {...queryString.parse(search)} />;
+      }
+    };
+
+    const memoStyle = {
+      opacity: pathname.startsWith("/memos") ? 1 : 0,
+      zIndex: pathname.startsWith("/memos") ? 800 : -1,
+    };
+    const collectionSytle = {
+      opacity: pathname.startsWith("/collections") ? 1 : 0,
+      zIndex: pathname.startsWith("/collections") ? 800 : -1,
+    };
+
+    return (
+      <div className={appStyle.main_container}>
+        {editModal()}
+        {memoWorkstation()}
+        <div
+          style={memoStyle}
+          className={appStyle.main_page}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
+          <div>
+            <MemoTab />
+          </div>
+          <div
+            style={{ minHeight: "800px" }}
+            // 부드러운 전환을 위한
+          >
+            {memoList()}
+          </div>
+        </div>
+        <div
+          style={collectionSytle}
+          className={appStyle.main_page}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
+          <div>
+            <CollectionTab />
+          </div>
+          <div
+            style={{ minHeight: "800px" }}
+            // 부드러운 전환을 위한
+          >
+            {collectionList()}
+          </div>
+        </div>
+      </div>
+    );
+  }, [pathname, search]);
+
+  return mainPages();
 }
 
 function Projects() {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 
 import headerStyle from "./Header.module.scss";
@@ -7,9 +8,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import classNames from "classnames";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
-
+import { COLLECTION_LIST_PAGE } from "../../../common/paths";
+import { useHistory } from "react-router-dom";
 export default function Header(props: any) {
-  const { title, filter, handleChange, subMenuType } = props;
+  const { title, filter, handleChange, subMenuType, options, type } = props;
   const useStyles = makeStyles(() =>
     createStyles({
       select: {
@@ -44,14 +46,18 @@ export default function Header(props: any) {
     })
   );
   const classes = useStyles();
+  const history = useHistory();
+  const onShowAllClick = async () => {
+    const path = `${COLLECTION_LIST_PAGE}/${type}`;
+    history.push(path);
+  };
 
   const subMenu = () => {
     switch (subMenuType) {
       case "filter":
         return (
           <div className={headerStyle.sort_select}>
-            <Selector filter={filter} />
-            {/* <Select
+            <Select
               value={filter}
               onChange={handleChange}
               className={classNames({
@@ -61,40 +67,28 @@ export default function Header(props: any) {
               IconComponent={ExpandMoreRoundedIcon}
               disableUnderline
             >
-              <MenuItem
-                className={classNames({
-                  [classes.root]: true,
-                  [classes.selected]: true,
-                })}
-                value="ALL"
-              >
-                <div className={headerStyle.menu_item_container}>전체</div>
-              </MenuItem>
-              <MenuItem
-                className={classNames({
-                  [classes.root]: true,
-                  [classes.selected]: true,
-                })}
-                value="IN_PROGRESS"
-              >
-                <div className={headerStyle.menu_item_container}>진행</div>
-              </MenuItem>
-              <MenuItem
-                className={classNames({
-                  [classes.root]: true,
-                  [classes.selected]: true,
-                })}
-                value="DONE"
-              >
-                <div className={headerStyle.menu_item_container}>완료</div>
-              </MenuItem>
-            </Select> */}
+              {options.map((item) => {
+                return (
+                  <MenuItem
+                    className={classNames({
+                      [classes.root]: true,
+                      [classes.selected]: true,
+                    })}
+                    value={item.value}
+                  >
+                    <div className={headerStyle.menu_item_container}>
+                      {item.text}
+                    </div>
+                  </MenuItem>
+                );
+              })}
+            </Select>
           </div>
         );
       case "goToAll":
       case "requestMemo":
         return (
-          <div className={headerStyle.go_to_all_menu}>
+          <div className={headerStyle.go_to_all_menu} onClick={onShowAllClick}>
             <div>전체보기</div>
           </div>
         );

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useAsync } from "react-async";
 import EditCollectionPage from "./EditCollectionPage";
 import { uploadFile } from "../../services/file.service";
@@ -19,7 +19,6 @@ export interface EditCollectionPageContainerProps {
 }
 
 async function getData({ collectionId }: any) {
-  console.log("gma...");
   return await Promise.all([
     getCollection(collectionId),
     searchUsers(undefined),
@@ -31,8 +30,12 @@ export default function EditCollectionPageContainer(
   props: EditCollectionPageContainerProps
 ) {
   const history = useHistory();
+  const { pathname, search } = useLocation();
   const collectionId = props.collectionId;
-
+  console.log("ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹ111 " + collectionId);
+  const onClose = async () => {
+    history.replace(pathname);
+  };
   const { data, error, isLoading } = useAsync({
     promiseFn: getData,
     collectionId: collectionId,
@@ -80,9 +83,9 @@ export default function EditCollectionPageContainer(
 
     history.push(COLLECTION_LIST);
   }
-
+  console.log("ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹ3333 ");
   if (error) {
-    history.push(COLLECTION_LIST);
+    //history.push(COLLECTION_LIST);
   }
 
   if (data) {
@@ -93,6 +96,7 @@ export default function EditCollectionPageContainer(
         uploadImage={uploadFile}
         editCollection={handleEditCollection}
         serviceTypes={data[2]}
+        // onClose={onClose}
       />
     );
   }

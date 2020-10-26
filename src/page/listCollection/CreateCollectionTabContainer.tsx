@@ -41,10 +41,10 @@ export default function CreateCollectionTabContainer(
   const handleClick = async (collectionData: CollectionData) => {
     if (collectionData.status === CollectionStatus.DRAFT) {
       // FIXME: change to constant path
-      history.push(`/collections/edit/${collectionData.id}`);
+      history.push(`/collections/created?editingId=${collectionData.id}`);
     } else if (collectionData.status === CollectionStatus.REQUEST_PROGRESS) {
       if (data.myData.id === collectionData.approver) {
-        history.push(`/collections/edit/${collectionData.id}`);
+        history.push(`/collections/created?editingId=${collectionData.id}`);
       }
     } else {
       history.push(

@@ -4,13 +4,12 @@ import { useAsync } from "react-async";
 import { MemoView, getTemporariesMemos } from "../../services/memo.service";
 import { CollectionView } from "../../services/collection.service";
 import { MemoData, createMemo } from "../../services/memo.service";
-import { useHistory } from "react-router-dom";
 import { CollectionData } from "../../components/collection/CollectionCard";
 import { MEMO_WORK_STATION } from "../../common/paths";
 import MemoHomeTab from "./MemoHomeTab";
 import { uploadFile } from "../../services/file.service";
 import { getMe } from "../../services/user.service";
-
+import { useLocation, useHistory } from "react-router-dom";
 async function getHomeMemos() {
   const data = await Promise.all([
     getTemporariesMemos(),
@@ -21,14 +20,14 @@ async function getHomeMemos() {
   ]);
 
   const temporariesMemos = data[0].map((it) => viewToData(it));
-  const collcetionsForMemos = data[1].map((it) => viewToCollectionData(it));
+  const collectionsForMemos = data[1].map((it) => viewToCollectionData(it));
   const requestingMemos = data[2].map((it) => viewToData(it));
   const requestedMemos = data[3].map((it) => viewToData(it));
   const myMemos = data[4].map((it) => viewToData(it));
 
   return {
     temporariesMemos,
-    collcetionsForMemos,
+    collectionsForMemos,
     requestingMemos,
     requestedMemos,
     myMemos,
@@ -54,7 +53,8 @@ interface MemoHomeTabContainerProps {
   collectionId?: number;
   platterId?: number;
 }
-
+const history = useHistory();
+const { pathname, search } = useLocation();
 const handleDrop = async (e: any) => {
   e.preventDefault();
   e.stopPropagation();
@@ -69,12 +69,12 @@ const handleDrop = async (e: any) => {
       collectionId: 11,
       sharedUserIds: [me.id],
     };
-    createMemo(request);
+    const memoId = await createMemo(request);
+    history.push(`${pathname}?memoId=${memoId}`);
   }
 };
 
 export default function MemoHomeTabContainer(props: MemoHomeTabContainerProps) {
-  const history = useHistory();
   const { data } = useAsync({
     promiseFn: getHomeMemos,
   });

@@ -113,13 +113,16 @@
 }
 .list_tab_container {
   max-width: 870px;
-
+  height: 100%;
   margin: 0 auto;
-  margin-bottom: 300px;
+  padding-bottom: 100px;
+  box-sizing: border-box;
+  overflow-y: scroll;
 }
 .memo_in_collection_container {
   max-width: 717px;
   padding-top: 66px;
+  height: 100%;
   margin: 0 auto;
   margin-bottom: 300px;
 

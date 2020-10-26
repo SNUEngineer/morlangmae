@@ -14,11 +14,15 @@ import {
   MemoItemThreadData,
 } from "../../services/memo.service";
 import { UserView } from "../../services/user.service";
-
+import Dialog from "@material-ui/core/Dialog";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles, useTheme, createStyles } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import clsx from "clsx";
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
 
 export function MemoToolBar(props: any) {
-  const { sideMenuOpen, setSideMenuOpen, handleSave } = props;
+  const { sideMenuOpen, setSideMenuOpen, handleSave, onClose } = props;
   return (
     <div className={memoStyle.menu_bar}>
       <div className={memoStyle.center_menu_container}>
@@ -43,6 +47,21 @@ export function MemoToolBar(props: any) {
           </div>
         </div>
 
+        <div className={memoStyle.back_container}>
+          <div className={memoStyle.align_container}>
+            <div className={memoStyle.verical_center}>
+              <div
+                onClick={onClose}
+                className={classNames({
+                  [memoStyle.menu_text]: true,
+                  [memoStyle.menu_text_unfocused]: true,
+                })}
+              >
+                뒤로가기
+              </div>
+            </div>
+          </div>
+        </div>
         <div className={memoStyle.save_container}>
           <div className={memoStyle.align_container}>
             <div className={memoStyle.verical_center}>
@@ -108,6 +127,7 @@ export interface MemoProps {
   handleEditMemoItems: Promise<void>;
   handleEditMemo: Promise<void>;
   handleAddMemoItem: Promise<void>;
+  onClose: Promise<void>;
 }
 
 export default function Memo(props: any) {
@@ -487,164 +507,189 @@ export default function Memo(props: any) {
     e.preventDefault();
     return false;
   }, []);
-  return (
-    <div
-      onContextMenu={(e) => {
-        e.preventDefault();
-        return false;
-      }}
-      className={memoStyle.root}
-    >
-      <PDFPages
-        url={props.memoData.fileUrl}
-        setPdf={(loadPDF) => {
-          setPdfList(loadPDF);
-        }}
-        updateProgressBar={(progress: number) => {
-          setListProgress(progress);
-          // const { onProgress } = this.props;
-          // onProgress && onProgress();
-          //로딩  진행 정도.
-        }}
-      />
+  const contentStyles = makeStyles(() =>
+    createStyles({
+      paperStyles: {
+        height: "100%",
+        width: "100%",
+      },
+    })
+  );
 
-      <div className={memoStyle.workspace_container}>
-        <MemoToolBar
-          sideMenuOpen={sideMenuOpen}
-          setSideMenuOpen={setSideMenuOpen}
-          handleSave={handleSave}
+  const styleClasses = contentStyles();
+  const Theme = useTheme();
+  const fullScreen = useMediaQuery(Theme.breakpoints.down("sm"));
+  return (
+    <Dialog
+      fullScreen={fullScreen}
+      disableEnforceFocus
+      fullWidth
+      maxWidth="xl"
+      open
+      PaperComponent={PaperComponent}
+      className={styleClasses.paper}
+    >
+      <div
+        onContextMenu={(e) => {
+          e.preventDefault();
+          return false;
+        }}
+        className={memoStyle.root}
+      >
+        <PDFPages
+          url={props.memoData.fileUrl}
+          setPdf={(loadPDF) => {
+            setPdfList(loadPDF);
+          }}
+          updateProgressBar={(progress: number) => {
+            setListProgress(progress);
+            // const { onProgress } = this.props;
+            // onProgress && onProgress();
+            //로딩  진행 정도.
+          }}
         />
 
-        <div className={memoStyle.split_pane}>
-          <div
-            className={memoStyle.split_pane_pdf_thumb}
-            initialSize="150px"
-            minSize="150px"
-            maxSize="150px"
-          >
-            <div className={memoStyle.split_list_view}>
-              <PDFThumbBar
-                pdf={pdfList}
-                currentPage={pageNumber}
-                setCurrentPage={(pageNum: number) => {
-                  setPageNumber(pageNum);
-                }}
-                showThumbSidebar={true}
-              />
-            </div>
-          </div>
-          <div className={memoStyle.split_pane_pdf}>
-            <div
-              ref={panzoomBoxContainerEl}
-              className={memoStyle.panzoom_box_container}
-            >
-              <PanZoom
-                ref={panzoomEl}
-                className={memoStyle.panzoom_box}
-                zoomSpeed={5}
-                onStateChange={onStateChange}
-                boundaryRatioVertical={setPanzoomBoundary().vRatio} //
-                boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
-                enableBoundingBox
-                autoCenter={true}
-                disableDoubleClickZoom={true}
-                maxZoom={3}
-                minZoom={0.1}
-                keyState={keyState}
-              >
-                <div className={memoStyle.pan_board}>
-                  <div
-                    className={memoStyle.memo_board}
-                    onMouseDown={onMouseDown}
-                    onDrop={onDrop}
-                    onDragOver={onDragOver}
-                  >
-                    {memoItems().map((item) => {
-                      const pageNumCorrect =
-                        pageNumber === item?.memoState?.pageNum;
-                      const checkWriterCorrect = !!currentCheckedWriters
-                        ? currentCheckedWriters.includes(item?.writer.writerID)
-                        : false;
+        <div className={memoStyle.workspace_container}>
+          <MemoToolBar
+            sideMenuOpen={sideMenuOpen}
+            setSideMenuOpen={setSideMenuOpen}
+            handleSave={handleSave}
+            onClose={props.onClose}
+          />
 
-                      return (
-                        pageNumCorrect &&
-                        checkWriterCorrect && (
-                          <MemoItem
-                            key={item.memoState.itemID}
-                            itemData={item}
-                            className={memoStyle.memo_item}
-                            keyState={keyState}
-                            scale={documentPosition.scale}
-                            writerID={"송병근"}
-                            currentPageNum={pageNumber}
-                            currentCheckedWriters={currentCheckedWriters}
-                            deleteMemo={deleteMemo}
-                            updateMemoItem={updateMemoItem}
-                            isFocus={
-                              currentFocusItem.itemID === item.memoState.itemID
-                                ? true
-                                : false
-                            }
-                            focusHandler={(itemID) => {
-                              setCurrentFocusItem({ itemID: itemID });
-                            }}
-                            isMenuItem={false}
-                            panBoardSize={panBoardSize}
-                          ></MemoItem>
-                        )
-                      );
-                    })}
-                  </div>
-                  <div
-                    ref={documentEl}
-                    style={setDocumentStyle()}
-                    className={memoStyle.testt}
-                  >
-                    <Document
-                      file={props.memoData.fileUrl}
-                      onLoadSuccess={onDocumentLoadSuccess}
-                      className={memoStyle.document}
+          <div className={memoStyle.split_pane}>
+            <div
+              className={memoStyle.split_pane_pdf_thumb}
+              initialSize="150px"
+              minSize="150px"
+              maxSize="150px"
+            >
+              <div className={memoStyle.split_list_view}>
+                <PDFThumbBar
+                  pdf={pdfList}
+                  currentPage={pageNumber}
+                  setCurrentPage={(pageNum: number) => {
+                    setPageNumber(pageNum);
+                  }}
+                  showThumbSidebar={true}
+                />
+              </div>
+            </div>
+            <div className={memoStyle.split_pane_pdf}>
+              <div
+                ref={panzoomBoxContainerEl}
+                className={memoStyle.panzoom_box_container}
+              >
+                <PanZoom
+                  ref={panzoomEl}
+                  className={memoStyle.panzoom_box}
+                  zoomSpeed={5}
+                  onStateChange={onStateChange}
+                  boundaryRatioVertical={setPanzoomBoundary().vRatio} //
+                  boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
+                  enableBoundingBox
+                  autoCenter={true}
+                  disableDoubleClickZoom={true}
+                  maxZoom={3}
+                  minZoom={0.1}
+                  keyState={keyState}
+                >
+                  <div className={memoStyle.pan_board}>
+                    <div
+                      className={memoStyle.memo_board}
+                      onMouseDown={onMouseDown}
+                      onDrop={onDrop}
+                      onDragOver={onDragOver}
                     >
-                      <Page
-                        pageNumber={pageNumber}
-                        width={pageSize.w}
-                        className={memoStyle.page}
-                        onLoadSuccess={(page) => {
-                          setPageSize(() => ({
-                            w: page.width,
-                            h: page.height,
-                          }));
-                        }}
-                      />
-                    </Document>
+                      {memoItems().map((item) => {
+                        const pageNumCorrect =
+                          pageNumber === item?.memoState?.pageNum;
+                        const checkWriterCorrect = !!currentCheckedWriters
+                          ? currentCheckedWriters.includes(
+                              item?.writer.writerID
+                            )
+                          : false;
+
+                        return (
+                          pageNumCorrect &&
+                          checkWriterCorrect && (
+                            <MemoItem
+                              key={item.memoState.itemID}
+                              itemData={item}
+                              className={memoStyle.memo_item}
+                              keyState={keyState}
+                              scale={documentPosition.scale}
+                              writerID={"송병근"}
+                              currentPageNum={pageNumber}
+                              currentCheckedWriters={currentCheckedWriters}
+                              deleteMemo={deleteMemo}
+                              updateMemoItem={updateMemoItem}
+                              isFocus={
+                                currentFocusItem.itemID ===
+                                item.memoState.itemID
+                                  ? true
+                                  : false
+                              }
+                              focusHandler={(itemID) => {
+                                setCurrentFocusItem({ itemID: itemID });
+                              }}
+                              isMenuItem={false}
+                              panBoardSize={panBoardSize}
+                            ></MemoItem>
+                          )
+                        );
+                      })}
+                    </div>
+                    <div
+                      ref={documentEl}
+                      style={setDocumentStyle()}
+                      className={memoStyle.testt}
+                    >
+                      <Document
+                        file={props.memoData.fileUrl}
+                        onLoadSuccess={onDocumentLoadSuccess}
+                        className={memoStyle.document}
+                      >
+                        <Page
+                          pageNumber={pageNumber}
+                          width={pageSize.w}
+                          className={memoStyle.page}
+                          onLoadSuccess={(page) => {
+                            setPageSize(() => ({
+                              w: page.width,
+                              h: page.height,
+                            }));
+                          }}
+                        />
+                      </Document>
+                    </div>
                   </div>
-                </div>
-              </PanZoom>
+                </PanZoom>
+              </div>
             </div>
+            {sideMenuOpen && (
+              <div className={memoStyle.split_pane_menu}>
+                <SideMenuBar
+                  itemData={currentMenuMemo()}
+                  className={memoStyle.memo_item}
+                  currentPageNum={pageNumber}
+                  deleteMemo={deleteMemo}
+                  focusHandler={(itemID) => {
+                    setCurrentFocusItem({ itemID: itemID });
+                  }}
+                  pageNumber={pageNumber}
+                  isMenuItem={true}
+                  focusOtherItem={focusOtherItem}
+                  memoItems={currentPageMemos()}
+                  checkWriters={checkWriters}
+                  currentCheckedWriters={currentCheckedWriters}
+                  panBoardSize={panBoardSize}
+                />
+                );
+              </div>
+            )}
           </div>
-          {sideMenuOpen && (
-            <div className={memoStyle.split_pane_menu}>
-              <SideMenuBar
-                itemData={currentMenuMemo()}
-                className={memoStyle.memo_item}
-                currentPageNum={pageNumber}
-                deleteMemo={deleteMemo}
-                focusHandler={(itemID) => {
-                  setCurrentFocusItem({ itemID: itemID });
-                }}
-                pageNumber={pageNumber}
-                isMenuItem={true}
-                focusOtherItem={focusOtherItem}
-                memoItems={currentPageMemos()}
-                checkWriters={checkWriters}
-                currentCheckedWriters={currentCheckedWriters}
-                panBoardSize={panBoardSize}
-              />
-              );
-            </div>
-          )}
-        </div>
-        {/* <Document
+          {/* <Document
           file={props.memoData.fileUrl}
           onLoadSuccess={onDocumentLoadSuccess}
           className={memoStyle.document}
@@ -655,7 +700,26 @@ export default function Memo(props: any) {
             className={memoStyle.page}
           />
         </Document> */}
+        </div>
       </div>
-    </div>
+    </Dialog>
   );
+}
+const paperStyles = makeStyles(() =>
+  createStyles({
+    paper: {
+      backgroundColor: "transparent",
+      padding: "0px",
+      margin: "0px",
+      height: "100%",
+      width: "100%",
+      //maxHeight: "756px",
+      boxShadow: "none",
+    },
+  })
+);
+export function PaperComponent(props: PaperProps) {
+  const inherited = props.className;
+  const styleClasses = paperStyles();
+  return <Paper {...props} className={styleClasses.paper} />;
 }

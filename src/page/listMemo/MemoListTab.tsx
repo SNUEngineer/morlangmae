@@ -105,6 +105,20 @@ export function MyMemoList(props: MyMemoListProps) {
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
+  const options = [
+    {
+      value: "ALL",
+      text: "전체",
+    },
+    {
+      value: "IN_PROGRESS",
+      text: "진행",
+    },
+    {
+      value: "DONE",
+      text: "완료",
+    },
+  ];
   return (
     <div className={memoStyle.request_container}>
       <Header
@@ -112,6 +126,7 @@ export function MyMemoList(props: MyMemoListProps) {
         handleChange={handleChange}
         filter={filter}
         subMenuType={"filter"}
+        options={options}
       />
       <Grid container>
         {memos.map((item) => {

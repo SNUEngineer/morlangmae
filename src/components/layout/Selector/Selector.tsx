@@ -9,7 +9,7 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 
 export default function Selector(props: any) {
-  const { filter, handleChange, theme } = props;
+  const { filter, handleChange, theme, options } = props;
   const useStyles = makeStyles(() =>
     createStyles({
       selectBasic: {
@@ -95,33 +95,21 @@ export default function Selector(props: any) {
         IconComponent={iconComponent}
         disableUnderline
       >
-        <MenuItem
-          className={classNames({
-            [classes.root]: true,
-            [classes.selected]: true,
-          })}
-          value="ALL"
-        >
-          <div className={selectorStyle.menu_item_container}>전체</div>
-        </MenuItem>
-        <MenuItem
-          className={classNames({
-            [classes.root]: true,
-            [classes.selected]: true,
-          })}
-          value="IN_PROGRESS"
-        >
-          <div className={selectorStyle.menu_item_container}>진행</div>
-        </MenuItem>
-        <MenuItem
-          className={classNames({
-            [classes.root]: true,
-            [classes.selected]: true,
-          })}
-          value="DONE"
-        >
-          <div className={selectorStyle.menu_item_container}>완료</div>
-        </MenuItem>
+        {options.map((item) => {
+          return (
+            <MenuItem
+              className={classNames({
+                [classes.root]: true,
+                [classes.selected]: true,
+              })}
+              value={item.value}
+            >
+              <div className={selectorStyle.menu_item_container}>
+                {item.text}
+              </div>
+            </MenuItem>
+          );
+        })}
       </Select>
     </div>
   );

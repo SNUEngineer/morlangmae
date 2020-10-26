@@ -327,7 +327,11 @@ export function CompanyCollectionCardList(
 
   return (
     <div className={collectionStyle.company_collection_container}>
-      <Header title={"회사 아카이브"} subMenuType={"goToAll"} />
+      <Header
+        title={"회사 아카이브"}
+        subMenuType={"goToAll"}
+        type={"COMPANY"}
+      />
 
       <div className={collectionStyle.collection_list_container}>
         <GridCollectionCardList

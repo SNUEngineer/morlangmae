@@ -91,7 +91,11 @@
         font-family: "Frank Ruhl Libre Light";
       }
     }
-
+    .back_container {
+      width: 80px;
+      margin-left: 40px;
+      height: 100%;
+    }
     .save_container {
       width: 80px;
       margin-left: 40px;
@@ -210,6 +214,7 @@
     .split_pane_pdf_thumb {
       width: 150px;
       height: 100%;
+      background-color: #f0f0f0;
     }
     .split_pane_pdf {
       flex-grow: 1;
