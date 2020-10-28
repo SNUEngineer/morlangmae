@@ -1,6 +1,12 @@
 // @ts-nocheck
 import React, { useState, useEffect, Fragment, useCallback } from "react";
-import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  Redirect,
+  useLocation,
+  useHistory,
+} from "react-router-dom";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import AppBar from "./layout/AppBar";
 import Drawer from "./layout/Drawer";
@@ -27,6 +33,7 @@ import {
   SIGN_UP,
   PROFILE,
   COLLECTION_EDIT,
+  COLLECTION_LIST,
   COLLECTION_LIST_COMPANY,
   NOTIFICATION,
   MEMO_HOME,
@@ -90,6 +97,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function App() {
   const { pathname, search } = useLocation();
+  const { history } = useHistory();
   const classes = useStyles();
   const token = localStorage.getItem("Authorization");
   const [authenticated, setAuthenticated] = useState(token != null);
@@ -110,6 +118,7 @@ function App() {
   async function handleSignIn(request: SignInRequest) {
     await signIn(request);
     await validateToken();
+    history.push(`${COLLECTION_LIST}`);
   }
 
   async function handleSignUp(request: SignUpRequest) {

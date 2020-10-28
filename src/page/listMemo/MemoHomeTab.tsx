@@ -14,6 +14,7 @@ import Header from "../../components/layout/Header/Header";
 
 export interface MemoHomeTabProps {
   onDropFile(event: any): Promise<void>;
+  handleTestClick(event: any): Promise<void>;
 }
 
 export default function MemoHomeTab(props: MemoHomeTabProps) {
@@ -103,8 +104,9 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
       <div className={memoStyle.create_memo_container}>
         <div
           className={memoStyle.drag_drop_container}
-          onDragOver={handleDragOver}
-          onDrop={props.handleDrop}
+          // onDragOver={handleDragOver}
+          // onDrop={props.handleDrop}
+          onClick={props.handleTestClick}
         ></div>
       </div>
 

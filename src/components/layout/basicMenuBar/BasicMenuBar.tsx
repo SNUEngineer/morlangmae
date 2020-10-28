@@ -9,10 +9,12 @@ import { makeStyles, createStyles, useTheme } from "@material-ui/core/styles";
 import NotificationPageContainer from "../../../page/notification/NotificationPageContainer";
 import { useLocation, useHistory } from "react-router-dom";
 import { PROFILE } from "../../../common/paths";
+import TextField from "@material-ui/core/TextField";
 
 export default function BasicMenuBar(props: any) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+  const [searchPath, setSearchPath] = useState("");
   const handleClickOpen = (event) => {
     setOpen(true);
     setAnchorEl(event.currentTarget);
@@ -21,13 +23,18 @@ export default function BasicMenuBar(props: any) {
     setOpen(false);
     setAnchorEl(null);
   };
+  const { pathname, search } = useLocation();
   const history = useHistory();
   const clickProfile = async () => {
     history.push(`${PROFILE}`);
   };
-
+  const searchPathFn = async () => {
+    history.push(`${searchPath}`);
+  };
   const id = open ? "notification-popover" : undefined;
-
+  const changeSearchPath = async (event: any) => {
+    setSearchPath(event.target.value);
+  };
   const useMyStyles = makeStyles(() =>
     createStyles({
       listButton: {
@@ -79,7 +86,24 @@ export default function BasicMenuBar(props: any) {
     <div className={menuStyle.container}>
       <div className={menuStyle.top_container}>
         <div className={menuStyle.menu_container}>
-          <div className={menuStyle.logo_container}></div>
+          <TextField
+            className={menuStyle.logo_container}
+            style={{ marginLeft: "100px", width: "100px" }}
+            defaultValue={pathname + search}
+            placeholder={"플래터 제목을 입력해 주세요."}
+            fullWidth
+            id="testPath"
+            name="testPath"
+            onChange={changeSearchPath}
+          ></TextField>
+          <Button
+            className={myClasses.icon_button}
+            onClick={searchPathFn}
+            aria-describedby={id}
+          >
+            이동
+          </Button>
+          <div>{pathname + search}</div>
           <div className={menuStyle.menu_content}>
             <div className={menuStyle.icon_container}>
               <Button

@@ -1,4 +1,4 @@
-export const ROOT = "/collections/discover";
+export const ROOT = "/";
 
 export const COLLECTION_LIST_TAB = "/collections";
 export const COLLECTION_LIST = "/collections/discover";

@@ -69,9 +69,14 @@ const handleDrop = async (e: any) => {
       collectionId: 11,
       sharedUserIds: [me.id],
     };
-    const memoId = await createMemo(request);
-    history.push(`${pathname}?memoId=${memoId}`);
+    // const memoId = await createMemo(request);
+    //history.push(`${pathname}?memoId=${memoId}`);
+    history.push(`${pathname}?memoId=1`);
   }
+};
+const handleTestClick = async (e: any) => {
+  console.log("asdffdf " + fafaf);
+  history.push(`${pathname}?memoId=1`);
 };
 
 export default function MemoHomeTabContainer(props: MemoHomeTabContainerProps) {
@@ -82,7 +87,10 @@ export default function MemoHomeTabContainer(props: MemoHomeTabContainerProps) {
   if (data) {
     return (
       <Fragment>
-        <MemoHomeTab handleDrop={handleDrop} />
+        <MemoHomeTab
+          handleDrop={handleDrop}
+          handleTestClick={handleTestClick}
+        />
       </Fragment>
     );
   }
