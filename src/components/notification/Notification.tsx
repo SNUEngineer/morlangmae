@@ -39,7 +39,6 @@ const getData = async (request) => {
   switch (request.type) {
     case "PLATTER":
       data = await getPlatter(request.id);
-      console.log("platterplatterplatterplatter " + JSON.stringify(data));
       return data;
     case "COLLECTION":
       data = await getCollection(request.id);
