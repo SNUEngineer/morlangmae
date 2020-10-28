@@ -8,12 +8,13 @@ import {
 import NotificationPage from "./NotificationPage";
 import { NotificationData } from "../../components/notification/Notification";
 import { useAsync } from "react-async";
-
+import { NOTIFICATION } from "../../common/paths";
 async function getData() {
   return await getNotifications();
 }
 
-export default function NotificationPageContainer() {
+export default function NotificationPageContainer(props: any) {
+  const { isPage } = props;
   const history = useHistory();
   const { data } = useAsync({
     promiseFn: getData,
@@ -21,9 +22,13 @@ export default function NotificationPageContainer() {
 
   const getMoreNotifications = async (cursor?: string) => {
     let index = 0;
+
     if (cursor) {
       index = Number(cursor);
     }
+    console.log(
+      "indexindexindexindexindex " + index + "   " + JSON.stringify(data)
+    );
     return {
       data: data?.notifications.slice(index, index + 7) || [],
       cursor: data?.notifications?.length
@@ -41,6 +46,9 @@ export default function NotificationPageContainer() {
   const goBack = async () => {
     history.goBack();
   };
+  const showAll = async () => {
+    history.push(`${NOTIFICATION}`);
+  };
 
   if (data) {
     const initialNotifications = {
@@ -53,12 +61,16 @@ export default function NotificationPageContainer() {
     };
 
     return (
-      <NotificationPage
-        goBack={goBack}
-        initialNotifications={initialNotifications}
-        getMoreNotifications={getMoreNotifications}
-        onNotificationClick={clickNotification}
-      />
+      <div>
+        <NotificationPage
+          goBack={goBack}
+          showAll={showAll}
+          initialNotifications={initialNotifications}
+          getMoreNotifications={getMoreNotifications}
+          onNotificationClick={clickNotification}
+          isPage={isPage}
+        />
+      </div>
     );
   }
 

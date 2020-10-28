@@ -47,6 +47,7 @@ export default function Thread(props: ThreadProps) {
   const messagesRef = useRef<any>(null);
   const classes = useStyles();
   const { register, handleSubmit, reset, setValue } = useForm();
+  const [currentMessages, setCurrentMessages] = useState();
 
   const loadMessages = async () => {
     const messages = await props.loadMessages();
@@ -56,6 +57,7 @@ export default function Thread(props: ThreadProps) {
     messagesRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
   const sendMessage = async (message: { content: string }) => {
+    console.log("send message");
     await props.sendMessage(message);
     reset();
     await loadMessages();

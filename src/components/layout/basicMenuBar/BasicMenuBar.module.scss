@@ -26,11 +26,12 @@ $top-bar-height: 48px;
       }
 
       .menu_content {
-        width: 100px;
+        width: 200px;
         height: 100%;
         display: flex;
         flex-direction: row;
         margin-right: 100px;
+        background-color: blue;
         .icon_container {
           flex-grow: 1;
           height: 100%;
@@ -43,9 +44,9 @@ $top-bar-height: 48px;
             height: auto;
             width: 16px;
             position: absolute;
-            left: 0;
+            left: 50%;
             top: 50%;
-            transform: translate(0, -50%);
+            transform: translate(-50%, -50%);
           }
 
           .notification_icon {

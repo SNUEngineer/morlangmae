@@ -7,6 +7,7 @@ import { getCollection } from "../../services/collection.service";
 
 export interface CreatePlatterPageContainerProps {
   collectionId: number;
+  reload;
 }
 
 async function getData({ collectionId }: any) {
@@ -22,7 +23,9 @@ export default function CreatePlatterPageContainer(
     collectionId: props.collectionId,
   });
   const doCreatePlatter = async (data: any) => {
-    await createPlatter(props.collectionId, data);
+    const id = await createPlatter(props.collectionId, data);
+    await props.reload();
+    return id;
   };
 
   if (data) {

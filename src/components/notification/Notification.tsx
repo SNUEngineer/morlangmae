@@ -7,6 +7,10 @@ import notiStyle from "./notification.module.scss";
 import Comment from "./Comment";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
+import { getCollection } from "../../services/collection.service";
+import { getPlatter } from "../../services/platter.service";
+//import { getMemo } from "../../services/memo.service";
+import { useAsync } from "react-async";
 
 export interface NotificationData {
   id: number;
@@ -27,11 +31,35 @@ export interface NotificationProps {
   onClick(notificationData: NotificationData): Promise<void>;
 }
 
+const getTitle = async (request) => {
+  let data: any;
+  switch (request.type) {
+    case "PLATTER":
+      data = await getPlatter(request.id);
+      return data.title;
+    case "COLLECTION":
+      data = await getCollection(request.id);
+      return data.title;
+    case "MEMO":
+      //data = await getMemo(request.id);
+      // return data.title;
+      return "";
+    default:
+      return "";
+  }
+};
+
 export default function Notification(props: NotificationProps) {
   const { notification } = props;
   const sender = notification.sentBy;
   const comment = notification.comment;
   const onClick = () => props.onClick(notification);
+
+  const { data } = useAsync({
+    promiseFn: getTitle,
+    type: notification.type,
+    id: notification.target,
+  });
 
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -115,7 +143,9 @@ export default function Notification(props: NotificationProps) {
         <div className={notiStyle.content_container}>
           <div className={notiStyle.content}>
             <div className={notiStyle.cause_text}>{notification.cause}</div>
-            <div className={notiStyle.where_text}>나이키 교육 컨설팅</div>
+            <div className={notiStyle.where_text}>
+              {!!data ? data : "로딩 중..."}
+            </div>
           </div>
           <div className={notiStyle.info}>
             <div className={notiStyle.created_at}>

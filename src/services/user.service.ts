@@ -45,9 +45,7 @@ export interface UserView {
 }
 
 export async function searchUsers(query?: string): Promise<UserView[]> {
-  console.log("serach users ");
   const res = await axios.get("/users/v1");
-  console.log("serach users " + JSON.stringify(res));
   return res.data.users;
 }
 

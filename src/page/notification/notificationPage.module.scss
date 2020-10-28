@@ -54,3 +54,10 @@
   background-color: #e0e0e0;
   margin-bottom: 63px;
 }
+
+.popover_container {
+  height: 500px;
+  width: 500px;
+
+  overflow-y: scroll;
+}

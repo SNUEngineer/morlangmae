@@ -19,41 +19,20 @@ import { searchUsers, UserView, getMe } from "../../services/user.service";
 export interface CollectionViewPageContainerProps {
   collectionId: number;
   hideToolbar?: boolean;
-}
-
-async function getData({ collectionId }: any) {
-  const data = await Promise.all([
-    getCollection(collectionId),
-    getPlatters(collectionId),
-    searchUsers(undefined),
-  ]);
-
-  return {
-    collection: data[0],
-    platters: data[1].map((it) => viewToData(it)),
-    users: data[2],
-  };
-}
-
-function viewToData(view: PlatterView): PlatterData {
-  return {
-    ...view,
-  };
+  data;
+  reload;
 }
 
 export default function CollectionViewPageContainer(
   props: CollectionViewPageContainerProps
 ) {
   const { pathname, search } = useLocation();
+  const { data } = props;
   const history = useHistory();
   const onClose = async () => {
     console.log("onCloseonCloseonClose");
     history.replace(pathname);
   };
-  const { data, reload } = useAsync({
-    promiseFn: getData,
-    collectionId: props.collectionId,
-  });
 
   const handleCreatePlatter = async () => {
     const query = queryString.parse(search);
@@ -82,28 +61,24 @@ export default function CollectionViewPageContainer(
       startDate: new Date(collection.startDate),
       endDate: new Date(collection.endDate),
     });
-    await reload();
+    await props.reload();
   }
 
   const reloading = async () => {
-    console.log("reloading ");
+    await props.reload();
   };
-  if (data) {
-    console.log("reloading !!!#!#!#! " + JSON.stringify(data));
-    return (
-      <CollectionViewPage
-        hideToolbar={props.hideToolbar}
-        createPlatter={handleCreatePlatter}
-        collectionDetail={data.collection}
-        platters={data.platters}
-        users={data.users}
-        onPlatterClick={onPlatterClick}
-        onClose={onClose}
-        editCollectionFn={handleEditCollection}
-        reloadData={reloading}
-      />
-    );
-  }
 
-  return null;
+  return (
+    <CollectionViewPage
+      hideToolbar={props.hideToolbar}
+      createPlatter={handleCreatePlatter}
+      collectionDetail={data.collection}
+      platters={data.platters}
+      users={data.users}
+      onPlatterClick={onPlatterClick}
+      onClose={onClose}
+      editCollectionFn={handleEditCollection}
+      reloadData={reloading}
+    />
+  );
 }

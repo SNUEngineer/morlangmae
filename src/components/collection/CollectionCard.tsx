@@ -78,7 +78,6 @@ export default function CollectionCard(props: CollectionCardProps) {
     setPinned(false);
   };
 
-  console.log("collection data " + JSON.stringify(data));
   const isApprover = useCallback(() => {
     //내가 승인권자인지. (내 id 조회하는 방법.))
     if (!!data && !!data.approver) {

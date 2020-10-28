@@ -46,13 +46,23 @@ export default function CreatePlatterPage(props: CreatePlatterPageProps) {
   const { pathname, search } = useLocation();
   const [editorRef, setEditorRef] = useState(null);
   const history = useHistory();
-  const handleClose = () => {
+  const handleClose = (platterId: number) => {
     const query = queryString.parse(search);
     delete query.platterId;
-    history.replace({
-      pathname,
-      search: queryString.stringify(query),
-    });
+
+    // query.platterId = undefined;
+    if (platterId > -1) {
+      history.replace({
+        pathname,
+        search: queryString.stringify(query),
+      });
+      window.location.href = `#platter-${platterId}`;
+    } else {
+      history.replace({
+        pathname,
+        search: queryString.stringify(query),
+      });
+    }
   };
   const rootEl = useRef();
   const onRendered = () => {
@@ -65,7 +75,7 @@ export default function CreatePlatterPage(props: CreatePlatterPageProps) {
   const [members, setMembers] = useState<UserView[]>([]);
   const createPlatter = async () => {
     try {
-      await props.createPlatter({
+      const platterId = await props.createPlatter({
         title,
         ccs: members.map((it) => it.id),
         blocks: (await (editorRef as any).save()).blocks.map((it: any) => {
@@ -76,18 +86,11 @@ export default function CreatePlatterPage(props: CreatePlatterPageProps) {
           };
         }),
       });
-      handleClose();
+      await handleClose(platterId);
     } catch {}
   };
   return (
     <Fragment>
-      <PlatterToolBar
-        collectionMembers={props.collectionMembers}
-        createPlatter={createPlatter}
-        members={members}
-        setMembers={setMembers}
-        editorRef={editorRef}
-      />
       <Dialog
         ref={rootEl}
         disableEnforceFocus
@@ -96,9 +99,19 @@ export default function CreatePlatterPage(props: CreatePlatterPageProps) {
         open
         onRendered={onRendered}
         PaperComponent={PaperComponent}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose(-100);
+        }}
       >
         <DialogContent style={{ minHeight: 1300 }}>
+          <PlatterToolBar
+            collectionMembers={props.collectionMembers}
+            createPlatter={createPlatter}
+            members={members}
+            setMembers={setMembers}
+            editorRef={editorRef}
+            isCreate={true}
+          />
           <PlatterEditor
             id="CREATING"
             editorRef={editorRef}

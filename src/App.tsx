@@ -270,7 +270,7 @@ function ProjectView(props: any) {
 
 function MainPage(props: any) {
   const { pathname, search } = props;
-
+  console.log("pathnamepathname " + pathname + search);
   const mainPages = useCallback(() => {
     const query = queryString.parse(search);
     const editModal = () => {

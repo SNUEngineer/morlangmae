@@ -170,10 +170,6 @@ export default function PlatterEditor(props: PlatterEditorProps) {
       <FloatingToolbar top={top} />
       <div className={platterStyle.align_container}>
         <a href={`#platter-${props.id}`}>Platter</a>
-        {/* <Typography>{props.createdDate}</Typography>
-      <Avatar alt={props.createdBy.displayName} src={props.createdBy.imageUrl} />
-      <Typography>{props.createdBy.displayName}</Typography>
-      <Typography>{props.createdBy.companyId}</Typography> */}
         <div className={platterStyle.dot_menu_container}>
           <div className={platterStyle.dot_menu}>
             <FloatingMenu options={options} />
@@ -184,6 +180,7 @@ export default function PlatterEditor(props: PlatterEditorProps) {
           <div className={platterStyle.title_container}>
             <TextField
               className={platterStyle.title}
+              disabled={props.disableEditing}
               required
               defaultValue={data?.title}
               placeholder={"플래터 제목을 입력해 주세요."}
@@ -221,50 +218,6 @@ export default function PlatterEditor(props: PlatterEditorProps) {
           </div>
         </div>
 
-        {/* <div className={platterStyle.platter_info_container}>
-          <div className={platterStyle.title_container}>
-            <TextField
-              disabled={props.disableEditing}
-              required
-              defaultValue={data.title}
-              onChange={changeTitle}
-              fullWidth
-              id="title"
-              name="title"
-              InputProps={{ classes }}
-            />
-            <TextField
-              className={platterStyle.title}
-              required
-              defaultValue={test.title}
-              fullWidth
-              id="title"
-              name="title"
-              InputProps={{ classes }}
-            />
-          </div>
-
-          <div className={platterStyle.writer_container}>
-            <Typography className={platterStyle.date_text}>
-              {test.createdDate}
-            </Typography>
-            <div className={platterStyle.profile_container}>
-              <Avatar
-                alt={test.displayName}
-                src={test.imageUrl}
-                className={platterStyle.avatar}
-              />
-              <div className={platterStyle.name_text_container}>
-                <Typography className={platterStyle.name_text}>
-                  {test.displayName}
-                </Typography>
-                <Typography className={platterStyle.company_text}>
-                  {test.companyId}
-                </Typography>
-              </div>
-            </div>
-          </div>
-        </div> */}
         <div className={platterStyle.editor_container}>
           <EditorJs
             holder={holderId}
@@ -285,7 +238,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     fab: {
       position: "fixed",
-      top: (props: any) => props.top,
+      // top: (props: any) => props.top,
+      top: "64px",
     },
   })
 );

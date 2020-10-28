@@ -14,10 +14,12 @@ import Header from "../../components/layout/Header/Header";
 interface NotificationDataAndCursor {
   data: NotificationData[];
   cursor?: string;
+  isPage: boolean;
 }
 
 interface NotificationPageProps {
   goBack(): Promise<void>;
+  showAll(): Promise<void>;
   initialNotifications: NotificationDataAndCursor;
   getMoreNotifications(cursor?: string): Promise<NotificationDataAndCursor>;
   onNotificationClick(notificationData: NotificationData): Promise<void>;
@@ -31,80 +33,64 @@ export default function NotificationPage(props: NotificationPageProps) {
       "https://images.squarespace-cdn.com/content/v1/5a5906400abd0406785519dd/1552662149940-G6MMFW3JC2J61UBPROJ5/ke17ZwdGBToddI8pDm48kLkXF2pIyv_F2eUT9F60jBl7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0iyqMbMesKd95J-X4EagrgU9L3Sa3U8cogeb0tjXbfawd0urKshkc5MgdBeJmALQKw/baelen.jpg?format=1500w",
   };
 
-  const notification = {
-    id: 10,
-    type: "COLLECTION",
-    cause: "hello",
-    target: 0,
-    read: false,
-    createdDate: "오전 9:17",
-    sentBy: sender,
-  };
-  const [notifications, setNotifications] = useState<NotificationData[]>([
-    notification, //props.initialNotifications.data, //test시 notification
-  ]);
-  const [cursor, setCursor] = useState<string | undefined>();
-  //props.initialNotifications.cursor
+  const [notifications, setNotifications] = useState<NotificationData[]>(
+    //notification, //props.initialNotifications.data, //test시 notification
+    props.initialNotifications.data
+  );
+  const [cursor, setCursor] = useState<string | undefined>(
+    props.initialNotifications.cursor
+  );
   const onGetMoreNotifications = async () => {
+    console.log(
+      "흠흠 fetchMore={onGetMoreNotifications}fetchMore={onGetMoreNotifications} "
+    );
     const res = await props.getMoreNotifications(cursor);
     setNotifications([...notifications, ...res.data]);
     setCursor(res.cursor);
   };
-  const notification1 = {
-    id: 0,
-    type: "COLLECTION",
-    cause: "새로운 컬렉션 생성 요청",
-    target: 0,
-    read: false,
-    createdDate: "오전 9:17",
-    sentBy: sender,
-  };
-  const notification2 = {
-    id: 2,
-    type: "PLATTER",
-    cause: "컬렉션 생성 요청이 승인됨",
-    target: 0,
-    read: false,
-    createdDate: "오전 9:17",
-    sentBy: sender,
-  };
-  const notification3 = {
-    id: 3,
-    type: "MEMO",
-    cause: "메모가 생성됨",
-    target: 0,
-    read: true,
-    createdDate: "오전 9:17",
-    comment: "새롭게 디자인 해봤습니다 확인 부탁드려요",
-    sentBy: sender,
-  };
-  useEffect(() => {
-    setNotifications([notification1, notification2, notification3]);
-    setCursor(0);
-  }, []);
 
   return (
     <div>
-      <div className={notiStyle.navigation}>
-        <div className={notiStyle.back_text}>{"< 이전으로"}</div>
-      </div>
-      <Button onClick={props.goBack}>이전으로</Button>
+      {props.isPage && (
+        <div>
+          <div className={notiStyle.navigation}>
+            <div className={notiStyle.back_text}>{"< 이전으로"}</div>
+          </div>
+          <Button onClick={props.goBack}>이전으로</Button>
 
-      <div className={notiStyle.container}>
-        <Header title={"알림"} subMenuType={"none"} />
+          <div className={notiStyle.container}>
+            <Header title={"알림"} subMenuType={"none"} />
 
-        <div className={notiStyle.list_container}>
+            <div className={notiStyle.list_container}>
+              <List>
+                <NotificationList
+                  notifications={notifications}
+                  onClick={props.onNotificationClick}
+                  fetchMore={onGetMoreNotifications}
+                />
+                {/* {cursor && (
+                  <ListItem onClick={onGetMoreNotifications}>...</ListItem>
+                )} */}
+              </List>
+            </div>
+          </div>
+        </div>
+      )}
+      {!props.isPage && (
+        <div className={notiStyle.popover_container}>
+          <Button onClick={props.showAll}>알림 전체보기</Button>
           <List>
             <NotificationList
               notifications={notifications}
               onClick={props.onNotificationClick}
+              fetchMore={onGetMoreNotifications}
             />
             {cursor && (
               <ListItem onClick={onGetMoreNotifications}>...</ListItem>
             )}
           </List>
         </div>
-      </div>
+      )}
     </div>
   );
 }

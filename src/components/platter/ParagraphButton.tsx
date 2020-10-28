@@ -41,7 +41,11 @@ export default function ParagraphButton(props: PlatterToolBarProps) {
 
   return (
     <Fragment>
-      <Button variant="outlined" onClick={handleClick}>
+      <Button
+        variant="outlined"
+        onClick={handleClick}
+        className={classes.basic_button}
+      >
         문단으로 추가
       </Button>
       <Popover
@@ -51,10 +55,18 @@ export default function ParagraphButton(props: PlatterToolBarProps) {
         onClose={handleClose}
         className={classes.popover}
       >
-        <Button variant="outlined" onClick={addHeader}>
+        <Button
+          variant="outlined"
+          onClick={addHeader}
+          className={classes.basic_button}
+        >
           헤더
         </Button>
-        <Button variant="outlined" onClick={addSubheader}>
+        <Button
+          variant="outlined"
+          onClick={addSubheader}
+          className={classes.basic_button}
+        >
           서브헤더
         </Button>
       </Popover>
@@ -66,6 +78,9 @@ const popOverStyles = makeStyles((theme: Theme) =>
   createStyles({
     popover: {
       zIndex: `${theme.zIndex.drawer + 10001} !important` as any,
+    },
+    basic_button: {
+      color: "white",
     },
   })
 );

@@ -21,7 +21,9 @@ interface PlatterToolBarProps {
   members: UserView[];
   setMembers(members: UserView[]): void;
   createPlatter?(): Promise<void>;
+  editPlatter?(): Promise<void>;
   editorRef: any;
+  isCreate: boolean;
 }
 
 interface EditorRefProps {
@@ -32,7 +34,11 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
       zIndex: theme.zIndex.drawer + 1000,
-      top: 64,
+      top: 0,
+      backgroundColor: "#1D1D1F",
+    },
+    basic_button: {
+      color: "white",
     },
   })
 );
@@ -50,37 +56,75 @@ export default function PlatterToolBar(props: PlatterToolBarProps) {
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
-      <Toolbar>
-        <ParagraphButton editorRef={editorRef} />
-        <ConvertButton editorRef={editorRef} />
-        <Button variant="outlined" onClick={bold}>
-          B
-        </Button>
-        <Button variant="outlined" onClick={underline}>
-          U
-        </Button>
-        <ColorButton />
-        <Button variant="outlined" onClick={alignLeft}>
-          L
-        </Button>
-        <Button variant="outlined" onClick={alignCenter}>
-          C
-        </Button>
-        <Button variant="outlined" onClick={alignRight}>
-          R
-        </Button>
-        <LinkButton />
-        <AttendButton
-          collectionMembers={props.collectionMembers}
-          platterMembers={props.members}
-          setPlatterMembers={props.setMembers}
-        />
-        {props.createPlatter && (
-          <Button variant="outlined" onClick={props.createPlatter}>
-            플래터 생성
+      <div
+        style={{ height: "100%", width: "100%" }}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        <Toolbar>
+          <ParagraphButton editorRef={editorRef} />
+          <ConvertButton editorRef={editorRef} />
+          <Button
+            variant="outlined"
+            onClick={bold}
+            className={classes.basic_button}
+          >
+            B
           </Button>
-        )}
-      </Toolbar>
+          <Button
+            variant="outlined"
+            onClick={underline}
+            className={classes.basic_button}
+          >
+            U
+          </Button>
+          <ColorButton />
+          <Button
+            variant="outlined"
+            onClick={alignLeft}
+            className={classes.basic_button}
+          >
+            L
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={alignCenter}
+            className={classes.basic_button}
+          >
+            C
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={alignRight}
+            className={classes.basic_button}
+          >
+            R
+          </Button>
+          <LinkButton />
+          <AttendButton
+            collectionMembers={props.collectionMembers}
+            platterMembers={props.members}
+            setPlatterMembers={props.setMembers}
+          />
+          {(props.createPlatter || props.editPlatter) && (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                if (props.isCreate) {
+                  props.createPlatter();
+                } else {
+                  props.editPlatter();
+                }
+              }}
+              className={classes.basic_button}
+            >
+              {props.isCreate ? "생성 요청" : "수정"}
+            </Button>
+          )}
+        </Toolbar>
+      </div>
     </AppBar>
   );
 }
@@ -135,7 +179,11 @@ function ConvertButton(props: EditorRefProps) {
 
   return (
     <Fragment>
-      <Button variant="outlined" onClick={handleClick}>
+      <Button
+        variant="outlined"
+        onClick={handleClick}
+        className={classes.basic_button}
+      >
         본문
       </Button>
       <Popover
@@ -147,13 +195,25 @@ function ConvertButton(props: EditorRefProps) {
           root: classes.popover,
         }}
       >
-        <Button variant="outlined" onClick={toHeader}>
+        <Button
+          variant="outlined"
+          onClick={toHeader}
+          className={classes.basic_button}
+        >
           헤더
         </Button>
-        <Button variant="outlined" onClick={toSubheader}>
+        <Button
+          variant="outlined"
+          onClick={toSubheader}
+          className={classes.basic_button}
+        >
           서브헤더
         </Button>
-        <Button variant="outlined" onClick={toText}>
+        <Button
+          variant="outlined"
+          onClick={toText}
+          className={classes.basic_button}
+        >
           본문
         </Button>
       </Popover>
@@ -163,6 +223,9 @@ function ConvertButton(props: EditorRefProps) {
 
 const popOverStyles = makeStyles((theme: Theme) =>
   createStyles({
+    basic_button: {
+      color: "white",
+    },
     popover: {
       zIndex: `${theme.zIndex.drawer + 10001} !important` as any,
     },
@@ -186,6 +249,14 @@ const popOverStyles = makeStyles((theme: Theme) =>
       minHeight: "0px",
       minWidth: "0px",
     },
+    edit_member_button: {
+      fontSize: "16px",
+      letterSpacing: "-0.8px",
+      fontFamily: "Noto Sans CJK KR Regular",
+      color: "#E2E2E2",
+      padding: "0px",
+      width: "100px",
+    },
   })
 );
 function ColorButton() {
@@ -206,7 +277,11 @@ function ColorButton() {
 
   return (
     <Fragment>
-      <Button variant="outlined" onClick={handleClick}>
+      <Button
+        variant="outlined"
+        onClick={handleClick}
+        className={classes.basic_button}
+      >
         A
       </Button>
       <Popover
@@ -218,16 +293,32 @@ function ColorButton() {
           root: classes.popover,
         }}
       >
-        <Button variant="outlined" onClick={black}>
+        <Button
+          variant="outlined"
+          onClick={black}
+          className={classes.basic_button}
+        >
           B
         </Button>
-        <Button variant="outlined" onClick={green}>
+        <Button
+          variant="outlined"
+          onClick={green}
+          className={classes.basic_button}
+        >
           G
         </Button>
-        <Button variant="outlined" onClick={blue}>
+        <Button
+          variant="outlined"
+          onClick={blue}
+          className={classes.basic_button}
+        >
           B
         </Button>
-        <Button variant="outlined" onClick={red}>
+        <Button
+          variant="outlined"
+          onClick={red}
+          className={classes.basic_button}
+        >
           R
         </Button>
       </Popover>
@@ -254,7 +345,11 @@ function LinkButton() {
 
   return (
     <Fragment>
-      <Button variant="outlined" onClick={handleClick}>
+      <Button
+        variant="outlined"
+        onClick={handleClick}
+        className={classes.basic_button}
+      >
         L
       </Button>
       <Popover
@@ -303,141 +398,144 @@ function AttendButton(props: AttendButtonProps) {
   };
   const attendedUser = (checking: boolean) => {
     return (
-      <div className={platterStyle.attended_user_container}>
-        <div className={platterStyle.count_text_check_container}>
-          {!!props.platterMembers && !!props.platterMembers[0] && (
-            <Button
-              aria-describedby={id}
-              variant="contained"
-              onClick={handleClickOpen}
-              className={classes.show_list_button}
-              endIcon={<img className={platterStyle.go_to_icon} alt={"icon"} />}
-              // endIcon={
-              //   <div>
-              //     <MoreHorizIcon />
-              //   </div>
-              // }
-            >
-              <div className={platterStyle.count_text_check}>
-                {props.platterMembers[0].displayName +
-                  " 외 " +
-                  (props.platterMembers.length - 1) +
-                  " 명"}
-              </div>
-            </Button>
-          )}
+      <div className={platterStyle.attended_container}>
+        <div className={platterStyle.count_text}>
+          {!!props.platterMembers &&
+            props.platterMembers.length > 0 &&
+            props.platterMembers[0].displayName +
+              " 외 " +
+              (props.platterMembers.length - 1) +
+              " 명 (참여자 리스트)"}
+        </div>
 
-          <Popover
-            onClose={handleClose}
-            id={id}
-            open={popoverOpen}
-            //open={false}
-            anchorEl={popOverAnchorEl}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            PaperProps={{
-              style: {
-                backgroundColor: "transparent",
-                boxShadow: "none",
-                overflow: "visible",
-              },
-            }}
-            className={classes.popover}
-          >
-            <div className={platterStyle.attend_popover}>
-              <div
-                className={classNames({
-                  [platterStyle.list_container]: true,
-                  [platterStyle.list_container_basic]: true,
-                })}
-              >
-                <div className={platterStyle.list_container_padding_top} />
-                {!!props.platterMembers &&
-                  !!props.platterMembers[0] &&
-                  props.platterMembers.map((user: UserView) => (
-                    <div key={user.id} className={platterStyle.user_info}>
-                      <div className={platterStyle.user_info_text}>
-                        {user.displayName}
-                      </div>
+        {/* <div className={platterStyle.count_text_check}>
+            {props.platterMembers[0].displayName +
+              " 외 " +
+              (props.platterMembers.length - 1) +
+              " 명"} 
+          </div> */}
 
-                      {!checking && (
-                        <Button
-                          className={classes.delete_button}
-                          onClick={() => {
-                            setPlatterMembers(
-                              props.platterMembers.filter(
-                                (it: UserView) => it.id !== user.id
-                              )
-                            );
-                          }}
-                        >
-                          <div className={platterStyle.minus_container}>
-                            <div className={platterStyle.minus}></div>
-                          </div>
-                        </Button>
-                      )}
+        <div
+          className={classNames({
+            [platterStyle.list_container]: true,
+          })}
+        >
+          <div className={platterStyle.list_container_padding_top} />
+          {!!props.platterMembers &&
+            !!props.platterMembers[0] &&
+            props.platterMembers.map((user: UserView) => (
+              <div key={user.id} className={platterStyle.user_info}>
+                <div className={platterStyle.user_info_text}>
+                  {user.displayName}
+                </div>
+
+                {!checking && (
+                  <Button
+                    className={classes.delete_button}
+                    onClick={() => {
+                      setPlatterMembers(
+                        props.platterMembers.filter(
+                          (it: UserView) => it.id !== user.id
+                        )
+                      );
+                    }}
+                  >
+                    <div className={platterStyle.minus_container}>
+                      <div className={platterStyle.minus}></div>
                     </div>
-                  ))}
-                <div className={platterStyle.list_container_padding_top} />
+                  </Button>
+                )}
               </div>
-            </div>
-          </Popover>
+            ))}
+          <div className={platterStyle.list_container_padding_top} />
         </div>
       </div>
     );
   };
   return (
     <Fragment>
-      <Autocomplete
-        id="users-search"
-        style={{ width: 300 }}
-        multiple
-        value={props.platterMembers}
-        onChange={(event, newValue) => {
-          props.setPlatterMembers(newValue);
-        }}
-        options={props.collectionMembers}
-        renderInput={(params) => {
-          return (
-            <InputBase
-              className={platterStyle.input_option_container}
-              ref={params.InputProps.ref}
-              inputProps={params.inputProps}
-              placeholder={"ID 또는 이름으로 참여 인원 추가"}
-              autoFocus
-            />
-          );
-        }}
-        getOptionLabel={(option) => option.displayName}
-        renderOption={(option: UserView) => (
-          <Fragment>
-            <div className={platterStyle.search_attend_user_item}>
-              <Avatar
-                alt={option.displayName}
-                src={option.imageUrl}
-                className={platterStyle.avatar}
-              />
+      <div className={platterStyle.button_container}>
+        <div className={platterStyle.align_container}>
+          <Button
+            className={classes.edit_member_button}
+            onClick={handleClickOpen}
+            aria-describedby={id}
+          >
+            참여인원
+          </Button>
+        </div>
+      </div>
 
-              <div className={platterStyle.user_info}>
-                <div className={platterStyle.name_text}>
-                  {option.displayName}
+      <Popover
+        onClose={handleClose}
+        id={id}
+        open={popoverOpen}
+        //open={false}
+        anchorEl={popOverAnchorEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        PaperProps={{
+          style: {
+            backgroundColor: "transparent",
+            boxShadow: "none",
+            overflow: "visible",
+          },
+        }}
+        className={classes.popover}
+      >
+        <div className={platterStyle.edit_member_container}>
+          <Autocomplete
+            id="users-search"
+            style={{ width: "100%" }}
+            multiple
+            value={props.platterMembers}
+            onChange={(event, newValue) => {
+              props.setPlatterMembers(newValue);
+            }}
+            options={props.collectionMembers}
+            renderInput={(params) => {
+              return (
+                <InputBase
+                  className={platterStyle.input_option_container}
+                  ref={params.InputProps.ref}
+                  inputProps={params.inputProps}
+                  placeholder={"ID 또는 이름으로 참여 인원 추가"}
+                  autoFocus
+                />
+              );
+            }}
+            getOptionLabel={(option) => option.displayName}
+            renderOption={(option: UserView) => (
+              <Fragment>
+                <div className={platterStyle.search_attend_user_item}>
+                  <Avatar
+                    alt={option.displayName}
+                    src={option.imageUrl}
+                    className={platterStyle.avatar}
+                  />
+
+                  <div className={platterStyle.user_info}>
+                    <div className={platterStyle.name_text}>
+                      {option.displayName}
+                    </div>
+                    <div className={platterStyle.user_info_text}>
+                      삼성전자, 과장
+                    </div>
+                  </div>
                 </div>
-                <div className={platterStyle.user_info_text}>
-                  삼성전자, 과장
-                </div>
-              </div>
-            </div>
-          </Fragment>
-        )}
-        classes={{ popper: classes.popover }}
-      />
-      {attendedUser()}
+              </Fragment>
+            )}
+            classes={{ popper: classes.popover }}
+          />
+          {attendedUser()}
+        </div>
+      </Popover>
     </Fragment>
   );
 }

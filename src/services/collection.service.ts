@@ -30,7 +30,6 @@ export interface CollectionDetail {
 }
 
 export async function getCollection(id: number): Promise<CollectionDetail> {
-  console.log("get collection ");
   const res = await axios.get(`collection/v1/${id}`);
   return res.data;
 }

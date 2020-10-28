@@ -25,7 +25,29 @@ import DialogContent from "@material-ui/core/DialogContent";
 import PlatterToolBar from "../../components/platter/PlatterToolBar";
 import { UserView } from "../../services/user.service";
 import queryString from "query-string";
-import Fab from "@material-ui/core/Fab";
+
+enum BlockType {
+  SUB_HEADER = "SUB_HEADER",
+  TEXT = "TEXT",
+  IMAGES = "IMAGES",
+  FILES = "FILES",
+}
+function toBlockType(type: string): BlockType {
+  console.log(type);
+  switch (type) {
+    case "paragraph":
+      console.log("textext");
+      return BlockType.TEXT;
+    case "header":
+      return BlockType.SUB_HEADER;
+    case "images":
+      return BlockType.IMAGES;
+    case "files":
+      return BlockType.FILES;
+    default:
+      return BlockType.TEXT;
+  }
+}
 
 export interface EditPlatterPageProps extends PlatterProps, ThreadProps {
   platter: PlatterData;
@@ -35,19 +57,20 @@ export interface EditPlatterPageProps extends PlatterProps, ThreadProps {
   sendMessage(message: { content: string }): Promise<void>;
   loadMessages(): Promise<MessageData[]>;
   onClose: Promise<void>;
+  addCcs: Promise<void>;
+  removeCcs: Promise<void>;
 }
 
 export default function EditPlatterPage(props: EditPlatterPageProps) {
   const [openThread, setOpenThread] = useState(false);
   const [openPlatter, setOpenPlatter] = useState(true);
-  console.log("EditPlatterPageEditPlatterPageEditPlatterPage");
   const boardContainerEl = useRef<any>(null);
   const threadContainerEl = useRef<any>(null);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [editorRef, setEditorRef] = useState(null);
   const [isEditing, setEditing] = useState(false);
-  //const { pathname, search } = useLocation();
+  const { pathname, search } = useLocation();
   const history = useHistory();
   const handleClose = () => {
     const query = queryString.parse(search);
@@ -56,6 +79,34 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
       pathname,
       search: queryString.stringify(query),
     });
+  };
+  const handleEditPlatter = async () => {
+    try {
+      await props.editPlatter({
+        title,
+        blocks: (await (editorRef as any).save()).blocks.map((it: any) => {
+          return {
+            type: toBlockType(it.type),
+            content: it.data.text || "",
+            attaches: it.data.files || [],
+          };
+        }),
+      });
+      console.log("handleEditPlatterhandleEditPlatter22222");
+      props.platter?.members?.forEach((member) => {
+        if (!members?.includes(member)) {
+          props.removeCcs(member.id);
+        }
+      });
+      members?.forEach((member) => {
+        if (!props.platter?.members?.includes(member)) {
+          props.addCcs(member.id);
+        }
+      });
+      console.log("handleEditPlatterhandleEditPlatter333");
+
+      await handleClose();
+    } catch {}
   };
 
   const onScrollHandler = (event) => {
@@ -90,15 +141,6 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   );
   return (
     <div>
-      {isEditing && (
-        <PlatterToolBar
-          collectionMembers={props.collectionMembers}
-          setMembers={setMembers}
-          members={members}
-          editorRef={editorRef}
-        />
-      )}
-
       <Dialog
         fullWidth
         maxWidth="xl"
@@ -108,6 +150,16 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
         PaperComponent={PaperComponent}
         onClick={props.onClose}
       >
+        {isEditing && (
+          <PlatterToolBar
+            collectionMembers={props.collectionMembers}
+            setMembers={setMembers}
+            members={members}
+            editorRef={editorRef}
+            isCreate={false}
+            editPlatter={handleEditPlatter}
+          />
+        )}
         <Element
           name="test7"
           id="containerElement"

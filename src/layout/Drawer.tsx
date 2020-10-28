@@ -4,7 +4,12 @@ import { useLocation, useHistory } from "react-router-dom";
 import menuStyle from "./Drawer.module.scss";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-
+import {
+  COLLECTION_LIST_MY_COLLECTION,
+  MEMO_HOME,
+  NOTIFICATION,
+  PROFILE,
+} from "../common/paths";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -40,7 +45,13 @@ export default function Drawer() {
     collection: "/collections/my",
     memo: "/memos/home",
     persona: "/persona",
+    notification: "/notification",
   });
+  // const [lastPath, setLastPath] = useState({
+  //   collection: "/collections/my",
+  //   memo: "/memos/home",
+  //   persona: "/persona",
+  // });
   const { pathname, search } = useLocation();
   const categories = [
     {
@@ -54,6 +65,10 @@ export default function Drawer() {
     {
       name: "persona",
       text: "프로필",
+    },
+    {
+      name: "notification",
+      text: "알림",
     },
   ];
   useEffect(() => {
@@ -70,26 +85,52 @@ export default function Drawer() {
       setClicked("persona");
       setLastPath((prevState) => ({ ...prevState, persona: currentPath }));
     }
+    if (pathname.startsWith("/notification")) {
+      setClicked("notification");
+      setLastPath((prevState) => ({ ...prevState, notification: currentPath }));
+    }
   }, [pathname, search]);
 
   const clickMenu = useCallback(
     (name: string) => {
       switch (name) {
         case "collection":
-          history.push(`${lastPath.collection}`);
+          if (clicked === "collection") {
+            history.push(`${COLLECTION_LIST_MY_COLLECTION}`);
+          } else {
+            history.push(`${lastPath.collection}`);
+          }
+
           return;
         case "memo":
-          history.push(`${lastPath.memo}`);
+          if (clicked === "memo") {
+            history.push(`${MEMO_HOME}`);
+          } else {
+            history.push(`${lastPath.memo}`);
+          }
           return;
         case "persona":
-          history.push(`${lastPath.persona}`);
+          if (clicked === "persona") {
+            history.push(`${PROFILE}`);
+          } else {
+            history.push(`${lastPath.persona}`);
+          }
+
+          return;
+        case "notification":
+          if (clicked === "notification") {
+            history.push(`${NOTIFICATION}`);
+          } else {
+            history.push(`${lastPath.notification}`);
+          }
+
           return;
         default:
           history.push(`${lastPath.collection}`);
           return;
       }
     },
-    [lastPath, history]
+    [lastPath, history, clicked]
   );
 
   return (

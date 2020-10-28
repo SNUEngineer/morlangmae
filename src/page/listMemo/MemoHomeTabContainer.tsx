@@ -26,11 +26,11 @@ async function getHomeMemos() {
   const myMemos = data[4].map((it) => viewToData(it));
 
   return {
-    temporariesMemos,
-    collectionsForMemos,
-    requestingMemos,
-    requestedMemos,
-    myMemos,
+    temporariesMemos, //내꺼에서 초안 상태인거 //
+    collectionsForMemos, //
+    requestingMemos, //
+    requestedMemos, // url
+    myMemos, //
   };
 }
 
