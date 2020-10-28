@@ -23,6 +23,7 @@ interface NotificationPageProps {
   initialNotifications: NotificationDataAndCursor;
   getMoreNotifications(cursor?: string): Promise<NotificationDataAndCursor>;
   onNotificationClick(notificationData: NotificationData): Promise<void>;
+  onClose(): Promise<void>;
 }
 
 export default function NotificationPage(props: NotificationPageProps) {
@@ -41,22 +42,18 @@ export default function NotificationPage(props: NotificationPageProps) {
     props.initialNotifications.cursor
   );
   const onGetMoreNotifications = async () => {
-    console.log(
-      "흠흠 fetchMore={onGetMoreNotifications}fetchMore={onGetMoreNotifications} "
-    );
     const res = await props.getMoreNotifications(cursor);
     setNotifications([...notifications, ...res.data]);
     setCursor(res.cursor);
   };
 
   return (
-    <div>
+    <div className={notiStyle.root} id={"pageScroller"}>
       {props.isPage && (
         <div>
           <div className={notiStyle.navigation}>
-            <div className={notiStyle.back_text}>{"< 이전으로"}</div>
+            <Button onClick={props.goBack}>이전으로</Button>
           </div>
-          <Button onClick={props.goBack}>이전으로</Button>
 
           <div className={notiStyle.container}>
             <Header title={"알림"} subMenuType={"none"} />
@@ -67,6 +64,7 @@ export default function NotificationPage(props: NotificationPageProps) {
                   notifications={notifications}
                   onClick={props.onNotificationClick}
                   fetchMore={onGetMoreNotifications}
+                  isPage={props.isPage}
                 />
                 {/* {cursor && (
                   <ListItem onClick={onGetMoreNotifications}>...</ListItem>
@@ -78,17 +76,17 @@ export default function NotificationPage(props: NotificationPageProps) {
       )}
       {!props.isPage && (
         <div className={notiStyle.popover_container}>
+          <NotificationList
+            notifications={notifications}
+            onClick={props.onNotificationClick}
+            fetchMore={onGetMoreNotifications}
+            onClose={props.onClose}
+            isPage={props.isPage}
+          />
           <Button onClick={props.showAll}>알림 전체보기</Button>
-          <List>
-            <NotificationList
-              notifications={notifications}
-              onClick={props.onNotificationClick}
-              fetchMore={onGetMoreNotifications}
-            />
-            {cursor && (
+          {/* {cursor && (
               <ListItem onClick={onGetMoreNotifications}>...</ListItem>
-            )}
-          </List>
+            )} */}
         </div>
       )}
     </div>

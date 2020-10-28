@@ -10,38 +10,45 @@ interface NotificationListProps {
   notifications?: NotificationData[];
   onNotificationClick(notificationData: NotificationData): Promise<void>;
   fetchMore(): Promise<void>;
+  onClose(): Promise<void>;
+  isPage: boolean;
   //onViewAllNotifications(): Promise<void>;
 }
 
 export default function NotificationList(props: NotificationListProps) {
-  const notificationList = props.notifications
-    ?.slice(0, 7)
-    .map((notification, index) => {
-      return (
-        <div className={notiStyle.list_container}>
-          <Notification
-            key={notification.id}
-            notification={notification}
-            onClick={props.onNotificationClick}
-          />
-          {props.notifications?.length !== index + 1 && (
-            <div className={notiStyle.divider}></div>
-          )}
-        </div>
-      );
-    });
-
   return (
-    <List>
+    <div
+      id={"notificationScroll"}
+      className={notiStyle.notification_scroll_div}
+    >
       <InfiniteScroll
+        //dataLength={props.notifications?.length}
         dataLength={props.notifications?.length}
-        next={props.fetchMore}
+        next={() => {
+          console.log("nextnextnextnext");
+          props.fetchMore();
+        }}
         hasMore={true}
         loader={<h4>로딩 중</h4>}
+        scrollableTarget={props.isPage ? "pageScroller" : "notificationScroll"}
       >
-        {notificationList}
+        {props.notifications?.map((notification, index) => {
+          return (
+            <div className={notiStyle.list_container}>
+              <Notification
+                key={notification.id}
+                notification={notification}
+                onClick={props.onNotificationClick}
+                onClose={props.onClose}
+              />
+              {props.notifications?.length !== index + 1 && (
+                <div className={notiStyle.divider}></div>
+              )}
+            </div>
+          );
+        })}
+        {/* <ListItem onClick={props.onViewAllNotifications}>View all</ListItem> */}
       </InfiniteScroll>
-      {/* <ListItem onClick={props.onViewAllNotifications}>View all</ListItem> */}
-    </List>
+    </div>
   );
 }

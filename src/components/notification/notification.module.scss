@@ -148,3 +148,11 @@
     background-color: #e0e0e0;
   }
 }
+
+.notification_scroll_div {
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}

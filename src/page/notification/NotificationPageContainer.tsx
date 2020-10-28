@@ -26,9 +26,6 @@ export default function NotificationPageContainer(props: any) {
     if (cursor) {
       index = Number(cursor);
     }
-    console.log(
-      "indexindexindexindexindex " + index + "   " + JSON.stringify(data)
-    );
     return {
       data: data?.notifications.slice(index, index + 7) || [],
       cursor: data?.notifications?.length
@@ -47,6 +44,9 @@ export default function NotificationPageContainer(props: any) {
     history.goBack();
   };
   const showAll = async () => {
+    if (!!props.onClose) {
+      props.onClose();
+    }
     history.push(`${NOTIFICATION}`);
   };
 
@@ -61,16 +61,15 @@ export default function NotificationPageContainer(props: any) {
     };
 
     return (
-      <div>
-        <NotificationPage
-          goBack={goBack}
-          showAll={showAll}
-          initialNotifications={initialNotifications}
-          getMoreNotifications={getMoreNotifications}
-          onNotificationClick={clickNotification}
-          isPage={isPage}
-        />
-      </div>
+      <NotificationPage
+        goBack={goBack}
+        showAll={showAll}
+        initialNotifications={initialNotifications}
+        getMoreNotifications={getMoreNotifications}
+        onNotificationClick={clickNotification}
+        isPage={isPage}
+        onClose={props.onClose}
+      />
     );
   }
 

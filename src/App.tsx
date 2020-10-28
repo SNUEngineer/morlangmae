@@ -146,7 +146,7 @@ function App() {
             <AuthRoute
               hasDrawer
               authenticated={authenticated}
-              path={["/collections", "/memos", "/persona"]}
+              path={["/collections", "/memos", "/persona", "/notifications"]}
               render={(props: any) => (
                 <MainPage pathname={pathname} search={search}></MainPage>
               )}
@@ -217,13 +217,15 @@ function App() {
               )}
             />
 
-            <AuthRoute
+            {/* <AuthRoute
               exact
               hasDrawer
               authenticated={authenticated}
               path={NOTIFICATION}
-              render={(props: any) => <NotificationPageContainer />}
-            />
+              render={(props: any) => (
+                <NotificationPageContainer isPage={true} />
+              )}
+            /> */}
             <AuthRoute
               exact
               authenticated={authenticated}
@@ -314,11 +316,25 @@ function MainPage(props: any) {
       opacity: pathname.startsWith("/collections") ? 1 : 0,
       zIndex: pathname.startsWith("/collections") ? 800 : -1,
     };
+    const notificationStyle = {
+      opacity: pathname.startsWith("/notifications") ? 1 : 0,
+      zIndex: pathname.startsWith("/notifications") ? 800 : -1,
+    };
 
     return (
       <div className={appStyle.main_container}>
         {editModal()}
         {memoWorkstation()}
+        <div
+          style={notificationStyle}
+          className={appStyle.main_page}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
+          <NotificationPageContainer isPage={true} />
+        </div>
         <div
           style={memoStyle}
           className={appStyle.main_page}

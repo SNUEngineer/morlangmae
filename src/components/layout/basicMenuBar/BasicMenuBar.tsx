@@ -117,7 +117,11 @@ export default function BasicMenuBar(props: any) {
                 className={myClasses.popover}
               >
                 <div className={myClasses.paper}>
-                  <NotificationPageContainer />
+                  <NotificationPageContainer
+                    onClose={() => {
+                      setOpen(false);
+                    }}
+                  />
                 </div>
               </Popover>
             </div>

@@ -11,6 +11,8 @@ import { getCollection } from "../../services/collection.service";
 import { getPlatter } from "../../services/platter.service";
 //import { getMemo } from "../../services/memo.service";
 import { useAsync } from "react-async";
+import { useHistory, useLocation } from "react-router-dom";
+import queryString from "query-string";
 
 export interface NotificationData {
   id: number;
@@ -29,20 +31,22 @@ export interface NotificationSender {
 export interface NotificationProps {
   notification: NotificationData;
   onClick(notificationData: NotificationData): Promise<void>;
+  onClose?(): Promise<void>;
 }
 
-const getTitle = async (request) => {
+const getData = async (request) => {
   let data: any;
   switch (request.type) {
     case "PLATTER":
       data = await getPlatter(request.id);
-      return data.title;
+      console.log("platterplatterplatterplatter " + JSON.stringify(data));
+      return data;
     case "COLLECTION":
       data = await getCollection(request.id);
-      return data.title;
+      return data;
     case "MEMO":
       //data = await getMemo(request.id);
-      // return data.title;
+      // return data;
       return "";
     default:
       return "";
@@ -54,12 +58,42 @@ export default function Notification(props: NotificationProps) {
   const sender = notification.sentBy;
   const comment = notification.comment;
   const onClick = () => props.onClick(notification);
-
+  const history = useHistory();
+  const { pathname, search } = useLocation();
   const { data } = useAsync({
-    promiseFn: getTitle,
+    promiseFn: getData,
     type: notification.type,
     id: notification.target,
   });
+  const handleOnClick = async () => {
+    const type = notification.type;
+    const query = queryString.parse(search);
+    let path;
+    if (!data) {
+      return;
+    }
+    console.log("datadatadata " + JSON.stringify(data));
+    switch (type) {
+      case "PLATTER":
+        path = `${pathname}?collectionId=${data.collectionId}&platterId=${data.id}`;
+        history.push(path);
+        break;
+      case "COLLECTION":
+        query.collectionId = data.id;
+        path = `${pathname}?collectionId=${data.id}`;
+        history.push(path);
+        break;
+      case "MEMO":
+        path = `${pathname}?memoId=${data.id}`;
+        history.push(path);
+        break;
+      default:
+        break;
+    }
+    if (!!props.onClose) {
+      // props.onClose();
+    }
+  };
 
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -76,7 +110,7 @@ export default function Notification(props: NotificationProps) {
       comment: comment,
     };
     return (
-      <ListItem onClick={onClick} className={classes.list_item}>
+      <ListItem onClick={handleOnClick} className={classes.list_item}>
         <div
           className={classNames({
             [notiStyle.notification_container]: true,
@@ -119,7 +153,7 @@ export default function Notification(props: NotificationProps) {
     );
   }
   return (
-    <ListItem onClick={onClick} className={classes.list_item}>
+    <ListItem onClick={handleOnClick} className={classes.list_item}>
       <div
         className={classNames({
           [notiStyle.notification_container]: true,
@@ -144,7 +178,7 @@ export default function Notification(props: NotificationProps) {
           <div className={notiStyle.content}>
             <div className={notiStyle.cause_text}>{notification.cause}</div>
             <div className={notiStyle.where_text}>
-              {!!data ? data : "로딩 중..."}
+              {!!data ? data.title : "로딩 중..."}
             </div>
           </div>
           <div className={notiStyle.info}>
