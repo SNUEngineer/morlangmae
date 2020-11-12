@@ -5,10 +5,10 @@ import Typography from "@material-ui/core/Typography";
 import memoStyle from "./memoCard.module.scss";
 import classNames from "classnames";
 import { UserView } from "../../../services/user.service";
-import { MemoData } from "../../../services/memo.service";
+import { MemoView } from "../../../services/memo.service";
 
 export interface MemoCardProps {
-  data: MemoData;
+  data: MemoView;
   viewType:
     | "NORMAL"
     | "WIDE"
@@ -18,7 +18,7 @@ export interface MemoCardProps {
     | "TEMP"
     | "SMALL_LIST";
 
-  onClick(data: MemoData): Promise<void>;
+  onClick(data: MemoView): Promise<void>;
 }
 
 export enum MemoType {
@@ -51,9 +51,14 @@ export default function MemoCard(props: MemoCardProps) {
   const notificationCount = !!data.notificationCount
     ? 0
     : data.notificationCount;
-  const onClick = () => props.onClick(props.data);
+  const onClick = () => {
+    props.onClick(props.data);
+  };
   const imageStyle = {
-    backgroundImage: "url(" + data.imageUrl + ")",
+    backgroundImage:
+      "url(" +
+      "https://www.solidbackgrounds.com/images/2560x1600/2560x1600-dark-gray-solid-color-background.jpg" +
+      ")",
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
@@ -98,10 +103,10 @@ export default function MemoCard(props: MemoCardProps) {
     case "IN_COLLECTION":
       return (
         <div className={memoStyle.list_root} onClick={onClick}>
-          <div className={memoStyle.title_image} onClick={onClick}>
+          <div className={memoStyle.title_image}>
             <div className={memoStyle.image} style={imageStyle}></div>
           </div>
-          <div className={memoStyle.document_info} onClick={onClick}>
+          <div className={memoStyle.document_info}>
             <div className={memoStyle.vertical_align}>
               <div
                 className={classNames({
@@ -109,7 +114,6 @@ export default function MemoCard(props: MemoCardProps) {
                   [memoStyle.collection_title_in_collection]:
                     viewType === "IN_COLLECTION",
                 })}
-                onClick={onClick}
               >
                 {viewType !== "IN_COLLECTION" && <div>{data.title}</div>}
                 <div
@@ -118,35 +122,25 @@ export default function MemoCard(props: MemoCardProps) {
                     [memoStyle.platter_title_in_collection]:
                       viewType === "IN_COLLECTION",
                   })}
-                  onClick={onClick}
                 >
                   {"플레터 이름"}
                 </div>
-                <div className={memoStyle.writer_name} onClick={onClick}>
-                  {"송병근"}
-                </div>
+                <div className={memoStyle.writer_name}>{"송병근"}</div>
               </div>
             </div>
           </div>
-          <div className={memoStyle.writer_info} onClick={onClick}>
+          <div className={memoStyle.writer_info}>
             <div className={memoStyle.vertical_align}>
-              <div className={memoStyle.date} onClick={onClick}>
-                {dateText}
+              <div className={memoStyle.date}>{dateText}</div>
+              <div className={memoStyle.document_title}>
+                {data.title}
+                {/* 혹시, file 이름으로는 어떰? */}
               </div>
-              <div className={memoStyle.document_title} onClick={onClick}>
-                {"1차 기획안.docx"}
-                {/* 작성자 프로필로 대체 */}
-              </div>
-              <div className={memoStyle.writer_count} onClick={onClick}>
-                {"5명 중 2명 작성"}
-              </div>
+              <div className={memoStyle.writer_count}>{"5명 중 2명 작성"}</div>
             </div>
           </div>
 
-          <div
-            className={memoStyle.collection_type_container}
-            onClick={onClick}
-          ></div>
+          <div className={memoStyle.collection_type_container}></div>
         </div>
       );
 
@@ -169,28 +163,23 @@ export default function MemoCard(props: MemoCardProps) {
     case "TEMP":
       return (
         <div className={memoStyle.temp_root} onClick={onClick}>
-          <div className={memoStyle.title_image} onClick={onClick}>
+          <div className={memoStyle.title_image}>
             <div className={memoStyle.image} style={imageStyle}></div>
           </div>
-          <div className={memoStyle.document_info} onClick={onClick}>
+          <div className={memoStyle.document_info}>
             <div className={memoStyle.vertical_align}>
               <div className={memoStyle.inner_align}>
-                <div className={memoStyle.collection_title} onClick={onClick}>
+                <div className={memoStyle.collection_title}>
                   {data.title}
-                  <div className={memoStyle.document_title} onClick={onClick}>
+                  <div className={memoStyle.document_title}>
                     {"1차 기획안.docx"}
                   </div>
                 </div>
               </div>
-              <div className={memoStyle.date} onClick={onClick}>
-                {dateText}
-              </div>
+              <div className={memoStyle.date}>{dateText}</div>
             </div>
           </div>
-          <div
-            className={memoStyle.collection_type_container}
-            onClick={onClick}
-          ></div>
+          <div className={memoStyle.collection_type_container}></div>
         </div>
       );
 

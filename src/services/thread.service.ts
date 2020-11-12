@@ -1,4 +1,4 @@
-import axios from '../common/axios';
+import axios from "../common/axios";
 
 export interface ThreadView {
   id: number;
@@ -18,15 +18,10 @@ export interface MessageSenderView {
 }
 
 export async function getThread(id: number): Promise<ThreadView> {
-  const res = await axios.get(
-    `/thread/v1/${id}`
-  )
-  return res.data
+  const res = await axios.get(`/thread/v1/${id}`);
+  return res.data;
 }
 
 export async function sendMessage(id: number, message: any): Promise<void> {
-  await axios.post(
-    `/thread/v1/${id}`,
-    message
-  )
+  await axios.put(`/thread/v1/${id}`, message);
 }

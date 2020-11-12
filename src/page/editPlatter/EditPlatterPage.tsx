@@ -33,10 +33,8 @@ enum BlockType {
   FILES = "FILES",
 }
 function toBlockType(type: string): BlockType {
-  console.log(type);
   switch (type) {
     case "paragraph":
-      console.log("textext");
       return BlockType.TEXT;
     case "header":
       return BlockType.SUB_HEADER;
@@ -85,14 +83,16 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
       await props.editPlatter({
         title,
         blocks: (await (editorRef as any).save()).blocks.map((it: any) => {
+          console.log(
+            "it.data.filesit.data.files " + JSON.stringify(it.data.files)
+          );
           return {
             type: toBlockType(it.type),
-            content: it.data.text || "",
-            attaches: it.data.files || [],
+            content: it.data.text || "aa",
+            attaches: it.data.files || ["aafafa"],
           };
         }),
       });
-      console.log("handleEditPlatterhandleEditPlatter22222");
       props.platter?.members?.forEach((member) => {
         if (!members?.includes(member)) {
           props.removeCcs(member.id);
@@ -103,7 +103,6 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
           props.addCcs(member.id);
         }
       });
-      console.log("handleEditPlatterhandleEditPlatter333");
 
       await handleClose();
     } catch {}
@@ -135,10 +134,6 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   };
   const [title, setTitle] = useState(props.platter.title);
   const [members, setMembers] = useState(props.platter.members);
-  console.log(
-    "props.collectionMembersprops.collectionMembers " +
-      JSON.stringify(props.collectionMembers)
-  );
   return (
     <div>
       <Dialog

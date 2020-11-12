@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -13,6 +14,7 @@ export interface MessageData {
   content: string;
   sentAt: Date;
   sender: MessageSender;
+  attaches?: string[];
 }
 
 interface MessageSender {
@@ -38,7 +40,9 @@ export default function Message(props: MessageProps) {
           </div>
           <div className={messageStyle.time_text}>{messageData.sentAt}</div>
         </div>
-        <div className={messageStyle.content}>{messageData.content}</div>
+        <div className={messageStyle.content}>
+          {messageData.content.content}
+        </div>
       </div>
     </div>
   );

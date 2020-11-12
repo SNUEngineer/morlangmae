@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useCallback } from "react";
 import EditorJs from "react-editor-js";
 import { EDITOR_JS_TOOLS } from "../editor/tools";
 import { UserView } from "../../services/user.service";
@@ -116,7 +116,7 @@ export default function PlatterEditor(props: PlatterEditorProps) {
     props.changeTitle(event.target.value);
   };
   console.log("PlatterEditorPlatterEditor");
-  const onReady = () => {
+  const onReady = useCallback(() => {
     const blocks = document.getElementById(holderId);
     if (blocks) {
       if (props.disableEditing) {
@@ -129,11 +129,24 @@ export default function PlatterEditor(props: PlatterEditorProps) {
     const inlineTools = document.querySelectorAll(".ce-inline-toolbar");
     tools.forEach((it: any) => (it.style.display = "none"));
     inlineTools.forEach((it: any) => (it.style.display = "none"));
-  };
+  }, [holderId, props.disableEditing]);
   onReady();
-  const editorData = {
-    blocks: data?.blocks?.map((it) => viewToData(it)) || [],
-  };
+  const editorComponent = useCallback(() => {
+    const editorData = {
+      blocks: data?.blocks?.map((it) => viewToData(it)) || [],
+    };
+    return (
+      <EditorJs
+        holder={holderId}
+        instanceRef={props.setEditorRef}
+        tools={EDITOR_JS_TOOLS as any}
+        data={editorData}
+        onReady={onReady}
+      >
+        <div id={holderId} />
+      </EditorJs>
+    );
+  }, [data, holderId, onReady, props.setEditorRef]);
 
   const [top, setTop] = useState<number | undefined>(0);
 
@@ -219,15 +232,16 @@ export default function PlatterEditor(props: PlatterEditorProps) {
         </div>
 
         <div className={platterStyle.editor_container}>
-          <EditorJs
+          {/* <EditorJs
             holder={holderId}
             instanceRef={props.setEditorRef}
             tools={EDITOR_JS_TOOLS as any}
-            data={editorData}
+            data={editorData()}
             onReady={onReady}
           >
             <div id={holderId} />
-          </EditorJs>
+          </EditorJs> */}
+          {editorComponent()}
         </div>
       </div>
     </div>

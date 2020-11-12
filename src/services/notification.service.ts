@@ -1,4 +1,4 @@
-import axios from '../common/axios';
+import axios from "../common/axios";
 
 export interface NotificationViewList {
   notifications: NotificationView[];
@@ -6,12 +6,12 @@ export interface NotificationViewList {
 
 export interface NotificationView {
   id: number;
-  type: 'COLLECTION' | 'PLATTER' | 'MEMO';
+  type: "COLLECTION" | "PLATTER" | "MEMO";
   cause: string;
   target: number;
   read: boolean;
   createdDate: Date;
-  sentBy: NotificationSenderView
+  sentBy: NotificationSenderView;
 }
 
 export interface NotificationSenderView {
@@ -21,10 +21,10 @@ export interface NotificationSenderView {
 }
 
 export async function getNotifications(): Promise<NotificationViewList> {
-  const res = await axios.get("/notification/v1")
-  return res.data
+  const res = await axios.get("/notification/v1");
+  return res.data;
 }
 
 export async function readNotification(id: number): Promise<void> {
-  await axios.post("/notification/v1/read")
+  await axios.put(`/notification/v1/${id}/read`);
 }

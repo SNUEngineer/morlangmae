@@ -18,46 +18,47 @@ import classNames from "classnames";
 import panStyle from "./panZoom.module.scss";
 
 type OnStateChangeData = {
-  x: number,
-  y: number,
-  scale: number,
-  angle: number,
+  x: number;
+  y: number;
+  scale: number;
+  angle: number;
 };
 
 type Props = {
-  zoomSpeed: number,
-  doubleZoomSpeed: number,
-  disabled?: boolean,
-  autoCenter?: boolean,
-  autoCenterZoomLevel?: number,
-  disableKeyInteraction?: boolean,
-  disableDoubleClickZoom?: boolean,
-  disableScrollZoom?: boolean,
-  realPinch?: boolean,
-  keyMapping?: { [string]: { x: number, y: number, z: number } },
-  minZoom: number,
-  maxZoom: number,
-  keyState: { control: boolean, spacebar: boolean },
+  zoomSpeed: number;
+  doubleZoomSpeed: number;
+  disabled?: boolean;
+  autoCenter?: boolean;
+  autoCenterZoomLevel?: number;
+  disableKeyInteraction?: boolean;
+  disableDoubleClickZoom?: boolean;
+  disableScrollZoom?: boolean;
+  realPinch?: boolean;
+  keyMapping?: { [string]: { x: number; y: number; z: number } };
+  minZoom: number;
+  maxZoom: number;
+  keyState: { control: boolean; spacebar: boolean };
+  mouseOnItem: boolean;
   preventPan: (
     event: SyntheticTouchEvent<HTMLDivElement> | MouseEvent,
     x: number,
     y: number
-  ) => boolean,
-  noStateUpdate: boolean,
-  boundaryRatioVertical: number,
-  boundaryRatioHorizontal: number,
+  ) => boolean;
+  noStateUpdate: boolean;
+  boundaryRatioVertical: number;
+  boundaryRatioHorizontal: number;
 
-  onPanStart?: (any) => void,
-  onPan?: (any) => void,
-  onPanEnd?: (any) => void,
-  onStateChange?: (data: OnStateChangeData) => void,
+  onPanStart?: (any) => void;
+  onPan?: (any) => void;
+  onPanEnd?: (any) => void;
+  onStateChange?: (data: OnStateChangeData) => void;
 } & React.ElementProps<"div">;
 
 type State = {
-  x: number,
-  y: number,
-  scale: number,
-  angle: number,
+  x: number;
+  y: number;
+  scale: number;
+  angle: number;
 };
 
 const getTransformMatrixString = (
@@ -80,6 +81,7 @@ class PanZoom extends React.Component<Props, State> {
     disableDoubleClickZoom: false,
     disableScrollZoom: false,
     keyState: { control: false, spacebar: false },
+    mouseOnItem: false,
     preventPan: () => false,
   };
 
@@ -244,24 +246,17 @@ class PanZoom extends React.Component<Props, State> {
       const { noStateUpdate } = this.props;
 
       // TODO disable if using touch event
-
-      console.log("hhhh " + this.state.spacebar);
-
       if (!this.props.keyState.spacebar) {
         return;
       }
-
       this.triggerOnPanStart(e);
-
       const offset = this.getOffset(e);
       const dx = offset.x - this.mousePos.x;
       const dy = offset.y - this.mousePos.y;
-
       this.mousePos = {
         x: offset.x,
         y: offset.y,
       };
-
       this.moveBy(dx, dy, noStateUpdate);
       this.triggerOnPan(e);
     }
@@ -283,7 +278,7 @@ class PanZoom extends React.Component<Props, State> {
   };
 
   onWheel = (e: WheelEvent) => {
-    const { disableScrollZoom, disabled, zoomSpeed } = this.props;
+    const { disableScrollZoom, disabled, zoomSpeed, mouseOnItem } = this.props;
     if (disableScrollZoom || disabled) {
       return;
     }
@@ -296,9 +291,12 @@ class PanZoom extends React.Component<Props, State> {
       this.zoomTo(offset.x, offset.y, scale);
       e.preventDefault();
     } else {
-      this.moveBy(0, e.deltaY);
-      e.stopPropagation();
-      e.preventDefault();
+      if (mouseOnItem) {
+      } else {
+        this.moveBy(0, e.deltaY);
+        e.stopPropagation();
+        e.preventDefault();
+      }
     }
   };
 
@@ -931,6 +929,7 @@ class PanZoom extends React.Component<Props, State> {
       disableDoubleClickZoom,
       disableScrollZoom,
       keyState,
+      mouseOnItem,
       disableKeyInteraction,
       realPinch,
       keyMapping,

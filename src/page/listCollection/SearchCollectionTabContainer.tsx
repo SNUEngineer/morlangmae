@@ -84,7 +84,7 @@ export default function SearchCollectionTabContainer(
   };
 
   if (data) {
-    console.log("datadatadata " + JSON.stringify(data));
+    console.log("props.collectionIdprops.collectionId " + props.collectionId);
 
     return (
       <Fragment>
@@ -97,10 +97,6 @@ export default function SearchCollectionTabContainer(
           pinCollection={pinCollection}
           unpinCollection={unpinCollection}
           viewAllCompanyCollection={goCompanyCollection}
-        />
-        <ModalManager
-          collectionId={props.collectionId}
-          platterId={props.platterId}
         />
       </Fragment>
     );

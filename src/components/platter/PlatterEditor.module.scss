@@ -7,12 +7,14 @@
   box-sizing: border-box;
 
   .align_container {
-    position: absolute;
-    top: 0;
-    left: 50%;
+    position: relative;
+    // top: 0;
+    //left: 50%;
+    margin: auto 0;
+    // background-color: red;
     transform: translate(-50%, 0);
     max-width: 750px;
-    width: 100%;
+    // width: 100%;
     padding-left: 30px;
     padding-right: 30px;
     box-sizing: border-box;

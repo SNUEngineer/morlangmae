@@ -82,7 +82,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
 
   const history = useHistory();
   const onCollectionClick = (data: CollectionData) => {
-    history.push(`/memo-in-collections/${data.id}`);
+    history.push(`/memos-in-collections/${data.id}`);
   };
   const onMemoClick = () => {
     const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //메모로 이동

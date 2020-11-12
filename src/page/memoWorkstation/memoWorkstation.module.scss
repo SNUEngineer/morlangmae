@@ -14,7 +14,7 @@
   border-width: 0.5px;
   display: flex;
   flex-direction: row;
-
+  z-index: 10001;
   .align_container {
     position: relative;
     height: 100%;
@@ -226,4 +226,11 @@
       height: 100%;
     }
   }
+}
+.side_menu {
+  position: fixed;
+  right: 0px;
+  width: 250px;
+  height: 100%;
+  z-index: 10000;
 }

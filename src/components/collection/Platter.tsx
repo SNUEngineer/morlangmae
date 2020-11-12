@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import EditorJs from "react-editor-js";
 import Avatar from "@material-ui/core/Avatar";
 import { EDITOR_JS_TOOLS } from "../editor/tools";
@@ -19,14 +19,14 @@ export default function Platter(props: PlatterProps) {
   const holderId = `platter-view-${props.id}`;
 
   const platterData = props.platterData;
-  const onReady = () => {
+  const onReady = useCallback(() => {
     const blocks = document.getElementById(holderId);
     if (blocks) {
       blocks.style.pointerEvents = "none";
     }
     const tools = document.querySelectorAll(".ce-toolbar");
     tools.forEach((it: any) => (it.style.display = "none"));
-  };
+  }, [holderId]);
   const data = {
     blocks: platterData.blocks.map((it) => viewToData(it)),
   };
@@ -50,6 +50,23 @@ export default function Platter(props: PlatterProps) {
   console.log(
     "platterdata?.titledata?.titledata?.title " + JSON.stringify(platterData)
   );
+  const editorComponent = useCallback(() => {
+    const editorData = {
+      blocks: platterData.blocks.map((it) => viewToData(it)),
+    };
+    //console.log("editorDataeditorData " + JSON.stringify(editorData));
+    //editor js 갱신하기
+    return (
+      <EditorJs
+        holder={holderId}
+        data={editorData}
+        onReady={onReady}
+        tools={EDITOR_JS_TOOLS as any}
+      >
+        <div id={holderId} />
+      </EditorJs>
+    );
+  }, [holderId, onReady, platterData.blocks]);
   return (
     <div
       className={classNames({
@@ -101,14 +118,15 @@ export default function Platter(props: PlatterProps) {
           </div>
         </div>
         <div className={platterStyle.editor_container}>
-          <EditorJs
+          {/* <EditorJs
             holder={holderId}
             data={data}
             onReady={onReady}
             tools={EDITOR_JS_TOOLS as any}
           >
             <div id={holderId} />
-          </EditorJs>
+          </EditorJs> */}
+          {editorComponent()}
         </div>
       </div>
     </div>

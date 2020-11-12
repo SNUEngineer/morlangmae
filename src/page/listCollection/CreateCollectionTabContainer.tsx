@@ -67,10 +67,6 @@ export default function CreateCollectionTabContainer(
           onCollectionClick={handleClick}
           myId={data.myData.id}
         />
-        <ModalManager
-          collectionId={props.collectionId}
-          platterId={props.platterId}
-        />
       </Fragment>
     );
   }

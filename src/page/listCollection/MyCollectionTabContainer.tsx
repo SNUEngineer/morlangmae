@@ -58,7 +58,6 @@ export default function MyCollectionTabContainer(
   };
 
   if (data) {
-    console.log("reloadDatareloadData 111 " + reload);
     return (
       <Fragment>
         <MyCollectionTab
@@ -69,10 +68,6 @@ export default function MyCollectionTabContainer(
           pinCollection={pinCollection}
           unpinCollection={unpinCollection}
           reloadData={reload}
-        />
-        <ModalManager
-          collectionId={props.collectionId}
-          platterId={props.platterId}
         />
       </Fragment>
     );

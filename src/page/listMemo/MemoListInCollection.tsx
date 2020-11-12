@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { CollectionData } from "../../components/collection/CollectionCard";
 import MemoCard from "../../components/memo/list/memoCard";
@@ -8,13 +8,19 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import memoStyle from "./MemoHomeTab.module.scss";
 import Header from "../../components/layout/Header/Header";
-
-export interface MemoListTabProps {
+import { MemoView } from "../../services/memo.service";
+export interface MemoListTabInCollectionProps {
   collectionId: number;
+  memos: Promise<MemoView[]>;
+  goBack: Promise<void>;
+  onMemoClick(data: MemoView): Promise<void>;
+  onCollectionClick(): Promise<void>;
+  collection: CollectionData;
 }
 
-export default function MemoListTab(props: MemoListTabProps) {
-  console.log("collectionIdcollectionId " + props.collectionId);
+export default function MemoListInCollectionTab(
+  props: MemoListTabInCollectionProps
+) {
   const collection1 = {
     id: 0,
     title: "3분기 마케팅 전략",
@@ -85,34 +91,68 @@ export default function MemoListTab(props: MemoListTabProps) {
   ];
 
   const history = useHistory();
-  const onCollectionClick = (data: CollectionData) => {
-    const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //컬렉션에 포함된 메모를 확인하는 페이지로 이동
-    history.push(path);
-  };
-  const onMemoClick = () => {
-    const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //메모로 이동
-    //history.push(path);
-  };
 
   return (
     <div className={memoStyle.list_tab_container}>
       {/* <CollectionTab /> */}
-      <MyMemoList memos={testCollections} onMemoClick={onMemoClick} />
+      <MyMemoList
+        memos={props.memos}
+        onMemoClick={props.onMemoClick}
+        collection={props.collection}
+        onCollectionClick={props.onCollectionClick}
+      />
     </div>
   );
 }
 
 export interface MyMemoListProps {
-  memos: CollectionData[];
-  onMemoClick(data: CollectionData): Promise<void>;
+  memos: MemoView[];
+  onMemoClick(data: MemoView): Promise<void>;
+  onCollectionClick(): Promise<void>;
+  collection: CollectionData;
 }
 
 export function MyMemoList(props: MyMemoListProps) {
-  const { memos, onMemoClick } = props;
+  const { memos, onMemoClick, onCollectionClick, collection } = props;
   const [filter, setFilter] = useState<string>("ALL");
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
+  const options = [
+    {
+      value: "ALL",
+      text: "전체",
+    },
+    {
+      value: "IN_PROGRESS",
+      text: "진행",
+    },
+    {
+      value: "DONE",
+      text: "완료",
+    },
+  ];
+  const imageStyle = useCallback(() => {
+    if (!collection) {
+      return "";
+    }
+    if (!!collection.imageUrl) {
+      return {
+        backgroundImage: "url(" + collection.imageUrl + ")",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      };
+    } else {
+      return {
+        backgroundImage:
+          "url(https://www.solidbackgrounds.com/images/3840x2160/3840x2160-dark-gray-solid-color-background.jpg)",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      };
+    }
+  }, [collection]);
   return (
     <div className={memoStyle.memo_in_collection_container}>
       <div className={memoStyle.header_container}>
@@ -120,20 +160,24 @@ export function MyMemoList(props: MyMemoListProps) {
       </div>
       <div className={memoStyle.divider} />
       <div className={memoStyle.split}>
-        <div className={memoStyle.collection_title_image}>
-          <div className={memoStyle.image}></div>
+        <div
+          className={memoStyle.collection_title_image}
+          onClick={onCollectionClick}
+        >
+          <div className={memoStyle.image} style={imageStyle()}></div>
         </div>
         <div className={memoStyle.list_container}>
           <div className={memoStyle.service_type}>{"컨설팅"}</div>
           <Header
-            title={"플랜비 직원 컨설팅"}
+            title={collection?.title}
             handleChange={handleChange}
             filter={filter}
             subMenuType={"filter"}
+            options={options}
           />
 
           <div className={memoStyle.list_container_divider} />
-          <Grid container>
+          <div className={memoStyle.scroll_container}>
             {memos.map((item) => {
               return (
                 <div className={memoStyle.list_item_container}>
@@ -146,7 +190,7 @@ export function MyMemoList(props: MyMemoListProps) {
                 </div>
               );
             })}
-          </Grid>
+          </div>
         </div>
       </div>
     </div>

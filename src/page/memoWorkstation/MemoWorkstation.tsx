@@ -1,5 +1,11 @@
 // @ts-nocheck
-import React, { useCallback, useState, useRef, useLayoutEffect } from "react";
+import React, {
+  useCallback,
+  useState,
+  useRef,
+  useLayoutEffect,
+  useEffect,
+} from "react";
 import { Document, Page } from "react-pdf/dist/entry.webpack";
 import memoStyle from "./memoWorkstation.module.scss";
 import { PanZoom } from "../../components/memo/PanZoom";
@@ -22,13 +28,19 @@ import clsx from "clsx";
 // import Menu, { Item as MenuItem, Divider } from "rc-menu";
 
 export function MemoToolBar(props: any) {
-  const { sideMenuOpen, setSideMenuOpen, handleSave, onClose } = props;
+  const {
+    sideMenuOpen,
+    setSideMenuOpen,
+    handleSaveItems,
+    onClose,
+    memoData,
+  } = props;
   return (
     <div className={memoStyle.menu_bar}>
       <div className={memoStyle.center_menu_container}>
         <div className={memoStyle.title_container}>
           <img className={memoStyle.cloud_icon} alt={"icon"} />
-          <div className={memoStyle.title}>ㅁㄴㅇㄹㅁㅇㄴㄹ</div>
+          <div className={memoStyle.title}>{memoData.title}</div>
           <img
             className={classNames({
               [memoStyle.dropdown_icon_opened]: sideMenuOpen,
@@ -66,13 +78,20 @@ export function MemoToolBar(props: any) {
           <div className={memoStyle.align_container}>
             <div className={memoStyle.verical_center}>
               <div
+                onClick={() => {
+                  if (sideMenuOpen === "TOOL") {
+                    setSideMenuOpen("NONE");
+                  } else {
+                    setSideMenuOpen("TOOL");
+                  }
+                }}
                 className={classNames({
                   [memoStyle.menu_text]: true,
-                  [memoStyle.menu_text_unfocused]: true,
-                  [memoStyle.menu_text_focused]: false,
+                  [memoStyle.menu_text_unfocused]: !(sideMenuOpen === "TOOL"),
+                  [memoStyle.menu_text_focused]: sideMenuOpen === "TOOL",
                 })}
               >
-                임시 저장
+                도구
               </div>
             </div>
           </div>
@@ -81,11 +100,17 @@ export function MemoToolBar(props: any) {
           <div className={memoStyle.align_container}>
             <div className={memoStyle.verical_center}>
               <div
-                onClick={() => setSideMenuOpen(!sideMenuOpen)}
+                onClick={() => {
+                  if (sideMenuOpen === "SHARE") {
+                    setSideMenuOpen("NONE");
+                  } else {
+                    setSideMenuOpen("SHARE");
+                  }
+                }}
                 className={classNames({
                   [memoStyle.menu_text]: true,
-                  [memoStyle.menu_text_unfocused]: !sideMenuOpen,
-                  [memoStyle.menu_text_focused]: sideMenuOpen,
+                  [memoStyle.menu_text_unfocused]: !(sideMenuOpen === "SHARE"),
+                  [memoStyle.menu_text_focused]: sideMenuOpen === "SHARE",
                 })}
               >
                 공유
@@ -98,7 +123,7 @@ export function MemoToolBar(props: any) {
             <div className={memoStyle.verical_center}>
               <div
                 onClick={() => {
-                  handleSave();
+                  handleSaveItems();
                 }}
                 className={classNames({
                   [memoStyle.menu_text]: true,
@@ -124,10 +149,11 @@ export interface MemoProps {
   memoItemThreadDatas?: MemoItemThreadData[];
   myData: UserView;
   writeMessage: Promise<void>;
-  handleEditMemoItems: Promise<void>;
+  handleMemoItems: Promise<void>;
   handleEditMemo: Promise<void>;
-  handleAddMemoItem: Promise<void>;
   onClose: Promise<void>;
+  sendMessage: Promise<void>;
+  collectionData;
 }
 
 export default function Memo(props: any) {
@@ -163,31 +189,47 @@ export default function Memo(props: any) {
   const [currentFocusItem, setCurrentFocusItem] = useState({
     itemID: 0,
   });
-  const [sideMenuOpen, setSideMenuOpen] = useState(false);
+  const [sideMenuOpen, setSideMenuOpen] = useState("NONE");
 
   const [pdfList, setPdfList] = useState({});
   const [fisrtAlign, setFisrtAlign] = useState(true);
   const [listProgress, setListProgress] = useState(0);
 
+  const [newMemoItems, setNewMemoItems] = useState<MemoItemData[]>();
+  const [existingMemoItems, setExistingMemoItems] = useState<MemoItemData[]>(
+    props.memoData?.memoItems
+  );
+  const [deletingMemoItems, setDeletingMemoItems] = useState<MemoItemData[]>();
+  const [memo, setMemo] = useState(props.memoData);
+  const [mouseOnItem, setMouseOnItem] = useState(false);
+
+  useEffect(() => {
+    setExistingMemoItems(props.memoData?.memoItems);
+    setDeletingMemoItems(null);
+    setNewMemoItems(null);
+    setMemo(props.memoData);
+    //return () => clearInterval(timer);
+  }, [props.memoData]);
+
   const initMemoItems = {
-    writer: { writerID: 1, writerName: "김기연" },
-    memoState: {
-      itemID: 0,
-      pageNum: 1,
-      content: "테스트",
-      x: 0,
-      y: 0,
-      purpose: "request",
+    id: 0,
+    createdDate: 0,
+    metadata: {
+      writer: { writerID: 1, writerName: "김기연" },
+      memoState: {
+        pageNum: 1,
+        content: "테스트",
+        x: 0,
+        y: 0,
+        purpose: "request",
+      },
     },
   };
-
-  const [newMemoItems, setNewMemoItems] = useState<MemoItemData[]>();
-  const [existingMemoItems, setExistingMemoItems] = useState<MemoItemData[]>();
-  const [deletingMemoItems, setDeletingMemoItems] = useState<MemoItemData[]>();
-
   const memoItems = useCallback(() => {
     // console.log("memoItemsmemoItems " + JSON.stringify(newMemoItems));
-    // console.log("memoItemsmemoItems " + JSON.stringify(existingMemoItems));
+    console.log(
+      "existingMemoItemsexistingMemoItems " + JSON.stringify(existingMemoItems)
+    );
 
     if (!newMemoItems || newMemoItems.length === 0) {
       if (!existingMemoItems || existingMemoItems.length === 0) {
@@ -201,7 +243,6 @@ export default function Memo(props: any) {
     return newMemoItems.concat(existingMemoItems);
   }, [newMemoItems, existingMemoItems]);
 
-  const [memo, setMemo] = useState(props.memoData);
   const [currentCheckedWriters, setCurrentCheckedWriters] = useState([
     props.myData.id,
   ]);
@@ -279,11 +320,17 @@ export default function Memo(props: any) {
     [fisrtAlign]
   );
 
-  const handleSave = async (e: any) => {
-    await props.handleEditMemo(memo);
-    await props.handleEditMemoItems(existingMemoItems);
-    await props.handleAddMemoItem(newMemoItems);
-    await props.deleteMemoItems(deletingMemoItems);
+  const handleSaveItems = async (e: any) => {
+    props.handleEditMemo(memo);
+    props.handleMemoItems(existingMemoItems, "EDIT");
+    props.handleMemoItems(newMemoItems, "ADD");
+    props.handleMemoItems(deletingMemoItems, "DELETE");
+  };
+  const handleShare = async (e: any) => {
+    props.handleEditMemo(memo);
+    props.handleMemoItems(existingMemoItems, "EDIT");
+    props.handleMemoItems(newMemoItems, "ADD");
+    props.handleMemoItems(deletingMemoItems, "DELETE");
   };
 
   const setPanzoomBoundary = useCallback(() => {
@@ -313,11 +360,13 @@ export default function Memo(props: any) {
   }, [panBoardSize, pageSize]);
 
   function onStateChange(state) {
-    setDocumentPosition({
-      x: state.x,
-      y: state.y,
-      scale: state.scale,
-    });
+    if (documentPosition.scale !== state.scale) {
+      setDocumentPosition({
+        x: state.x,
+        y: state.y,
+        scale: state.scale,
+      });
+    }
   }
   const onMouseDown = useCallback(
     (event: any) => {
@@ -325,24 +374,26 @@ export default function Memo(props: any) {
         event.preventDefault();
 
         const newMemoItem = {
-          writer: {
-            writerID: props.myData.id,
-            writerName: props.myData.displayName,
-          },
-          memoState: {
-            itemID: newItemId,
-            pageNum: pageNumber,
-            content: "테스트",
-            x: event.nativeEvent.offsetX,
-            y: event.nativeEvent.offsetY,
-            createdDate: new Date(),
-            purpose: "request",
-            anchor: {
-              x: -1000,
-              y: -1000,
-              box: {
+          id: newItemId,
+          metadata: {
+            writer: {
+              writerID: props.myData.id,
+              writerName: props.myData.displayName,
+            },
+            memoState: {
+              pageNum: pageNumber,
+              content: "테스트",
+              x: event.nativeEvent.offsetX,
+              y: event.nativeEvent.offsetY,
+              createdDate: new Date(),
+              purpose: "request",
+              anchor: {
                 x: -1000,
                 y: -1000,
+                box: {
+                  x: -1000,
+                  y: -1000,
+                },
               },
             },
           },
@@ -362,27 +413,26 @@ export default function Memo(props: any) {
   const deleteMemo = useCallback(
     (targetID: number) => {
       if (!!newMemoItems && newMemoItems.length !== 0) {
-        const newList = newMemoItems.filter(
-          (item) => item.memoState.itemID !== targetID
-        );
+        const newList = newMemoItems.filter((item) => item.id !== targetID);
         setNewMemoItems(newList);
       }
 
       if (!!existingMemoItems && existingMemoItems.length !== 0) {
         const existingList = existingMemoItems.filter((item) => {
-          if (item.memoState.itemID !== targetID) {
+          if (item.id === targetID) {
             if (!deletingMemoItems || deletingMemoItems.length === 0) {
               setDeletingMemoItems([item]);
             } else {
               const newDeletingItems = deletingMemoItems.concat(item);
               setDeletingMemoItems(newDeletingItems);
             }
-
+            console.log("삭제! 33333 ");
             return false;
           } else {
             return true;
           }
         });
+        console.log("삭제! 44444 " + JSON.stringify(existingList));
         setExistingMemoItems(existingList);
       }
     },
@@ -391,7 +441,7 @@ export default function Memo(props: any) {
 
   const checkWriters = useCallback(
     (writerID: number) => {
-      if (currentCheckedWriters.includes(writerID)) {
+      if (currentCheckedWriters?.includes(writerID)) {
         const filteredArray = currentCheckedWriters.filter(
           (item) => item !== writerID
         );
@@ -403,46 +453,22 @@ export default function Memo(props: any) {
     },
     [currentCheckedWriters]
   );
-  const updateTextContent = useCallback(
-    (targetID: number, content) => {
-      const newList = memoItems.filter((item) => {
-        if (item.memoState.itemID === targetID) {
-          item.memoState.content = content;
-        }
-        return true;
-      });
-
-      setMemoItems(newList);
-    },
-    [memoItems]
-  );
-
   const updateMemoItem = useCallback(
     (data: MemoItemData) => {
-      console.log("update memo item " + newMemoItems.length);
       if (!!newMemoItems && newMemoItems.length !== 0) {
         const newList = newMemoItems.filter((item) => {
-          if (item?.memoState.itemID === data?.memoState.itemID) {
-            item.memoState = data.memoState;
-            console.log("update eidieidi " + JSON.stringify(item));
+          if (item?.id === data?.id) {
+            item.metadata.memoState = data.metadata.memoState;
           }
           return true;
         });
 
         setNewMemoItems(newList);
       }
-      console.log(
-        "update memo item  newnewnew " + JSON.stringify(newMemoItems)
-      );
-
       if (!!existingMemoItems && existingMemoItems.length !== 0) {
         const existingList = existingMemoItems.filter((item) => {
-          if (item.memoState.itemID === data?.memoState.itemID) {
-            item.memoState = data.memoState;
-
-            console.log(
-              "update memo item  exisintingnis " + JSON.stringify(item)
-            );
+          if (item.id === data?.id) {
+            item.metadata.memoState = data.metadata.memoState;
           }
           return true;
         });
@@ -455,25 +481,26 @@ export default function Memo(props: any) {
 
   const currentPageMemos = useCallback(() => {
     const newList = memoItems().filter(
-      (item) => item.memoState.pageNum === pageNumber
+      (item) => item.metadata.memoState.pageNum === pageNumber
     );
     return newList;
   }, [pageNumber, memoItems]);
 
   const focusOtherItem = useCallback(
-    (next, memoState, writerID) => {
+    (next, memoItemData, writerID) => {
+      const id = memoItemData.id;
       const newList = currentPageMemos()
-        .sort((a, b) => a.memoState.itemID - b.memoState.itemID) //생성된 시간(item 아이디로 오름차순)
+        .sort((a, b) => a.id - b.id) //생성된 시간(item 아이디로 오름차순)
         .filter((item) => {
-          if (!currentCheckedWriters.includes(item.writer.writerID)) {
+          if (!currentCheckedWriters.includes(item.metadata.writer.writerID)) {
             return false;
           }
           if (next) {
-            if (memoState.itemID < item.memoState.itemID) {
+            if (id < item.id) {
               return true;
             }
           } else {
-            if (memoState.itemID > item.memoState.itemID) {
+            if (id > item.id) {
               return true;
             }
           }
@@ -483,9 +510,7 @@ export default function Memo(props: any) {
         return;
       }
       setCurrentFocusItem({
-        itemID: next
-          ? newList[0].memoState.itemID
-          : newList[newList.length - 1].memoState.itemID,
+        itemID: next ? newList[0].id : newList[newList.length - 1].id,
       });
     },
     [currentPageMemos, currentCheckedWriters]
@@ -493,7 +518,7 @@ export default function Memo(props: any) {
 
   const currentMenuMemo = useCallback(() => {
     const newList = memoItems().filter(
-      (item) => item.memoState.itemID === currentFocusItem.itemID
+      (item) => item.id === currentFocusItem.itemID
     );
     return newList[0];
   }, [currentFocusItem, memoItems]);
@@ -509,9 +534,14 @@ export default function Memo(props: any) {
   }, []);
   const contentStyles = makeStyles(() =>
     createStyles({
-      paperStyles: {
+      dialog: {
         height: "100%",
         width: "100%",
+        // padding: "15px",
+        boxSizing: "border-box",
+        // "& .MuiBackdrop-root": {
+        //   backgroundColor: "red",
+        // },
       },
     })
   );
@@ -519,15 +549,16 @@ export default function Memo(props: any) {
   const styleClasses = contentStyles();
   const Theme = useTheme();
   const fullScreen = useMediaQuery(Theme.breakpoints.down("sm"));
+
   return (
     <Dialog
-      fullScreen={fullScreen}
+      //fullScreen={fullScreen}
       disableEnforceFocus
       fullWidth
       maxWidth="xl"
       open
       PaperComponent={PaperComponent}
-      className={styleClasses.paper}
+      className={styleClasses.dialog}
     >
       <div
         onContextMenu={(e) => {
@@ -553,10 +584,38 @@ export default function Memo(props: any) {
           <MemoToolBar
             sideMenuOpen={sideMenuOpen}
             setSideMenuOpen={setSideMenuOpen}
-            handleSave={handleSave}
+            handleSaveItems={handleSaveItems}
             onClose={props.onClose}
+            memoData={memo}
           />
-
+          {sideMenuOpen !== "NONE" && (
+            <div className={memoStyle.side_menu}>
+              <SideMenuBar
+                itemData={currentMenuMemo()}
+                className={memoStyle.memo_item}
+                currentPageNum={pageNumber}
+                deleteMemo={deleteMemo}
+                focusHandler={(itemID) => {
+                  setCurrentFocusItem({ itemID: itemID });
+                }}
+                pageNumber={pageNumber}
+                isMenuItem={true}
+                focusOtherItem={focusOtherItem}
+                memoItems={currentPageMemos()}
+                checkWriters={checkWriters}
+                currentCheckedWriters={currentCheckedWriters}
+                panBoardSize={panBoardSize}
+                updateMemoItem={updateMemoItem}
+                type={sideMenuOpen}
+                collectionMembers={props.collectionData?.members}
+                setMemo={setMemo}
+                memoData={memo}
+                handleShare={handleShare}
+                sendMessage={props.sendMessage}
+              />
+              );
+            </div>
+          )}
           <div className={memoStyle.split_pane}>
             <div
               className={memoStyle.split_pane_pdf_thumb}
@@ -593,6 +652,7 @@ export default function Memo(props: any) {
                   maxZoom={3}
                   minZoom={0.1}
                   keyState={keyState}
+                  mouseOnItem={mouseOnItem}
                 >
                   <div className={memoStyle.pan_board}>
                     <div
@@ -603,18 +663,17 @@ export default function Memo(props: any) {
                     >
                       {memoItems().map((item) => {
                         const pageNumCorrect =
-                          pageNumber === item?.memoState?.pageNum;
+                          pageNumber === item?.metadata?.memoState?.pageNum;
                         const checkWriterCorrect = !!currentCheckedWriters
                           ? currentCheckedWriters.includes(
-                              item?.writer.writerID
+                              item?.metadata?.writer?.writerID
                             )
                           : false;
-
                         return (
                           pageNumCorrect &&
                           checkWriterCorrect && (
                             <MemoItem
-                              key={item.memoState.itemID}
+                              key={item.id}
                               itemData={item}
                               className={memoStyle.memo_item}
                               keyState={keyState}
@@ -625,8 +684,7 @@ export default function Memo(props: any) {
                               deleteMemo={deleteMemo}
                               updateMemoItem={updateMemoItem}
                               isFocus={
-                                currentFocusItem.itemID ===
-                                item.memoState.itemID
+                                currentFocusItem.itemID === item.id
                                   ? true
                                   : false
                               }
@@ -635,6 +693,8 @@ export default function Memo(props: any) {
                               }}
                               isMenuItem={false}
                               panBoardSize={panBoardSize}
+                              sendMessage={props.sendMessage}
+                              setMouseOnItem={setMouseOnItem}
                             ></MemoItem>
                           )
                         );
@@ -667,39 +727,7 @@ export default function Memo(props: any) {
                 </PanZoom>
               </div>
             </div>
-            {sideMenuOpen && (
-              <div className={memoStyle.split_pane_menu}>
-                <SideMenuBar
-                  itemData={currentMenuMemo()}
-                  className={memoStyle.memo_item}
-                  currentPageNum={pageNumber}
-                  deleteMemo={deleteMemo}
-                  focusHandler={(itemID) => {
-                    setCurrentFocusItem({ itemID: itemID });
-                  }}
-                  pageNumber={pageNumber}
-                  isMenuItem={true}
-                  focusOtherItem={focusOtherItem}
-                  memoItems={currentPageMemos()}
-                  checkWriters={checkWriters}
-                  currentCheckedWriters={currentCheckedWriters}
-                  panBoardSize={panBoardSize}
-                />
-                );
-              </div>
-            )}
           </div>
-          {/* <Document
-          file={props.memoData.fileUrl}
-          onLoadSuccess={onDocumentLoadSuccess}
-          className={memoStyle.document}
-        >
-          <Page
-            pageNumber={pageNumber}
-            width={pageSize.w}
-            className={memoStyle.page}
-          />
-        </Document> */}
         </div>
       </div>
     </Dialog>
@@ -719,7 +747,6 @@ const paperStyles = makeStyles(() =>
   })
 );
 export function PaperComponent(props: PaperProps) {
-  const inherited = props.className;
   const styleClasses = paperStyles();
   return <Paper {...props} className={styleClasses.paper} />;
 }

@@ -8,7 +8,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 interface NotificationListProps {
   notifications?: NotificationData[];
-  onNotificationClick(notificationData: NotificationData): Promise<void>;
+  onClick(notificationData: NotificationData): Promise<void>;
   fetchMore(): Promise<void>;
   onClose(): Promise<void>;
   isPage: boolean;
@@ -30,6 +30,7 @@ export default function NotificationList(props: NotificationListProps) {
         }}
         hasMore={true}
         loader={<h4>로딩 중</h4>}
+        // scrollableTarget={props.isPage ? "pageScroller" : "notificationScroll"}
         scrollableTarget={props.isPage ? "pageScroller" : "notificationScroll"}
       >
         {props.notifications?.map((notification, index) => {
@@ -38,7 +39,7 @@ export default function NotificationList(props: NotificationListProps) {
               <Notification
                 key={notification.id}
                 notification={notification}
-                onClick={props.onNotificationClick}
+                onClick={props.onClick}
                 onClose={props.onClose}
               />
               {props.notifications?.length !== index + 1 && (

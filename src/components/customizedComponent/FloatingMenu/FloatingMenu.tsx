@@ -104,9 +104,7 @@ export default function FloatingMenu(props) {
     };
 
     const setDialogSize = () => {
-      console.log("conatinerEl ");
       if (!!conatinerEl.current) {
-        console.log("conatinerEl " + conatinerEl.current.offsetWidth);
       }
     };
     useLayoutEffect(() => {

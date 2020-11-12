@@ -1,19 +1,28 @@
-import { uploadFiles } from '../../services/file.service'
-import Paragraph from '@editorjs/paragraph';
-import Header from './header';
-import Images from './images';
-import Files from './files';
+import { uploadFiles, uploadFile } from "../../services/file.service";
+import Paragraph from "@editorjs/paragraph";
+import Header from "./header";
+import Images from "./images";
+import Files from "./files";
 
+async function uploadByFile(file: File) {
+  const res = await uploadFile(file);
+  return res.uri;
+}
 async function uploadByFiles(files: File[]) {
-  const res = await uploadFiles(files)
-  return res.uris
+  if (files.length === 1) {
+    console.log("11111111111");
+    const res = await uploadFile(files[0]);
+    return res.uri;
+  }
+  const res = await uploadFiles(files);
+  return res.uris;
 }
 
 export const EDITOR_JS_TOOLS = {
   header: {
     class: Header,
     config: {
-      placeholder: '헤더',
+      placeholder: "헤더",
       preserveBlank: true,
       levels: [2, 3],
       defaultLevel: 2,
@@ -23,7 +32,7 @@ export const EDITOR_JS_TOOLS = {
     class: Paragraph,
     // inlineToolbar: false,
     config: {
-      placeholder: '내용',
+      placeholder: "내용",
       preserveBlank: true,
     },
   },
@@ -33,7 +42,7 @@ export const EDITOR_JS_TOOLS = {
       uploader: {
         uploadByFiles,
       },
-    }
+    },
   },
   // files: {
   //   class: Files,
@@ -43,4 +52,4 @@ export const EDITOR_JS_TOOLS = {
   //     },
   //   }
   // }
-}
+};

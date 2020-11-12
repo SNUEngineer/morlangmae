@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
@@ -48,20 +49,25 @@ export default function Thread(props: ThreadProps) {
   const classes = useStyles();
   const { register, handleSubmit, reset, setValue } = useForm();
   const [currentMessages, setCurrentMessages] = useState();
-
+  const textAttaches = ["asdf", "afafa"];
+  const [message, setMessage] = useState<MessageData>({
+    type: "TEXT",
+    attaches: textAttaches,
+  });
   const loadMessages = async () => {
     const messages = await props.loadMessages();
-    setMessages(messages);
+    await setMessages(messages);
   };
   const scrollToBottom = () => {
     messagesRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
-  const sendMessage = async (message: { content: string }) => {
-    console.log("send message");
+  const sendMessage = async () => {
+    console.log("messagemessage " + JSON.stringify(message));
     await props.sendMessage(message);
     reset();
     await loadMessages();
     scrollToBottom();
+    await setMessage((prevState) => ({ ...prevState, content: "" }));
   };
   useEffect(() => {
     const timer = setInterval(() => {
@@ -73,10 +79,9 @@ export default function Thread(props: ThreadProps) {
   useEffect(() => {
     register({ name: "content" }, { required: true, min: 1 }); // custom register Antd input
   }, [register]);
-  const handleChange = (e: any) => {
-    const name = e.target.name;
+  const handleTextContentChange = (e: any) => {
     const value = e.target.value;
-    setValue(name, value);
+    setMessage((prevState) => ({ ...prevState, content: value }));
   };
 
   const messageList = messages.map(
@@ -106,48 +111,36 @@ export default function Thread(props: ThreadProps) {
         <div className={threadStyle.divider} />
         <div className={threadStyle.messages_container}>{messageList}</div>
         <div ref={messagesRef} />
-        <List>
-          <ListItem>
-            <form
-              onSubmit={handleSubmit(sendMessage)}
-              className={classes.form}
-              noValidate
-            >
-              <div className={threadStyle.text_area_container}>
-                <div className={threadStyle.text_area}>
-                  <TextArea
-                    name={"content"}
-                    inline
-                    width="100%"
-                    height="100px"
-                    maxHeight="200px"
-                    textSize={14}
-                    fontFamily={"Noto Sans CJK KR Regular"}
-                    padding={10}
-                    textareaRef={register({ required: true })}
-                    onChange={handleChange}
-                  />
-                </div>
+        <div className={threadStyle.text_area_container}>
+          <div className={threadStyle.text_area}>
+            <TextArea
+              name={"content"}
+              inline
+              width="100%"
+              height="100px"
+              maxHeight="200px"
+              textSize={14}
+              fontFamily={"Noto Sans CJK KR Regular"}
+              padding={10}
+              onChange={handleTextContentChange}
+              value={message.content}
+            />
+          </div>
 
-                <div className={threadStyle.send_area}>
-                  <div className={threadStyle.align_container}>
-                    {/* <div className={threadStyle.send_button_container} onClick={()=>{
-                      //  sendMessage(message: { content: string });
-                       sendMessage({message : {content : }})
-                    }}>
-                      <img alt={"icon"} className={threadStyle.send_button} />
-                    </div> */}
-                    <div className={threadStyle.send_button_container}>
-                      <Button type="submit" className={classes.send_button}>
-                        <img alt={"icon"} className={threadStyle.send_button} />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+          <div className={threadStyle.send_area}>
+            <div className={threadStyle.align_container}>
+              <div className={threadStyle.send_button_container}>
+                <Button
+                  type="submit"
+                  className={classes.send_button}
+                  onClick={sendMessage}
+                >
+                  <img alt={"icon"} className={threadStyle.send_button} />
+                </Button>
               </div>
-            </form>
-          </ListItem>
-        </List>
+            </div>
+          </div>
+        </div>
       </div>
     </Fragment>
   );

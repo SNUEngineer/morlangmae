@@ -17,7 +17,7 @@ export default function PurposeArea(props: any) {
         })}
         onClick={() => {
           if (isDragging) return;
-          onPurposeClick(itemID, "suggestion");
+          onPurposeClick("suggestion");
         }}
       >
         제안
@@ -31,7 +31,7 @@ export default function PurposeArea(props: any) {
         })}
         onClick={() => {
           if (isDragging) return;
-          onPurposeClick(itemID, "request");
+          onPurposeClick("request");
         }}
       >
         요청
@@ -45,7 +45,7 @@ export default function PurposeArea(props: any) {
         })}
         onClick={() => {
           if (isDragging) return;
-          onPurposeClick(itemID, "question");
+          onPurposeClick("question");
         }}
       >
         질문

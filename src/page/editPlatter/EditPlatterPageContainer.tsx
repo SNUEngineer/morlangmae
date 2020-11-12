@@ -56,7 +56,7 @@ export default function EditPlatterPageContainer(
     await sendMessage(props.platterId, message);
   };
   const doEditPlatter = async (data: any) => {
-    console.log("handleEditPlatterhandleEditPlatter123123");
+    console.log("send datadatadata " + JSON.stringify(data));
     await editPlatter(props.platterId, data);
     await props.reload();
   };

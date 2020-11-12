@@ -16,6 +16,7 @@ import ModalManager from "../modalManager/ModelManager";
 import { COLLECTION_LIST_PAGE } from "../../common/paths";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAsync } from "react-async";
+import Button from "@material-ui/core/Button";
 
 async function getListCollections(type: string) {
   //onst type = type.type;
@@ -54,7 +55,6 @@ export default function CollectionListPageContainer(
     const types = ["FOR_USER", "HOT", "RECENT", "COMPANY", "MY", "BINGE"];
     types.forEach((item) => {
       if (targetString.includes(item)) {
-        console.log("itemitem " + item);
         setType(item);
       }
     });
@@ -69,10 +69,16 @@ export default function CollectionListPageContainer(
 
     history.push(path);
   };
+
+  const goBack = async () => {
+    history.goBack();
+  };
+
   console.log("datadata eafsdf " + type);
   if (data) {
     return (
       <Fragment>
+        <Button onClick={goBack}>뒤로가기</Button>
         <CollectionListPage
           collections={data}
           onCollectionClick={onCollectionClick}

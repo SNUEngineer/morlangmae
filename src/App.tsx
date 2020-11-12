@@ -20,6 +20,7 @@ import {
   SignInRequest,
   SignUpRequest,
 } from "./services/user.service";
+import { testdb } from "./services/database.service";
 import SignUpPage from "./page/signup/SignUpPage";
 import Error from "./common/error";
 import CreateCollectionPageContainer from "./page/createCollection/CreateCollectionPageContainer";
@@ -50,10 +51,10 @@ import MyCollectionTabContainer from "./page/listCollection/MyCollectionTabConta
 import SearchCollectionTabContainer from "./page/listCollection/SearchCollectionTabContainer";
 import CollectionListPageContainer from "./page/listCollection/CollectionListPageContainer";
 import BingeMemoTab from "./page/listMemo/BingeMemoTab";
-import MemoHomeTab from "./page/listMemo/MemoHomeTab";
+import MemoHomeTabContainer from "./page/listMemo/MemoHomeTabContainer";
 import MemoListTab from "./page/listMemo/MemoListTab";
 import MemoTab from "./page/listMemo/MemoTab";
-import MemoListInCollection from "./page/listMemo/MemoListInCollection";
+import MemoListInCollectionContainer from "./page/listMemo/MemoListInCollectionContainer";
 import MemoWorkstationContainer from "./page/memoWorkstation/MemoWorkstationContainer";
 import MemoWorkstationTest from "./page/memoWorkstation/MemoWorkstationTest";
 import queryString from "query-string";
@@ -63,7 +64,7 @@ import { resetToken, expireToken } from "./common/axios";
 import NotificationPageContainer from "./page/notification/NotificationPageContainer";
 import BasicMenuBar from "./components/layout/basicMenuBar/BasicMenuBar";
 import appStyle from "./App.module.scss";
-
+import ModalManager from "./page/modalManager/ModelManager";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -118,7 +119,6 @@ function App() {
   async function handleSignIn(request: SignInRequest) {
     await signIn(request);
     await validateToken();
-    history.push(`${COLLECTION_LIST}`);
   }
 
   async function handleSignUp(request: SignUpRequest) {
@@ -155,12 +155,19 @@ function App() {
             <AuthRoute
               hasDrawer
               authenticated={authenticated}
-              path={["/collections", "/memos", "/persona", "/notifications"]}
+              path={[
+                "/collections",
+                "/memos",
+                "/persona",
+                "/notifications",
+                "/collections-all",
+                "/memos-in-collection",
+              ]}
               render={(props: any) => (
                 <MainPage pathname={pathname} search={search}></MainPage>
               )}
             />
-            <AuthRoute
+            {/* <AuthRoute
               hasDrawer
               authenticated={authenticated}
               path={COLLECTION_LIST_PAGE}
@@ -169,7 +176,7 @@ function App() {
                   {...queryString.parse(props.location.search)}
                 />
               )}
-            />
+            /> */}
 
             <AuthRoute
               exact
@@ -202,7 +209,7 @@ function App() {
               )}
             />
 
-            <AuthRoute
+            {/* <AuthRoute
               exact
               authenticated={authenticated}
               hasDrawer
@@ -213,18 +220,7 @@ function App() {
                   collectionId={props.match.params.id}
                 />
               )}
-            />
-            <AuthRoute
-              exact
-              authenticated={authenticated}
-              path={MEMO_WORK_STATION}
-              render={(props: any) => (
-                <MemoWorkstationContainer
-                  {...props}
-                  collectionId={props.match.params.id}
-                />
-              )}
-            />
+            /> */}
 
             {/* <AuthRoute
               exact
@@ -267,10 +263,35 @@ function PersonaView() {
 
 function ProjectView(props: any) {
   const classes = useStyles();
+  const [data, setData] = useState([]);
+  const getData = () => {
+    fetch("data.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then(function (response) {
+        console.log("responseresponseresponse " + response);
+        return response.json();
+      })
+      .then(function (myJson) {
+        console.log("myJsonmyJsonmyJsonmyJson " + JSON.stringify(myJson));
 
+        setData(myJson);
+      });
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+  console.log("testdb()testdb()testdb()testdb()    " + testdb());
+  console.log("testdb()testdb()testdb()testdb()    " + testdb());
   return (
     <Fragment>
       {/* <Drawer /> */}
+      <div>
+        {data && data.length > 0 && data.map((item) => <p>{item.about}</p>)}
+      </div>
       <main className={classes.content}>
         <Toolbar />
         <Projects {...props} />
@@ -294,9 +315,20 @@ function MainPage(props: any) {
         return <MemoWorkstationContainer memoId={query.editingId} />;
       }
     };
+    const collectionModal = () => {
+      if (search.includes("collectionId") || search.includes("platterId")) {
+        return (
+          <ModalManager
+            collectionId={query.collectionId}
+            platterId={query.platterId}
+          />
+        );
+      }
+    };
+
     const memoList = () => {
       if (pathname.includes("home")) {
-        return <MemoHomeTab {...queryString.parse(search)} />;
+        return <MemoHomeTabContainer {...queryString.parse(search)} />;
       }
       if (pathname.includes("list")) {
         return <MemoListTab {...queryString.parse(search)} />;
@@ -316,24 +348,47 @@ function MainPage(props: any) {
         return <CreateCollectionTabContainer {...queryString.parse(search)} />;
       }
     };
-
+    const collectionExtraPage = () => {
+      if (pathname.includes("/collections-all")) {
+        return <CollectionListPageContainer {...queryString.parse(search)} />;
+      }
+    };
+    const memoExtraPage = () => {
+      if (pathname.includes("/memos-in-collection")) {
+        return (
+          <MemoListInCollectionContainer
+            {...props}
+            // collectionId={props.match.params.id}
+            collectionId={1}
+          />
+        );
+      }
+    };
     const memoStyle = {
-      opacity: pathname.startsWith("/memos") ? 1 : 0,
-      zIndex: pathname.startsWith("/memos") ? 800 : -1,
+      opacity: pathname.startsWith("/memos/") ? 1 : 0,
+      zIndex: pathname.startsWith("/memos/") ? 800 : -1,
     };
     const collectionSytle = {
-      opacity: pathname.startsWith("/collections") ? 1 : 0,
-      zIndex: pathname.startsWith("/collections") ? 800 : -1,
+      opacity: pathname.startsWith("/collections/") ? 1 : 0,
+      zIndex: pathname.startsWith("/collections/") ? 800 : -1,
     };
     const notificationStyle = {
       opacity: pathname.startsWith("/notifications") ? 1 : 0,
       zIndex: pathname.startsWith("/notifications") ? 800 : -1,
     };
-
+    const collectionExtraSytle = {
+      opacity: pathname.startsWith("/collections-all") ? 1 : 0,
+      zIndex: pathname.startsWith("/collections-all") ? 800 : -1,
+    };
+    const memoExtraSytle = {
+      opacity: pathname.startsWith("/memos-in-collection") ? 1 : 0,
+      zIndex: pathname.startsWith("/memos-in-collection") ? 800 : -1,
+    };
     return (
       <div className={appStyle.main_container}>
         {editModal()}
         {memoWorkstation()}
+        {collectionModal()}
         <div
           style={notificationStyle}
           className={appStyle.main_page}
@@ -380,9 +435,40 @@ function MainPage(props: any) {
             {collectionList()}
           </div>
         </div>
+
+        <div
+          style={collectionExtraSytle}
+          className={appStyle.main_page}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
+          <div
+            style={{ minHeight: "800px" }}
+            // 부드러운 전환을 위한
+          >
+            {collectionExtraPage()}
+          </div>
+        </div>
+        <div
+          style={memoExtraSytle}
+          className={appStyle.main_page}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
+          <div
+            style={{ minHeight: "800px" }}
+            // 부드러운 전환을 위한
+          >
+            {memoExtraPage()}
+          </div>
+        </div>
       </div>
     );
-  }, [pathname, search]);
+  }, [props, pathname, search]);
 
   return mainPages();
 }

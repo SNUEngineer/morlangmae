@@ -1,6 +1,6 @@
 $board_bottom_margin: 150px;
 $board_border_width: 1px;
-$border-color: gray;
+$border-color: transparent;
 .board_container {
   position: relative;
   padding-top: 300px;
@@ -9,6 +9,7 @@ $border-color: gray;
   background-color: rgba(0, 0, 0, 0.3);
   overflow-y: scroll;
   height: 100vh;
+
   .container {
     background-color: white;
     flex-direction: column;

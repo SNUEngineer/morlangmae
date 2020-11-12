@@ -1,20 +1,26 @@
 // @ts-nocheck
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
 } from "../../components/collection/CollectionCard";
+import { MemoView } from "../../services/memo.service";
 import MemoCard from "../../components/memo/list/memoCard";
 import Grid from "@material-ui/core/Grid";
 import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import memoStyle from "./MemoHomeTab.module.scss";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 import Header from "../../components/layout/Header/Header";
+import Button from "@material-ui/core/Button";
 
 export interface MemoHomeTabProps {
   onDropFile(event: any): Promise<void>;
   handleTestClick(event: any): Promise<void>;
+  onMemoClick(data: MemoView): Promise<void>;
+  myMemos(data: MemoView): Promise<void>;
+  recentMemos: MemoView[];
+  requestedMemos: MemoView[];
 }
 
 export default function MemoHomeTab(props: MemoHomeTabProps) {
@@ -89,16 +95,13 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
 
   const history = useHistory();
   const onCollectionClick = (data: CollectionData) => {
-    history.push(`/memos/collections/${data.id}`);
-  };
-  const onMemoClick = () => {
-    const path = `COLLECTION_LIST_MY_COLLECTION?collectionId=${data.id}`; //메모로 이동
-    //history.push(path);
+    history.push(`/memos-in-collections/${data.id}`);
   };
 
   const handleDragOver = (e: any) => {
     e.preventDefault();
   };
+
   return (
     <div className={memoStyle.tab_container}>
       <div className={memoStyle.create_memo_container}>
@@ -106,24 +109,37 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
           className={memoStyle.drag_drop_container}
           // onDragOver={handleDragOver}
           // onDrop={props.handleDrop}
-          onClick={props.handleTestClick}
-        ></div>
+        >
+          <Button
+            onClick={(event) => {
+              console.log("props.handleTestClick " + props.handleTestClick);
+              props.handleTestClick(event);
+            }}
+          >
+            Reset
+          </Button>
+        </div>
       </div>
 
-      <TempMemoList memos={testCollections} onMemoClick={onMemoClick} />
+      <TempMemoList memos={testCollections} onMemoClick={props.onMemoClick} />
       <MemoInCollectionCardList
         collections={testCollections}
         onCollectionClick={onCollectionClick}
       />
       <RequestMemoList
-        memos={testCollections}
-        onMemoClick={onMemoClick}
-        isRequesting={true}
+        memos={props.recentMemos}
+        onMemoClick={props.onMemoClick}
+        isRequesting={"RECENT"}
       />
       <RequestMemoList
-        memos={testCollections}
-        onMemoClick={onMemoClick}
-        isRequesting={false}
+        memos={props.myMemos}
+        onMemoClick={props.onMemoClick}
+        isRequesting={"REQUESTING"}
+      />
+      <RequestMemoList
+        memos={props.requestedMemos}
+        onMemoClick={props.onMemoClick}
+        isRequesting={"REQUESTED"}
       />
     </div>
   );
@@ -156,23 +172,35 @@ export function MemoInCollectionCardList(props: MemoInCollectionCardListProps) {
 }
 
 export interface RequestMemoListProps {
-  memos: CollectionData[];
-  onMemoClick(data: CollectionData): Promise<void>;
-  isRequesting: boolean;
+  memos: MemoView[];
+  onMemoClick(data: MemoView): Promise<void>;
+  isRequesting: string;
 }
 
 export function RequestMemoList(props: RequestMemoListProps) {
   const { memos, onMemoClick, isRequesting } = props;
-  const slicedMemo = memos.slice(0, 4);
+  const slicedMemo = memos.slice(0, 8);
+  const typeText = useCallback(() => {
+    switch (isRequesting) {
+      case "REQUESTED":
+        return "요청 받은 메모";
+      case "REQUESTING":
+        return "요청한 메모";
+      case "RECENT":
+        return "최근 방문한 메모";
+    }
+  }, [isRequesting]);
   return (
     <div className={memoStyle.request_container}>
       <Header
-        title={isRequesting ? "내가 요청한 메모" : "요청 받은 메모"}
+        // title={isRequesting ? "내가 요청한 메모" : "요청 받은 메모"}
+        title={typeText()}
         subMenuType={"requestMemo"}
       />
       <div className={memoStyle.memo_list_container}>
         <Grid container>
           {slicedMemo.map((item) => {
+            console.log("mememolistitem " + JSON.stringify(item));
             return (
               <div className={memoStyle.list_item_container}>
                 <MemoCard
@@ -191,12 +219,13 @@ export function RequestMemoList(props: RequestMemoListProps) {
 }
 
 export interface TempMemoListProps {
-  memos: CollectionData[];
-  onMemoClick(data: CollectionData): Promise<void>;
+  memos: MemoView[];
+  onMemoClick(data: MemoView): Promise<void>;
 }
 
 export function TempMemoList(props: TempMemoListProps) {
   const { memos, onMemoClick } = props;
+
   return (
     <div className={memoStyle.temp_container}>
       <Header title={"임시 저장중인 메모"} subMenuType={"goToAll"} />

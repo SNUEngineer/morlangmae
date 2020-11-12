@@ -167,7 +167,7 @@ export default function Anchor(props: any) {
               ...currentState,
               anchorDragging: false,
             }));
-            handleUpdateState();
+            handleUpdateState({ x: coreData.x, y: coreData.y }, "anchor");
           }}
           onDrag={(e, coreData) => {
             e.preventDefault();
@@ -189,7 +189,10 @@ export default function Anchor(props: any) {
             })}
             onDoubleClick={async (e) => {
               await anchorDoubleClick(e);
-              handleUpdateState();
+              handleUpdateState(
+                { x: anchor.x + 50, y: anchor.y + 50 },
+                "box-anchor"
+              );
             }}
             style={setResizeBox(true)}
             onMouseEnter={() => {
@@ -235,7 +238,8 @@ export default function Anchor(props: any) {
                 ...currentState,
                 boxAnchorDragging: false,
               }));
-              handleUpdateState();
+
+              handleUpdateState({ x: coreData.x, y: coreData.y }, "box-anchor");
             }}
             bounds={anchorBound}
             //pan board 너비 높이 - 메모 아이템 너비 높이
@@ -302,7 +306,7 @@ export default function Anchor(props: any) {
         </div>
       )}
 
-      {anchor.exist && (
+      {anchor.exist && anchor.lineVisible && (
         <Line from={anchorLineStart} to={anchor} panBoardSize={panBoardSize} />
       )}
     </div>

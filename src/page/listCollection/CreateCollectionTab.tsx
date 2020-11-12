@@ -27,7 +27,6 @@ export interface CreateCollectionTabProps {
 }
 
 export default function CreateCollectionTab(props: CreateCollectionTabProps) {
-  console.log("collectionscollections " + JSON.stringify(props.collections));
   const options = [
     {
       value: "ALL",

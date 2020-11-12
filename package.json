@@ -81,6 +81,9 @@
     "react-zoom-pan-pinch": "1.6.1",
     "sass-loader": "9.0.3",
     "slick-carousel": "1.8.1",
+    "sql-template-strings": "2.2.2",
+    "sqlite": "4.0.15",
+    "sqlite3-offline": "4.3.1",
     "styled-components": "^5.1.1",
     "typescript": "^3.9.7",
     "uuid": "^8.3.0"

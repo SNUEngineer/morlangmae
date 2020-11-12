@@ -9,6 +9,8 @@ function createWindow() {
     titleBarStyle: "hidden",
     center: true,
     kiosk: !isDev,
+    width: 800,
+    height: 600,
     resizable: true,
     webPreferences: {
       nodeIntegration: true,
@@ -36,3 +38,4 @@ electron_1.app.on("activate", function () {
     createWindow();
   }
 });
+electron_1.app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");

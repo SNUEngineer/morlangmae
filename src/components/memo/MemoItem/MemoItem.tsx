@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useRef,
   useLayoutEffect,
-  memo,
 } from "react";
 import itemStyle from "./memoItem.module.scss";
 import { TextArea } from "../../../components/customizedComponent/TextArea";
@@ -18,6 +17,7 @@ import classNames from "classnames";
 
 export interface Anchor {
   exist: boolean;
+  lineVisible?: boolean;
   zoneDown: boolean;
   x: number;
   y: number;
@@ -42,6 +42,8 @@ export default function MemoItem(props: any) {
     focusOtherItem,
     panBoardSize,
     currentCheckedWriters,
+    sendMessage,
+    setMouseOnItem,
   } = props;
 
   const [memoPosition, setMemoPosition] = useState({
@@ -49,14 +51,16 @@ export default function MemoItem(props: any) {
     y: 0,
   });
   const [memoItemData, setMemoItemData] = useState(itemData);
-  const [purpose, setPurpose] = useState(itemData?.memoState?.purpose);
+  const [purpose, setPurpose] = useState(
+    itemData?.metadata?.memoState?.purpose
+  );
 
   const memoSize = {
     w: 350,
     h: 400,
   };
   const [itemID, setItemID] = useState(0);
-  const [isDragging, setIsDragging] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const [textContent, setTextContent] = useState("");
   const [onHover, setOnHover] = useState(false);
   const [anchor, setAnchor] = useState<Anchor>();
@@ -88,38 +92,67 @@ export default function MemoItem(props: any) {
   const writerAreaEl = useRef<HTMLDivElement>(null);
   const contentTextAreaEl = useRef(null);
 
-  const handleUpdateState = useCallback(() => {
-    const editedMemoItem = {
-      writer: itemData.writer,
-      memoState: {
-        itemID: itemData.memoState.itemID,
-        pageNum: itemData.memoState.pageNum,
-        content: textContent,
-        x: memoPosition.x,
-        y: memoPosition.y,
-        createdDate: itemData.memoState.createdDate,
-        purpose: purpose,
-        anchor: {
-          x: anchor.exist ? anchor.x : -1000,
-          y: anchor.exist ? anchor.y : -1000,
-          box: {
-            x: boxAnchor.exist ? boxAnchor.x : -1000,
-            y: boxAnchor.exist ? boxAnchor.y : -1000,
+  const handleUpdateState = useCallback(
+    async (data: any, type: string) => {
+      // console.log("")
+      const metadata = itemData.metadata;
+      const editedMemoItem = {
+        id: itemData.id,
+        metadata: {
+          writer: metadata.writer,
+          memoState: {
+            pageNum: metadata.memoState.pageNum,
+            content: textContent,
+            x: memoPosition.x,
+            y: memoPosition.y,
+            createdDate: metadata.memoState.createdDate,
+            purpose: purpose,
+            anchor: {
+              x: anchor.exist ? anchor.x : -1000,
+              y: anchor.exist ? anchor.y : -1000,
+              box: {
+                x: boxAnchor.exist ? boxAnchor.x : -1000,
+                y: boxAnchor.exist ? boxAnchor.y : -1000,
+              },
+            },
           },
         },
-      },
-    };
+      };
 
-    updateMemoItem(editedMemoItem); // 딜레이 자꾸 생기넹,..
-  }, [
-    itemData,
-    purpose,
-    textContent,
-    memoPosition,
-    anchor,
-    boxAnchor,
-    updateMemoItem,
-  ]);
+      switch (type) {
+        case "position":
+          editedMemoItem.metadata.memoState.x = data.x;
+          editedMemoItem.metadata.memoState.y = data.y;
+          break;
+        case "anchor":
+          console.log("data.xdata.x  " + data.x);
+          editedMemoItem.metadata.memoState.anchor.x = data.x;
+          editedMemoItem.metadata.memoState.anchor.y = data.y;
+          break;
+        case "box-anchor":
+          editedMemoItem.metadata.memoState.anchor.box.x = data.x;
+          editedMemoItem.metadata.memoState.anchor.box.y = data.y;
+          break;
+        case "content":
+          editedMemoItem.metadata.memoState.content = data.textContent;
+          break;
+        case "purpose":
+          editedMemoItem.metadata.memoState.purpose = data.purpose;
+          break;
+      }
+
+      await updateMemoItem(editedMemoItem); // 딜레이 자꾸 생기넹,..
+    },
+    [
+      itemData,
+      purpose,
+      textContent,
+      memoPosition,
+      anchor,
+      boxAnchor,
+      updateMemoItem,
+    ]
+  );
   const onAnchorZoneDragEnd = useCallback(
     async (event) => {
       if (
@@ -153,6 +186,7 @@ export default function MemoItem(props: any) {
       setAnchor((currentState) => ({
         ...currentState,
         exist: true,
+        lineVisible: true,
         x: newAnchorX,
         y: newAnchorY,
       }));
@@ -160,7 +194,8 @@ export default function MemoItem(props: any) {
         ...currentState,
         exist: false,
       }));
-      handleUpdateState();
+      await handleUpdateState({ x: -1000, y: -1000 }, "box-anchor");
+      await handleUpdateState({ x: newAnchorX, y: newAnchorY }, "anchor");
     },
 
     [bounds, memoPosition, handleUpdateState]
@@ -172,20 +207,22 @@ export default function MemoItem(props: any) {
   );
 
   useEffect(() => {
-    const pageNumCorrect = currentPageNum === memoItemData?.memoState?.pageNum;
+    const pageNumCorrect =
+      currentPageNum === memoItemData?.metadata?.memoState?.pageNum;
     const checkWriterCorrect = !!currentCheckedWriters
-      ? currentCheckedWriters.includes(memoItemData?.writer.writerID)
+      ? currentCheckedWriters.includes(memoItemData?.metadata?.writer.writerID)
       : false;
     setIsVisible(pageNumCorrect && checkWriterCorrect);
+    console.log(
+      "setIsVisiblesetIsVisible " + checkWriterCorrect + "   " + pageNumCorrect
+    );
   }, [currentPageNum, memoItemData, currentCheckedWriters, isMenuItem]);
 
   useEffect(() => {
     if (!isMenuItem) {
-      const state = memoItemData?.memoState;
+      const state = memoItemData?.metadata?.memoState;
       const anchor = state?.anchor;
       const box = state?.anchor?.box;
-
-      console.log("memoItemData " + JSON.stringify(memoItemData));
 
       setMemoPosition(state);
       setPurpose(state.purpose);
@@ -193,6 +230,7 @@ export default function MemoItem(props: any) {
       setAnchor({
         exist: !!anchor.x ? anchor.x > -500 : false,
         zoneDown: false,
+        lineVisible: true,
         x: anchor.x,
         y: anchor.y,
       });
@@ -201,7 +239,7 @@ export default function MemoItem(props: any) {
         x: box.x,
         y: box.y,
       });
-      setItemID(memoItemData?.memoState.itemID);
+      setItemID(memoItemData?.id);
       //다시 로드 될때만 memo state의 컨텐츠를 받아오고, 그 후에는 간섭없이 memoItemData.memoState에 저장만 하기.
     }
   }, [memoItemData, isMenuItem]);
@@ -235,7 +273,7 @@ export default function MemoItem(props: any) {
   const onPurposeClick = useCallback(
     (purpose: string) => {
       setPurpose(purpose);
-      handleUpdateState();
+      handleUpdateState({ purpose: purpose }, "purpose");
     },
     [handleUpdateState]
   );
@@ -273,15 +311,23 @@ export default function MemoItem(props: any) {
             defaultClassName={itemStyle.memo_draggable}
             onStart={(e, coreData) => {
               setIsDragging(true);
+              setAnchor((currentState) => ({
+                ...currentState,
+                lineVisible: false,
+              }));
             }}
             onStop={(e, coreData) => {
               setIsDragging(false);
-              handleUpdateState();
+              setAnchor((currentState) => ({
+                ...currentState,
+                lineVisible: true,
+              }));
+              handleUpdateState({ x: coreData.x, y: coreData.y }, "position");
+              setMemoPosition(coreData);
             }}
             onDrag={(e, coreData) => {
               e.preventDefault();
               e.stopPropagation();
-              setMemoPosition(coreData);
             }}
             scale={!isMenuItem ? scale : 1}
           >
@@ -293,15 +339,33 @@ export default function MemoItem(props: any) {
               })}
               onMouseEnter={() => {
                 setOnHover(true);
+
+                if (!!setMouseOnItem) {
+                  console.log("setMouseOnItemsetMouseOnItem ");
+                  setMouseOnItem(true);
+                }
               }}
               onMouseLeave={() => {
                 setOnHover(false);
+                if (!!setMouseOnItem) {
+                  setMouseOnItem(false);
+                }
               }}
               ref={contentContainerEl}
               onClick={(event) => {
                 contentTextAreaEl.current.focus();
                 if (isMenuItem) return;
                 focusHandler(itemID);
+              }}
+              onScroll={(event) => {
+                console.log("onScrollonScroll ");
+                event.preventDefault();
+                event.stopPropagation();
+              }}
+              onWheel={(event) => {
+                console.log("onWheelonWheel ");
+                event.preventDefault();
+                event.stopPropagation();
               }}
             >
               <div className={itemStyle.delete_container}>
@@ -319,8 +383,8 @@ export default function MemoItem(props: any) {
               <div className={itemStyle.purpose_area}>
                 <PurposeArea
                   onPurposeClick={onPurposeClick}
-                  memoPurpose={memoItemData?.memoState.purpose}
-                  itemID={memoItemData?.memoState.itemID}
+                  memoPurpose={memoItemData?.metadata?.memoState?.purpose}
+                  itemID={memoItemData?.id}
                   isDragging={isDragging}
                 ></PurposeArea>
               </div>
@@ -368,8 +432,10 @@ export default function MemoItem(props: any) {
                   padding={10}
                   onChange={(event) => {
                     setTextContent(event.target.value);
-
-                    handleUpdateState();
+                    handleUpdateState(
+                      { textContent: event.target.value },
+                      "content"
+                    );
                   }}
                 />
               </div>
@@ -388,7 +454,7 @@ export default function MemoItem(props: any) {
                         onClick={() => {
                           focusOtherItem(
                             false,
-                            memoItemData.memoState,
+                            memoItemData,
                             memoItemData.writer.writerID
                           );
                         }}
@@ -403,7 +469,7 @@ export default function MemoItem(props: any) {
                         onClick={() => {
                           focusOtherItem(
                             true,
-                            memoItemData.memoState,
+                            memoItemData,
                             memoItemData.writer.writerID
                           );
                         }}
@@ -423,7 +489,12 @@ export default function MemoItem(props: any) {
                   }}
                 ></div>
               </div>
-              {(isMenuItem || isFocus) && <CommentArea></CommentArea>}
+              {(isMenuItem || isFocus) && (
+                <CommentArea
+                  memoItemData={itemData}
+                  sendMessage={sendMessage}
+                ></CommentArea>
+              )}
             </div>
           </Draggable>
         </div>

@@ -13,9 +13,8 @@ import {
   // getMemo,
   // getMemoItem,
   // getMemoItemThread,
-  editMemoItems,
+  editMemoItem,
   editMemo,
-  addMemoItems,
 } from "../../services/memo.service";
 
 async function getMemoData() {
@@ -48,13 +47,13 @@ export default function MemoWorkStationTest() {
     memoId: number
   ) => {
     try {
-      await addMemoItems(itemDatas, memoId);
+      //await addMemoItems(itemDatas, memoId);
       reload();
     } catch {}
   };
   const handleEditMemoItems = async (itemDatas: MemoItemData[]) => {
     try {
-      await editMemoItems(itemDatas);
+      await editMemoItem(itemDatas);
       reload();
     } catch {}
   };

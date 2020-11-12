@@ -52,9 +52,13 @@ export default function EditCollectionPageContainer(
     try {
       //내가 승인권자면 자동으로 허용. 아니면 에러 캐칭됨.
       await progress(collection.id);
+      history.push(COLLECTION_LIST);
+      return;
     } catch (e) {
       console.log("progress 에러");
     }
+    //여기에 IN PROGRESS 일 경우 대응 추가.
+
     if (draftSaving) {
       await editCollection(collection.id, {
         title: collection.title,
@@ -67,13 +71,20 @@ export default function EditCollectionPageContainer(
       //승인 시.
       await editCollection(collection.id, {
         title: collection.title,
-        imageUrl: collection.imageUrl,
+        //imageUrl: collection.imageUrl,
+        imageUrl:
+          "https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/advice/maps-satellite-images/satellite-image-of-globe.jpg/satellite-image-of-globe.jpg/metofficegovuk%3AheroLarge",
         memberIds: collection.members.map((it: UserView) => it.id),
-        startDate: new Date(collection.startDate),
-        endDate: new Date(collection.endDate),
+        collectionType: "TEAM",
+        // startDate: new Date(collection.startDate),
+        // endDate: new Date(collection.endDate),
+        startDate: new Date(0),
+        endDate: new Date(1801968593191),
+        requestee: approver.id,
+        requestComment: "수락 부탁드립니다.",
       });
       try {
-        await requestProgress(collection.id, approver.id);
+        await requestProgress(collection.id);
       } catch (e) {
         console.log("requestProgress 에러");
       }
@@ -83,12 +94,12 @@ export default function EditCollectionPageContainer(
 
     history.push(COLLECTION_LIST);
   }
-  console.log("ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹ3333 ");
   if (error) {
     //history.push(COLLECTION_LIST);
   }
 
   if (data) {
+    console.log("collectionDetail  " + JSON.stringify(data[0]));
     return (
       <EditCollectionPage
         collectionDetail={data[0]}

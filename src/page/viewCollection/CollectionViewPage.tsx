@@ -191,19 +191,17 @@ export function CollectionToolBar(props: any) {
       className={classNames({
         [classes.appBar]: true,
       })}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      }}
     >
       <Toolbar
         className={classNames({
           [classes.toolBar]: true,
         })}
       >
-        <div
-          className={pageStyle.menu_root_container}
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-          }}
-        >
+        <div className={pageStyle.menu_root_container}>
           <div className={pageStyle.center_container}>
             {!openSearchBar && <div>{props.collection.title}</div>}
           </div>

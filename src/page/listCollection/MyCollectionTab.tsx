@@ -108,7 +108,6 @@ export default function MyCollectionTab(props: MyCollectionTabProps) {
     pinCollection: props.pinCollection,
     unpinCollection: props.unpinCollection,
   };
-  console.log("reloadDatareloadData 222 " + reloadData);
   return (
     <div className={collectionStyle.tab_container}>
       <div className={collectionStyle.member_header_container}>

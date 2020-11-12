@@ -56,7 +56,6 @@ export default function Notification(props: NotificationProps) {
   const { notification } = props;
   const sender = notification.sentBy;
   const comment = notification.comment;
-  const onClick = () => props.onClick(notification);
   const history = useHistory();
   const { pathname, search } = useLocation();
   const { data } = useAsync({
@@ -64,6 +63,7 @@ export default function Notification(props: NotificationProps) {
     type: notification.type,
     id: notification.target,
   });
+
   const handleOnClick = async () => {
     const type = notification.type;
     const query = queryString.parse(search);
@@ -71,7 +71,7 @@ export default function Notification(props: NotificationProps) {
     if (!data) {
       return;
     }
-    console.log("datadatadata " + JSON.stringify(data));
+
     switch (type) {
       case "PLATTER":
         path = `${pathname}?collectionId=${data.collectionId}&platterId=${data.id}`;
@@ -92,6 +92,7 @@ export default function Notification(props: NotificationProps) {
     if (!!props.onClose) {
       // props.onClose();
     }
+    props.onClick(notification);
   };
 
   const useStyles = makeStyles((theme: Theme) =>
@@ -108,6 +109,7 @@ export default function Notification(props: NotificationProps) {
       sentBy: sender,
       comment: comment,
     };
+    console.log("datadatadata " + notification.read);
     return (
       <ListItem onClick={handleOnClick} className={classes.list_item}>
         <div
@@ -115,6 +117,8 @@ export default function Notification(props: NotificationProps) {
             [notiStyle.notification_container]: true,
             [notiStyle.notification_container_pop_over]: false,
             [notiStyle.notification_container_page]: true,
+            [notiStyle.notification_container_unread]: !notification.read,
+            [notiStyle.notification_container_read]: notification.read,
           })}
         >
           <div className={notiStyle.type_container}>
@@ -158,6 +162,8 @@ export default function Notification(props: NotificationProps) {
           [notiStyle.notification_container]: true,
           [notiStyle.notification_container_pop_over]: false,
           [notiStyle.notification_container_page]: true,
+          [notiStyle.notification_container_unread]: !notification.read,
+          [notiStyle.notification_container_read]: notification.read,
         })}
       >
         <div className={notiStyle.type_container}>

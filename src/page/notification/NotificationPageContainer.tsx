@@ -16,7 +16,7 @@ async function getData() {
 export default function NotificationPageContainer(props: any) {
   const { isPage } = props;
   const history = useHistory();
-  const { data } = useAsync({
+  const { data, reload } = useAsync({
     promiseFn: getData,
   });
 
@@ -38,6 +38,7 @@ export default function NotificationPageContainer(props: any) {
 
   const clickNotification = async (notification: NotificationData) => {
     await readNotification(notification.id);
+    await reload();
   };
 
   const goBack = async () => {
@@ -59,7 +60,6 @@ export default function NotificationPageContainer(props: any) {
           : undefined
         : undefined,
     };
-
     return (
       <NotificationPage
         goBack={goBack}

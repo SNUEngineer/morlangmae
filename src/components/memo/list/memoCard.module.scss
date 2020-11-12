@@ -196,6 +196,10 @@
       font-family: "Noto Sans CJK KR Regular";
       margin-top: 6px;
       margin-bottom: 15px;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 200px;
+      text-overflow: ellipsis;
     }
     .writer_count {
       font-size: 9px;
