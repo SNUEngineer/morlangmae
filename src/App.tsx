@@ -301,6 +301,9 @@ function ProjectView(props: any) {
 }
 
 function MainPage(props: any) {
+  //main page들은 텝 전환 시 그 전 상태가 유지되어야 하기 때문에
+  //route가 아니라, pathname과 opacity를 이용하여 화면을 전환하고 보여주게 구성되어있음.
+
   const { pathname, search } = props;
   console.log("pathnamepathname " + pathname + search);
   const mainPages = useCallback(() => {

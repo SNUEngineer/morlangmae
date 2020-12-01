@@ -170,6 +170,7 @@ export function BingeMemoInCollectionCardList(
         options={options}
       />
       <div className={memoStyle.memo_list_container}>{collectionCards}</div>
+      {/* collection card 클릭시 해당 컬렉션에 포함된 memo가 한번에 보이는 memos in collection 페이지로 이동 */}
     </div>
   );
 }

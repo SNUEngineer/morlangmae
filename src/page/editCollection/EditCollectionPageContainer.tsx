@@ -21,7 +21,7 @@ export interface EditCollectionPageContainerProps {
 async function getData({ collectionId }: any) {
   return await Promise.all([
     getCollection(collectionId),
-    searchUsers(undefined),
+    searchUsers(undefined), //이용자 추가를 위한 검색을 위한 전체 사용자 목록 데이터
     getServiceTypes(),
   ]);
 }
@@ -60,6 +60,7 @@ export default function EditCollectionPageContainer(
     //여기에 IN PROGRESS 일 경우 대응 추가.
 
     if (draftSaving) {
+      //draft save 시, 승인권자에게 요청없이 초안 내용만 업데이트
       await editCollection(collection.id, {
         title: collection.title,
         imageUrl: collection.imageUrl,
@@ -68,7 +69,8 @@ export default function EditCollectionPageContainer(
         endDate: new Date(collection.endDate),
       });
     } else {
-      //승인 시.
+      //초안 내용 업데이트와 동시에, 승인 요청 보냄. (draft = request progress)
+      //사용자가 승인권자인 경우, 컬렉션이 승인 됨. (request progress = in progress)
       await editCollection(collection.id, {
         title: collection.title,
         //imageUrl: collection.imageUrl,

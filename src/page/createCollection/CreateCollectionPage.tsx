@@ -22,6 +22,9 @@ export interface CreateCollectionPageProps {
 }
 
 export default function CreateCollectionPage(props: CreateCollectionPageProps) {
+  //컬렉션 생성 시작 화면
+  //실제 컬렉션이 db에 추가되고, draft로 등록됨.
+
   const { register, handleSubmit, setValue } = useForm();
   const [filter, setFilter] = useState<string>("BASIC");
   const [serviceFilter, setServiceFilter] = useState<string>("BASIC");

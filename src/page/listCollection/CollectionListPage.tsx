@@ -55,6 +55,7 @@ export interface CollectionCardListProps {
 }
 
 export function CollectionCardList(props: CollectionCardListProps) {
+  //header와
   const myCollections = props.myCollections;
   const [filter, setFilter] = useState<string>("ALL");
   const options = [
@@ -80,7 +81,9 @@ export function CollectionCardList(props: CollectionCardListProps) {
   let columnList = [];
   let collectionsGrid = [];
   let index = 0;
-  const columnCount = 3; // 반응에 따라 4개 이상으로 늘어날 경우 자동으로 배열.
+  const columnCount = 3;
+  // 반응에 따라 4개 이상으로 늘어날 경우 자동으로 배열.
+  // 화면 사이즈가 늘어날 때, 자동으로 ui 수정 하기 위함. (반응성은 미제작됨)
   filteredCollections.forEach((element) => {
     columnList.push(element);
     index++;
@@ -110,7 +113,7 @@ export function CollectionCardList(props: CollectionCardListProps) {
   );
 
   const headerSorted = () => {
-    // const collectionSortType = props.collectionSortType;
+    //종류에 따른 header의 title 관리
     const collectionSortType = "COMPANY";
     const title = (type) => {
       switch (type) {
@@ -145,7 +148,6 @@ export function CollectionCardList(props: CollectionCardListProps) {
   return (
     <div className={collectionStyle.collection_container}>
       {headerSorted()}
-
       <div className={collectionStyle.collection_list_container}>
         <Grid container>{collectionCards}</Grid>
       </div>

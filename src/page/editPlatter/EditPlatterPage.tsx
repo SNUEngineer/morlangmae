@@ -51,6 +51,7 @@ export interface EditPlatterPageProps extends PlatterProps, ThreadProps {
   platter: PlatterData;
   messages: MessageData[];
   collectionMembers: UserView[];
+  //ccs 관리를 위한 컬렉션에 소속된 멤버 목록
   editPlatter(data: any): Promise<void>;
   sendMessage(message: { content: string }): Promise<void>;
   loadMessages(): Promise<MessageData[]>;
@@ -113,10 +114,12 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
     event.stopPropagation();
   };
   const clickThreadButton = useCallback(() => {
+    //thread 버튼 클릭시, 아래로 이동하면서 화면 고정.
     if (!openThread) {
       if (!!boardContainerEl.current) {
         setOpenThread(true);
         setEditing(false);
+        //화면 스크롤 후 고정을 위한 딜레이.
         setTimeout(() => setOpenPlatter(false), 400);
       }
     }
@@ -146,6 +149,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
         onClick={props.onClose}
       >
         {isEditing && (
+          //platter가 editing모드일 경우 상단의 메뉴바 노출
           <PlatterToolBar
             collectionMembers={props.collectionMembers}
             setMembers={setMembers}
@@ -222,6 +226,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
           </div>
         </Element>
         <div className={editStyle.fixed_menu_button}>
+          {/* platter와 thread 이동 버튼 */}
           <Link
             activeClass="active"
             to="firstInsideContainer22"
@@ -232,7 +237,6 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
             style={{ display: "inline-block", margin: "8px" }}
             onClick={() => {
               clickPlatterButton();
-
               setEditing(true);
             }}
           >

@@ -9,11 +9,10 @@ async function uploadByFile(file: File) {
   return res.uri;
 }
 async function uploadByFiles(files: File[]) {
-  if (files.length === 1) {
-    console.log("11111111111");
-    const res = await uploadFile(files[0]);
-    return res.uri;
-  }
+  // if (files.length === 1) {
+  //   const res = await uploadFile(files[0]);
+  //   return res.uri;
+  // }
   const res = await uploadFiles(files);
   return res.uris;
 }

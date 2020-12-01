@@ -16,6 +16,8 @@ const useStyles = makeStyles(() =>
 );
 
 export default function CommentArea(props: any) {
+  //메모 아이템에 대한 comment를 남김.
+  //한번 생성된 이후에는 memo item과 독립적으로 작동하며, message write, read 가능
   const { memoItemData, sendMessage } = props;
   const classes = useStyles();
 
@@ -32,10 +34,6 @@ export default function CommentArea(props: any) {
   };
 
   const messageList = useCallback(() => {
-    console.log(
-      "memoItemMessagesmemoItemMessages   " +
-        JSON.stringify(memoItemData.memoItemMessages)
-    );
     return memoItemData?.memoItemMessages.map(
       (item: MessageData, index: number) => {
         const messageData = {

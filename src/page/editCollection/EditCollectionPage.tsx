@@ -293,6 +293,8 @@ function getStepContent(
   };
 
   const attendedUser = (checking: boolean) => {
+    //checking = false  => 두번째 단계
+    //checking = true  => 세번째 단계(확인 절차)
     return (
       <div>
         {!checking && (
@@ -558,9 +560,6 @@ function getStepContent(
         </div>
       );
     case 1:
-      console.log("collection.members " + JSON.stringify(collection.members));
-      console.log("props.users " + JSON.stringify(collection.members));
-
       return (
         <div className={editStyle.second_step_container}>
           <Grid container spacing={1}>
@@ -579,10 +578,11 @@ function getStepContent(
                       members: newValue,
                     });
                   }}
+                  //검색을 실시할 모집단(활성화된 유저 전체)
                   options={props.users}
-                  //원래는 props.users로 검색가능 대상이 나와야 함.
                   renderInput={(params) => {
                     return (
+                      //검색 필드
                       <InputBase
                         className={editStyle.input_option_container}
                         ref={params.InputProps.ref}
@@ -749,12 +749,12 @@ function getStepContent(
                     style={{ width: "100%" }}
                     multiple
                     //value={collection.members}
-                    //원래는 props.users로 검색가능 대상이 나와야 함.
                     onChange={(event, newValue) => {
+                      //승인권자 설정
                       setApprover(newValue[0]);
                     }}
+                    //검색을 실시할 모집단.(활성화된 유저 전체)
                     options={props.users}
-                    //원래는 props.users로 검색가능 대상이 나와야 함.
                     renderInput={(params) => {
                       return (
                         <InputBase
@@ -918,12 +918,12 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
     // members: collectionDetail.members,
   });
 
-  console.log("collectionDetail.createdBy " + JSON.stringify(collectionDetail));
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleStepClick = (index: number) => {
+    //단계 이동
     setActiveStep(index);
   };
 
@@ -1028,6 +1028,7 @@ export default function EditCollectionPage(props: EditCollectionPageProps) {
   };
 
   return (
+    //editingId의 주소로 dialog를 띄운 형태
     <Dialog
       fullScreen={fullScreen}
       disableEnforceFocus

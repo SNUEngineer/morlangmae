@@ -56,6 +56,7 @@ export default function CreateCollectionTab(props: CreateCollectionTabProps) {
 
   const filteredCollections = props.collections.filter(
     (data: CollectionData) => {
+      //설정된 filter와 같은 경우를 sorting 함
       return filter === "ALL" || data.status.toString() === filter;
     }
   );

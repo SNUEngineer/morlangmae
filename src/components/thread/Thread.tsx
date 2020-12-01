@@ -48,7 +48,6 @@ export default function Thread(props: ThreadProps) {
   const messagesRef = useRef<any>(null);
   const classes = useStyles();
   const { register, handleSubmit, reset, setValue } = useForm();
-  const [currentMessages, setCurrentMessages] = useState();
   const textAttaches = ["asdf", "afafa"];
   const [message, setMessage] = useState<MessageData>({
     type: "TEXT",
@@ -109,7 +108,10 @@ export default function Thread(props: ThreadProps) {
           <div className={threadStyle.title}>{test.title}</div>
         </div>
         <div className={threadStyle.divider} />
-        <div className={threadStyle.messages_container}>{messageList}</div>
+        <div className={threadStyle.messages_container}>
+          {/* thread에서 주고받은 메세지의 리스트 */}
+          {messageList}
+        </div>
         <div ref={messagesRef} />
         <div className={threadStyle.text_area_container}>
           <div className={threadStyle.text_area}>

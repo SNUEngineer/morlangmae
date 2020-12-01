@@ -19,6 +19,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function SideMenuBar(props: any) {
+  //메모 워크스테이션의 공유나 저장, 도구 등의 메뉴를 클릭했을 때 우측에서 열리는 메뉴.
   const {
     memoItem,
     pageNumber,
@@ -69,6 +70,7 @@ export default function SideMenuBar(props: any) {
   const classes = useStyles();
 
   useEffect(() => {
+    //해당 문서에 메모를 작성한 사용자들을 정렬.
     let writerArray = [];
 
     memoItems.forEach((item) => {
@@ -89,6 +91,7 @@ export default function SideMenuBar(props: any) {
 
   const getWriterCount = useCallback(
     (targetID: number) => {
+      //각 사용자 마다 작성한 메모의 숫자
       let count = 0;
       memoItems.forEach((item) => {
         if (item.metadata.writer.writerID === targetID) {
@@ -123,7 +126,6 @@ export default function SideMenuBar(props: any) {
             </div>
 
             {writers.map((item, index) => {
-              console.log("writerswriters " + JSON.stringify(writers));
               const isCheckedWriter = currentCheckedWriters?.includes(
                 item?.writerID
               );
@@ -139,7 +141,8 @@ export default function SideMenuBar(props: any) {
                   })}
                   key={index}
                   onClick={() => {
-                    console.log("item click! ");
+                    //사용자를 클릭하여 활성화 비활성화하면, 해당 사용자가 작성한 메모가
+                    //보여지거나, 숨겨지거나 됨.
                     checkWriters(item.writerID);
                   }}
                 >

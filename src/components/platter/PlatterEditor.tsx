@@ -107,6 +107,7 @@ export function viewToData(view: BlockView) {
 function dataToView() {}
 
 export default function PlatterEditor(props: PlatterEditorProps) {
+  //platter의 editing 모드에서 사용되는 컴포넌트
   const [data] = useState({
     title: props.data?.title,
     blocks: props.data?.blocks,
@@ -115,7 +116,6 @@ export default function PlatterEditor(props: PlatterEditorProps) {
   const changeTitle = async (event: any) => {
     props.changeTitle(event.target.value);
   };
-  console.log("PlatterEditorPlatterEditor");
   const onReady = useCallback(() => {
     const blocks = document.getElementById(holderId);
     if (blocks) {

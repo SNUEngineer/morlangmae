@@ -109,6 +109,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
           className={memoStyle.drag_drop_container}
           // onDragOver={handleDragOver}
           // onDrop={props.handleDrop}
+          // 정상적으로 동작하지 않음 (메모 생성을 위해서는 컬렉션을 선택해야하는데, 컬렉션 선택하는 페이지가 없음.)
         >
           <Button
             onClick={(event) => {
@@ -116,6 +117,7 @@ export default function MemoHomeTab(props: MemoHomeTabProps) {
               props.handleTestClick(event);
             }}
           >
+            {/* 메모 생성 테스트를 위한 테스트 ui */}
             Reset
           </Button>
         </div>
@@ -192,11 +194,7 @@ export function RequestMemoList(props: RequestMemoListProps) {
   }, [isRequesting]);
   return (
     <div className={memoStyle.request_container}>
-      <Header
-        // title={isRequesting ? "내가 요청한 메모" : "요청 받은 메모"}
-        title={typeText()}
-        subMenuType={"requestMemo"}
-      />
+      <Header title={typeText()} subMenuType={"requestMemo"} />
       <div className={memoStyle.memo_list_container}>
         <Grid container>
           {slicedMemo.map((item) => {
@@ -225,6 +223,7 @@ export interface TempMemoListProps {
 
 export function TempMemoList(props: TempMemoListProps) {
   const { memos, onMemoClick } = props;
+  //아직 구현되지 못함. electron에서 로컬에 파일을 저장하는 기능을 구현해야함. (react에서는 불가능)
 
   return (
     <div className={memoStyle.temp_container}>

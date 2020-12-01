@@ -58,8 +58,6 @@ export default function CollectionCard(props: CollectionCardProps) {
   const [pinned, setPinned] = useState(props.pinned);
   const onClick = async () => props.onClick(props.data);
   const pinCollection = async () => {
-    // event.stopPropagation();
-    console.log("props.pinCollection " + props.pinCollection);
     await props.pinCollection(props.data.id);
     // if (!!reloadData) {
     //   await reloadData();
@@ -68,8 +66,6 @@ export default function CollectionCard(props: CollectionCardProps) {
     setPinned(true);
   };
   const unpinCollection = async () => {
-    // event.stopPropagation();
-    console.log("props.unpinCollection " + props.unpinCollection);
     await props.unpinCollection(props.data.id);
     // if (!!reloadData) {
     //   await reloadData();
@@ -80,6 +76,7 @@ export default function CollectionCard(props: CollectionCardProps) {
 
   const isApprover = useCallback(() => {
     //내가 승인권자인지. (내 id 조회하는 방법.))
+    //create memo tab에서 사용.
     if (!!data && !!data.approver) {
       if (data.approver === props.myId) {
         return true;
@@ -101,6 +98,7 @@ export default function CollectionCard(props: CollectionCardProps) {
         backgroundRepeat: "no-repeat",
       };
     } else {
+      //컬렉션의 타이틀 이미지가 없거나 로드되지 않았을 때 사용되는 기본 이미지
       return {
         backgroundImage:
           "url(https://www.solidbackgrounds.com/images/3840x2160/3840x2160-dark-gray-solid-color-background.jpg)",
@@ -111,6 +109,7 @@ export default function CollectionCard(props: CollectionCardProps) {
     }
   }, [props.data]);
   const dateText = useCallback(() => {
+    //날짜 텍스트를 가공하는 함수
     if (!props.data) {
       return "";
     }

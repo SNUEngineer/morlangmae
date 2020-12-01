@@ -21,6 +21,7 @@ export interface GridCollectionCardListProps {
   reloadData(): Promise<void>;
 }
 export function GridCollectionCardList(props: GridCollectionCardListProps) {
+  //좌우 정렬을 위해 별도로 한줄에 2개 혹은 3개를 정렬시키기 위한 정렬 컴포넌트
   const {
     collections,
     onClick,

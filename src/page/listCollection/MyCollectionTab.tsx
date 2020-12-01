@@ -25,15 +25,7 @@ export interface MyCollectionTabProps {
 }
 
 export default function MyCollectionTab(props: MyCollectionTabProps) {
-  const {
-    pinned,
-    myCollections,
-    helpfulCollections,
-    onCollectionClick,
-    pinCollection,
-    unpinCollection,
-    reloadData,
-  } = props;
+  const { pinned, myCollections, reloadData } = props;
   const collection1 = {
     id: 0,
     title: "3분기 마케팅 전략",
@@ -213,6 +205,8 @@ export function MyCollectionCardList(props: MyCollectionCardListProps) {
     index++;
     if (index === filteredCollections.length) {
       while (columnList.length < columnCount) {
+        //만약 data가 column을 끝까지 채우기에
+        //부족하다면 null로 나머지를 채워서 자리만 차지하게 만듬.
         columnList.push(null);
       }
     }

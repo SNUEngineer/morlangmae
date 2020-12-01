@@ -11,7 +11,10 @@ import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 import { COLLECTION_LIST_PAGE } from "../../../common/paths";
 import { useHistory } from "react-router-dom";
 export default function Header(props: any) {
+  //컬렉션과 메모에서, 각 컨텐츠 노출 종류 의 제목 (최근 접속한 컬렉션, 보낸 메모 받은 메모 등)
+  //과, 컨텐츠 정렬 메뉴를 묶은 컴포넌트
   const { title, filter, handleChange, subMenuType, options, type } = props;
+  //options = 컨텐츠 정렬 옵션
   const useStyles = makeStyles(() =>
     createStyles({
       select: {

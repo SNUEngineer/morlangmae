@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import menuStyle from "./BasicMenuBar.module.scss";
 import { logOut } from "../../../services/user.service";
-import { readNotification } from "../../../services/notification.service";
 import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
 import { makeStyles, createStyles, useTheme } from "@material-ui/core/styles";
@@ -12,6 +11,8 @@ import { PROFILE } from "../../../common/paths";
 import TextField from "@material-ui/core/TextField";
 
 export default function BasicMenuBar(props: any) {
+  // 최상단 메뉴바와 그 아래를 나눔.
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [searchPath, setSearchPath] = useState("");
@@ -85,7 +86,9 @@ export default function BasicMenuBar(props: any) {
   return (
     <div className={menuStyle.container}>
       <div className={menuStyle.top_container}>
+        {/* 최상단 메뉴바 */}
         <div className={menuStyle.menu_container}>
+          {/* 테스트용 url을 통한 페이지 이동 */}
           <TextField
             className={menuStyle.logo_container}
             style={{ marginLeft: "100px", width: "100px" }}

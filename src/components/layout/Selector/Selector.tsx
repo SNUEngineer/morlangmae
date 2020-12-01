@@ -9,6 +9,7 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 
 export default function Selector(props: any) {
+  //customized 된 셀렉터.
   const { filter, handleChange, theme, options } = props;
   const useStyles = makeStyles(() =>
     createStyles({

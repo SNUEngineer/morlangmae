@@ -6,7 +6,6 @@ import CarouselList from "../../components/customizedComponent/Carousel/Carousel
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import CollectionCard, {
-  CollectionCardProps,
   CollectionData,
   CollectionCardFunctions,
 } from "../../components/collection/CollectionCard";
@@ -17,13 +16,13 @@ import Button from "@material-ui/core/Button";
 
 export interface SearchCollectionTabProps {
   serviceCollections: CollectionData[];
-  hotCollections: CollectionData[];
+  hotCollections: CollectionData[]; //가장 많이 조회된 컬렉션
   recentlyViewedCollections: CollectionData[];
   companyCollections: CollectionData[];
   onCollectionClick(data: CollectionData): Promise<void>;
   pinCollection(id: number): Promise<void>;
   unpinCollection(id: number): Promise<void>;
-  viewAllCompanyCollection(): Promise<void>;
+  viewAllCompanyCollection(): Promise<void>; //회사에 저장된 모든 컬렉션 목록으로 이동
 }
 
 export default function SearchCollectionTab(props: SearchCollectionTabProps) {
@@ -108,7 +107,7 @@ export default function SearchCollectionTab(props: SearchCollectionTabProps) {
         {...functions}
       />
       <OftenFoundCollectionCardList
-        oftenCollections={testCollections} //일단 없음.
+        oftenCollections={testCollections} //backend에서 아직 제작되지 않은 분류 기준
         {...functions}
       />
       <PopularCollectionCardList
@@ -138,6 +137,7 @@ export function ForUserCollectionCardList(
   const usersCollections = useCallback(() => {
     let collections = props.usersCollections;
     while (collections.length < 4) {
+      //carousel 최소 기준인 4개가 안될 경우 빈칸으로 채워서 ui가 무너지지않게 방지
       collections = collections.concat(null);
     }
     return collections;
@@ -150,6 +150,7 @@ export function ForUserCollectionCardList(
         <Grid container>
           {props.usersCollections.length > 0 && (
             <CarouselList showItems={3.15}>
+              {/* 한번에 3.15만큼의 item을 보여줌. (다음 item 약간 노출) */}
               {usersCollections().map((item, index) => {
                 return (
                   <div className={collectionStyle.for_user_list_item_container}>
@@ -158,6 +159,7 @@ export function ForUserCollectionCardList(
                       key={index}
                       data={item}
                       viewType={"CAROUSEL"}
+                      // 세개 짜리 카로셀을 위한 맞춤 layout.
                       onClick={props.onClick}
                       pinCollection={props.pinCollection}
                       unpinCollection={props.unpinCollection}
@@ -206,6 +208,7 @@ export function OftenFoundCollectionCardList(
                       key={index}
                       data={item}
                       viewType={"CAROUSEL_TWO"}
+                      // 두개 짜리 카로셀을 위한 맞춤 layout.
                       onClick={props.onClick}
                       pinCollection={props.pinCollection}
                       unpinCollection={props.unpinCollection}
@@ -253,6 +256,7 @@ export function PopularCollectionCardList(
                       key={index}
                       data={item}
                       viewType={"CAROUSEL"}
+                      // 세개 짜리 카로셀을 위한 맞춤 layout.
                       onClick={props.onClick}
                       pinCollection={props.pinCollection}
                       unpinCollection={props.unpinCollection}
@@ -287,7 +291,7 @@ export function RecentCollectionCardList(props: RecentCollectionCardListProps) {
     }
   });
   const recentCollectionCards = recentCollectionsGrid
-    .slice(0, 4)
+    .slice(0, 4) //가장 최근 방문한 컬렉션 4개만 노출
     .map((collections: CollectionData[], index) => {
       return (
         <div className={collectionStyle.my_collection_list_container}>

@@ -94,7 +94,10 @@ export default function MemoItem(props: any) {
 
   const handleUpdateState = useCallback(
     async (data: any, type: string) => {
-      // console.log("")
+      // memo item의 내용이나 위치 등에서 변경사항이 생길 경우,
+      // 이 함수에 변경된 데이터 타입, 데이터를 넣으면
+      // memo workstation에서의 데이터도 함께 변경시켜줌.
+      // usestate로 직접 변경시 생기는 지연 문제를 해결하기 위함.
       const metadata = itemData.metadata;
       const editedMemoItem = {
         id: itemData.id,
@@ -125,7 +128,6 @@ export default function MemoItem(props: any) {
           editedMemoItem.metadata.memoState.y = data.y;
           break;
         case "anchor":
-          console.log("data.xdata.x  " + data.x);
           editedMemoItem.metadata.memoState.anchor.x = data.x;
           editedMemoItem.metadata.memoState.anchor.y = data.y;
           break;
@@ -141,7 +143,7 @@ export default function MemoItem(props: any) {
           break;
       }
 
-      await updateMemoItem(editedMemoItem); // 딜레이 자꾸 생기넹,..
+      await updateMemoItem(editedMemoItem);
     },
     [
       itemData,
@@ -155,6 +157,7 @@ export default function MemoItem(props: any) {
   );
   const onAnchorZoneDragEnd = useCallback(
     async (event) => {
+      // anchor를 생성하는 함수. 드레그 종료시 호출
       if (
         event.nativeEvent == null ||
         event.nativeEvent.offsetX == null ||
@@ -207,18 +210,17 @@ export default function MemoItem(props: any) {
   );
 
   useEffect(() => {
+    //page num에 따라 보여질 메모 아이템과 숨겨질 메모 아이템을 구분.
     const pageNumCorrect =
       currentPageNum === memoItemData?.metadata?.memoState?.pageNum;
     const checkWriterCorrect = !!currentCheckedWriters
       ? currentCheckedWriters.includes(memoItemData?.metadata?.writer.writerID)
       : false;
     setIsVisible(pageNumCorrect && checkWriterCorrect);
-    console.log(
-      "setIsVisiblesetIsVisible " + checkWriterCorrect + "   " + pageNumCorrect
-    );
   }, [currentPageNum, memoItemData, currentCheckedWriters, isMenuItem]);
 
   useEffect(() => {
+    //is Menu Item은 우측 사이드 메뉴에서 별도로 현재 focus된 메모를 보여주는 memo item을 구분하기 위함임.
     if (!isMenuItem) {
       const state = memoItemData?.metadata?.memoState;
       const anchor = state?.anchor;

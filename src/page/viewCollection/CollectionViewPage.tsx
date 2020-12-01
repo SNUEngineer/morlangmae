@@ -457,7 +457,6 @@ function EditMemberMenu(props: EditMemberMenuProps) {
               style={{ width: "100%" }}
               multiple
               value={editedCollection.members}
-              //원래는 props.users로 검색가능 대상이 나와야 함.
               onChange={(event, newValue) => {
                 setEditedCollection({
                   ...collection,
@@ -465,7 +464,7 @@ function EditMemberMenu(props: EditMemberMenuProps) {
                 });
               }}
               options={props.users}
-              //원래는 props.users로 검색가능 대상이 나와야 함.
+              //컬렉션의 member를 추가할 수도 있으니, 전체 유저 목록에서 검색
               renderInput={(params) => {
                 return (
                   <InputBase
@@ -522,6 +521,8 @@ interface SearchPlatterProps {
 }
 
 function SearchPlatter(props: SearchPlatterProps) {
+  //open시 css로 지정된 animation을 이용해 우측에서 좌측으로 slide된 후 나타남.
+  // 플레터 클릭시 # 주소로 원하는 platter로 스크롤 됨.
   const { openSearchBar, setOpenSearchBar } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -569,11 +570,6 @@ function SearchPlatter(props: SearchPlatterProps) {
         letterSpacing: "-0.8px",
         fontFamily: "Noto Sans CJK KR Regular",
         color: "#E2E2E2",
-
-        // "&:hover": {
-        //   background: "trasparent",
-        //   color: "white",
-        // },
       },
       popover: {
         zIndex: "2300",
@@ -745,14 +741,8 @@ function PlatterSummaryList(props: PlatterSummaryListProps) {
   const platterSummaires = props.platterSummaries
     .filter((it) => viewType === ViewType.ALL || it.joined)
     .filter((it) => it.title.includes(props.searchQuery));
+  //컬렉션에 저장된 platter의 목록
   console.log("platterSummaires " + JSON.stringify(platterSummaires));
-  // const ps1 = {
-  //   id: 0,
-  //   title: "string1111",
-  //   createdBy: 0,
-  //   createdDate: 0,
-  // };
-  // const platterSummaires = [ps1, ps1];
   const onClick = (event: any) => {
     setViewType(event.target.value);
   };

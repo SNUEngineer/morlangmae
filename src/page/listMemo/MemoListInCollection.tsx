@@ -113,11 +113,13 @@ export interface MyMemoListProps {
 }
 
 export function MyMemoList(props: MyMemoListProps) {
+  //collection에 포함된 메모
   const { memos, onMemoClick, onCollectionClick, collection } = props;
   const [filter, setFilter] = useState<string>("ALL");
   const handleChange = (event: any) => {
     setFilter(event.target.value);
   };
+
   const options = [
     {
       value: "ALL",

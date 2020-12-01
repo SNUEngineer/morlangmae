@@ -46,11 +46,7 @@ const useStyles = makeStyles((viewType: "NORMAL" | "WIDE") =>
 
 export default function MemoCard(props: MemoCardProps) {
   const viewType = props.viewType;
-  const classes = useStyles(viewType);
   const data = props.data;
-  const notificationCount = !!data.notificationCount
-    ? 0
-    : data.notificationCount;
   const onClick = () => {
     props.onClick(props.data);
   };
@@ -69,6 +65,7 @@ export default function MemoCard(props: MemoCardProps) {
   const dateText = data.createdDate;
 
   switch (viewType) {
+    //만들어는 놨지만, 사용하지 않는 형태
     // case "WIDE":
     //   return (
     //     <Card className={memoStyle.card_root} onClick={onClick}>
@@ -99,6 +96,7 @@ export default function MemoCard(props: MemoCardProps) {
     //     </Card>
     //   );
 
+    //'주고받은 메모', collection 모아보기의 내부에서 쓰이는 레이아웃
     case "LIST":
     case "IN_COLLECTION":
       return (
@@ -132,10 +130,7 @@ export default function MemoCard(props: MemoCardProps) {
           <div className={memoStyle.writer_info}>
             <div className={memoStyle.vertical_align}>
               <div className={memoStyle.date}>{dateText}</div>
-              <div className={memoStyle.document_title}>
-                {data.title}
-                {/* 혹시, file 이름으로는 어떰? */}
-              </div>
+              <div className={memoStyle.document_title}>{data.title}</div>
               <div className={memoStyle.writer_count}>{"5명 중 2명 작성"}</div>
             </div>
           </div>
@@ -160,6 +155,7 @@ export default function MemoCard(props: MemoCardProps) {
     //     </div>
     //   );
 
+    //'임시저장된 메모'에서 쓰이는 레이아웃
     case "TEMP":
       return (
         <div className={memoStyle.temp_root} onClick={onClick}>

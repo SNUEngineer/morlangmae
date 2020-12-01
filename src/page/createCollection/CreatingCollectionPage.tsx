@@ -14,6 +14,8 @@ export interface CreatingCollectionPageProps {
 export default function CreatingCollectionPage(
   props: CreatingCollectionPageProps
 ) {
+  //컬렉션을 생성한 후의 단계.
+  //필수 아님.
   const useStyles = makeStyles(() =>
     createStyles({
       submit: {

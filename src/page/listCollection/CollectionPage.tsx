@@ -32,7 +32,6 @@ export default function CollectionPage(props: CollectionPageProps) {
   const [value, setValue] = useState(1);
   const handleChange = (_: any, newValue: number) => setValue(newValue);
 
-  console.log("?????????????");
   return (
     <Paper>
       <Tab label="My Collection" />

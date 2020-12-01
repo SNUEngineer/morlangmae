@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function Drawer() {
+  //좌측 메뉴 탭
   const history = useHistory();
   const classes = useStyles();
   const [clicked, setClicked] = useState("collection");
@@ -73,6 +74,7 @@ export default function Drawer() {
   ];
   useEffect(() => {
     const currentPath = pathname + search;
+    //다른 메뉴 클릭시, 해당 메뉴의 최신 url을 저장하여, 추후 복귀시에 이전 작업으로부터의 연속성을 갖도록 함
     if (pathname.startsWith("/collections")) {
       setClicked("collection");
       setLastPath((prevState) => ({ ...prevState, collection: currentPath }));
@@ -95,6 +97,8 @@ export default function Drawer() {
     (name: string) => {
       switch (name) {
         case "collection":
+          //현재 활성화된 메뉴 클릭시, 해당 메뉴의 홈으로 이동 (컬렉션의 경우, search tab으로 이동)
+          //다른 메뉴 클릭시, 해당 메뉴의 최신 url을 불러옴으로서 ux개선
           if (clicked === "collection") {
             history.push(`${COLLECTION_LIST_MY_COLLECTION}`);
           } else {

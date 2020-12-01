@@ -29,6 +29,7 @@ export default function Anchor(props: any) {
     boxDragging: false,
   });
   const setBoxStyle = useCallback(() => {
+    //생성될 박스의 너비 계산.
     const placedDiv = {
       width: Math.abs(boxAnchor.x - anchor.x),
       height: Math.abs(boxAnchor.y - anchor.y),
@@ -38,6 +39,8 @@ export default function Anchor(props: any) {
 
   const setResizeBox = useCallback(
     (isMain: boolean) => {
+      //box 크기를 조절할 수 있는 anchor와 box anchor의 클릭 가능 면적을 계산하는 함수
+      //지나치게 크거나 작을 경우 생기는 불편함이 있으므로, 박스 크기가 커지면 클릭 가능 면적도 커지게 설계됨,
       const minSize = { w: 40, h: 40 };
       const maxSize = { w: 80, h: 80 };
       let size = {
@@ -81,6 +84,7 @@ export default function Anchor(props: any) {
   );
 
   const setBoxPosition = useCallback(() => {
+    //박스의 위치 계산
     const box = {
       x: boxAnchor.x > anchor.x ? anchor.x : boxAnchor.x,
       y: boxAnchor.y > anchor.y ? anchor.y : boxAnchor.y,

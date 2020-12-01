@@ -189,19 +189,22 @@ export default function Memo(props: any) {
   const [currentFocusItem, setCurrentFocusItem] = useState({
     itemID: 0,
   });
-  const [sideMenuOpen, setSideMenuOpen] = useState("NONE");
+  const [sideMenuOpen, setSideMenuOpen] = useState("NONE"); //어떤 우측 사이드 메뉴가 열려있는지
 
   const [pdfList, setPdfList] = useState({});
   const [fisrtAlign, setFisrtAlign] = useState(true);
   const [listProgress, setListProgress] = useState(0);
 
-  const [newMemoItems, setNewMemoItems] = useState<MemoItemData[]>();
+  const [newMemoItems, setNewMemoItems] = useState<MemoItemData[]>(); //클라이언트에는 생성되었으나, 아직 서버에는 생성되지 않은 item 위치. 이 item 의 아이디는 구별의 용이함을 위해 음수임.
   const [existingMemoItems, setExistingMemoItems] = useState<MemoItemData[]>(
     props.memoData?.memoItems
-  );
-  const [deletingMemoItems, setDeletingMemoItems] = useState<MemoItemData[]>();
-  const [memo, setMemo] = useState(props.memoData);
-  const [mouseOnItem, setMouseOnItem] = useState(false);
+  ); //서버 db에 이미 생성되어 있는 items를 저장하는 배열
+
+  const [deletingMemoItems, setDeletingMemoItems] = useState<MemoItemData[]>(); //클라이언트로부터 item 삭제요청을 받았으나, 아직 서버에 요청을 날리기 전에 저장되는 배열
+
+  const [memo, setMemo] = useState(props.memoData); //문서 title, comment, 공유 대상자 등의 정보를 저장하는 state.
+
+  const [mouseOnItem, setMouseOnItem] = useState(false); //마우스가 모든 item위에 위치하는지. (ux용)
 
   useEffect(() => {
     setExistingMemoItems(props.memoData?.memoItems);
@@ -226,10 +229,7 @@ export default function Memo(props: any) {
     },
   };
   const memoItems = useCallback(() => {
-    // console.log("memoItemsmemoItems " + JSON.stringify(newMemoItems));
-    console.log(
-      "existingMemoItemsexistingMemoItems " + JSON.stringify(existingMemoItems)
-    );
+    // exisiting, new 메모를 조합해, 현재 유저가 read 할 수 있는 item의 리스트를 반환 .
 
     if (!newMemoItems || newMemoItems.length === 0) {
       if (!existingMemoItems || existingMemoItems.length === 0) {
@@ -250,6 +250,7 @@ export default function Memo(props: any) {
   const documentEl = useRef<HTMLDivElement>(null);
   const panzoomBoxContainerEl = useRef<HTMLDivElement>(null);
   const panzoomEl = useRef(null);
+
   useLayoutEffect(() => {
     function updateSize() {
       if (panzoomBoxContainerEl.current) {
@@ -259,6 +260,7 @@ export default function Memo(props: any) {
         if (!!panzoomEl.current) {
           if (!fisrtAlign) {
             panzoomEl.current.moveBy((width - panzoomBoxSize.w) / 2, 0);
+            //window 크기 변환 시, 문서 view의 시점을 이동하여 ux개선
           }
         }
         if (panzoomBoxSize.w !== width) {
@@ -278,11 +280,11 @@ export default function Memo(props: any) {
     }
     const onKeyDown = (event) => {
       if (event.keyCode === 32) {
-        //spcae bar
+        //spcae bar 키 인식
         setKeyState((prevState) => ({ ...prevState, spacebar: true }));
         event.preventDefault();
       } else if (event.keyCode === 17) {
-        //control
+        //control 키 인식
         setKeyState((prevState) => ({ ...prevState, control: true }));
         event.preventDefault();
       }
@@ -290,11 +292,11 @@ export default function Memo(props: any) {
 
     const onKeyUp = (event) => {
       if (event.keyCode === 32) {
-        //spcae bar
+        //spcae bar 키 인식
         setKeyState((prevState) => ({ ...prevState, spacebar: false }));
         event.preventDefault();
       } else if (event.keyCode === 17) {
-        //control
+        //control 키 인식
         setKeyState((prevState) => ({ ...prevState, control: false }));
         event.preventDefault();
       }
@@ -311,7 +313,7 @@ export default function Memo(props: any) {
       setNumPages(numPages);
       if (fisrtAlign) {
         if (!!panzoomEl.current) {
-          console.log("auto center!!!");
+          //memo workstation 진입시, 자동으로 문서의 정 중앙으로 이동시켜줌.
           panzoomEl.current.autoCenter(1, false);
         }
         setFisrtAlign(false);
@@ -321,19 +323,20 @@ export default function Memo(props: any) {
   );
 
   const handleSaveItems = async (e: any) => {
-    props.handleEditMemo(memo);
-    props.handleMemoItems(existingMemoItems, "EDIT");
-    props.handleMemoItems(newMemoItems, "ADD");
-    props.handleMemoItems(deletingMemoItems, "DELETE");
+    props.handleEditMemo(memo); //수정된 title, 공유된 멤버, comment를 서버에 반영
+    props.handleMemoItems(existingMemoItems, "EDIT"); //기존 존재하는 아이템을 수정.(변경되지 않더라도, 현재 상태를 db 반영)
+    props.handleMemoItems(newMemoItems, "ADD"); //새로 생성된 item을 서버에 추가
+    props.handleMemoItems(deletingMemoItems, "DELETE"); //삭제 요청된 item을 서버에서 삭제
   };
   const handleShare = async (e: any) => {
-    props.handleEditMemo(memo);
-    props.handleMemoItems(existingMemoItems, "EDIT");
-    props.handleMemoItems(newMemoItems, "ADD");
-    props.handleMemoItems(deletingMemoItems, "DELETE");
+    props.handleEditMemo(memo); //수정된 title, 공유된 멤버, comment를 서버에 반영
+    props.handleMemoItems(existingMemoItems, "EDIT"); //기존 존재하는 아이템을 수정.(변경되지 않더라도, 현재 상태를 db 반영)
+    props.handleMemoItems(newMemoItems, "ADD"); //새로 생성된 item을 서버에 추가
+    props.handleMemoItems(deletingMemoItems, "DELETE"); //삭제 요청된 item을 서버에서 삭제
   };
 
   const setPanzoomBoundary = useCallback(() => {
+    //대지에서 문서 이미지와 memo item이 이동할 수 있는 경계를 설정.
     const scaledBoard = {
       w: (panBoardSize.w + 1000) * documentPosition.scale, // 약간씩의 여백 (board 바깥부분).
       h: (panBoardSize.h + 1000) * documentPosition.scale, // 약간씩 여백 (board 바깥부분).
@@ -371,6 +374,7 @@ export default function Memo(props: any) {
   const onMouseDown = useCallback(
     (event: any) => {
       if (event.nativeEvent.which === 3) {
+        //우클릭으로 대지(board) 클릭시 새로운 memo item 생성
         event.preventDefault();
 
         const newMemoItem = {
@@ -405,13 +409,14 @@ export default function Memo(props: any) {
           const addedArray = newMemoItems.concat(newMemoItem);
           setNewMemoItems(addedArray);
         }
-        console.log("newMemoItems " + JSON.stringify(newMemoItems));
       }
     },
     [newItemId, newMemoItems, pageNumber, props.myData]
   );
   const deleteMemo = useCallback(
     (targetID: number) => {
+      //existing 배열에 저장된 item의 경우, existing에서 삭제 후, deleting 배열에 추가(추후 한꺼번에 삭제 요청)
+      //new 배열에 저장된 item의 경우 new에서 삭제
       if (!!newMemoItems && newMemoItems.length !== 0) {
         const newList = newMemoItems.filter((item) => item.id !== targetID);
         setNewMemoItems(newList);
@@ -432,7 +437,7 @@ export default function Memo(props: any) {
             return true;
           }
         });
-        console.log("삭제! 44444 " + JSON.stringify(existingList));
+
         setExistingMemoItems(existingList);
       }
     },
@@ -441,6 +446,7 @@ export default function Memo(props: any) {
 
   const checkWriters = useCallback(
     (writerID: number) => {
+      //check된 메모 작성자의 메모만 노출되게 함
       if (currentCheckedWriters?.includes(writerID)) {
         const filteredArray = currentCheckedWriters.filter(
           (item) => item !== writerID
@@ -455,6 +461,7 @@ export default function Memo(props: any) {
   );
   const updateMemoItem = useCallback(
     (data: MemoItemData) => {
+      //item의 위치, 내용 등이 수정 될 경우 이를 저장된 배열에서 찾아서 바꾸는 함수
       if (!!newMemoItems && newMemoItems.length !== 0) {
         const newList = newMemoItems.filter((item) => {
           if (item?.id === data?.id) {
@@ -488,6 +495,8 @@ export default function Memo(props: any) {
 
   const focusOtherItem = useCallback(
     (next, memoItemData, writerID) => {
+      //현재 사용자에게 보여지고 있는 메모들 중, 현재 focus된 item을 제외한 다른 item으로 focus를 이동
+      //item id 기준으로 prev, next로 이동
       const id = memoItemData.id;
       const newList = currentPageMemos()
         .sort((a, b) => a.id - b.id) //생성된 시간(item 아이디로 오름차순)
@@ -517,6 +526,7 @@ export default function Memo(props: any) {
   );
 
   const currentMenuMemo = useCallback(() => {
+    //menu memo = 현재 focus된 아이템을 도구 메뉴에서 더 크게 보여줌. 그 객체를 menu memo라고 함.
     const newList = memoItems().filter(
       (item) => item.id === currentFocusItem.itemID
     );
@@ -576,7 +586,7 @@ export default function Memo(props: any) {
             setListProgress(progress);
             // const { onProgress } = this.props;
             // onProgress && onProgress();
-            //로딩  진행 정도.
+            // 로딩  진행 정도.
           }}
         />
 
@@ -644,7 +654,7 @@ export default function Memo(props: any) {
                   className={memoStyle.panzoom_box}
                   zoomSpeed={5}
                   onStateChange={onStateChange}
-                  boundaryRatioVertical={setPanzoomBoundary().vRatio} //
+                  boundaryRatioVertical={setPanzoomBoundary().vRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
                   boundaryRatioHorizontal={setPanzoomBoundary().hRatio} // panzoom의 경계선을 기준으로 내부 div의 몇배만큼 더 움직일 수 있는지.
                   enableBoundingBox
                   autoCenter={true}

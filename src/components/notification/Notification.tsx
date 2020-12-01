@@ -56,6 +56,7 @@ export default function Notification(props: NotificationProps) {
   const { notification } = props;
   const sender = notification.sentBy;
   const comment = notification.comment;
+  //comment는 thread나 memo에서 대화 발생시, 해당 대화의 내용을 notification에 띄워주기 위한 데이터.
   const history = useHistory();
   const { pathname, search } = useLocation();
   const { data } = useAsync({
@@ -65,6 +66,7 @@ export default function Notification(props: NotificationProps) {
   });
 
   const handleOnClick = async () => {
+    //알림의 근원지 (플레터, 컬렉션, 메모)에 따라 클릭시 연결되는 url 컨트롤
     const type = notification.type;
     const query = queryString.parse(search);
     let path;
@@ -105,11 +107,11 @@ export default function Notification(props: NotificationProps) {
   const classes = useStyles();
 
   if (!!comment) {
+    //message(comment)가 담긴 notification 인지 아닌지에 따라 전체 ui가 상당부분 바뀌므로, 구분.
     const commentData = {
       sentBy: sender,
       comment: comment,
     };
-    console.log("datadatadata " + notification.read);
     return (
       <ListItem onClick={handleOnClick} className={classes.list_item}>
         <div

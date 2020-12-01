@@ -1,21 +1,12 @@
 // @ts-nocheck
 import React, { useState, useRef, useLayoutEffect } from "react";
 import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
 
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import PersonIcon from "@material-ui/icons/Person";
-import EditIcon from "@material-ui/icons/Edit";
 import { blue } from "@material-ui/core/colors";
-import Dialog from "../Dialog";
 import menuStyle from "./menu.module.scss";
 import Popover from "@material-ui/core/Popover";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import MenuItem from "@material-ui/core/MenuItem";
 
 export default function FloatingMenu(props) {
   const { options, selectedOption } = props;
@@ -37,9 +28,7 @@ export default function FloatingMenu(props) {
           "0px 3px 1px -2px rgba(0,0,0,0), 0px 2px 2px 0px rgba(0,0,0,0), 0px 1px 5px 0px rgba(0,0,0,0)",
         "&:hover": {
           background: "transparent",
-          boxShadow:
-            // "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
-            "none",
+          boxShadow: "none",
         },
       },
       item: {
@@ -103,17 +92,6 @@ export default function FloatingMenu(props) {
       selectedOption(value);
     };
 
-    const setDialogSize = () => {
-      if (!!conatinerEl.current) {
-      }
-    };
-    useLayoutEffect(() => {
-      window.addEventListener("resize", (_) => setDialogSize(), true);
-      setDialogSize();
-      return () => {
-        window.removeEventListener("resize", setDialogSize);
-      };
-    }, [conatinerEl.current]);
     return (
       <Popover
         onClose={handleClose}
@@ -157,11 +135,6 @@ export default function FloatingMenu(props) {
         color="primary"
         onClick={handleClickOpen}
         className={classes.root}
-        // endIcon={
-        //   <div>
-        //     <MoreHorizIcon />
-        //   </div>
-        // }
       >
         <div className={menuStyle.icon_container}>
           <img className={menuStyle.dot_icon} alt={"icon"} />

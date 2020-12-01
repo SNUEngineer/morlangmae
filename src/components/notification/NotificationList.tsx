@@ -22,6 +22,8 @@ export default function NotificationList(props: NotificationListProps) {
       className={notiStyle.notification_scroll_div}
     >
       <InfiniteScroll
+        //최하단으로 스크롤 시에 지속적으로 이후 view들을 불러옴.
+
         //dataLength={props.notifications?.length}
         dataLength={props.notifications?.length}
         next={() => {

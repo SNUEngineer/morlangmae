@@ -42,6 +42,8 @@ enum SortType {
 }
 
 function CompanyCollectionCardList(props: CompanyCollectionCardListProps) {
+  //컬렉션의 무제한적 grid 정렬을 위한 페이지.
+
   const [filter, setFilter] = useState<string>("ALL");
   const [sort, setSort] = useState<SortType>(SortType.RECENTLY_DESC);
   const changeFilter = (event: any) => {

@@ -47,6 +47,7 @@ export default function CreatePlatterPage(props: CreatePlatterPageProps) {
   const [editorRef, setEditorRef] = useState(null);
   const history = useHistory();
   const handleClose = (platterId: number) => {
+    //platter id 를 삭제함으로써, 이전 페이지로 돌아감.
     const query = queryString.parse(search);
     delete query.platterId;
 
@@ -78,6 +79,7 @@ export default function CreatePlatterPage(props: CreatePlatterPageProps) {
       const platterId = await props.createPlatter({
         title,
         ccs: members.map((it) => it.id),
+        //ccs는 platter의 조회에 권한을 가지는 인원의 모임(플레터 작성자 제외.)
         blocks: (await (editorRef as any).save()).blocks.map((it: any) => {
           return {
             type: toBlockType(it.type),

@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function PlatterToolBar(props: PlatterToolBarProps) {
+  //문단 삽입, 이미지, 정렬 등 editor js의 tool을 외부로 끌어내어 활용,
   const classes = useStyles();
 
   const { editorRef } = props;

@@ -13,6 +13,10 @@ export interface StartCreateCollectionPageProps {
 export default function StartCreateCollectionPage(
   props: StartCreateCollectionPageProps
 ) {
+  //필수 아님
+  //ux를 위한 단순 삽입 단계
+  //
+
   const useStyles = makeStyles(() =>
     createStyles({
       submit: {
