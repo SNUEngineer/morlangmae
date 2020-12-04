@@ -66,7 +66,7 @@ export default function Notification(props: NotificationProps) {
   });
 
   const handleOnClick = async () => {
-    //알림의 근원지 (플레터, 컬렉션, 메모)에 따라 클릭시 연결되는 url 컨트롤
+    //알림의 근원지 (플레터, 컬렉션, 메모)에 따라 클릭시 연결되는 url을 컨트롤하는 함수
     const type = notification.type;
     const query = queryString.parse(search);
     let path;

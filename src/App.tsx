@@ -153,6 +153,7 @@ function App() {
               render={() => <PersonaView />}
             />
             <AuthRoute
+              // 메인 비즈니스 로직이 작동되는 페이지들의 모임
               hasDrawer
               authenticated={authenticated}
               path={[
