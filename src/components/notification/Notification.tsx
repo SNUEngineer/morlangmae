@@ -16,7 +16,7 @@ import queryString from "query-string";
 
 export interface NotificationData {
   id: number;
-  type: "COLLECTION" | "PLATTER" | "MEMO";
+  type: string;
   comment: string;
   cause: string;
   createdDate: Date;
@@ -58,7 +58,9 @@ export default function Notification(props: NotificationProps) {
   const comment = notification.comment;
   //comment는 thread나 memo에서 대화 발생시, 해당 대화의 내용을 notification에 띄워주기 위한 데이터.
   const history = useHistory();
-  const { pathname, search } = useLocation();
+  // const { pathname, search } = useLocation();
+  const pathname = "sent";
+  const search = "df";
   const { data } = useAsync({
     promiseFn: getData,
     type: notification.type,

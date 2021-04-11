@@ -14,7 +14,8 @@ async function getData() {
 }
 
 export default function NotificationPageContainer(props: any) {
-  const { isPage } = props;
+  // const { isPage } = props;
+  const isPage  = true;
   const history = useHistory();
   const { data, reload } = useAsync({
     promiseFn: getData,

@@ -61,7 +61,7 @@ export default function SignInPage(props: any) {
             required
             fullWidth
             id="username"
-            label="Username"
+            label="아이디"
             name="username"
             autoComplete="username"
             autoFocus
@@ -73,7 +73,7 @@ export default function SignInPage(props: any) {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="비밀번호"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -81,7 +81,7 @@ export default function SignInPage(props: any) {
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            label="자동 로그인"
           />
           <Button
             type="submit"

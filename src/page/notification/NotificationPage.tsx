@@ -19,11 +19,9 @@ interface NotificationDataAndCursor {
 
 interface NotificationPageProps {
   goBack(): Promise<void>;
-  showAll(): Promise<void>;
   initialNotifications: NotificationDataAndCursor;
   getMoreNotifications(cursor?: string): Promise<NotificationDataAndCursor>;
   onNotificationClick(notificationData: NotificationData): Promise<void>;
-  onClose(): Promise<void>;
 }
 
 export default function NotificationPage(props: NotificationPageProps) {
@@ -51,9 +49,7 @@ export default function NotificationPage(props: NotificationPageProps) {
     <div className={notiStyle.root} id={"pageScroller"}>
       {props.isPage && (
         <div>
-          <div className={notiStyle.navigation}>
-            <Button onClick={props.goBack}>이전으로</Button>
-          </div>
+         
 
           <div className={notiStyle.container}>
             <Header title={"알림"} subMenuType={"none"} />
@@ -80,13 +76,9 @@ export default function NotificationPage(props: NotificationPageProps) {
             notifications={notifications}
             onClick={props.onNotificationClick}
             fetchMore={onGetMoreNotifications}
-            onClose={props.onClose}
             isPage={props.isPage}
           />
-          <Button onClick={props.showAll}>알림 전체보기</Button>
-          {/* {cursor && (
-              <ListItem onClick={onGetMoreNotifications}>...</ListItem>
-            )} */}
+          
         </div>
       )}
     </div>
