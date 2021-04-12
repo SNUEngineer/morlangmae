@@ -45,11 +45,11 @@ import {
   MEMO_WORK_STATION,
   COLLECTION_LIST_PAGE,
 } from "./common/paths";
-import CollectionTab from "./page/listCollection/CollectionTab";
-import CreateCollectionTabContainer from "./page/listCollection/CreateCollectionTabContainer";
-import MyCollectionTabContainer from "./page/listCollection/MyCollectionTabContainer";
-import SearchCollectionTabContainer from "./page/listCollection/SearchCollectionTabContainer";
-import CollectionListPageContainer from "./page/listCollection/ChattingListPageContainer";
+import CollectionTab from "./page/listChatting/CollectionTab";
+import CreateCollectionTabContainer from "./page/listChatting/CreateCollectionTabContainer";
+import MyCollectionTabContainer from "./page/listChatting/MyCollectionTabContainer";
+import SearchCollectionTabContainer from "./page/listChatting/SearchCollectionTabContainer";
+import CollectionListPageContainer from "./page/listChatting/ChattingListPageContainer";
 import BingeMemoTab from "./page/listMemo/BingeMemoTab";
 import MemoHomeTabContainer from "./page/listMemo/MemoHomeTabContainer";
 import MemoListTab from "./page/listMemo/MemoListTab";
@@ -58,7 +58,7 @@ import MemoListInCollectionContainer from "./page/listMemo/MemoListInCollectionC
 import MemoWorkstationContainer from "./page/memoWorkstation/MemoWorkstationContainer";
 import MemoWorkstationTest from "./page/memoWorkstation/MemoWorkstationTest";
 import queryString from "query-string";
-import CompanyCollectionPageContainer from "./page/listCollection/CompanyCollectionPageContainer";
+import CompanyCollectionPageContainer from "./page/listChatting/CompanyCollectionPageContainer";
 import { verify } from "./services/account.service";
 import { resetToken, expireToken } from "./common/axios";
 import NotificationPageContainer from "./page/notification/NotificationPageContainer";

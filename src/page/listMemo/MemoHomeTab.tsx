@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
-} from "../../components/chatting/CollectionCard";
+} from "../../components/chatting/ChattingCard";
 import { MemoView } from "../../services/memo.service";
 import MemoCard from "../../components/memo/list/memoCard";
 import Grid from "@material-ui/core/Grid";

@@ -6,7 +6,7 @@ import {
   getCompanyCollections,
   CollectionView,
   getMyCollections,
-} from "../../services/collection.service";
+} from "../../services/chatting.service";
 
 export interface CollectionPageContainerProps {
   collectionId?: number;

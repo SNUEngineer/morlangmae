@@ -3,7 +3,7 @@ import React from "react";
 import EditPlatterPage from "./EditPlatterPage";
 import Scroll from "./Scroll";
 import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
-
+import Thread, { ThreadProps } from "../../components/thread/Thread";
 export default { title: "edit platter" };
 
 export function basic() {
@@ -47,13 +47,18 @@ export function basic() {
   };
   const testMembers = [testMember1, testMember2];
   return (
-    <EditPlatterPage
-      platter={platter}
+    // <EditPlatterPage
+    //   platter={platter}
+    //   sendMessage={() => {}}
+    //   loadMessages={() => {}}
+    //   editPlatter={() => {}}
+    //   collectionMembers={testMembers}
+    //   messages={thread.messages}
+    // />
+    <Thread
+      messages={thread.messages}
       sendMessage={() => {}}
       loadMessages={() => {}}
-      editPlatter={() => {}}
-      collectionMembers={testMembers}
-      messages={thread.messages}
     />
   );
 }

@@ -1,7 +1,4 @@
 import React from "react";
-import CollectionCard from "./CollectionCard";
-import CreateCollection from "./CreateCollection";
-
 export default { title: "Projects" };
 
 // export function project() {

@@ -22,7 +22,7 @@ import Avatar from "@material-ui/core/Avatar";
 import InputBase from "@material-ui/core/InputBase";
 import Checkbox from "@material-ui/core/Checkbox";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { CollectionDetail } from "../../services/collection.service";
+import { CollectionDetail } from "../../services/chatting.service";
 import { UserView } from "../../services/user.service";
 import editStyle from "./editCollectionPage.module.scss";
 import { TextArea } from "../../components/customizedComponent/TextArea";

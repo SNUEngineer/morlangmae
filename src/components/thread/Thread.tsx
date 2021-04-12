@@ -100,50 +100,47 @@ export default function Thread(props: ThreadProps) {
   };
 
   return (
-    <Fragment>
-      <div className={threadStyle.thread_container}>
-        <div className={threadStyle.divider} />
-        <div className={threadStyle.title_container}>
-          <div className={threadStyle.subtitle}>{test.subtitle}</div>
-          <div className={threadStyle.title}>{test.title}</div>
+    <div className={threadStyle.thread_container}>
+      <div className={threadStyle.divider} />
+      <div className={threadStyle.title_container}>
+        <div className={threadStyle.title}>{test.title}</div>
+      </div>
+      <div className={threadStyle.divider} />
+      <div className={threadStyle.messages_container}>
+        {/* thread에서 주고받은 메세지의 리스트 */}
+        {messageList}
+      </div>
+      <div ref={messagesRef} />
+      <div className={threadStyle.text_area_container}>
+        <div className={threadStyle.text_area}>
+          <TextArea
+            name={"content"}
+            inline
+            width="100%"
+            height="100px"
+            maxHeight="200px"
+            textSize={14}
+            fontFamily={"Noto Sans CJK KR Regular"}
+            padding={10}
+            onChange={handleTextContentChange}
+            value={message.content}
+          />
         </div>
-        <div className={threadStyle.divider} />
-        <div className={threadStyle.messages_container}>
-          {/* thread에서 주고받은 메세지의 리스트 */}
-          {messageList}
-        </div>
-        <div ref={messagesRef} />
-        <div className={threadStyle.text_area_container}>
-          <div className={threadStyle.text_area}>
-            <TextArea
-              name={"content"}
-              inline
-              width="100%"
-              height="100px"
-              maxHeight="200px"
-              textSize={14}
-              fontFamily={"Noto Sans CJK KR Regular"}
-              padding={10}
-              onChange={handleTextContentChange}
-              value={message.content}
-            />
-          </div>
 
-          <div className={threadStyle.send_area}>
-            <div className={threadStyle.align_container}>
-              <div className={threadStyle.send_button_container}>
-                <Button
-                  type="submit"
-                  className={classes.send_button}
-                  onClick={sendMessage}
-                >
-                  <img alt={"icon"} className={threadStyle.send_button} />
-                </Button>
-              </div>
+        <div className={threadStyle.send_area}>
+          <div className={threadStyle.align_container}>
+            <div className={threadStyle.send_button_container}>
+              <Button
+                type="submit"
+                className={classes.send_button}
+                onClick={sendMessage}
+              >
+                <img alt={"icon"} className={threadStyle.send_button} />
+              </Button>
             </div>
           </div>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 }

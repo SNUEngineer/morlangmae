@@ -40,9 +40,7 @@ export default function Message(props: MessageProps) {
           </div>
           <div className={messageStyle.time_text}>{messageData.sentAt}</div>
         </div>
-        <div className={messageStyle.content}>
-          {messageData.content.content}
-        </div>
+        <div className={messageStyle.content}>{messageData.content}</div>
       </div>
     </div>
   );

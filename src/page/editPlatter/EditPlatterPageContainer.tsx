@@ -9,7 +9,7 @@ import {
 } from "../../services/platter.service";
 import { getThread, sendMessage } from "../../services/thread.service";
 import EditPlatterPage from "./EditPlatterPage";
-import { getCollection } from "../../services/collection.service";
+import { getCollection } from "../../services/chatting.service";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 

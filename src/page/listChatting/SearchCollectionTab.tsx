@@ -8,7 +8,7 @@ import Select from "@material-ui/core/Select";
 import CollectionCard, {
   CollectionData,
   CollectionCardFunctions,
-} from "../../components/chatting/CollectionCard";
+} from "../../components/chatting/ChattingCard";
 import { GridCollectionCardList } from "../../components/chatting/GridCollectionCardList";
 import collectionStyle from "./myCollectionTab.module.scss";
 import Header from "../../components/layout/Header/Header";

@@ -6,7 +6,7 @@ import {
   createCollection,
   getServiceTypes,
   CreateDraftCollectionRequest,
-} from "../../services/collection.service";
+} from "../../services/chatting.service";
 import { useLocation } from "react-router-dom";
 import { COLLECTION_EDIT } from "../../common/paths";
 

@@ -20,7 +20,7 @@ import {
   editMemoComment,
   sendMessage,
 } from "../../services/memo.service";
-import { getCollection } from "../../services/collection.service";
+import { getCollection } from "../../services/chatting.service";
 const getMemoData = async ({ memoId }: any) => {
   const me = await getMe();
   const memo = await getMemo(memoId);

@@ -1,6 +1,6 @@
 import React from "react";
 import CollectionListItem from "./CollectionListItem";
-import CollectionCard from "./CollectionCard";
+import CollectionCard from "./ChattingCard";
 import { backgroundImageUrl } from "../../storybook/images";
 import CollectionCardList from "./CollectionCardList";
 

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState, useEffect, Fragment } from "react";
-import CollectionListPage from "./CollectionListPage";
+import CollectionListPage from "./ChattingListPage";
 import {
   getCollections,
   getHotCollections,
@@ -11,7 +11,7 @@ import {
   CollectionView,
   pinCollection,
   unpinCollection,
-} from "../../services/collection.service";
+} from "../../services/chatting.service";
 import ModalManager from "../modalManager/ModelManager";
 import { COLLECTION_LIST_PAGE } from "../../common/paths";
 import { useHistory, useLocation } from "react-router-dom";

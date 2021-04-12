@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
-} from "../../components/chatting/CollectionCard";
+} from "../../components/chatting/ChattingCard";
 import { GridCollectionCardList } from "../../components/chatting/GridCollectionCardList";
 import memoStyle from "./MemoHomeTab.module.scss";
 import Header from "../../components/layout/Header/Header";

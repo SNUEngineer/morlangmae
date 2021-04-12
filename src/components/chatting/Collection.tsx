@@ -9,7 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import CardMedia from "@material-ui/core/CardMedia";
 import { UserView } from "../../services/user.service";
 import Platter from "./Platter";
-import { CollectionDetail } from "../../services/collection.service";
+import { CollectionDetail } from "../../services/chatting.service";
 
 export interface CollectionProps {
   collectionDetail: CollectionDetail;

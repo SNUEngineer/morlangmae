@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
-import { CollectionData } from "./CollectionCard";
+import { CollectionData } from "./ChattingCard";
 
 export interface CollectionListProps {
   title: string;

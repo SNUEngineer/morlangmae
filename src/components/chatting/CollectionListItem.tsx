@@ -7,7 +7,7 @@ import {
   CollectionData,
   CollectionStatus,
   CollectionType,
-} from "./CollectionCard";
+} from "./ChattingCard";
 
 export interface CollectionListItemProps {
   data: CollectionData;

@@ -1,7 +1,12 @@
 $container_left_margin: 100px;
 
 .thread_container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
   height: 100%;
+  width: 100%;
+  background-color: red;
   display: flex;
   flex-direction: column;
 }
@@ -15,7 +20,7 @@ $container_left_margin: 100px;
 .title_container {
   margin-left: $container_left_margin;
   margin-right: $container_left_margin;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-bottom: 10px;
   height: 80px;
   .subtitle {
@@ -23,15 +28,15 @@ $container_left_margin: 100px;
     color: #707070;
   }
   .title {
-    margin-top: 6px;
     font-size: 27px;
     color: #707070;
+    background-color: blue;
   }
 }
 
 .messages_container {
   margin-top: -29px;
-  height: 0;
+  height: 100%;
   flex-grow: 1;
   box-sizing: border-box;
   overflow-y: scroll;
@@ -44,8 +49,8 @@ $container_left_margin: 100px;
 .text_area_container {
   display: flex;
   flex-direction: row;
-  padding-left: $container_left_margin + 40px;
-  padding-right: $container_left_margin + 40px;
+  padding-left: $container_left_margin + 20px;
+  padding-right: $container_left_margin + 20px;
   height: 100px;
   .text_area {
     flex-grow: 1;

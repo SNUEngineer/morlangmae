@@ -69,7 +69,9 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [editorRef, setEditorRef] = useState(null);
   const [isEditing, setEditing] = useState(false);
-  const { pathname, search } = useLocation();
+  // const { pathname, search } = useLocation();
+  const pathname = "";
+  const search = "";
   const history = useHistory();
   const handleClose = () => {
     const query = queryString.parse(search);
@@ -148,17 +150,6 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
         PaperComponent={PaperComponent}
         onClick={props.onClose}
       >
-        {isEditing && (
-          //platter가 editing모드일 경우 상단의 메뉴바 노출
-          <PlatterToolBar
-            collectionMembers={props.collectionMembers}
-            setMembers={setMembers}
-            members={members}
-            editorRef={editorRef}
-            isCreate={false}
-            editPlatter={handleEditPlatter}
-          />
-        )}
         <Element
           name="test7"
           id="containerElement"
@@ -181,33 +172,7 @@ export default function EditPlatterPage(props: EditPlatterPageProps) {
               event.stopPropagation();
             }}
           >
-            <Element
-              name="firstInsideContainer"
-              style={{
-                marginBottom: "0px",
-              }}
-            >
-              <div
-                className={classNames({
-                  [editStyle.platter_container]: true,
-                  [editStyle.platter_container_closed]: !openPlatter,
-                  [editStyle.platter_container_opened]: openPlatter,
-                })}
-              >
-                <PlatterEditor
-                  disableEditing={!isEditing}
-                  title={title}
-                  changeTitle={setTitle}
-                  //id={props.platter.id}
-                  id={1}
-                  data={props.platter}
-                  editorRef={editorRef}
-                  setEditorRef={setEditorRef}
-                />
-              </div>
-            </Element>
-
-            <Element name="threadContainer" style={{}}>
+            <Element name="threadContainer">
               <div
                 className={classNames({
                   [editStyle.thread_container]: true,

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
-} from "../../components/chatting/CollectionCard";
+} from "../../components/chatting/ChattingCard";
 import CollectionTab from "./CollectionTab";
 import Grid from "@material-ui/core/Grid";
 import { GridCollectionCardList } from "../../components/chatting/GridCollectionCardList";

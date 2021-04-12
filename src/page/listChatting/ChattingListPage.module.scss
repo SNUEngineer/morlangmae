@@ -1,10 +1,10 @@
-.my_collection_list_container {
+.my_chatting_list_container {
   width: 100%;
 }
 
 .tab_container {
   max-width: 716px;
-  padding-top: 130px;
+
   margin: 0 auto;
 }
 
@@ -93,12 +93,11 @@
   }
 }
 
-.collection_list_container {
+.chatting_list_container {
   margin-top: 28px;
 }
 
-.collection_container {
-  margin-top: 70px;
+.chatting_container {
   margin-bottom: 140px;
 }
 .helpful_container {
@@ -114,15 +113,15 @@
   width: 100%;
 }
 
-.recent_collection_container {
+.recent_chatting_container {
   margin-top: 70px;
 }
-.often_collection_container {
+.often_chatting_container {
   margin-top: 70px;
 }
-.popular_collection_container {
+.popular_chatting_container {
   margin-top: 70px;
 }
-.company_collection_container {
+.company_chatting_container {
   margin-top: 70px;
 }

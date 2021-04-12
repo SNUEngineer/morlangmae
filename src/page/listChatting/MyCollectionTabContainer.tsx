@@ -7,10 +7,10 @@ import {
   getPinnedCollections,
   pinCollection,
   unpinCollection,
-} from "../../services/collection.service";
+} from "../../services/chatting.service";
 import MyCollectionTab from "./MyCollectionTab";
 import { useHistory } from "react-router-dom";
-import { CollectionData } from "../../components/chatting/CollectionCard";
+import { CollectionData } from "../../components/chatting/ChattingCard";
 import { COLLECTION_LIST_MY_COLLECTION } from "../../common/paths";
 import ModalManager from "../modalManager/ModelManager";
 

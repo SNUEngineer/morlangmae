@@ -5,13 +5,13 @@ import { MemoView, getTemporariesMemos } from "../../services/memo.service";
 import {
   CollectionView,
   getCollection,
-} from "../../services/collection.service";
+} from "../../services/chatting.service";
 import {
   MemoData,
   createMemo,
   getCollectionMemos,
 } from "../../services/memo.service";
-import { CollectionData } from "../../components/chatting/CollectionCard";
+import { CollectionData } from "../../components/chatting/ChattingCard";
 import { MEMO_WORK_STATION } from "../../common/paths";
 import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";

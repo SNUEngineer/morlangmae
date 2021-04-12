@@ -26,7 +26,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import { UserView } from "../../services/user.service";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { CollectionDetail } from "../../services/collection.service";
+import { CollectionDetail } from "../../services/chatting.service";
 import Avatar from "@material-ui/core/Avatar";
 import InputBase from "@material-ui/core/InputBase";
 import Autocomplete from "@material-ui/lab/Autocomplete";

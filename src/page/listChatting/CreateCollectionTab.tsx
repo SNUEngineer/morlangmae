@@ -9,7 +9,7 @@ import CollectionTab from "./CollectionTab";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
-} from "../../components/chatting/CollectionCard";
+} from "../../components/chatting/ChattingCard";
 import { COLLECTION_CREATE } from "../../common/paths";
 
 import Select from "@material-ui/core/Select";

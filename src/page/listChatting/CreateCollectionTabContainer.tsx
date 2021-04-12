@@ -4,12 +4,12 @@ import { useAsync } from "react-async";
 import {
   getMyCollections,
   CollectionView,
-} from "../../services/collection.service";
+} from "../../services/chatting.service";
 import CreateCollectionTab from "./CreateCollectionTab";
 import {
   CollectionData,
   CollectionStatus,
-} from "../../components/chatting/CollectionCard";
+} from "../../components/chatting/ChattingCard";
 import { useHistory } from "react-router-dom";
 import { COLLECTION_CREATE, COLLECTION_LIST_CREATED } from "../../common/paths";
 import ModalManager from "../modalManager/ModelManager";

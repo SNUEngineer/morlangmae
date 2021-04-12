@@ -5,7 +5,7 @@ import CollectionCard, {
   CollectionData,
   CollectionStatus,
   CollectionType,
-} from "./CollectionCard";
+} from "./ChattingCard";
 import classNames from "classnames";
 import Grid from "@material-ui/core/Grid";
 import listStyle from "./collectionList.module.scss";

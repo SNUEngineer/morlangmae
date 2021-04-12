@@ -3,7 +3,7 @@ import React from "react";
 import { useAsync } from "react-async";
 import { createPlatter } from "../../services/platter.service";
 import CreatePlatterPage from "./CreatePlatterPage";
-import { getCollection } from "../../services/collection.service";
+import { getCollection } from "../../services/chatting.service";
 
 export interface CreatePlatterPageContainerProps {
   collectionId: number;

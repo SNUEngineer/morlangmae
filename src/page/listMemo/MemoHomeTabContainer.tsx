@@ -9,8 +9,8 @@ import {
   createMemo,
   getMyMemos,
 } from "../../services/memo.service";
-import { CollectionView } from "../../services/collection.service";
-import { CollectionData } from "../../components/chatting/CollectionCard";
+import { CollectionView } from "../../services/chatting.service";
+import { CollectionData } from "../../components/chatting/ChattingCard";
 import { MEMO_WORK_STATION } from "../../common/paths";
 import MemoHomeTab from "./MemoHomeTab";
 import { uploadFile } from "../../services/file.service";

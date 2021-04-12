@@ -6,7 +6,7 @@ import {
   getCollection,
   CollectionDetail,
   editCollection,
-} from "../../services/collection.service";
+} from "../../services/chatting.service";
 import {
   getPlatters,
   createPlatter,

@@ -10,9 +10,9 @@ import {
   getHotCollections,
   getRecentlyViewCollections,
   getPinnedCollections,
-} from "../../services/collection.service";
+} from "../../services/chatting.service";
 import { useHistory } from "react-router-dom";
-import { CollectionData } from "../../components/chatting/CollectionCard";
+import { CollectionData } from "../../components/chatting/ChattingCard";
 import { COLLECTION_LIST, COLLECTION_LIST_COMPANY } from "../../common/paths";
 import SearchCollectionTab from "./SearchCollectionTab";
 import ModalManager from "../modalManager/ModelManager";

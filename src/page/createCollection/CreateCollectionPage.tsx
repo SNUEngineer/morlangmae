@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
-import { CreateDraftCollectionRequest } from "../../services/collection.service";
+import { CreateDraftCollectionRequest } from "../../services/chatting.service";
 import pageStyle from "./createCollectionPage.module.scss";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
