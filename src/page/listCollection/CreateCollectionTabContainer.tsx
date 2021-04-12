@@ -9,7 +9,7 @@ import CreateCollectionTab from "./CreateCollectionTab";
 import {
   CollectionData,
   CollectionStatus,
-} from "../../components/collection/CollectionCard";
+} from "../../components/chatting/CollectionCard";
 import { useHistory } from "react-router-dom";
 import { COLLECTION_CREATE, COLLECTION_LIST_CREATED } from "../../common/paths";
 import ModalManager from "../modalManager/ModelManager";

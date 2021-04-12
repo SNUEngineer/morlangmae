@@ -15,7 +15,6 @@ export interface CollectionData {
   startDate: Date;
   endDate: Date;
   notificationCount: number;
-  pinned: boolean;
   status: CollectionStatus;
 }
 

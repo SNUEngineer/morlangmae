@@ -10,7 +10,7 @@ import {
   getMyMemos,
 } from "../../services/memo.service";
 import { CollectionView } from "../../services/collection.service";
-import { CollectionData } from "../../components/collection/CollectionCard";
+import { CollectionData } from "../../components/chatting/CollectionCard";
 import { MEMO_WORK_STATION } from "../../common/paths";
 import MemoHomeTab from "./MemoHomeTab";
 import { uploadFile } from "../../services/file.service";

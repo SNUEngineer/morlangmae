@@ -4,11 +4,11 @@ import { useHistory } from "react-router-dom";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
-} from "../../components/collection/CollectionCard";
+} from "../../components/chatting/CollectionCard";
 import { MemoView } from "../../services/memo.service";
 import MemoCard from "../../components/memo/list/memoCard";
 import Grid from "@material-ui/core/Grid";
-import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
+import { GridCollectionCardList } from "../../components/chatting/GridCollectionCardList";
 import memoStyle from "./MemoHomeTab.module.scss";
 import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
 import Header from "../../components/layout/Header/Header";

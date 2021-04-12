@@ -5,7 +5,7 @@ import CollectionCard, {
   CollectionCardFunctions,
   CollectionData,
   CollectionType,
-} from "../../components/collection/CollectionCard";
+} from "../../components/chatting/CollectionCard";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";

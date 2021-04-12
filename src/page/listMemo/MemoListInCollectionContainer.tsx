@@ -11,7 +11,7 @@ import {
   createMemo,
   getCollectionMemos,
 } from "../../services/memo.service";
-import { CollectionData } from "../../components/collection/CollectionCard";
+import { CollectionData } from "../../components/chatting/CollectionCard";
 import { MEMO_WORK_STATION } from "../../common/paths";
 import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";

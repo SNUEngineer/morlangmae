@@ -1,16 +1,19 @@
 // @ts-nocheck
 import React from "react";
 import CollectionPage from "./CollectionPage";
-import CollectionTab from "./CollectionTab";
-import MyCollectionTab from "./MyCollectionTab";
-import CreateCollectionTab from "./CreateCollectionTab";
-import SearchCollectionTab from "./SearchCollectionTab";
 import CollectionListPage from "./CollectionListPage";
 
-import PinnedCollectionCardList from "./PinnedCollectionCardList";
-import createStyle from "./createCollectionTab.module.scss";
-import CarouselList from "../../components/customizedComponent/Carousel/CarouselList";
-import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
+import {
+  getCollections,
+  getHotCollections,
+  getRecentlyViewCollections,
+  getCompanyCollections,
+  getMyCollections,
+  getServiceCollections,
+  CollectionView,
+  pinCollection,
+  unpinCollection,
+} from "../../services/collection.service";
 export default { title: "collection page" };
 
 export function basic() {
@@ -52,20 +55,8 @@ export function basic() {
   );
 }
 
-export function collectionTab() {
-  return <CollectionTab />;
-}
 
-export function myCollectionTab() {
-  return (
-    <BasicMenuBar>
-      <CollectionTab />
-      <MyCollectionTab />
-    </BasicMenuBar>
-  );
-}
-
-export function createCollectionTab() {
+export function CollectionListTab() {
   const collection1 = {
     id: 0,
     title: "3분기 마케팅 전략",
@@ -134,40 +125,26 @@ export function createCollectionTab() {
     collection5,
     collection2,
   ];
-  return (
-    <BasicMenuBar>
-      <CollectionTab />
-      <CreateCollectionTab collections={testCollections} />
-    </BasicMenuBar>
-  );
-}
-export function CollectionListTab() {
-  return (
-    <BasicMenuBar>
-      <CollectionListPage />
-    </BasicMenuBar>
-  );
-}
-export function searchCollectionTab() {
-  return (
-    <BasicMenuBar>
-      <CollectionTab />
-      <SearchCollectionTab />
-    </BasicMenuBar>
-  );
-}
+  const onCollectionClick = async (data: CollectionData) => {
 
-export function carsousle2222() {
-  return (
-    <CarouselList showItems={3.15}>
-      <div className={createStyle.slider_item}>Item 1</div>
-      <div className={createStyle.slider_item}>Item 2</div>
-      <div className={createStyle.slider_item}>Item 3</div>
-      <div className={createStyle.slider_item}>Item 4</div>
-    </CarouselList>
-  );
-}
+  };
+  const reload = async (data: CollectionData) => {
 
-export function basicMenuBar() {
-  return <BasicMenuBar />;
+  };
+  const pinCollection = async (data: CollectionData) => {
+
+  };
+  const unpinCollection = async (data: CollectionData) => {
+
+  };
+
+  
+  return (
+      <CollectionListPage 
+      collections={testCollections}  
+      onCollectionClick={onCollectionClick}
+      pinCollection={pinCollection}
+      unpinCollection={unpinCollection}
+      reloadData={reload}/>
+  );
 }

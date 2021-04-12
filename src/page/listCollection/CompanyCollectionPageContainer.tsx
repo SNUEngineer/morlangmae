@@ -8,7 +8,7 @@ import {
   pinCollection,
   unpinCollection,
 } from "../../services/collection.service";
-import { CollectionData } from "../../components/collection/CollectionCard";
+import { CollectionData } from "../../components/chatting/CollectionCard";
 import { COLLECTION_LIST, COLLECTION_LIST_COMPANY } from "../../common/paths";
 import CompanyCollectionPage from "./CompanyCollectionPage";
 import ModalManager from "../modalManager/ModelManager";

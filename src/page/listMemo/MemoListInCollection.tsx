@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { CollectionData } from "../../components/collection/CollectionCard";
+import { CollectionData } from "../../components/chatting/CollectionCard";
 import MemoCard from "../../components/memo/list/memoCard";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";

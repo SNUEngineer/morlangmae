@@ -5,7 +5,7 @@ import PlatterEditor, {
   PlatterData,
 } from "../../components/platter/PlatterEditor";
 import Dialog from "../../components/customizedComponent/PlatterDialog/Dialog";
-import Platter, { PlatterProps } from "../../components/collection/Platter";
+import Platter, { PlatterProps } from "../../components/chatting/Platter";
 import { useLocation, useHistory } from "react-router-dom";
 import Thread, { ThreadProps } from "../../components/thread/Thread";
 import {

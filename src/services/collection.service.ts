@@ -3,7 +3,7 @@ import { UserView } from "./user.service";
 import {
   CollectionStatus,
   CollectionType,
-} from "../components/collection/CollectionCard";
+} from "../components/chatting/CollectionCard";
 
 export interface CollectionView {
   id: number;

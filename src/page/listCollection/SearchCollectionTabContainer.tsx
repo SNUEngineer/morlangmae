@@ -12,7 +12,7 @@ import {
   getPinnedCollections,
 } from "../../services/collection.service";
 import { useHistory } from "react-router-dom";
-import { CollectionData } from "../../components/collection/CollectionCard";
+import { CollectionData } from "../../components/chatting/CollectionCard";
 import { COLLECTION_LIST, COLLECTION_LIST_COMPANY } from "../../common/paths";
 import SearchCollectionTab from "./SearchCollectionTab";
 import ModalManager from "../modalManager/ModelManager";

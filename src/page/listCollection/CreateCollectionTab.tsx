@@ -1,15 +1,15 @@
 // @ts-nocheck
 import React, { useState } from "react";
-import CollectionList from "../../components/collection/CollectionList";
+import CollectionList from "../../components/chatting/CollectionList";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { CollectionListItemProps } from "../../components/collection/CollectionListItem";
+import { CollectionListItemProps } from "../../components/chatting/CollectionListItem";
 import CollectionTab from "./CollectionTab";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
-} from "../../components/collection/CollectionCard";
+} from "../../components/chatting/CollectionCard";
 import { COLLECTION_CREATE } from "../../common/paths";
 
 import Select from "@material-ui/core/Select";

@@ -4,8 +4,8 @@ import { useHistory } from "react-router-dom";
 import CollectionCard, {
   CollectionCardProps,
   CollectionData,
-} from "../../components/collection/CollectionCard";
-import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
+} from "../../components/chatting/CollectionCard";
+import { GridCollectionCardList } from "../../components/chatting/GridCollectionCardList";
 import memoStyle from "./MemoHomeTab.module.scss";
 import Header from "../../components/layout/Header/Header";
 export interface MemoHomeTabProps {}

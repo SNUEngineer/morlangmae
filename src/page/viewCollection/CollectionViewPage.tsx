@@ -6,7 +6,7 @@ import Dialog from "../../components/customizedComponent/PlatterDialog/Dialog";
 import { useLocation, useHistory } from "react-router-dom";
 import Collection, {
   CollectionProps,
-} from "../../components/collection/Collection";
+} from "../../components/chatting/Collection";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Switch from "@material-ui/core/Switch";

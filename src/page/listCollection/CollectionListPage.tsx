@@ -7,9 +7,9 @@ import CollectionCard, {
 } from "../../components/collection/CollectionCard";
 import Grid from "@material-ui/core/Grid";
 import { unpinCollection } from "../../services/collection.service";
-import { GridCollectionCardList } from "../../components/collection/GridCollectionCardList";
 import collectionStyle from "./CollectionListPage.module.scss";
 import Header from "../../components/layout/Header/Header";
+import { PromiseInvokeOrNoop } from "../../components/memo/PDFList/PDFPages/pdf.worker";
 
 // import Slider from "../../components/customizedComponent/Carousel";
 
@@ -26,18 +26,12 @@ export default function CollectionListPage(props: CollectionListPageProps) {
     collections,
     onCollectionClick,
     pinCollection,
-    collectionSortType,
   } = props;
-
+  
   return (
     <div className={collectionStyle.tab_container}>
-      {/* <CollectionTab /> */}
-
-      {/* <div className={collectionStyle.member_header_margin}>
-        <div className={collectionStyle.divider} />
-      </div> */}
+    
       <CollectionCardList
-        // myCollections={myCollections}
         myCollections={collections}
         onCollectionClick={onCollectionClick}
         pinCollection={pinCollection}
@@ -54,9 +48,12 @@ export interface CollectionCardListProps {
   unpinCollection(id: number): Promise<void>;
 }
 
+
 export function CollectionCardList(props: CollectionCardListProps) {
   //header와
   const myCollections = props.myCollections;
+
+
   const [filter, setFilter] = useState<string>("ALL");
   const options = [
     {
@@ -72,41 +69,29 @@ export function CollectionCardList(props: CollectionCardListProps) {
       text: "완료",
     },
   ];
-  const handleChange = (event: any) => {
+  const handleChange = (event: any) => { 
     setFilter(event.target.value);
   };
+  
   const filteredCollections = myCollections.filter((data: CollectionData) => {
     return filter === "ALL" || data.status.toString() === filter;
-  });
-  let columnList = [];
-  let collectionsGrid = [];
-  let index = 0;
-  const columnCount = 3;
-  // 반응에 따라 4개 이상으로 늘어날 경우 자동으로 배열.
-  // 화면 사이즈가 늘어날 때, 자동으로 ui 수정 하기 위함. (반응성은 미제작됨)
-  filteredCollections.forEach((element) => {
-    columnList.push(element);
-    index++;
-    if (index === filteredCollections.length) {
-      while (columnList.length < columnCount) {
-        columnList.push(null);
-      }
-    }
-    if (columnList.length >= columnCount) {
-      collectionsGrid.push(columnList);
-      columnList = [];
-    }
-  });
-  const collectionCards = collectionsGrid.map(
-    (collections: CollectionData[], index) => {
+  }); 
+ 
+
+ 
+  const collectionCards = filteredCollections.map(
+    (collection: CollectionData, index) => {
+      
       return (
         <div className={collectionStyle.my_collection_list_container}>
-          <GridCollectionCardList
-            key={index}
-            collections={collections}
-            onClick={props.onCollectionClick}
-            columnCount={columnCount}
-          />
+          <CollectionCard
+                data={collection}
+                viewType={"WIDE"}
+                pinned={false}
+                pinCollection={props.pinCollection}
+                unpinCollection={props.unpinCollection}
+                
+              />
         </div>
       );
     }
@@ -114,23 +99,15 @@ export function CollectionCardList(props: CollectionCardListProps) {
 
   const headerSorted = () => {
     //종류에 따른 header의 title 관리
-    const collectionSortType = "COMPANY";
+    const collectionSortType = "SENT";
     const title = (type) => {
       switch (type) {
-        case "MY":
-          return "나의 컬렉션 리스트";
-        case "COMPANY":
-          return "회사 아카이브";
-        case "RECENT":
-          return "최근 조회한 컬렉션";
-        case "HOT":
-          return "이번달 인기있는 컬렉션";
-        case "OFTEN":
-          return "자주 조회한 컬렉션";
-        case "FOR_USER":
-          return "ㅇㅇㅇ님을 위한 컬렉션";
-        case "BINGE":
-          return "모아보기";
+       
+        case "SENT":
+          return "보낸 쪽지";
+        case "RECEIVED":
+          return "받은 쪽지";
+       
       }
     };
 

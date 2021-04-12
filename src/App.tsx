@@ -49,7 +49,7 @@ import CollectionTab from "./page/listCollection/CollectionTab";
 import CreateCollectionTabContainer from "./page/listCollection/CreateCollectionTabContainer";
 import MyCollectionTabContainer from "./page/listCollection/MyCollectionTabContainer";
 import SearchCollectionTabContainer from "./page/listCollection/SearchCollectionTabContainer";
-import CollectionListPageContainer from "./page/listCollection/CollectionListPageContainer";
+import CollectionListPageContainer from "./page/listCollection/ChattingListPageContainer";
 import BingeMemoTab from "./page/listMemo/BingeMemoTab";
 import MemoHomeTabContainer from "./page/listMemo/MemoHomeTabContainer";
 import MemoListTab from "./page/listMemo/MemoListTab";
