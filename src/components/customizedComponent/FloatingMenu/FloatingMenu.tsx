@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useRef, useLayoutEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Button from "@material-ui/core/Button";
 
 import List from "@material-ui/core/List";
@@ -7,12 +7,18 @@ import { blue } from "@material-ui/core/colors";
 import menuStyle from "./menu.module.scss";
 import Popover from "@material-ui/core/Popover";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 
 export default function FloatingMenu(props) {
-  const { options, selectedOption } = props;
+  const { options, selectedOption, viewType } = props;
 
   const useStyles = makeStyles(() =>
     createStyles({
+      popover: {
+        zIndex: "3000",
+      },
       avatar: {
         backgroundColor: blue[100],
         color: blue[600],
@@ -62,7 +68,8 @@ export default function FloatingMenu(props) {
   const conatinerEl = useRef<any>(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(options[1]);
+
+  const [selectedValue, setSelectedValue] = useState(options[0]);
 
   const handleClickOpen = (event) => {
     event.stopPropagation();
@@ -77,12 +84,38 @@ export default function FloatingMenu(props) {
     setAnchorEl(null);
   };
   const id = open ? "simple-popover" : undefined;
-  const classes = useStyles();
 
   function DotMenuDialog(props) {
     const classes = useStyles();
-    const { onClose, selectedValue, open, anchorEl, id } = props;
+    const { onClose, selectedValue, open, anchorEl, id, viewType } = props;
+    const popType = () => {
+      switch (viewType) {
+        case "fab":
+        case "selector":
+          return {
+            anchor: {
+              vertical: "center",
+              horizontal: "left",
+            },
+            transform: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          };
 
+        case "list":
+          return {
+            anchor: {
+              vertical: "bottom",
+              horizontal: "right",
+            },
+            transform: {
+              vertical: "top",
+              horizontal: "right",
+            },
+          };
+      }
+    };
     const handleClose = () => {
       onClose(selectedValue);
     };
@@ -98,20 +131,16 @@ export default function FloatingMenu(props) {
         id={id}
         open={open}
         anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
+        anchorOrigin={popType().achor}
+        transformOrigin={popType().transform}
+        className={classes.popover}
       >
         <div ref={conatinerEl}>
           <List>
-            {options.map((item) => {
+            {options.map((item, index) => {
               return (
                 <div
+                  key={index}
                   className={classes.item}
                   onClick={() => {
                     handleListItemClick(item);
@@ -129,23 +158,32 @@ export default function FloatingMenu(props) {
 
   return (
     <div>
-      <Button
-        aria-describedby={id}
-        variant="contained"
-        color="primary"
-        onClick={handleClickOpen}
-        className={classes.root}
-      >
-        <div className={menuStyle.icon_container}>
-          <img className={menuStyle.dot_icon} alt={"icon"} />
-        </div>
-      </Button>
+      {(!!viewType ? viewType === "fab" : true) && (
+        <IconButton
+          aria-describedby={id}
+          color="primary"
+          component="span"
+          onClick={handleClickOpen}
+        >
+          {(!!viewType ? viewType === "fab" : true) && (
+            <MenuIcon color="primary" />
+          )}
+          {(!!viewType ? viewType === "list" : true) && (
+            <MoreVertIcon color="primary" />
+          )}
+          {(!!viewType ? viewType === "selector" : true) && (
+            <MenuIcon color="primary" />
+          )}
+        </IconButton>
+      )}
+
       <DotMenuDialog
         selectedValue={selectedValue}
         open={open}
         onClose={handleClose}
         anchorEl={anchorEl}
         id={id}
+        viewType={viewType}
       />
     </div>
   );

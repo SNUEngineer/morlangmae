@@ -104,8 +104,6 @@ export function viewToData(view: BlockView) {
   };
 }
 
-function dataToView() {}
-
 export default function PlatterEditor(props: PlatterEditorProps) {
   //platter의 editing 모드에서 사용되는 컴포넌트
   const [data] = useState({
@@ -196,12 +194,12 @@ export default function PlatterEditor(props: PlatterEditorProps) {
               disabled={props.disableEditing}
               required
               defaultValue={data?.title}
-              placeholder={"플래터 제목을 입력해 주세요."}
               fullWidth
               id="title"
               name="title"
               InputProps={{ classes }}
               onChange={changeTitle}
+              placeholder={"플래터 제목을 입력해 주세요."}
             />
           </div>
 

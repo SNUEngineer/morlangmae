@@ -27,29 +27,18 @@ import CreateCollectionPageContainer from "./page/createCollection/CreateCollect
 import EditCollectionPageContainer from "./page/editCollection/EditCollectionPageContainer";
 import PersonaPageContainer from "./page/persona/PersonaPageContainer";
 import {
-  COLLECTION_LIST_TAB,
   COLLECTION_CREATE,
   ROOT,
   SIGN_IN,
   SIGN_UP,
   PROFILE,
-  COLLECTION_EDIT,
-  COLLECTION_LIST,
   COLLECTION_LIST_COMPANY,
-  NOTIFICATION,
-  MEMO_HOME,
-  MEMO_LIST,
-  MEMO_BINGE,
-  MEMO_IN_COLLECTION,
-  MEMO_LIST_TAB,
-  MEMO_WORK_STATION,
-  COLLECTION_LIST_PAGE,
 } from "./common/paths";
-import CollectionTab from "./page/listChatting/CollectionTab";
-import CreateCollectionTabContainer from "./page/listChatting/CreateCollectionTabContainer";
-import MyCollectionTabContainer from "./page/listChatting/MyCollectionTabContainer";
-import SearchCollectionTabContainer from "./page/listChatting/SearchCollectionTabContainer";
-import CollectionListPageContainer from "./page/listChatting/ChattingListPageContainer";
+import CollectionTab from "./page/list/CollectionTab";
+import CreateCollectionTabContainer from "./page/list/CreateCollectionTabContainer";
+import MyCollectionTabContainer from "./page/list/MyCollectionTabContainer";
+import SearchCollectionTabContainer from "./page/list/SearchCollectionTabContainer";
+import CollectionListPageContainer from "./page/list/ListPageContainer";
 import BingeMemoTab from "./page/listMemo/BingeMemoTab";
 import MemoHomeTabContainer from "./page/listMemo/MemoHomeTabContainer";
 import MemoListTab from "./page/listMemo/MemoListTab";
@@ -58,7 +47,7 @@ import MemoListInCollectionContainer from "./page/listMemo/MemoListInCollectionC
 import MemoWorkstationContainer from "./page/memoWorkstation/MemoWorkstationContainer";
 import MemoWorkstationTest from "./page/memoWorkstation/MemoWorkstationTest";
 import queryString from "query-string";
-import CompanyCollectionPageContainer from "./page/listChatting/CompanyCollectionPageContainer";
+import CompanyCollectionPageContainer from "./page/list/CompanyCollectionPageContainer";
 import { verify } from "./services/account.service";
 import { resetToken, expireToken } from "./common/axios";
 import NotificationPageContainer from "./page/notification/NotificationPageContainer";
@@ -168,16 +157,6 @@ function App() {
                 <MainPage pathname={pathname} search={search}></MainPage>
               )}
             />
-            {/* <AuthRoute
-              hasDrawer
-              authenticated={authenticated}
-              path={COLLECTION_LIST_PAGE}
-              render={(props: any) => (
-                <CollectionListPageContainer
-                  {...queryString.parse(props.location.search)}
-                />
-              )}
-            /> */}
 
             <AuthRoute
               exact

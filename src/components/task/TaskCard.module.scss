@@ -1,0 +1,145 @@
+.pinned_container {
+  height: 16px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  .icon_container {
+    height: 100%;
+    width: 16px;
+    margin-right: 10px;
+    position: relative;
+
+    img {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+    .pinned_icon {
+      height: auto;
+      width: 8px;
+      content: url("../../resources/icons/pinned_chatting_icon.png");
+    }
+    .unpinned_icon {
+      height: auto;
+      width: 14px;
+      content: url("../../resources/icons/unpinned_chatting_icon.png");
+    }
+  }
+}
+
+.list_root {
+  cursor: pointer;
+  $font_size_list: 20px;
+  $ratio: 55/87;
+  $image_width: 100px;
+  display: flex;
+  flex-direction: row;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  width: 100%;
+  cursor: pointer;
+
+  border-bottom-color: #e0e0e0;
+  border-bottom-style: solid;
+  border-width: 1px;
+
+  .menu_container {
+    position: absolute;
+
+    height: 100%;
+    .menu_button {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: red;
+    }
+  }
+  p {
+    line-height: 1.5;
+    display: inline-block;
+    vertical-align: middle;
+    color: #707070;
+    font-size: 14px;
+    letter-spacing: -0.98px;
+    font-family: "Noto Sans CJK KR Regular";
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .date_text {
+    letter-spacing: 0px;
+  }
+  .title_image {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    .image {
+      width: 100%;
+      height: 100%;
+      background-color: #e0e0e0;
+    }
+  }
+  .content {
+    text-align: left;
+    font-size: $font_size_list;
+    background-color: red;
+  }
+
+  .chatter {
+    margin-left: 40px;
+    width: 80px;
+    text-align: center;
+    font-size: $font_size_list;
+  }
+  .chatting_type_container {
+    position: relative;
+    margin-left: 5px;
+    width: 200px;
+    font-size: $font_size_list;
+    vertical-align: middle;
+
+    .align_container {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: #707070;
+      .chatting_attending_type {
+        text-align: left;
+        font-size: 14px;
+        letter-spacing: -0.98px;
+        font-family: "Noto Sans CJK KR Regular";
+        margin-bottom: 5px;
+      }
+      .chatting_type {
+        text-align: left;
+        font-size: 10px;
+        letter-spacing: -0.5px;
+        font-family: "Noto Sans CJK KR Regular";
+      }
+    }
+  }
+
+  .date {
+    flex-grow: 1;
+    width: 80px;
+    text-align: right;
+  }
+}
+
+.list_info_container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  .vertical_align {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    display: flex;
+    flex-direction: row;
+  }
+}

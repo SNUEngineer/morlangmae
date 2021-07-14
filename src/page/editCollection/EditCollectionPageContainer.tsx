@@ -11,7 +11,7 @@ import {
   requestProgress,
   getCollection,
   getServiceTypes,
-} from "../../services/chatting.service";
+} from "../../services/task.service";
 import { COLLECTION_LIST } from "../../common/paths";
 
 export interface EditCollectionPageContainerProps {

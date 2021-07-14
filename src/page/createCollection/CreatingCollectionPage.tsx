@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CreateDraftCollectionRequest } from "../../services/chatting.service";
+import { CreateDraftCollectionRequest } from "../../services/task.service";
 import pageStyle from "./creatingCollectionPage.module.scss";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";

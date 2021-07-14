@@ -7,7 +7,7 @@ import notiStyle from "./notification.module.scss";
 import Comment from "./Comment";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import { getCollection } from "../../services/chatting.service";
+import { getCollection } from "../../services/task.service";
 import { getPlatter } from "../../services/platter.service";
 //import { getMemo } from "../../services/memo.service";
 import { useAsync } from "react-async";

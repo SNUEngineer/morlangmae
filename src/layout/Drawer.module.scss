@@ -13,7 +13,6 @@ $top-bar-height: 48px;
     height: 60px;
     width: 100%;
     bottom: 0px;
-    
   }
 
   .menu_item_activated {
@@ -28,19 +27,21 @@ $top-bar-height: 48px;
     .home_icon {
       content: url("../resources/icons/sidetab_article_icon_focus.png");
     }
-    .sent_icon {
+    .list_icon {
       content: url("../resources/icons/sidetab_collection_icon_focus.png");
     }
-    .received_icon {
+    .task_icon {
       content: url("../resources/icons/sidetab_memo_icon_focus.png");
     }
     .notification_icon {
       content: url("../resources/icons/sidetab_persona_icon_focus.png");
     }
+    .analysis_icon {
+      content: url("../resources/icons/sidetab_persona_icon_focus.png");
+    }
     .menu_icon {
       content: url("../resources/icons/sidetab_persona_icon_focus.png");
     }
-    
   }
   .menu_item_inactivated {
     .text {
@@ -68,7 +69,7 @@ $top-bar-height: 48px;
   }
   .menu_container {
     position: absolute;
-
+    background-color: red;
     left: 50;
     top: 0;
     width: 100%;

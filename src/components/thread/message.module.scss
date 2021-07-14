@@ -1,11 +1,11 @@
-.message {
+.message_counter {
   display: flex;
   flex-direction: row;
   margin-top: 20px;
   margin-bottom: 20px;
 
   .avatar {
-    width: 55px;
+    margin-right: 30px;
   }
   .content_container {
     flex-grow: 1;
@@ -29,6 +29,43 @@
       padding: 20px;
       box-sizing: border-box;
       background-color: white;
+      border-radius: 10px;
+    }
+  }
+}
+.message_mine {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  .avatar {
+    margin-left: 30px;
+  }
+  .content_container {
+    flex-grow: 1;
+
+    .name_container {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 10px;
+      .name_text {
+        font-size: 12px;
+        flex-grow: 1;
+        text-align: right;
+      }
+
+      .time_text {
+        margin-left: 10px;
+
+        font-size: 12px;
+      }
+    }
+
+    .content {
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: yellow;
       border-radius: 10px;
     }
   }

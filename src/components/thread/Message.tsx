@@ -25,23 +25,51 @@ interface MessageSender {
 
 export default function Message(props: MessageProps) {
   const messageData = props.messageData;
-  return (
-    <div className={messageStyle.message}>
-      <div className={messageStyle.avatar}>
-        <Avatar
-          alt={messageData.sender.displayName}
-          src={messageData.sender.imageUrl}
-        />
-      </div>
-      <div className={messageStyle.content_container}>
-        <div className={messageStyle.name_container}>
-          <div className={messageStyle.name_text}>
-            {messageData.sender.displayName}
+  const viewType = "MINE";
+
+  switch (viewType) {
+    case "COUNTER":
+      return (
+        <div className={messageStyle.message_counter}>
+          <div className={messageStyle.avatar}>
+            <Avatar
+              alt={messageData.sender.displayName}
+              src={messageData.sender.imageUrl}
+            />
           </div>
-          <div className={messageStyle.time_text}>{messageData.sentAt}</div>
+          <div className={messageStyle.content_container}>
+            <div className={messageStyle.name_container}>
+              <div className={messageStyle.name_text}>
+                {messageData.sender.displayName}
+              </div>
+              <div className={messageStyle.time_text}>{messageData.sentAt}</div>
+            </div>
+            <div className={messageStyle.content}>{messageData.content}</div>
+          </div>
         </div>
-        <div className={messageStyle.content}>{messageData.content}</div>
-      </div>
-    </div>
-  );
+      );
+    case "MINE":
+      return (
+        <div className={messageStyle.message_mine}>
+          <div className={messageStyle.content_container}>
+            <div className={messageStyle.name_container}>
+              <div className={messageStyle.name_text}>
+                {messageData.sender.displayName}
+              </div>
+              <div className={messageStyle.time_text}>{messageData.sentAt}</div>
+            </div>
+            <div className={messageStyle.content}>{messageData.content}</div>
+          </div>
+          <div className={messageStyle.avatar}>
+            <Avatar
+              alt={messageData.sender.displayName}
+              src={messageData.sender.imageUrl}
+            />
+          </div>
+        </div>
+      );
+
+    default:
+      return <div></div>;
+  }
 }

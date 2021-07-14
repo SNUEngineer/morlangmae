@@ -4,9 +4,7 @@ import { makeStyles, createStyles, useTheme } from "@material-ui/core/styles";
 
 import Dialog from "../../components/customizedComponent/PlatterDialog/Dialog";
 import { useLocation, useHistory } from "react-router-dom";
-import Collection, {
-  CollectionProps,
-} from "../../components/chatting/Collection";
+import Collection, { CollectionProps } from "../../components/task/Collection";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Switch from "@material-ui/core/Switch";
@@ -26,7 +24,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import { UserView } from "../../services/user.service";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { CollectionDetail } from "../../services/chatting.service";
+import { CollectionDetail } from "../../services/task.service";
 import Avatar from "@material-ui/core/Avatar";
 import InputBase from "@material-ui/core/InputBase";
 import Autocomplete from "@material-ui/lab/Autocomplete";

@@ -2,8 +2,8 @@
 import React from "react";
 import EditCollectionPage from "./EditCollectionPage";
 import editStyle from "./editCollectionPage.module.scss";
-import CreateCollectionTab from "../listChatting/CreateCollectionTab";
-import CollectionTab from "../listChatting/CollectionTab";
+import CreateCollectionTab from "../list/CreateCollectionTab";
+import CollectionTab from "../list/CollectionTab";
 import BasicMenuBar from "../../components/layout/basicMenuBar/BasicMenuBar";
 export default { title: "edit colleciton" };
 

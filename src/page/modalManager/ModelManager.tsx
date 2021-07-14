@@ -9,7 +9,7 @@ import {
   getCollection,
   CollectionDetail,
   editCollection,
-} from "../../services/chatting.service";
+} from "../../services/task.service";
 import {
   getPlatters,
   createPlatter,

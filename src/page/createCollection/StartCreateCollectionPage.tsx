@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { CreateDraftCollectionRequest } from "../../services/chatting.service";
+import { CreateDraftCollectionRequest } from "../../services/task.service";
 import pageStyle from "./startCreateCollectionPage.module.scss";
 import classNames from "classnames";
 

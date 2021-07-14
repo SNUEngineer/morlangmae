@@ -1,0 +1,93 @@
+.path_container {
+  background-color: red;
+  width: 100%;
+  height: fit-content;
+  border-radius: 0px 0px 5px 5px;
+  margin-bottom: 10px;
+  .button_container {
+    width: 100%;
+    height: 1em;
+    position: relative;
+    .path_button {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  .path_paper {
+    width: 100%;
+    height: 100px;
+  }
+}
+
+.map_container {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  z-index: 1500;
+  display: flex;
+
+  .map_paper {
+    margin: 0.9em;
+    margin-top: 0;
+    flex: 1;
+    .map_close_button_container {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      .white_space {
+        flex: 1;
+      }
+      .map_close_button {
+        padding: 0.5em;
+      }
+    }
+  }
+}
+.todo_container {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  z-index: 1500;
+  display: flex;
+
+  .todo_paper {
+    margin: 0.9em;
+    margin-bottom: 0;
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    .todo_scroll_container {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      .todo_close_button_container {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        .white_space {
+          flex: 1;
+        }
+        .todo_close_button {
+          padding: 0.5em;
+        }
+      }
+      .todo_page {
+        width: 100%;
+        display: flex;
+      }
+    }
+  }
+}
+::-webkit-scrollbar {
+  display: none;
+}

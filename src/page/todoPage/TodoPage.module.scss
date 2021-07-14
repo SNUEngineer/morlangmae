@@ -1,0 +1,35 @@
+.root {
+  width: 100%;
+  height: 100%;
+  padding-left: 2em;
+  padding-right: 2em;
+  overflow-y: auto;
+}
+
+.comment_container {
+  width: 100%;
+  margin-top: 1em;
+
+  .comment_paper {
+    border: 1px solid #c0c0c0;
+    padding: 3em;
+    border-radius: 0.3em;
+  }
+}
+
+.comment_editor {
+  padding-left: 3em;
+  padding-right: 3em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+.option_display_container {
+  height: 100%;
+  width: 100%;
+  background-color: green;
+}
+
+.option_container {
+  width: 100%;
+  height: fit-content;
+}

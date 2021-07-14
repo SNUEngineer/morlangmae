@@ -70,7 +70,7 @@
     "react-lineto": "3.2.0",
     "react-multi-carousel": "2.5.5",
     "react-pdf": "4.2.0",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",
     "react-scroll": "1.8.1",
     "react-scroll-to-component": "1.0.2",

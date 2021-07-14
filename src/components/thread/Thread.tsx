@@ -2,15 +2,10 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
 import Message, { MessageData } from "./Message";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import TextField from "@material-ui/core/TextField";
 import threadStyle from "./thread.module.scss";
 import { TextArea } from "../customizedComponent/TextArea";
 import Button from "@material-ui/core/Button";
-import sendIcon from "../../resources/icons/thread_send_icon.png";
 
 export interface ThreadProps {
   messages: MessageData[];
