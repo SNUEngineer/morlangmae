@@ -9,11 +9,8 @@ import createEngine, {
   DefaultNodeModel,
   DiagramModel,
   DefaultPortModel,
-  PathFindingLinkFactory,
-  RightAngleLinkFactory,
-  RightAngleLinkModel,
 } from "@projectstorm/react-diagrams";
-import { AdvancedPortModel } from "./items/ArrowLink";
+import { AdvancedPortModel, AdvancedLinkFactory } from "./items/ArrowLink";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
 
 export interface MapEngineProps {
@@ -82,7 +79,7 @@ export default function MapEngine(props: MapEngineProps) {
   };
 
   let engine = createEngine();
-  // engine.getLinkFactories().registerFactory(new RightAngleLinkFactory());
+  engine.getLinkFactories().registerFactory(new AdvancedLinkFactory());
   let model = new DiagramModel();
   let nodes: NodeModel[] = [];
   //얘도 굳이 있어야되나...?
