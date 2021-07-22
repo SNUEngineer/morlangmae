@@ -4,17 +4,17 @@ import { useAsync } from "react-async";
 import { createPlatter } from "../../services/platter.service";
 import CreatePlatterPage from "./CreatePlatterPage";
 
-import TodoPage from "./TodoPage";
-import { TodoData } from "../../services/todo.service";
+import MapPage from "./MapPage";
+// import { TodoData } from "../../services/map.service";
 
-export interface TodoPageContainerProps {
-  todoId: number | "CREATING";
+export interface MapPageContainerProps {
+  taskId: number | "CREATING";
   // reload;
   progress: "CREATING" | "EDITING" | "VIEWING" | "TASKING";
   clickOptionMenu(optionId: number): void;
   deleteOption(optionId: number): void;
   clickOptionNext(isOpen: bool, optionId: number): void;
-  handleOpenTodo(isOpen: bool): void;
+  handleOpenFullMap(isOpen: bool): void;
 }
 
 const getData = async (request) => {
@@ -43,17 +43,17 @@ const getData = async (request) => {
   return data;
 };
 
-export default function TodoPageContainer(props: TodoPageContainerProps) {
+export default function MapPageContainer(props: MapPageContainerProps) {
   const {
     clickOptionMenu,
     deleteOption,
     clickOptionNext,
-    handleOpenTodo,
+    handleOpenFullMap,
   } = props;
-  const { todoId, progress } = props;
+  const { taskId, progress } = props;
   const { data, error, isLoading } = useAsync({
     promiseFn: getData,
-    todoId: todoId,
+    taskId: taskId,
   });
 
   const clickBackward = async () => {
@@ -79,17 +79,11 @@ export default function TodoPageContainer(props: TodoPageContainerProps) {
 
   if (data) {
     return (
-      <TodoPage
-        id={todoId}
+      <MapPage
+        id={taskId}
         progress={progress}
         disableEditing={disableEditing()}
-        changeTitle={changeTitle}
-        clickForward={clickForward}
-        clickBackward={clickBackward}
-        clickOptionMenu={clickOptionMenu}
-        deleteOption={deleteOption}
-        clickOptionNext={clickOptionNext}
-        handleOpenTodo={handleOpenTodo}
+        handleOpenFullMap={handleOpenFullMap}
         data={data}
       />
     );

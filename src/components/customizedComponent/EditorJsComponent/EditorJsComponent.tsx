@@ -75,7 +75,7 @@ function viewToData(view: BlockView) {
 }
 export interface EditorJsComponentProps {
   progress: "CREATING" | "EDITING" | "VIEWING" | "TASKING";
-  type: string;
+  parentType: string;
   data?;
   editorRef: any;
   setEditorRef: any;
@@ -86,39 +86,27 @@ export default function EditorJsComponent(props: EditorJsComponentProps) {
     id: props.data?.id,
     blocks: props.data?.blocks,
   });
-  const { type } = props;
+  const { parentType } = props;
   const editorContainer = useRef();
   const [editorRef, setEditorRef] = useState(null);
   useEffect(() => {
     if (!!editorRef?.current) {
-      console.log("ㅠㅠㅠㅠㅎㅎㅎㅎㅎ");
       editorRef.current.style.color = "red";
     }
-    console.log("ㅠㅠㅠㅠ");
   }, [editorRef]);
   const holderId = useCallback(() => {
-    if (!!data?.id) {
-      switch (type) {
-        case "comment":
-          return `editor-comment-${data.id}`;
-        case "option":
-          return `editor-option-${data.id}`;
-        case "task":
-          return `editor-task-${data.id}`;
-      }
-    } else {
-      //임시 아이디
-      const tempId = Date.now();
-      switch (type) {
-        case "comment":
-          return `editor-comment-${tempId}`;
-        case "option":
-          return `editor-option-${tempId}`;
-        case "task":
-          return `editor-task-${tempId}`;
-      }
+    const id = !!data?.id ? data.id : Date.now();
+    switch (parentType) {
+      case "comment":
+        return `editor-comment-${id}`;
+      case "option":
+        return `editor-option-${id}`;
+      case "task":
+        return `editor-task-${id}`;
+      case "todo":
+        return `editor-todo-${id}`;
     }
-  }, [type, data]);
+  }, [parentType, data]);
   const onReady = useCallback(() => {
     const blocks = document.getElementById(holderId());
     if (blocks) {

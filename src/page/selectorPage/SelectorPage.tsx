@@ -41,6 +41,9 @@ const useStyles = makeStyles({
     paddingLeft: "1em",
     paddingRight: "1em",
   },
+  arrow_button: {
+    padding: "0.3em",
+  },
 });
 // const useStyles = makeStyles({
 //   textFieldStyle: {
@@ -73,7 +76,7 @@ export default function SelectorPage(props: SelectorPageProps) {
     <Grid
       xs={12}
       container
-      justify="center"
+      justify="space-between"
       alignItems="center"
       direction="column"
       className={selectorStyle.container}
@@ -82,11 +85,16 @@ export default function SelectorPage(props: SelectorPageProps) {
         xs={12}
         container
         direction="row"
-        justify="center"
+        justify="space-between"
         alignItems="center"
       >
         <Grid item>
-          <IconButton color="primary" component="span" onClick={clickBackward}>
+          <IconButton
+            color="primary"
+            component="span"
+            onClick={clickBackward}
+            className={classes.arrow_button}
+          >
             <ArrowBackIcon />
           </IconButton>
         </Grid>
@@ -107,7 +115,12 @@ export default function SelectorPage(props: SelectorPageProps) {
         </Grid>
 
         <Grid item>
-          <IconButton color="primary" component="span" onClick={clickForward}>
+          <IconButton
+            color="primary"
+            component="span"
+            onClick={clickForward}
+            className={classes.arrow_button}
+          >
             <ArrowForwardIcon />
           </IconButton>
         </Grid>
@@ -117,7 +130,7 @@ export default function SelectorPage(props: SelectorPageProps) {
           <EditorJsComponent
             progress={progress}
             data={data}
-            type="comment"
+            parentType="comment"
             disableEditing={disableEditing}
           />
         </div>

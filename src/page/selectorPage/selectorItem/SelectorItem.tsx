@@ -138,7 +138,7 @@ export default function SelectorItem(props: SelectorItemProps) {
             <EditorJsComponent
               progress={progress}
               data={data}
-              type="option"
+              parentType="option"
               disableEditing={disableEditing}
             />
           </div>

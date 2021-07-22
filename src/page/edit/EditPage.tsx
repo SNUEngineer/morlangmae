@@ -16,6 +16,7 @@ import FloatingMenu from "../../components/customizedComponent/FloatingMenu/Floa
 import FloatingBackground from "../../components/customizedComponent/FloatingBackground/FloatingBackground";
 import SelectorPageContainer from "../selectorPage/SelectorPageContainer";
 import TodoPageContainer from "../todoPage/TodoPageContainer";
+import MapPageContainer from "../mapPage/MapPageContainer";
 import Slide from "@material-ui/core/Slide";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0.7em",
     margin: "0.3em",
   },
-  task_close_button: {
+  todo_close_button: {
     padding: "0.7em",
     margin: "0.3em",
   },
@@ -53,10 +54,10 @@ export default function EditPage(props: EditPageProps) {
   const { register, handleSubmit } = useForm();
   const [open, setOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
-  const [taskOpen, setTaskOpen] = useState(false);
+  const [todoOpen, setTodoOpen] = useState(false);
   const { deleteOption, clickOptionNext } = props;
 
-  const handleOpenOptionMenu = (isOpen) => (event) => {
+  const handleOpenTodo = (isOpen) => (event) => {
     console.log("Asdfasdf 실행? fs " + isOpen);
     if (
       event.type === "keydown" &&
@@ -65,11 +66,11 @@ export default function EditPage(props: EditPageProps) {
       return;
     }
     console.log("Asdfasdf 실행?  " + isOpen);
-    setTaskOpen(isOpen);
+    setTodoOpen(isOpen);
   };
   const clickOptionMenu = (isOpen: bool, optionId: number) => {
     console.log("Asdfasdf 실행? fs sfsfsf" + isOpen);
-    setTaskOpen(isOpen);
+    setTodoOpen(isOpen);
   };
   const handleClickOpen = () => {
     console.log("Asfsfs");
@@ -128,34 +129,33 @@ export default function EditPage(props: EditPageProps) {
         />
       </Fab>
       <Slide
-        in={taskOpen}
+        in={todoOpen}
         timeout={300}
         direction="up"
         mountOnEnter
         unmountOnExit
       >
-        <div className={editStyle.todo_container}>
+        <div
+          className={editStyle.floating_container}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+          onScroll={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
           <Paper elevation={4} className={editStyle.todo_paper}>
-            <div className={editStyle.todo_scroll_container}>
-              <div className={editStyle.todo_close_button_container}>
-                <div className={editStyle.white_space}> </div>
-                <IconButton
-                  color="primary"
-                  component="span"
-                  onClick={handleOpenOptionMenu(false)}
-                  size="small"
-                  className={classes.todo_close_button}
-                >
-                  <HighlightOffIcon fontSize="medium" />
-                </IconButton>
-              </div>
-              <div className={editStyle.todo_page}>
+            <div className={editStyle.scroll_container}>
+              <div className={editStyle.floating_page}>
                 <TodoPageContainer
                   todoId={3}
                   progress="EDITING"
                   clickOptionMenu={clickOptionMenu}
                   deleteOption={deleteOption}
                   clickOptionNext={clickOptionNext}
+                  handleOpenTodo={handleOpenTodo}
                 />
               </div>
             </div>
@@ -169,26 +169,35 @@ export default function EditPage(props: EditPageProps) {
         mountOnEnter
         unmountOnExit
       >
-        <div className={editStyle.map_container}>
+        <div
+          className={editStyle.floating_container}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+          onScroll={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            console.log("scroll");
+          }}
+        >
           <Paper elevation={4} className={editStyle.map_paper}>
-            <Grid container>
-              <div className={editStyle.map_close_button_container}>
-                <div className={editStyle.white_space}> </div>
-                <IconButton
-                  color="primary"
-                  component="span"
-                  onClick={handleOpenFullMap(false)}
-                  size="small"
-                  className={classes.map_close_button}
-                >
-                  <HighlightOffIcon fontSize="medium" />
-                </IconButton>
+            <div className={editStyle.scroll_container}>
+              <div className={editStyle.floating_page}>
+                <MapPageContainer
+                  todoId={3}
+                  progress="EDITING"
+                  clickOptionMenu={clickOptionMenu}
+                  deleteOption={deleteOption}
+                  clickOptionNext={clickOptionNext}
+                  handleOpenFullMap={handleOpenFullMap}
+                />
               </div>
-            </Grid>
+            </div>
           </Paper>
         </div>
       </Slide>
-      {(taskOpen || mapOpen) && <FloatingBackground />}
+      {(todoOpen || mapOpen) && <FloatingBackground />}
       <Paper elevation={4} className={editStyle.path_container}>
         <Collapse in={open}>
           <div className={editStyle.path_paper}></div>

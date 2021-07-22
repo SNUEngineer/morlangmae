@@ -10,6 +10,13 @@ import MenuIcon from "@material-ui/icons/Menu";
 import FloatingMenu from "../../customizedComponent/FloatingMenu/FloatingMenu";
 import EditorJsComponent from "../../../components/customizedComponent/EditorJsComponent/EditorJsComponent";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 export interface TodoItemProps {
   progress: "CREATING" | "EDITING" | "VIEWING" | "TASKING";
@@ -28,7 +35,7 @@ const useStyles = makeStyles({
     "&&:after": {
       borderBottom: "none",
     },
-    fontSize: "1.3em",
+    fontSize: "1em",
   },
 
   textField: {
@@ -38,8 +45,16 @@ const useStyles = makeStyles({
     top: "50%",
     transform: "translateY(-50%)",
   },
-  accordian: {
+  checkBox: {
+    paddingLeft: "1em",
+    paddingRight: "1em",
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
+  },
+  accordion: {
     width: "100%",
+    height: "fit-content",
   },
 });
 
@@ -81,79 +96,45 @@ export default function TodoItem(props: TodoItemProps) {
   // };
 
   return (
-    <div className={itemStyle.item_container}>
-      <div className={itemStyle.item_page}>
-        <div className={classes.root}></div>
+    <Accordion className={classes.accordion}>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-label="Expand"
+        aria-controls="additional-actions1-content"
+        id="additional-actions1-header"
+      >
         <div className={itemStyle.title_container}>
-          <div className={itemStyle.open_hide_button}>
-            <IconButton
-              color="primary"
-              component="span"
-              onClick={() => {
-                clickOptionMenu(true, optionId);
-              }}
-            ></IconButton>
-          </div>
-          <div className={itemStyle.item_title}>
-            <TextField
-              name="title"
-              required
-              fullWidth
-              id="title"
-              autoFocus
-              value={title}
-              onChange={changeTitle}
-              placeholder="Untitle"
-              size="medium"
-              InputProps={{ classes }}
-              className={classes.textField}
-            />
-          </div>
-          <div className={itemStyle.item_menu}>
-            <IconButton
-              color="primary"
-              component="span"
-              onClick={() => {
-                clickOptionMenu(true, optionId);
-              }}
-            >
-              <MenuIcon fontSize="small" />
-            </IconButton>
-          </div>
-          <div className={itemStyle.item_menu}>
-            <IconButton
-              color="primary"
-              component="span"
-              onClick={() => {
-                deleteOption(optionId);
-              }}
-            >
-              <HighlightOffIcon fontSize="small" />
-            </IconButton>
-          </div>
-          <div className={itemStyle.item_menu}>
-            <IconButton
-              color="primary"
-              component="span"
-              onClick={() => {
-                clickOptionNext(optionId);
-              }}
-            >
-              <ArrowForwardIcon fontSize="small" />
-            </IconButton>
-          </div>
+          <Checkbox
+            onFocus={(event) => event.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
+            size="small"
+          />
+          <TextField
+            name="title"
+            required
+            fullWidth
+            id="title"
+            onChange={changeTitle}
+            placeholder="Untitle"
+            autoFocus
+            onFocus={(event) => event.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
+            value={title}
+            InputProps={{ classes }}
+            className={classes.textField}
+          />
         </div>
+      </AccordionSummary>
+      <AccordionDetails>
         <div className={itemStyle.comment_container}>
-          <div className={itemStyle.comment_paper}>
-            <EditorJsComponent
-              progress={progress}
-              data={data}
-              type="option"
-              disableEditing={disableEditing}
-            />
-          </div>
+          <EditorJsComponent
+            progress={progress}
+            data={data}
+            parentType="option"
+            disableEditing={disableEditing}
+          />
         </div>
-      </div>
-    </div>
+      </AccordionDetails>
+    </Accordion>
   );
 }
