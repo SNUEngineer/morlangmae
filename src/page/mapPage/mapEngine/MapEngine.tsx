@@ -67,8 +67,8 @@ export default function MapEngine(props: MapEngineProps) {
     //심지어 자동으로 아이디까지 만들어주네 완-벽
     //굳이 selectorID를 같이 갖고 갈 필요 없이 저장해놓고 쓰면 되는 거 아닌가...?
 
-    node.addPort(new AdvancedPortModel(false, "out"));
-    node.addPort(new AdvancedPortModel(true, "in"));
+    // node.addPort(new AdvancedPortModel(false, "out"));
+    // node.addPort(new AdvancedPortModel(true, "in"));
     node.registerListener({
       selectionChanged: (e) => {
         // console.log("nodes selection " + JSON.stringify(e.entity.serialize()));

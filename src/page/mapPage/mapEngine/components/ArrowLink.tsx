@@ -14,7 +14,7 @@ import { MouseEvent } from "react";
 export class AdvancedLinkModel extends DefaultLinkModel {
   constructor() {
     super({
-      type: "advanced",
+      type: "diamond",
       width: 4,
     });
   }
@@ -125,7 +125,7 @@ export class AdvancedLinkWidget extends DefaultLinkWidget {
 
 export class AdvancedLinkFactory extends DefaultLinkFactory {
   constructor() {
-    super("advanced");
+    super("diamond");
   }
 
   generateModel(): AdvancedLinkModel {
