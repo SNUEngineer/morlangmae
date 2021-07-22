@@ -26,6 +26,7 @@ export class AdvancedPortModel extends DefaultPortModel {
   }
 }
 
+////
 const CustomLinkArrowWidget = (props) => {
   const { point, previousPoint } = props;
 
@@ -64,6 +65,7 @@ const CustomLinkArrowWidget = (props) => {
   );
 };
 
+////
 export class AdvancedLinkWidget extends DefaultLinkWidget {
   generateArrow(point: PointModel, previousPoint: PointModel): JSX.Element {
     return (

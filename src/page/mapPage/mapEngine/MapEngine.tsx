@@ -10,8 +10,12 @@ import createEngine, {
   DiagramModel,
   DefaultPortModel,
 } from "@projectstorm/react-diagrams";
-import { AdvancedPortModel, AdvancedLinkFactory } from "./items/ArrowLink";
+import { AdvancedPortModel, AdvancedLinkFactory } from "./components/ArrowLink";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
+import { DiamondNodeModel } from "./components/DiamondNodeModel";
+import { DiamondNodeFactory } from "./components/DiamondNodeFactory";
+import { SimplePortFactory } from "./components/SimplePortFactory";
+import { DiamondPortModel } from "./components/DiamondPortModel";
 
 export interface MapEngineProps {
   progress: "CREATING" | "EDITING" | "VIEWING" | "TASKING";
@@ -19,7 +23,7 @@ export interface MapEngineProps {
   disableEditing: bool;
 }
 
-export interface NodeModel {
+export interface NodeDataModel {
   selectorId: number;
   title: string;
   node: DefaultNodeModel;
@@ -59,7 +63,7 @@ export default function MapEngine(props: MapEngineProps) {
   const createNewNode = (nodes) => {
     const name = "untitled";
     const tempId = Date.now(); //props와 비교하여 기존에 없는 아이디로 설정
-    const node = new DefaultNodeModel(name, "rgb(0,192,255)");
+    const node = new DiamondNodeModel(name, "rgb(0,192,255)");
     //심지어 자동으로 아이디까지 만들어주네 완-벽
     //굳이 selectorID를 같이 갖고 갈 필요 없이 저장해놓고 쓰면 되는 거 아닌가...?
 
@@ -80,6 +84,16 @@ export default function MapEngine(props: MapEngineProps) {
 
   let engine = createEngine();
   engine.getLinkFactories().registerFactory(new AdvancedLinkFactory());
+  engine
+    .getPortFactories()
+    .registerFactory(
+      new SimplePortFactory(
+        "diamond",
+        (config) => new DiamondPortModel(PortModelAlignment.LEFT)
+      )
+    );
+  engine.getNodeFactories().registerFactory(new DiamondNodeFactory());
+
   let model = new DiagramModel();
   let nodes: NodeModel[] = [];
   //얘도 굳이 있어야되나...?
