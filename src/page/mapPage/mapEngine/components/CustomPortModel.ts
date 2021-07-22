@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   LinkModel,
   PortModel,
@@ -6,10 +7,10 @@ import {
 } from "@projectstorm/react-diagrams";
 import { AdvancedLinkModel } from "./ArrowLink";
 
-export class DiamondPortModel extends PortModel {
+export class CustomPortModel extends PortModel {
   constructor(alignment: PortModelAlignment) {
     super({
-      type: "diamond",
+      type: "custom",
       name: alignment,
       alignment: alignment,
     });

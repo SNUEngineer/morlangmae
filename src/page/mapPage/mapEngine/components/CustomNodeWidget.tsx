@@ -1,5 +1,6 @@
+// @ts-nocheck
 import * as React from "react";
-import { DiamondNodeModel } from "./DiamondNodeModel";
+import { CustomNodeModel } from "./CustomNodeModel";
 import {
   DiagramEngine,
   PortModelAlignment,
@@ -7,8 +8,8 @@ import {
 } from "@projectstorm/react-diagrams";
 import styled from "@emotion/styled";
 
-export interface DiamondNodeWidgetProps {
-  node: DiamondNodeModel;
+export interface CustomNodeWidgetProps {
+  node: CustomNodeModel;
   engine: DiagramEngine;
   size?: number;
 }
@@ -29,11 +30,11 @@ export const CustomPort = styled.div`
 /**
  * @author Dylan Vorster
  */
-export class DiamondNodeWidget extends React.Component<DiamondNodeWidgetProps> {
+export class CustomNodeWidget extends React.Component<CustomNodeWidgetProps> {
   render() {
     return (
       <div
-        className={"diamond-node"}
+        className={"custom-node"}
         style={{
           position: "relative",
           width: this.props.size,
@@ -50,7 +51,7 @@ export class DiamondNodeWidget extends React.Component<DiamondNodeWidgetProps> {
           </g>
           <g id="Layer_2">
             <polygon fill="mediumpurple" stroke="${
-              this.props.node.isSelected() ? "white" : "#000000"
+              this.props.node.isSelected() ? "#000000" : "#c0c0c0"
             }" stroke-width="3" stroke-miterlimit="10" points="10,` +
               this.props.size / 2 +
               ` ` +

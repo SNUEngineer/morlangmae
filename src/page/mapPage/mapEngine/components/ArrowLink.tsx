@@ -14,21 +14,15 @@ import { MouseEvent } from "react";
 export class AdvancedLinkModel extends DefaultLinkModel {
   constructor() {
     super({
-      type: "diamond",
+      type: "custom",
       width: 4,
     });
   }
 }
 
-export class AdvancedPortModel extends DefaultPortModel {
-  createLinkModel(): AdvancedLinkModel | null {
-    return new AdvancedLinkModel();
-  }
-}
-
 ////
 const CustomLinkArrowWidget = (props) => {
-  const { point, previousPoint } = props;
+  const { point, previousPoint, onLinkClick } = props;
 
   const angle =
     90 +
@@ -51,7 +45,12 @@ const CustomLinkArrowWidget = (props) => {
         ")"
       }
     >
-      <g style={{ transform: "rotate(" + angle + "deg)" }}>
+      <g
+        style={{
+          transform: "rotate(" + angle + "deg)",
+          backgroundColor: "red",
+        }}
+      >
         <g transform={"translate(0, -3)"}>
           <polygon
             points="0,10 8,30 -8,30"
@@ -67,6 +66,7 @@ const CustomLinkArrowWidget = (props) => {
 
 ////
 export class AdvancedLinkWidget extends DefaultLinkWidget {
+  onLinkClick = this.props.onLinkClick;
   generateArrow(point: PointModel, previousPoint: PointModel): JSX.Element {
     return (
       <CustomLinkArrowWidget
@@ -93,8 +93,14 @@ export class AdvancedLinkWidget extends DefaultLinkWidget {
           {
             "data-linkid": this.props.link.getID(),
             "data-point": j,
-            onMouseDown: (event: MouseEvent) => {
-              this.addPointToLink(event, j + 1);
+            onClick: (event: MouseEvent) => {
+              // this.addPointToLink(event, j + 1);
+              this.onLinkClick(this.props.link);
+            },
+            onDragEnter: (event: MouseEvent) => {
+              // this.addPointToLink(event, j + 1);
+              console.log("onDragStart");
+              this.props.link.setTargetPort(null);
             },
           },
           j
@@ -124,8 +130,11 @@ export class AdvancedLinkWidget extends DefaultLinkWidget {
 }
 
 export class AdvancedLinkFactory extends DefaultLinkFactory {
-  constructor() {
-    super("diamond");
+  onLinkClick: (link: DefaultLinkModel) => {};
+
+  constructor(onLinkClick: (link: DefaultLinkModel) => {}) {
+    super("custom");
+    this.onLinkClick = onLinkClick;
   }
 
   generateModel(): AdvancedLinkModel {
@@ -133,8 +142,14 @@ export class AdvancedLinkFactory extends DefaultLinkFactory {
   }
 
   generateReactWidget(event): JSX.Element {
+    const link: DefaultLinkModel = event.model;
+
     return (
-      <AdvancedLinkWidget link={event.model} diagramEngine={this.engine} />
+      <AdvancedLinkWidget
+        link={event.model}
+        diagramEngine={this.engine}
+        onLinkClick={this.onLinkClick}
+      />
     );
   }
 }

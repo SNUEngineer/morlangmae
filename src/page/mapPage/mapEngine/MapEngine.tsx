@@ -10,12 +10,12 @@ import createEngine, {
   DiagramModel,
   DefaultPortModel,
 } from "@projectstorm/react-diagrams";
-import { AdvancedPortModel, AdvancedLinkFactory } from "./components/ArrowLink";
+import { AdvancedLinkFactory } from "./components/ArrowLink";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
-import { DiamondNodeModel } from "./components/DiamondNodeModel";
-import { DiamondNodeFactory } from "./components/DiamondNodeFactory";
+import { CustomNodeModel } from "./components/CustomNodeModel";
+import { CustomNodeFactory } from "./components/CustomNodeFactory";
 import { SimplePortFactory } from "./components/SimplePortFactory";
-import { DiamondPortModel } from "./components/DiamondPortModel";
+import { CustomPortModel } from "./components/CustomPortModel";
 
 export interface MapEngineProps {
   progress: "CREATING" | "EDITING" | "VIEWING" | "TASKING";
@@ -59,16 +59,18 @@ export default function MapEngine(props: MapEngineProps) {
   const { progress, data, disableEditing } = props;
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedNode, setSelectedNode] = useState(null);
+  const onLinkClick = (link: DefaultLinkModel) => {
+    console.log("test function " + JSON.stringify(link.serialize()));
+    return 1;
+  };
 
   const createNewNode = (nodes) => {
     const name = "untitled";
     const tempId = Date.now(); //props와 비교하여 기존에 없는 아이디로 설정
-    const node = new DiamondNodeModel(name, "rgb(0,192,255)");
+    const node = new CustomNodeModel(name, "rgb(0,192,255)");
     //심지어 자동으로 아이디까지 만들어주네 완-벽
     //굳이 selectorID를 같이 갖고 갈 필요 없이 저장해놓고 쓰면 되는 거 아닌가...?
 
-    // node.addPort(new AdvancedPortModel(false, "out"));
-    // node.addPort(new AdvancedPortModel(true, "in"));
     node.registerListener({
       selectionChanged: (e) => {
         // console.log("nodes selection " + JSON.stringify(e.entity.serialize()));
@@ -83,16 +85,19 @@ export default function MapEngine(props: MapEngineProps) {
   };
 
   let engine = createEngine();
-  engine.getLinkFactories().registerFactory(new AdvancedLinkFactory());
+  engine
+    .getLinkFactories()
+    .registerFactory(new AdvancedLinkFactory(onLinkClick));
+
   engine
     .getPortFactories()
     .registerFactory(
       new SimplePortFactory(
-        "diamond",
-        (config) => new DiamondPortModel(PortModelAlignment.LEFT)
+        "custom",
+        (config) => new CustomPortModel(PortModelAlignment.LEFT)
       )
     );
-  engine.getNodeFactories().registerFactory(new DiamondNodeFactory());
+  engine.getNodeFactories().registerFactory(new CustomNodeFactory());
 
   let model = new DiagramModel();
   let nodes: NodeModel[] = [];
@@ -115,6 +120,7 @@ export default function MapEngine(props: MapEngineProps) {
       // console.log("in Port " + inPort);
 
       console.log("out port " + e.isCreated);
+
       if (e.isCreated) {
         e.link.addLabel("choice");
       }
